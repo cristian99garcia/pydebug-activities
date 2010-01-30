@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>The assert statement</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="more-python.html" title="Chapter 15. More Python" /><link rel="prev" href="exec-statement.html" title="The exec and eval statements" /><link rel="next" href="repr-function.html" title="The repr function" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The assert statement</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="exec-statement.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 15. More Python</th><td width="20%" align="right"> <a accesskey="n" href="repr-function.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="assert-statement"></a>The assert statement</h2></div></div></div><p>
+		
+		The <code class="literal">assert</code> statement is used to assert that something is true. For
+		example, if you are very sure that you will have at least one element in a list you are
+		using and want to check this, and raise an error if it is not true, then
+		<code class="literal">assert</code> statement is ideal in this situation. When the assert
+		statement fails, an <code class="classname">AssertionError</code> is raised.
+		
+		</p><pre class="screen">
+		
+&gt;&gt;&gt; mylist = ['item']
+&gt;&gt;&gt; assert len(mylist) &gt;= 1
+&gt;&gt;&gt; mylist.pop()
+'item'
+&gt;&gt;&gt; assert len(mylist) &gt;= 1
+Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in ?
+AssertionError
+		
+		</pre></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="exec-statement.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="more-python.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="repr-function.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">The exec and eval statements </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> The repr function</td></tr></table></div></body></html>

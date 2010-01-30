@@ -1,0 +1,471 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>The Solution</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="problem-solving.html" title="Chapter 10. Problem Solving - Writing a Python Script" /><link rel="prev" href="problem-solving.html" title="Chapter 10. Problem Solving - Writing a Python Script" /><link rel="next" href="software-development-process.html" title="The Software Development Process" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The Solution</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="problem-solving.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 10. Problem Solving - Writing a Python Script</th><td width="20%" align="right"> <a accesskey="n" href="software-development-process.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="the-solution"></a>The Solution</h2></div></div></div><p>
+		
+		As the design of our program is now stable, we can write the code which is an
+		<span class="bold"><strong>implementation</strong></span> of our solution.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="first-version"></a>First Version</h3></div></div></div><div class="example"><a id="id3069271"></a><p class="title"><b>Example 10.1. Backup Script - The First Version</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: backup_ver1.py</span>
+
+<span class="py-statement">import</span> <span class="py-builtin">os</span>
+<span class="py-statement">import</span> <span class="py-builtin">time</span>
+
+<span class="py-comment"># 1. The files and directories to be backed up are specified in a list.</span>
+source = [<span class="py-string">'/home/swaroop/byte'</span>, <span class="py-string">'/home/swaroop/bin'</span>]
+<span class="py-comment"># If you are using Windows, use source = [r'C:\Documents', r'D:\Work'] or something like that</span>
+
+<span class="py-comment"># 2. The backup must be stored in a main backup directory</span>
+target_dir = <span class="py-string">'/mnt/e/backup/'</span> <span class="py-comment"># Remember to change this to what you will be using</span>
+
+<span class="py-comment"># 3. The files are backed up into a zip file.</span>
+<span class="py-comment"># 4. The name of the zip archive is the current date and time</span>
+target = target_dir + <span class="py-builtin">time</span>.strftime(<span class="py-string">'%Y%m%d%H%M%S'</span>) + <span class="py-string">'.zip'</span>
+
+<span class="py-comment"># 5. We use the zip command (in Unix/Linux) to put the files in a zip archive</span>
+zip_command = <span class="py-string">"zip -qr '%s' %s"</span> % (target, <span class="py-string">' '</span>.join(source))
+
+<span class="py-comment"># Run the backup</span>
+<span class="py-statement">if</span> <span class="py-builtin">os</span>.system(zip_command) == <span class="py-number">0</span>:
+	<span class="py-statement">print</span> <span class="py-string">'Successful backup to'</span>, target
+<span class="py-statement">else</span>:
+	<span class="py-statement">print</span> <span class="py-string">'Backup FAILED'</span>
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3069284"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python backup_ver1.py
+Successful backup to /mnt/e/backup/20041208073244.zip
+				
+				</pre><p>
+				
+				Now, we are in the <span class="bold"><strong>testing</strong></span> phase where
+				we test that our program works properly. If it doesn't behave as
+				expected, then we have to <span class="bold"><strong>debug</strong></span> our
+				program i.e. remove the <span class="emphasis"><em>bugs</em></span> (errors) from the
+				program.
+				
+				</p></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3069350"></a>How It Works</h4></div></div></div><p>
+				
+				You will notice how we have converted our <span class="emphasis"><em>design</em></span> into
+				<span class="emphasis"><em>code</em></span> in a step-by-step manner.
+				
+				</p><p>
+				
+				We make use of the <code class="literal">os</code> and <code class="literal">time</code>
+				modules and so we import them. Then, we specify the files and directories
+				to be backed up in the <code class="varname">source</code> list. The target directory
+				is where store all the backup files and this is specified in the
+				<code class="varname">target_dir</code> variable. The name of the zip archive that
+				we are going to create is the current date and time which we fetch using the
+				<code class="function">time.strftime()</code> function. It will also have the
+				<code class="filename">.zip</code> extension and will be stored in the
+				<code class="varname">target_dir</code> directory.
+				
+				</p><p>
+				
+				The <code class="function">time.strftime()</code> function takes a specification
+				such as the one we have used in the above program. The <code class="literal">%Y</code>
+				specification will be replaced by the year without the cetury. The
+				<code class="literal">%m</code> specification will be replaced by the month as a
+				decimal number between  <code class="literal">01</code> and <code class="literal">12</code> and
+				so on. The complete list of such specifications can be found in the
+				[<span class="citation">Python Reference Manual</span>] that comes with your Python
+				distribution. Notice that this is similar to (but not same as) the
+				specification used in <code class="literal">print</code> statement (using the
+				<code class="literal">%</code> followed by tuple).
+				
+				</p><p>
+				
+				We create the name of the target zip file using the addition operator
+				which <span class="emphasis"><em>concatenates</em></span> the strings i.e. it joins the
+				two strings together and returns a new one. Then, we create a string
+				<code class="varname">zip_command</code> which contains the command that we are
+				going to execute. You can check if this command works by running it on
+				the shell (Linux terminal or DOS prompt).
+				
+				</p><p>
+				
+				The <span><strong class="command">zip</strong></span> command that we are using has some options
+				and parameters passed. The <code class="option">-q</code> option is used to indicate
+				that the zip command should work <span class="bold"><strong>q</strong></span>uietly.
+				The <code class="option">-r</code> option specifies that the zip command should work
+				<span class="bold"><strong>r</strong></span>ecursively for directories i.e. it
+				should include subdirectories and files within the subdirectories as well.
+				The two options are combined and specified in a shorter way as
+				<code class="option">-qr</code>. The options are followed by the name of the zip archive
+				to create followed by the list of files and directories to backup. We
+				convert the <code class="varname">source</code> list into a string using the
+				<code class="methodname">join</code> method of strings which we have already seen
+				how to use.
+				
+				</p><p>
+				
+				Then, we finally <span class="emphasis"><em>run</em></span> the command using the
+				<code class="function">os.system</code> function which runs the command as if it
+				was run from the <span class="emphasis"><em>system</em></span> i.e. in the shell - it returns
+				<code class="literal">0</code> if the command was successfully, else it returns an
+				error number.
+				
+				</p><p>
+				
+				Depending on the outcome of the command, we print the appropriate message
+				that the backup has failed or succeeded and that's it, we have created a
+				script to take a backup of our important files!
+				
+				</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note to Windows Users</h3><p>
+					
+					You can set the <code class="varname">source</code> list and
+					<code class="varname">target</code> directory to any file and directory names
+					but you have to be a little careful in Windows. The problem is that
+					Windows uses the backslash (<code class="literal">\</code>) as the directory
+					separator character but Python uses backslashes to represent
+					escape sequences!
+					
+					</p><p>
+					
+					So, you have to represent a backslash itself using an escape
+					sequence or you have to use raw strings. For example, use
+					<code class="literal">'C:\\Documents'</code> or <code class="literal">r'C:\Documents'</code>
+					but do <span class="bold"><strong>not</strong></span> use
+					<code class="literal">'C:\Documents'</code> - you are using an unknown
+					escape sequence <code class="literal">\D</code> !
+					
+					</p></div><p>
+				
+				Now that we have a working backup script, we can use it whenever we want
+				to take a backup of the files. Linux/Unix users are advised to use the
+				<a href="executable-python-programs.html" title="Executable Python programs">executable method</a> as
+				discussed earlier so that they can run the backup script anytime anywhere.
+				This is called the <span class="bold"><strong>operation</strong></span> phase or the
+				<span class="bold"><strong>deployment</strong></span> phase of the software.
+				
+				</p><p>
+				
+				The above program works properly, but (usually) first programs do not work
+				exactly as you expect. For example, there might be problems if you have not
+				designed the program properly or if you have made a mistake in typing the
+				code, etc. Appropriately, you will have to go back to the design phase or
+				you will have to debug your program.
+				
+				</p></div></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="second-version"></a>Second Version</h3></div></div></div><p>
+			
+			The first version of our script works. However, we can make some refinements to it
+			so that it can work better on a daily basis. This is called the
+			<span class="bold"><strong>maintenance</strong></span> phase of the software.
+			
+			</p><p>
+			
+			One of the refinements I felt was useful is a better file-naming mechanism - using
+			the <span class="emphasis"><em>time</em></span> as the name of the file within a directory with the
+			current <span class="emphasis"><em>date</em></span> as a directory within the main backup directory.
+			One advantage is that your backups are stored in a hierarchical manner and therefore
+			it is much easier to manage. Another advantage is that the length of the filenames
+			are much shorter this way. Yet another advantage is that separate directories will
+			help you to easily check if you have taken a backup for each day since the
+			directory would be created only if you have taken a backup for that day.
+			
+			</p><div class="example"><a id="id3069716"></a><p class="title"><b>Example 10.2. Backup Script - The Second Version</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: backup_ver2.py</span>
+
+<span class="py-statement">import</span> <span class="py-builtin">os</span>
+<span class="py-statement">import</span> <span class="py-builtin">time</span>
+
+<span class="py-comment"># 1. The files and directories to be backed up are specified in a list.</span>
+source = [<span class="py-string">'/home/swaroop/byte'</span>, <span class="py-string">'/home/swaroop/bin'</span>]
+<span class="py-comment"># If you are using Windows, use source = [r'C:\Documents', r'D:\Work'] or something like that</span>
+
+<span class="py-comment"># 2. The backup must be stored in a main backup directory</span>
+target_dir = <span class="py-string">'/mnt/e/backup/'</span> <span class="py-comment"># Remember to change this to what you will be using</span>
+
+<span class="py-comment"># 3. The files are backed up into a zip file.</span>
+<span class="py-comment"># 4. The current day is the name of the subdirectory in the main directory</span>
+today = target_dir + <span class="py-builtin">time</span>.strftime(<span class="py-string">'%Y%m%d'</span>)
+<span class="py-comment"># The current time is the name of the zip archive</span>
+now = <span class="py-builtin">time</span>.strftime(<span class="py-string">'%H%M%S'</span>)
+
+<span class="py-comment"># Create the subdirectory if it isn't already there</span>
+<span class="py-statement">if</span> <span class="py-statement">not</span> <span class="py-builtin">os</span>.path.exists(today):
+	<span class="py-builtin">os</span>.mkdir(today) <span class="py-comment"># make directory</span>
+	<span class="py-statement">print</span> <span class="py-string">'Successfully created directory'</span>, today
+
+<span class="py-comment"># The name of the zip file</span>
+target = today + <span class="py-builtin">os</span>.sep + now + <span class="py-string">'.zip'</span>
+
+<span class="py-comment"># 5. We use the zip command (in Unix/Linux) to put the files in a zip archive</span>
+zip_command = <span class="py-string">"zip -qr '%s' %s"</span> % (target, <span class="py-string">' '</span>.join(source))
+
+<span class="py-comment"># Run the backup</span>
+<span class="py-statement">if</span> <span class="py-builtin">os</span>.system(zip_command) == <span class="py-number">0</span>:
+	<span class="py-statement">print</span> <span class="py-string">'Successful backup to'</span>, target
+<span class="py-statement">else</span>:
+	<span class="py-statement">print</span> <span class="py-string">'Backup FAILED'</span>
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3069729"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python backup_ver2.py
+Successfully created directory /mnt/e/backup/20041208
+Successful backup to /mnt/e/backup/20041208/080020.zip
+
+$ python backup_ver2.py
+Successful backup to /mnt/e/backup/20041208/080428.zip
+
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3069742"></a>How It Works</h4></div></div></div><p>
+				
+				Most of the program remains the same. The changes is that we check if there
+				is a directory with the current day as name inside the main backup
+				directory using the <code class="function">os.exists</code> function. If it doesn't
+				exist, we create it using the <code class="function">os.mkdir</code> function.
+				
+				</p><p>
+				
+				Notice the use of <code class="varname">os.sep</code> variable - this gives the
+				directory separator according to your operating system i.e. it will be
+				<code class="literal">'/'</code> in Linux, Unix, it will be <code class="literal">'\\'</code>
+				in Windows and <code class="literal">':'</code> in Mac OS. Using
+				<code class="varname">os.sep</code> instead of these characters directly will make
+				our program portable and work across these systems.
+				
+				</p></div></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="third-version"></a>Third Version</h3></div></div></div><p>
+			
+			The second version works fine when I do many backups, but when there are lots of
+			backups, I am finding it hard to differentiate what the backups were for! For
+			example, I might have made some major changes to a program or presentation,
+			then I want to associate what those changes are with the name of the zip archive.
+			This can be easily achieved by attaching a user-supplied comment to the name of
+			the zip archive.
+			
+			</p><div class="example"><a id="id3069869"></a><p class="title"><b>Example 10.3. Backup Script - The Third Version (does not work!)</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: backup_ver2.py</span>
+
+<span class="py-statement">import</span> <span class="py-builtin">os</span>
+<span class="py-statement">import</span> <span class="py-builtin">time</span>
+
+<span class="py-comment"># 1. The files and directories to be backed up are specified in a list.</span>
+source = [<span class="py-string">'/home/swaroop/byte'</span>, <span class="py-string">'/home/swaroop/bin'</span>]
+<span class="py-comment"># If you are using Windows, use source = [r'C:\Documents', r'D:\Work'] or something like that</span>
+
+<span class="py-comment"># 2. The backup must be stored in a main backup directory</span>
+target_dir = <span class="py-string">'/mnt/e/backup/'</span> <span class="py-comment"># Remember to change this to what you will be using</span>
+
+<span class="py-comment"># 3. The files are backed up into a zip file.</span>
+<span class="py-comment"># 4. The current day is the name of the subdirectory in the main directory</span>
+today = target_dir + <span class="py-builtin">time</span>.strftime(<span class="py-string">'%Y%m%d'</span>)
+<span class="py-comment"># The current time is the name of the zip archive</span>
+now = <span class="py-builtin">time</span>.strftime(<span class="py-string">'%H%M%S'</span>)
+
+<span class="py-comment"># Take a comment from the user to create the name of the zip file</span>
+comment = <span class="py-builtin">raw_input</span>(<span class="py-string">'Enter a comment --&gt; '</span>)
+<span class="py-statement">if</span> <span class="py-builtin">len</span>(comment) == <span class="py-number">0</span>: <span class="py-comment"># check if a comment was entered</span>
+	target = today + <span class="py-builtin">os</span>.sep + now + <span class="py-string">'.zip'</span>
+<span class="py-statement">else</span>:
+	target = today + <span class="py-builtin">os</span>.sep + now + <span class="py-string">'_'</span> +
+		comment.replace(<span class="py-string">' '</span>, <span class="py-string">'_'</span>) + <span class="py-string">'.zip'</span>
+
+<span class="py-comment"># Create the subdirectory if it isn't already there</span>
+<span class="py-statement">if</span> <span class="py-statement">not</span> <span class="py-builtin">os</span>.path.exists(today):
+	<span class="py-builtin">os</span>.mkdir(today) <span class="py-comment"># make directory</span>
+	<span class="py-statement">print</span> <span class="py-string">'Successfully created directory'</span>, today
+
+<span class="py-comment"># 5. We use the zip command (in Unix/Linux) to put the files in a zip archive</span>
+zip_command = <span class="py-string">"zip -qr '%s' %s"</span> % (target, <span class="py-string">' '</span>.join(source))
+
+<span class="py-comment"># Run the backup</span>
+<span class="py-statement">if</span> <span class="py-builtin">os</span>.system(zip_command) == <span class="py-number">0</span>:
+	<span class="py-statement">print</span> <span class="py-string">'Successful backup to'</span>, target
+<span class="py-statement">else</span>:
+	<span class="py-statement">print</span> <span class="py-string">'Backup FAILED'</span>
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3069882"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python backup_ver3.py
+File "backup_ver3.py", line 25
+target = today + os.sep + now + '_' +
+					^
+SyntaxError: invalid syntax
+					
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3069894"></a>How This (does not) Work</h4></div></div></div><p>
+				
+				<span class="bold"><strong>This program does not work!</strong></span>.
+				Python says there is a syntax error which means that the script
+				does not satisfy the structure that Python expects to see.
+				When we observe the error given by Python, it also tells us the
+				place where it detected the error as well. So we start
+				<span class="emphasis"><em>debugging</em></span> our program from that line.
+				
+				</p><p>
+				
+				On careful observation, we see that the single logical line has
+				been split into two physical lines but we have not specified that
+				these two physical lines belong together. Basically, Python has
+				found the addition operator (<code class="literal">+</code>) without any
+				operand in that logical line and hence it doesn't know how to
+				continue. Remember that we can specify that the logical line continues
+				in the next physical line by the use of a backslash at the end of the
+				physical line. So, we make this correction to our program. This is
+				called <span class="bold"><strong>bug fixing</strong></span>.
+				
+				</p></div></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="fourth-version"></a>Fourth Version</h3></div></div></div><div class="example"><a id="id3070006"></a><p class="title"><b>Example 10.4. Backup Script - The Fourth Version</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: backup_ver2.py</span>
+
+<span class="py-statement">import</span> <span class="py-builtin">os</span>, <span class="py-builtin">time</span>
+
+<span class="py-comment"># 1. The files and directories to be backed up are specified in a list.</span>
+source = [<span class="py-string">'/home/swaroop/byte'</span>, <span class="py-string">'/home/swaroop/bin'</span>]
+<span class="py-comment"># If you are using Windows, use source = [r'C:\Documents', r'D:\Work'] or something like that</span>
+
+<span class="py-comment"># 2. The backup must be stored in a main backup directory</span>
+target_dir = <span class="py-string">'/mnt/e/backup/'</span> <span class="py-comment"># Remember to change this to what you will be using</span>
+
+<span class="py-comment"># 3. The files are backed up into a zip file.</span>
+<span class="py-comment"># 4. The current day is the name of the subdirectory in the main directory</span>
+today = target_dir + <span class="py-builtin">time</span>.strftime(<span class="py-string">'%Y%m%d'</span>)
+<span class="py-comment"># The current time is the name of the zip archive</span>
+now = <span class="py-builtin">time</span>.strftime(<span class="py-string">'%H%M%S'</span>)
+
+<span class="py-comment"># Take a comment from the user to create the name of the zip file</span>
+comment = <span class="py-builtin">raw_input</span>(<span class="py-string">'Enter a comment --&gt; '</span>)
+<span class="py-statement">if</span> <span class="py-builtin">len</span>(comment) == <span class="py-number">0</span>: <span class="py-comment"># check if a comment was entered</span>
+	target = today + <span class="py-builtin">os</span>.sep + now + <span class="py-string">'.zip'</span>
+<span class="py-statement">else</span>:
+	target = today + <span class="py-builtin">os</span>.sep + now + <span class="py-string">'_'</span> + \
+		comment.replace(<span class="py-string">' '</span>, <span class="py-string">'_'</span>) + <span class="py-string">'.zip'</span>
+ 	<span class="py-comment"># Notice the backslash!</span>
+
+<span class="py-comment"># Create the subdirectory if it isn't already there</span>
+<span class="py-statement">if</span> <span class="py-statement">not</span> <span class="py-builtin">os</span>.path.exists(today):
+	<span class="py-builtin">os</span>.mkdir(today) <span class="py-comment"># make directory</span>
+	<span class="py-statement">print</span> <span class="py-string">'Successfully created directory'</span>, today
+
+<span class="py-comment"># 5. We use the zip command (in Unix/Linux) to put the files in a zip archive</span>
+zip_command = <span class="py-string">"zip -qr '%s' %s"</span> % (target, <span class="py-string">' '</span>.join(source))
+
+<span class="py-comment"># Run the backup</span>
+<span class="py-statement">if</span> <span class="py-builtin">os</span>.system(zip_command) == <span class="py-number">0</span>:
+	<span class="py-statement">print</span> <span class="py-string">'Successful backup to'</span>, target
+<span class="py-statement">else</span>:
+	<span class="py-statement">print</span> <span class="py-string">'Backup FAILED'</span>
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3070018"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python backup_ver4.py
+Enter a comment --&gt; added new examples
+Successful backup to /mnt/e/backup/20041208/082156_added_new_examples.zip
+
+$ python backup_ver4.py
+Enter a comment --&gt;
+Successful backup to /mnt/e/backup/20041208/082316.zip
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3070031"></a>How It Works</h4></div></div></div><p>
+				
+				This program now works! Let us go through the actual enhancements that we
+				had made in version 3. We take in the user's comments using the
+				<code class="function">raw_input</code> function and then check if the user actually
+				entered something by finding out the length of the input using the
+				<code class="function">len</code> function. If the user has just pressed
+				<span><strong class="keycap">enter</strong></span> for some reason (maybe it was just a routine backup
+				or no special changes were made), then we proceed as we have done before.
+				
+				</p><p>
+				
+				However, if a comment was supplied, then this is attached to the name of
+				the zip archive just before the <code class="filename">.zip</code> extension.
+				Notice that we are replacing spaces in the comment with underscores - this
+				is because managing such filenames are much easier.
+				
+				</p></div></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="more-refinements"></a>More Refinements</h3></div></div></div><p>
+			
+			The fourth version is a satisfactorily working script for most users, but there is
+			always room for improvement. For example, you can include a
+			<span class="emphasis"><em>verbosity</em></span> level for the program where you can specify a
+			<code class="option">-v</code> option to make your program become more talkative.
+			
+			</p><p>
+			
+			Another possible enhancement would be to allow extra files and directories to be
+			passed to the script at the command line. We will get these from the
+			<code class="varname">sys.argv</code> list and we can add them to our
+			<code class="varname">source</code> list using the <code class="methodname">extend</code> method
+			provided by the <code class="classname">list</code> class.
+			
+			</p><p>
+			
+			One refinement I prefer is the use of the <span><strong class="command">tar</strong></span> command instead
+			of the <span><strong class="command">zip</strong></span> command. One advantage is that when you use the
+			<span><strong class="command">tar</strong></span> command along with <span><strong class="command">gzip</strong></span>, the backup is
+			much faster and the backup created is also much smaller. If I need to use this
+			archive in Windows, then <span class="application">WinZip</span> handles such
+			<code class="filename">.tar.gz</code> files easily as well. The <span><strong class="command">tar</strong></span>
+			command is available by default on most Linux/Unix systems. Windows users can
+			<a href="http://gnuwin32.sourceforge.net/packages/tar.htm" target="_top">download</a>
+			and install it as well.
+			
+			</p><p>
+			
+			The command string will now be:
+			
+			</p><pre class="programlisting">
+			
+tar = <span class="py-string">'tar -cvzf %s %s -X /home/swaroop/excludes.txt'</span> % (target, <span class="py-string">' '</span>.join(srcdir))
+			
+			</pre><p>
+			
+			The options are explained below.
+			
+			</p><div class="itemizedlist"><ul type="disc"><li><p>
+					
+					<code class="option">-c</code> indicates <span class="bold"><strong>c</strong></span>reation
+					of an archive.
+					
+					</p></li><li><p>
+					
+					<code class="option">-v</code> indicates <span class="bold"><strong>v</strong></span>erbose
+					i.e. the command should be more talkative.
+					
+					</p></li><li><p>
+					
+					<code class="option">-z</code> indicates the g<span class="bold"><strong>z</strong></span>ip
+					filter should be used.
+					
+					</p></li><li><p>
+					
+					<code class="option">-f</code> indicates <span class="bold"><strong>f</strong></span>orce
+					in creation of archive i.e. it should replace if there is a file
+					by the same name already.
+					
+					</p></li><li><p>
+					
+					<code class="option">-X</code> indicates a file which contains a list of filenames
+					which must be e<span class="bold"><strong>x</strong></span>cluded from the backup.
+					For example, you can specify <code class="literal">*~</code> in this file to not
+					include any filenames ending with <code class="literal">~</code> in the backup.
+					
+					</p></li></ul></div><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Important</h3><p>
+				
+				The most preferred way of creating such kind of archives would be using
+				the <code class="literal">zipfile</code> or <code class="literal">tarfile</code> module
+				respectively. They are part of the Python Standard Library and available
+				for you to use already. Using these libraries also avoids the use of the
+				<code class="function">os.system</code> which is generally not advisable to use
+				because it is very easy to make costly mistakes using it.
+				
+				</p><p>
+				
+				However, I have been using the <code class="function">os.system</code> way of
+				creating a backup purely for pedagogical purposes, so that the example
+				is simple enough to be understood by everybody but real enough to be
+				useful.
+				
+				</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="problem-solving.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="problem-solving.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="software-development-process.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 10. Problem Solving - Writing a Python Script </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> The Software Development Process</td></tr></table></div></body></html>

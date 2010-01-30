@@ -1,0 +1,679 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Database Access</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="PLEAC-Python
+"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Classes, Objects, and Ties"
+HREF="classesetc.html"><LINK
+REL="NEXT"
+TITLE="User Interfaces"
+HREF="userinterfaces.html"><style type="text/css">    <!--
+      .comment {
+        /* font-lock-comment-face */
+        color: #bebebe;
+      }
+      .comment-delimiter {
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #b2dfee;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #ffa500;
+      }
+      .py-builtins {
+        /* py-builtins-face */
+        color: #ffa500;
+      }
+      .py-pseudo-keyword {
+        /* py-pseudo-keyword-face */
+        color: #ffa500;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #00cd00;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    -->
+    </style></head
+><BODY TEXT="#cecece" BGCOLOR="#4f6f6f" LINK="#f5deb3" VLINK="#d5ae83"
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PLEAC-Python
+</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="classesetc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="userinterfaces.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="DBACCESS"
+>14. Database Access</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN754"
+>Introduction</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"></span><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="comment-delimiter"># </span><span class="comment">See http://www.python.org/doc/topics/database/ for Database Interfaces details.
+</span><span class="comment-delimiter"># </span><span class="comment">currently listed on http://www.python.org/doc/topics/database/modules/
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter">#  </span><span class="comment">DB/2, Informix, Interbase, Ingres, JDBC, MySQL, pyodbc, mxODBC, ODBC Interface,
+</span><span class="comment-delimiter">#  </span><span class="comment">DCOracle, DCOracle2, PyGresQL, psycopg, PySQLite, sapdbapi, Sybase, ThinkSQL.
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN757"
+>Making and Using a DBM File</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-------------------------------------
+</span><span class="keyword">import</span> anydbm
+filename = <span class="string">"test.db"</span>
+<span class="keyword">try:</span>
+    db = anydbm.open(filename)
+<span class="keyword">except</span> anydbm, err:
+    <span class="keyword">print</span> <span class="string">"Can't open %s: %s!"</span> % (filename, err)
+
+db[<span class="string">"key"</span>] = <span class="string">"value"</span>        <span class="comment-delimiter"># </span><span class="comment">put value into database
+</span><span class="keyword">if</span> <span class="string">"key"</span> <span class="keyword">in</span> db:            <span class="comment-delimiter"># </span><span class="comment">check whether in database
+</span>    val = db.pop(<span class="string">"key"</span>)    <span class="comment-delimiter"># </span><span class="comment">retrieve and remove from database
+</span>db.close()                 <span class="comment-delimiter"># </span><span class="comment">close the database
+</span><span class="comment-delimiter">#</span><span class="comment">-------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment"><font size="-1"><a href="http://pleac.sourceforge.net/include/python/ch14/userstats">download the following standalone program</a></font>
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/python
+</span><span class="comment-delimiter"># </span><span class="comment">userstats - generates statistics on who logged in.
+</span><span class="comment-delimiter"># </span><span class="comment">call with an argument to display totals
+</span>
+<span class="keyword">import</span> sys, os, anydbm, re
+
+db_file = <span class="string">'/tmp/userstats.db'</span>       <span class="comment-delimiter"># </span><span class="comment">where data is kept between runs
+</span>
+<span class="keyword">try:</span>
+    db = anydbm.open(db_file,<span class="string">'c'</span>)   <span class="comment-delimiter"># </span><span class="comment">open, create if it does not exist
+</span><span class="keyword">except:</span>
+    <span class="keyword">print</span> <span class="string">"Can't open db %s: %s!"</span> % (db_file, sys.exc_info()[1])
+    sys.exit(1)
+
+<span class="keyword">if</span> <span class="py-builtins">len</span>(sys.argv) &gt; 1:
+    <span class="keyword">if</span> sys.argv[1] == <span class="string">'ALL'</span>:
+        userlist = db.keys()
+    <span class="keyword">else:</span>
+        userlist = sys.argv[1:]
+    userlist.sort()
+    <span class="keyword">for</span> user <span class="keyword">in</span> userlist:
+        <span class="keyword">if</span> db.has_key(user):
+            <span class="keyword">print</span> <span class="string">"%s\t%s"</span> % (user, db[user])
+        <span class="keyword">else:</span>
+            <span class="keyword">print</span> <span class="string">"%s\t%s"</span> % (user, 0)
+<span class="keyword">else:</span>
+    who = os.popen(<span class="string">'who'</span>).readlines()  <span class="comment-delimiter"># </span><span class="comment">run who(1)
+</span>    <span class="keyword">if</span> <span class="py-builtins">len</span>(who)&lt;1:
+        <span class="keyword">print</span> <span class="string">"error running who"</span>       <span class="comment-delimiter"># </span><span class="comment">exit
+</span>        sys.exit(1)
+    <span class="comment-delimiter"># </span><span class="comment">extract username (first thin on the line) and update
+</span>    user_re = re.compile(<span class="string">"^(\S+)"</span>)
+    <span class="keyword">for</span> line <span class="keyword">in</span> who:
+        fnd = user_re.search(line)
+        <span class="keyword">if</span> <span class="keyword">not</span> fnd:
+            <span class="keyword">print</span> <span class="string">"Bad line from who: %s"</span> % line
+            sys.exit(1)
+        user = fnd.groups()[0]
+        <span class="keyword">if</span> <span class="keyword">not</span> db.has_key(user):
+            db[user] = <span class="string">"0"</span>
+        db[user] = <span class="py-builtins">str</span>(int(db[user])+1) <span class="comment-delimiter"># </span><span class="comment">only strings are allowed
+</span>db.close()
+    </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN760"
+>Emptying a DBM File</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Emptying a DBM File
+</span>
+<span class="keyword">import</span> anydbm
+
+<span class="keyword">try:</span>
+    db = anydbm.open(FILENAME,<span class="string">'w'</span>)   <span class="comment-delimiter"># </span><span class="comment">open, for writing
+</span><span class="keyword">except</span> anydbm.error, err:
+    <span class="keyword">print</span> <span class="string">"Can't open db %s: %s!"</span> % (filename, err)
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span>(1)
+
+db.clear()
+db.close()
+<span class="comment-delimiter"># </span><span class="comment">-------------------------------
+</span><span class="keyword">try:</span>
+    db = anydbm.open(filename,<span class="string">'n'</span>)   <span class="comment-delimiter"># </span><span class="comment">open, always create a new empty db
+</span><span class="keyword">except</span> anydbm.error, err:
+    <span class="keyword">print</span> <span class="string">"Can't open db %s: %s!"</span> % (filename, err)
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span>(1)
+
+db.close()
+<span class="comment-delimiter"># </span><span class="comment">-------------------------------
+</span><span class="keyword">import</span> os
+<span class="keyword">try:</span>
+    os.remove(FILENAME)
+<span class="keyword">except</span> <span class="py-builtins">OSError</span>, err:
+    <span class="keyword">print</span> <span class="string">"Couldn't remove %s to empty the database: %s!"</span> % (FILENAME,
+        err)
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span>
+
+<span class="keyword">try:</span>
+    db = anydbm.open(FILENAME,<span class="string">'n'</span>)   <span class="comment-delimiter"># </span><span class="comment">open, flways create a new empty db
+</span><span class="keyword">except</span> anydbm.error, err:
+    <span class="keyword">print</span> <span class="string">"Couldn't create %s database: %s!"</span> % (FILENAME, err)
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN763"
+>Converting Between DBM Files</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Converting Between DBM Files
+</span>
+<span class="comment-delimiter"># </span><span class="comment"><font size="-1"><a href="http://pleac.sourceforge.net/include/python/ch14/db2gdbm">download the following standalone program</a></font>
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/python
+</span><span class="comment-delimiter"># </span><span class="comment">db2gdbm: converts DB to GDBM
+</span>
+<span class="keyword">import</span> sys
+<span class="keyword">import</span> dbm, gdbm
+
+<span class="keyword">if</span> <span class="py-builtins">len</span>(sys.argv)&lt;3:
+    <span class="keyword">print</span> <span class="string">"usage: db2gdbm infile outfile"</span>
+    sys.exit(1)
+
+(infile, outfile) = sys.argv[1:]
+
+<span class="comment-delimiter"># </span><span class="comment">open the files
+</span><span class="keyword">try:</span>
+    db_in = dbm.open(infile)
+<span class="keyword">except:</span>
+    <span class="keyword">print</span> <span class="string">"Can't open infile %s: %s!"</span> % (infile, sys.exc_info()[1])
+    sys.exit(1)
+<span class="keyword">try:</span>
+    db_out = dbm.open(outfile,<span class="string">"n"</span>)
+<span class="keyword">except:</span>
+    <span class="keyword">print</span> <span class="string">"Can't open outfile %s: %s!"</span> % (outfile, sys.exc_info()[1])
+    sys.exit(1)
+
+<span class="comment-delimiter"># </span><span class="comment">copy (don't use db_out = db_in because it's slow on big databases)
+</span><span class="comment-delimiter"># </span><span class="comment">is this also so for python ?
+</span><span class="keyword">for</span> k <span class="keyword">in</span> db_in.keys():
+    db_out[k] = db_in[k]
+
+<span class="comment-delimiter"># </span><span class="comment">these close happen automatically at program exit
+</span>db_out.close()
+db_in.close()</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN766"
+>Merging DBM Files</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+OUTPUT.update(INPUT1)
+OUTPUT.update(INPUT2)
+
+OUTPUT = anydbm.open(<span class="string">"OUT"</span>,<span class="string">"n"</span>)
+<span class="keyword">for</span> INPUT <span class="keyword">in</span> (INPUT1, INPUT2, INPUT1):
+    <span class="keyword">for</span> key, value <span class="keyword">in</span> INPUT.iteritems():
+        <span class="keyword">if</span> OUTPUT.has_key(key):
+            <span class="comment-delimiter"># </span><span class="comment">decide which value to use and set OUTPUT[key] if necessary
+</span>            <span class="keyword">print</span> <span class="string">"key %s already present: %s, new: %s"</span> % (
+                    key, OUTPUT[key], value )
+        <span class="keyword">else:</span>
+            OUTPUT[key] = value</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN769"
+>Locking DBM Files</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">On systems where the Berkeley DB supports it, dbhash takes an
+</span><span class="comment-delimiter"># </span><span class="comment">"l" flag:
+</span><span class="keyword">import</span> dbhash
+dbhash.open(<span class="string">"mydb.db"</span>, <span class="string">"cl"</span>) <span class="comment-delimiter"># </span><span class="comment">'c': create if doesn't exist
+</span>
+<span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN772"
+>Sorting Large DBM Files</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN775"
+>Treating a Text File as a Database Array</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN778"
+>Storing Complex Data in a DBM File</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">shelve uses anydbm to access and chooses between DBMs.
+</span><span class="comment-delimiter"># </span><span class="comment">anydbm detect file formats automatically.
+</span><span class="keyword">import</span> shelve
+db = shelve.open(<span class="string">"celebrities.db"</span>)
+
+name1 = <span class="string">"Greg Stein"</span>
+name2 = <span class="string">"Greg Ward"</span>
+
+<span class="comment-delimiter"># </span><span class="comment">shelve uses pickle to convert objects into strings and back.
+</span><span class="comment-delimiter"># </span><span class="comment">This is automatic.
+</span>db[name1] = [<span class="string">"of ViewCVS fame"</span>, <span class="string">"gstein@lyra.org"</span>]
+db[name2] = [<span class="string">"of Distutils fame"</span>, <span class="string">"gward@python.net"</span>]
+
+greg1 = db[name1]
+greg2 = db[name2]
+
+<span class="keyword">print</span> <span class="string">"Two Gregs: %x %x"</span> % (<span class="py-builtins">id</span>(greg1), <span class="py-builtins">id</span>(greg2))
+
+<span class="keyword">if</span> greg1 == greg2:
+    <span class="keyword">print</span> <span class="string">"You're having runtime fun with one Greg made two."</span>
+<span class="keyword">else:</span>
+    <span class="keyword">print</span> <span class="string">"No two Gregs are ever alike."</span>
+
+<span class="comment-delimiter"># </span><span class="comment">Changes to mutable entries are not written back by default.
+</span><span class="comment-delimiter"># </span><span class="comment">You can get the copy, change it, and put it back.
+</span>entry = db[name1]
+entry[0] = <span class="string">"of Subversion fame"</span>
+db[name1] = entry
+
+<span class="comment-delimiter"># </span><span class="comment">Or you can open shelve with writeback option. Then you can
+</span><span class="comment-delimiter"># </span><span class="comment">change mutable entries directly. (New in 2.3)
+</span>db = shelve.open(<span class="string">"celebrities.db"</span>, writeback=<span class="py-pseudo-keyword">True</span>)
+db[name2][0] = <span class="string">"of Optik fame"</span>
+
+<span class="comment-delimiter"># </span><span class="comment">However, writeback option can consume vast amounts of memory
+</span><span class="comment-delimiter"># </span><span class="comment">to do its magic. You can clear cache with sync().
+</span>db.sync()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN781"
+>Persistent Data</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS.
+</span><span class="keyword">import</span> os as _os, shelve <span class="keyword">as</span> _shelve
+
+_fname = <span class="string">"persist.db"</span>
+<span class="keyword">if</span> <span class="keyword">not</span> _os.path.exists(_fname):
+    var1 = <span class="string">"foo"</span>
+    var2 = <span class="string">"bar"</span>
+_d = _shelve.open(<span class="string">"persist.db"</span>)
+<span class="py-builtins">globals</span>().update(_d)
+
+<span class="keyword">print</span> <span class="string">"var1 is %s; var2 is %s"</span>%(var1, var2)
+var1 = <span class="py-builtins">raw_input</span>(<span class="string">"New var1: "</span>)
+var2 = <span class="py-builtins">raw_input</span>(<span class="string">"New var2: "</span>)
+
+<span class="keyword">for</span> key, val <span class="keyword">in</span> <span class="py-builtins">globals</span>().items():
+    <span class="keyword">if</span> <span class="keyword">not</span> key.startswith(<span class="string">"_"</span>):
+        _d[key] = val
+<span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN784"
+>Executing an SQL Command Using DBI and DBD</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> dbmodule
+
+dbconn = dbmodule.connect(arguments...)
+
+cursor = dbconn.cursor()
+cursor.execute(sql)
+
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+   row = cursor.fetchone()
+   <span class="keyword">if</span> row <span class="keyword">is</span> <span class="py-pseudo-keyword">None</span>:
+       <span class="keyword">break</span>
+   ...
+
+cursor.close()
+dbconn.close()
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> MySQLdb
+<span class="keyword">import</span> pwd
+
+dbconn = MySQLdb.connect(db=<span class="string">'dbname'</span>, host=<span class="string">'mysqlserver.domain.com'</span>,
+                        port=3306, user=<span class="string">'user'</span>, passwd=<span class="string">'password'</span>)
+
+cursor = dbconn.cursor()
+cursor.execute(<span class="string">"CREATE TABLE users (uid INT, login CHAR(8))"</span>)
+
+<span class="comment-delimiter"># </span><span class="comment">Note: some databases use %s for parameters, some use ? or other
+</span><span class="comment-delimiter"># </span><span class="comment">formats
+</span>sql_fmt = <span class="string">"INSERT INTO users VALUES( %s, %s )"</span>
+
+<span class="keyword">for</span> userent <span class="keyword">in</span> pwd.getpwall():
+   <span class="comment-delimiter"># </span><span class="comment">the second argument contains a list of parameters which will
+</span>   <span class="comment-delimiter"># </span><span class="comment">be quoted before being put in the query
+</span>   cursor.execute(sql_fmt, (userent.pw_uid, userent.pw_name))
+
+cursor.execute(<span class="string">"SELECT * FROM users WHERE uid &lt; 50"</span>)
+
+<span class="keyword">for</span> row <span class="keyword">in</span> cursor.fetchall():
+   <span class="comment-delimiter"># </span><span class="comment">NULL will be displayed as None
+</span>   <span class="keyword">print</span> <span class="string">", "</span>.join(<span class="py-builtins">map</span>(str, row))
+
+cursor.execute(<span class="string">"DROP TABLE users"</span>)
+cursor.close()
+dbconn.close()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN787"
+>Program: ggh - Grep Netscape Global History</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="classesetc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="userinterfaces.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Classes, Objects, and Ties</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>User Interfaces</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

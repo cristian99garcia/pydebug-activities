@@ -1,0 +1,963 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Numbers</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="PLEAC-Python
+"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Strings"
+HREF="strings.html"><LINK
+REL="NEXT"
+TITLE="Dates and Times"
+HREF="datesandtimes.html"><style type="text/css">    <!--
+      .comment {
+        /* font-lock-comment-face */
+        color: #bebebe;
+      }
+      .comment-delimiter {
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #b2dfee;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #ffa500;
+      }
+      .py-builtins {
+        /* py-builtins-face */
+        color: #ffa500;
+      }
+      .py-pseudo-keyword {
+        /* py-pseudo-keyword-face */
+        color: #ffa500;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #00cd00;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    -->
+    </style></head
+><BODY TEXT="#cecece" BGCOLOR="#4f6f6f" LINK="#f5deb3" VLINK="#d5ae83"
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PLEAC-Python
+</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="strings.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="datesandtimes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="NUMBERS"
+>2. Numbers</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN73"
+>Checking Whether a String Is a Valid Number</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">The standard way of validating numbers is to convert them and catch
+</span><span class="comment-delimiter"># </span><span class="comment">an exception on failure
+</span>
+<span class="keyword">try:</span>
+    myfloat = <span class="py-builtins">float</span>(mystr)
+    <span class="keyword">print</span> <span class="string">"is a decimal number"</span> 
+<span class="keyword">except</span> <span class="py-builtins">TypeError</span>:
+    <span class="keyword">print</span> <span class="string">"is not a decimal number"</span>
+
+<span class="keyword">try:</span>
+    myint = <span class="py-builtins">int</span>(mystr)
+    <span class="keyword">print</span> <span class="string">"is an integer"</span>
+<span class="keyword">except</span> <span class="py-builtins">TypeError</span>:
+    <span class="keyword">print</span> <span class="string">"is not an integer"</span>
+
+<span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS. Explicit checking is prone to errors:
+</span><span class="keyword">if</span> mystr.isdigit():                         <span class="comment-delimiter"># </span><span class="comment">Fails on "+4"
+</span>    <span class="keyword">print</span> <span class="string">'is a positive integer'</span>   
+<span class="keyword">else:</span>
+    <span class="keyword">print</span> <span class="string">'is not'</span>
+
+<span class="keyword">if</span> re.match(<span class="string">"[+-]?\d+$"</span>, mystr):            <span class="comment-delimiter"># </span><span class="comment">Fails on "- 1" 
+</span>    <span class="keyword">print</span> <span class="string">'is an integer'</span>           
+<span class="keyword">else:</span>
+    <span class="keyword">print</span> <span class="string">'is not'</span>
+
+<span class="keyword">if</span> re.match(<span class="string">"-?(?:\d+(?:\.\d*)?|\.\d+)$"</span>, mystr):  <span class="comment-delimiter"># </span><span class="comment">Opaque, and fails on "- 1"
+</span>    <span class="keyword">print</span> <span class="string">'is a decimal number'</span>
+<span class="keyword">else:</span>
+    <span class="keyword">print</span> <span class="string">'is not'</span>
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN76"
+>Comparing Floating-Point Numbers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">equal(num1, num2, accuracy) : returns true if num1 and num2 are
+</span><span class="comment-delimiter">#   </span><span class="comment">equal to accuracy number of decimal places
+</span>
+<span class="keyword">def</span> <span class="function-name">equal</span>(num1, num2, accuracy):
+    <span class="keyword">return</span> <span class="py-builtins">abs</span>(num1 - num2) &lt; 10**(-accuracy)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  <span class="comment-delimiter"># </span><span class="comment">use / for float div and // for int div
+</span>
+wage = 536                                      <span class="comment-delimiter"># </span><span class="comment">$5.36/hour
+</span>week = 40 * wage                                <span class="comment-delimiter"># </span><span class="comment">$214.40
+</span><span class="keyword">print</span> <span class="string">"One week's wage is: $%.2f"</span> % (week/100)
+<span class="comment-delimiter">#</span><span class="comment">=&gt; One week's wage is: $214.40
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN79"
+>Rounding Floating-Point Numbers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>rounded = <span class="py-builtins">round</span>(num)            <span class="comment-delimiter"># </span><span class="comment">rounds to integer
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>a = 0.255
+b = <span class="string">"%.2f"</span> % a
+<span class="keyword">print</span> <span class="string">"Unrounded: %f\nRounded: %s"</span> % (a, b)
+<span class="keyword">print</span> <span class="string">"Unrounded: %f\nRounded: %.2f"</span> % (a, a)
+<span class="comment-delimiter">#</span><span class="comment">=&gt; Unrounded: 0.255000
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; Rounded: 0.26
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; Unrounded: 0.255000
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; Rounded: 0.26
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">from</span> math <span class="keyword">import</span> floor, ceil
+
+<span class="keyword">print</span> <span class="string">"number\tint\tfloor\tceil"</span>
+a = [3.3, 3.5, 3.7, -3.3]
+<span class="keyword">for</span> n <span class="keyword">in</span> a:
+    <span class="keyword">print</span> <span class="string">"% .1f\t% .1f\t% .1f\t% .1f"</span> % (n, <span class="py-builtins">int</span>(n), floor(n), ceil(n))
+<span class="comment-delimiter">#</span><span class="comment">=&gt; number  int   floor ceil
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;  3.3     3.0   3.0   4.0
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;  3.5     3.0   3.0   4.0
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;  3.7     3.0   3.0   4.0
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; -3.3    -3.0  -4.0  -3.0
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN82"
+>Converting Between Binary and Decimal</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">To convert a string in any base up to base 36, use the optional arg to int():
+</span>num = <span class="py-builtins">int</span>(<span class="string">'0110110'</span>, 2)   <span class="comment-delimiter"># </span><span class="comment">num is 54
+</span>
+<span class="comment-delimiter"># </span><span class="comment">To convert an int to an string representation in another base, you could use
+</span><span class="comment-delimiter"># </span><span class="comment">&lt;<a href="http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/111286">http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/111286</a>&gt;:
+</span><span class="keyword">import</span> baseconvert 
+<span class="keyword">def</span> <span class="function-name">dec2bin</span>(i):
+    <span class="keyword">return</span> baseconvert.baseconvert(i, baseconvert.BASE10, baseconvert.BASE2)
+
+binstr = dec2bin(54)      <span class="comment-delimiter"># </span><span class="comment">binstr is 110110
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN85"
+>Operating on a Series of Integers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(x,y):
+    <span class="keyword">pass</span> <span class="comment-delimiter"># </span><span class="comment">i is set to every integer from x to y, excluding y
+</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(x, y, 7):
+    <span class="keyword">pass</span> <span class="comment-delimiter"># </span><span class="comment">i is set to every integer from x to y, stepsize = 7
+</span>
+<span class="keyword">print</span> <span class="string">"Infancy is:"</span>,
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(0,3):
+    <span class="keyword">print</span> i,
+<span class="keyword">print</span>
+
+<span class="keyword">print</span> <span class="string">"Toddling is:"</span>,
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(3,5):
+    <span class="keyword">print</span> i,
+<span class="keyword">print</span>
+
+<span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS:
+</span><span class="keyword">print</span> <span class="string">"Childhood is:"</span>,
+i = 5
+<span class="keyword">while</span> i &lt;= 12:
+    <span class="keyword">print</span> i
+    i += 1
+
+<span class="comment-delimiter">#</span><span class="comment">=&gt; Infancy is: 0 1 2
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; Toddling is: 3 4
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; Childhood is: 5 6 7 8 9 10 11 12
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN88"
+>Working with Roman Numerals</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">See http://www.faqts.com/knowledge_base/view.phtml/aid/4442
+</span><span class="comment-delimiter"># </span><span class="comment">for a module that does this
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN91"
+>Generating Random Numbers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> random          <span class="comment-delimiter"># </span><span class="comment">use help(random) to see the (large) list of funcs
+</span>
+rand = random.randint(x, y)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>rand = random.randint(25, 76)
+<span class="keyword">print</span> rand
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>elt = random.choice(mylist)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> string
+chars = string.letters + string.digits + <span class="string">"!@$%^&amp;*"</span>
+password = <span class="string">""</span>.join([random.choice(chars) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(8)])
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN94"
+>Generating Different Random Numbers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Changes the default RNG
+</span>random.seed()
+
+<span class="comment-delimiter"># </span><span class="comment">Or you can create independent RNGs
+</span>gen1 = random.Random(6)
+gen2 = random.Random(6)
+gen3 = random.Random(10)
+a1, b1 = gen1.random(), gen1.random()
+a2, b2 = gen2.random(), gen2.random()
+a3, b3 = gen3.random(), gen3.random()
+<span class="comment-delimiter"># </span><span class="comment">a1 == a2 and b1 == b2
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN97"
+>Making Numbers Even More Random</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">see http://www.sbc.su.se/~per/crng/ or http://www.frohne.westhost.com/rv11reference.htm
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN100"
+>Generating Biased Random Numbers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> random
+mean = 25
+sdev = 2
+salary = random.gauss(mean, sdev)
+<span class="keyword">print</span> <span class="string">"You have been hired at %.2f"</span> % salary
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN103"
+>Doing Trigonometry in Degrees, not Radians</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>radians = math.radians(degrees)
+degrees = math.degrees(radians)
+
+<span class="comment-delimiter"># </span><span class="comment">pre-2.3:
+</span><span class="keyword">from</span> __future__ <span class="keyword">import</span> division
+<span class="keyword">import</span> math
+<span class="keyword">def</span> <span class="function-name">deg2rad</span>(degrees):
+    <span class="keyword">return</span> (degrees / 180) * math.pi
+<span class="keyword">def</span> <span class="function-name">rad2deg</span>(radians):
+    <span class="keyword">return</span> (radians / math.pi) * 180
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Use deg2rad instead of math.radians if you have pre-2.3 Python.
+</span><span class="keyword">import</span> math
+<span class="keyword">def</span> <span class="function-name">degree_sine</span>(degrees):
+    radians = math.radians(degrees)
+    <span class="keyword">return</span> math.sin(radians)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN106"
+>Calculating More Trigonometric Functions</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> math
+
+<span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS.  Use math.tan() instead.
+</span><span class="keyword">def</span> <span class="function-name">tan</span>(theta):
+    <span class="keyword">return</span> math.sin(theta) / math.cos(theta)
+<span class="comment-delimiter">#</span><span class="comment">----------------
+</span><span class="comment-delimiter"># </span><span class="comment">NOTE: this sets y to 16331239353195370.0
+</span><span class="keyword">try:</span>
+  y = math.tan(math.pi/2)
+<span class="keyword">except</span> <span class="py-builtins">ValueError</span>:
+  y = <span class="py-pseudo-keyword">None</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN109"
+>Taking Logarithms</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> math
+log_e = math.log(VALUE)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>log_10 = math.log10(VALUE)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">def</span> <span class="function-name">log_base</span>(base, value):
+    <span class="keyword">return</span> math.log(value) / math.log(base)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">log_base defined as above
+</span>answer = log_base(10, 10000)
+<span class="keyword">print</span> <span class="string">"log10(10,000) ="</span>, answer
+<span class="comment-delimiter">#</span><span class="comment">=&gt; log10(10,000) = 4.0
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN112"
+>Multiplying Matrices</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">NOTE: must have NumPy installed.  See
+</span><span class="comment-delimiter">#   </span><span class="comment">http://www.pfdubois.com/numpy/
+</span>
+<span class="keyword">import</span> Numeric
+a = Numeric.array( ((3, 2, 3),
+                    (5, 9, 8) ), <span class="string">"d"</span>)
+b = Numeric.array( ((4, 7),
+                    (9, 3),
+                    (8, 1) ), <span class="string">"d"</span>)
+c = Numeric.matrixmultiply(a, b)
+
+<span class="keyword">print</span> c
+<span class="comment-delimiter">#</span><span class="comment">=&gt; [[  54.   30.]
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;  [ 165.   70.]]
+</span>
+<span class="keyword">print</span> a.shape, b.shape, c.shape
+<span class="comment-delimiter">#</span><span class="comment">=&gt; (2, 3) (3, 2) (2, 2)
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN115"
+>Using Complex Numbers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>a = 3+5j
+b = 2-2j
+c = a * b
+<span class="keyword">print</span> <span class="string">"c ="</span>, c
+<span class="comment-delimiter">#</span><span class="comment">=&gt; c = (16+4j)
+</span>
+<span class="keyword">print</span> c.real, c.imag, c.conjugate()
+<span class="comment-delimiter">#</span><span class="comment">=&gt; 16.0 4.0 (16-4j)
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> cmath
+<span class="keyword">print</span> cmath.sqrt(3+4j)
+<span class="comment-delimiter">#</span><span class="comment">=&gt; (2+1j)
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN118"
+>Converting Between Octal and Hexadecimal</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>number = <span class="py-builtins">int</span>(hexadecimal, 16)
+number = <span class="py-builtins">int</span>(octal, 8)
+s = <span class="py-builtins">hex</span>(number)
+s = <span class="py-builtins">oct</span>(number)
+
+num = <span class="py-builtins">raw_input</span>(<span class="string">"Gimme a number in decimal, octal, or hex: "</span>).rstrip()
+<span class="keyword">if</span> num.startswith(<span class="string">"0x"</span>):
+    num = <span class="py-builtins">int</span>(num[2:], 16)
+<span class="keyword">elif</span> num.startswith(<span class="string">"0"</span>):
+    num = <span class="py-builtins">int</span>(num[1:], 8)
+<span class="keyword">else:</span>
+    num = <span class="py-builtins">int</span>(num)
+<span class="keyword">print</span> <span class="string">"%(num)d %(num)x %(num)o\n"</span> % { <span class="string">"num"</span>: num }
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN121"
+>Putting Commas in Numbers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">def</span> <span class="function-name">commify</span>(amount):
+    amount = <span class="py-builtins">str</span>(amount)
+    firstcomma = <span class="py-builtins">len</span>(amount)%3 <span class="keyword">or</span> 3  <span class="comment-delimiter"># </span><span class="comment">set to 3 if would make a leading comma
+</span>    first, rest = amount[:firstcomma], amount[firstcomma:]
+    segments = [first] + [rest[i:i+3] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(0, <span class="py-builtins">len</span>(rest), 3)]
+    <span class="keyword">return</span> <span class="string">","</span>.join(segments)
+
+<span class="keyword">print</span> commify(12345678) 
+<span class="comment-delimiter">#</span><span class="comment">=&gt; 12,345,678
+</span>
+<span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS. It works on 2.3+ only and is slower and less straightforward
+</span><span class="comment-delimiter"># </span><span class="comment">than the non-regex version above.
+</span><span class="keyword">import</span> re
+<span class="keyword">def</span> <span class="function-name">commify</span>(amount):
+    amount = <span class="py-builtins">str</span>(amount)
+    amount = amount[::-1]
+    amount = re.sub(r<span class="string">"(\d\d\d)(?=\d)(?!\d*\.)"</span>, r<span class="string">"\1,"</span>, amount)
+    <span class="keyword">return</span> amount[::-1]</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN124"
+>Printing Correct Plurals</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Printing Correct Plurals
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">def</span> <span class="function-name">pluralise</span>(value, root, singular=<span class="string">""</span>, plural=<span class="string">"s"</span>):
+    <span class="keyword">if</span> value == 1:
+        <span class="keyword">return</span> root + singular
+    <span class="keyword">else:</span>
+        <span class="keyword">return</span> root + plural
+
+<span class="keyword">print</span> <span class="string">"It took"</span>, duration, pluralise(duration, <span class="string">'hour'</span>)
+
+<span class="keyword">print</span> <span class="string">"%d %s %s enough."</span> % (duration, 
+                            pluralise(duration, <span class="string">'hour'</span>), 
+                            pluralise(duration, <span class="string">''</span>, <span class="string">'is'</span>, <span class="string">'are'</span>))
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> re
+<span class="keyword">def</span> <span class="function-name">noun_plural</span>(word):
+    endings = [(<span class="string">"ss"</span>, <span class="string">"sses"</span>),
+               (<span class="string">"([psc]h)"</span>, r<span class="string">"\1es"</span>),
+               (<span class="string">"z"</span>, <span class="string">"zes"</span>),
+               (<span class="string">"ff"</span>, <span class="string">"ffs"</span>),
+               (<span class="string">"f"</span>, <span class="string">"ves"</span>),
+               (<span class="string">"ey"</span>, <span class="string">"eys"</span>),
+               (<span class="string">"y"</span>, <span class="string">"ies"</span>),
+               (<span class="string">"ix"</span>, <span class="string">"ices"</span>),
+               (<span class="string">"([sx])"</span>, r<span class="string">"\1es"</span>),
+               (<span class="string">""</span>, <span class="string">"s"</span>)]
+    <span class="keyword">for</span> singular, plural <span class="keyword">in</span> endings:
+        ret, found = re.subn(<span class="string">"%s$"</span>%singular, plural, word)
+        <span class="keyword">if</span> found:
+            <span class="keyword">return</span> ret
+    
+verb_singular = noun_plural;       <span class="comment-delimiter"># </span><span class="comment">make function alias
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN127"
+>Program: Calculating Prime Factors</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Program: Calculating Prime Factors
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment">% bigfact 8 9 96 2178
+</span><span class="comment-delimiter">#</span><span class="comment">8          2**3
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter">#</span><span class="comment">9          3**2
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter">#</span><span class="comment">96         2**5 3
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter">#</span><span class="comment">2178       2 3**2 11**2
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment">% bigfact 239322000000000000000000
+</span><span class="comment-delimiter">#</span><span class="comment">239322000000000000000000 2**19 3 5**18 39887 
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter">#</span><span class="comment">% bigfact 25000000000000000000000000
+</span><span class="comment-delimiter">#</span><span class="comment">25000000000000000000000000 2**24 5**26
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> sys
+
+<span class="keyword">def</span> <span class="function-name">factorise</span>(num):
+    factors = {}
+    orig = num
+    <span class="keyword">print</span> num, <span class="string">'\t'</span>,
+
+    <span class="comment-delimiter"># </span><span class="comment">we take advantage of the fact that (i +1)**2 = i**2 + 2*i +1
+</span>    i, sqi = 2, 4
+    <span class="keyword">while</span> sqi &lt;= num:
+        <span class="keyword">while</span> <span class="keyword">not</span> num%i:
+            num /= i
+            factors[i] = factors.get(i, 0) + 1
+
+        sqi += 2*i + 1
+        i += 1
+
+    <span class="keyword">if</span> num != 1 <span class="keyword">and</span> num != orig:
+        factors[num] = factors.get(num, 0) + 1
+
+    <span class="keyword">if</span> <span class="keyword">not</span> factors:
+        <span class="keyword">print</span> <span class="string">"PRIME"</span>
+
+    <span class="keyword">for</span> factor <span class="keyword">in</span> sorted(factors):
+        <span class="keyword">if</span> factor:
+            tmp = <span class="py-builtins">str</span>(factor)
+            <span class="keyword">if</span> factors[factor]&gt;1: tmp += <span class="string">"**"</span> + <span class="py-builtins">str</span>(factors[factor])
+            <span class="keyword">print</span> tmp,
+    <span class="keyword">print</span>
+    
+<span class="comment-delimiter">#</span><span class="comment">--------
+</span><span class="keyword">if</span> <span class="py-builtins">__name__</span> == <span class="string">'__main__'</span>:
+    <span class="keyword">if</span> <span class="py-builtins">len</span>(sys.argv) == 1:
+        <span class="keyword">print</span> <span class="string">"Usage:"</span>, sys.argv[0], <span class="string">" number [number, ]"</span>
+    <span class="keyword">else:</span>
+        <span class="keyword">for</span> strnum <span class="keyword">in</span> sys.argv[1:]:
+            <span class="keyword">try:</span>
+                num = <span class="py-builtins">int</span>(strnum)
+                factorise(num)
+            <span class="keyword">except</span> <span class="py-builtins">ValueError</span>:
+                <span class="keyword">print</span> strnum, <span class="string">"is not an integer"</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">A more Pythonic variant (which separates calculation from printing):
+</span><span class="keyword">def</span> <span class="function-name">format_factor</span>(base, exponent):
+    <span class="keyword">if</span> exponent &gt; 1:
+        <span class="keyword">return</span> <span class="string">"%s**%s"</span>%(base, exponent)
+    <span class="keyword">return</span> <span class="py-builtins">str</span>(base)
+
+<span class="keyword">def</span> <span class="function-name">factorise</span>(num):
+    factors = {}
+    orig = num
+
+    <span class="comment-delimiter"># </span><span class="comment">we take advantage of the fact that (i+1)**2 = i**2 + 2*i +1
+</span>    i, sqi = 2, 4
+    <span class="keyword">while</span> sqi &lt;= num:
+        <span class="keyword">while</span> <span class="keyword">not</span> num%i:
+            num /= i
+            factors[i] = factors.get(i, 0) + 1
+        sqi += 2*i + 1
+        i += 1
+
+    <span class="keyword">if</span> num <span class="keyword">not</span> <span class="keyword">in</span> (1, orig):
+        factors[num] = factors.get(num, 0) + 1
+
+    <span class="keyword">if</span> <span class="keyword">not</span> factors:
+        <span class="keyword">return</span> [<span class="string">"PRIME"</span>]
+
+    out = [format_factor(base, exponent)
+           <span class="keyword">for</span> base, exponent <span class="keyword">in</span> sorted(factors.items())]
+    <span class="keyword">return</span> out
+
+<span class="keyword">def</span> <span class="function-name">print_factors</span>(value):
+    <span class="keyword">try:</span>
+        num = <span class="py-builtins">int</span>(value)
+        <span class="keyword">if</span> num != <span class="py-builtins">float</span>(value):
+            <span class="keyword">raise</span> <span class="py-builtins">ValueError</span>
+    <span class="keyword">except</span> (<span class="py-builtins">ValueError</span>, TypeError):
+        <span class="keyword">raise</span> <span class="py-builtins">ValueError</span>(<span class="string">"Can only factorise an integer"</span>)
+    factors = factorise(num) 
+    <span class="keyword">print</span> num, <span class="string">"\t"</span>, <span class="string">" "</span>.join(factors)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="strings.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="datesandtimes.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Strings</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Dates and Times</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

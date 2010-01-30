@@ -1,0 +1,9 @@
+[Activity]
+name = PyDebug
+activity_version = 3
+service_name = org.laptop.PyDebug
+exec = PyDebug.sh
+icon = PyDebug
+mime_types =
+license = GPLv2+
+

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Strings</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="basics.html" title="Chapter 4. The Basics" /><link rel="prev" href="numbers.html" title="Numbers" /><link rel="next" href="variables.html" title="Variables" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Strings</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="numbers.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 4. The Basics</th><td width="20%" align="right"> <a accesskey="n" href="variables.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="strings"></a>Strings</h2></div></div></div><p>
+		
+		A string is a <span class="emphasis"><em>sequence</em></span> of <span class="emphasis"><em>characters</em></span>. Strings
+		are basically just a bunch of words.
+		
+		</p><p>
+		
+		I can almost guarantee that you will be using strings in almost every Python program that
+		you write, so pay attention to the following part. Here's how you use strings in Python:
+		
+		</p><div class="itemizedlist"><ul type="disc"><li><h5><a id="id3052205"></a>Using Single Quotes (<code class="literal">'</code>)</h5><p>
+				
+				You can specify strings using single quotes such as
+				<code class="literal">'Quote me on this'</code> . All white space i.e. spaces and
+				tabs are preserved as-is.
+				
+				</p></li><li><h5><a id="id3052231"></a>Using Double Quotes (<code class="literal">"</code>)</h5><p>
+				
+				Strings in double quotes work exactly the same way as strings in single
+				quotes. An example is
+				<code class="literal">"What's your name?"</code>
+				
+				</p></li><li><h5><a id="id3052258"></a>Using Triple Quotes (<code class="literal">'''</code> or <code class="literal">"""</code>)</h5><p>
+				
+				You can specify multi-line strings using triple quotes. You can use single
+				quotes and double quotes freely within the triple quotes. An example is
+				
+				</p><pre class="programlisting">
+				
+<span class="py-string">'''This is a multi-line string. This is the first line.
+This is the second line.
+"What's your name?," I asked.
+He said "Bond, James Bond."
+'''</span>
+				
+				</pre></li><li><h5><a id="id3052296"></a>Escape Sequences</h5><p>
+				
+				Suppose, you want to have a string which contains a single quote
+				(<code class="literal">'</code>), how will you specify this string? For example,
+				the string is <code class="literal">What's your name?</code>. You cannot specify
+				<code class="literal">'What's your name?'</code> because Python will be confused
+				as to where the string starts and ends. So, you will have to specify
+				that this single quote does not indicate the end of the string. This can
+				be done with the help of what is called an <span class="emphasis"><em>escape
+				sequence</em></span>. You specify the single quote as <code class="literal">\'</code>
+				- notice the backslash. Now, you can specify the string as
+				<code class="literal">'What\'s your name?'</code>.
+				
+				</p><p>
+				
+				Another way of specifying this specific string would be
+				<code class="literal">"What's your name?"</code> i.e. using double quotes. Similarly,
+				you have to use an escape sequence forusing a double quote itself in a
+				double quoted string. Also, you have to indicate the backslash itself using
+				the escape sequence <code class="literal">\\</code>.
+				
+				</p><p>
+				
+				What if you wanted to specify a two-line string? One way is to use a
+				triple-quoted string as shown above or you can use an escape sequence for
+				the newline character - <code class="literal">\n</code> to indicate the start of a
+				new line. An example is <code class="literal">This is the first line\nThis is the
+				second line</code> . Another useful escape sequence to know is the tab
+				- <code class="literal">\t</code>. There are many more escape sequences but I have
+				mentioned only the most useful ones here.
+				
+				</p><p>
+				
+				One thing to note is that in a string, a single backslash at the end of
+				the line indicates that the string is continued in the next line, but
+				no newline is added. For example,
+				
+				</p><pre class="programlisting">
+				
+<span class="py-string">"This is the first sentence.\
+This is the second sentence."</span>
+				
+				</pre><p>
+				
+				is equivalent to <code class="literal">"This is the first sentence. This is the second sentence."</code>
+				
+				</p></li><li><h5><a id="id3052423"></a>Raw Strings</h5><p>
+				
+				If you need to specify some strings where no special processing such as
+				escape sequences are handled, then what you need is to specify a
+				<span class="emphasis"><em>raw</em></span> string by prefixing <code class="literal">r</code> or
+				<code class="literal">R</code> to the string. An example is
+				<code class="literal">r"Newlines are indicated by \n"</code>.
+				
+				</p></li><li><h5><a id="id3052460"></a>Unicode Strings</h5><p>
+				
+				Unicode is a standard way of writing international text. If you want to
+				write text in your native language such as Hindi or Arabic, then you need
+				to have a Unicode-enabled text editor. Similarly, Python allows you to
+				handle Unicode text - all you need to do is prefix <code class="literal">u</code>
+				or <code class="literal">U</code>. For example,
+				<code class="literal">u"This is a Unicode string."</code>.
+				
+				</p><p>
+				
+				Remember to use Unicode strings when you are dealing with text files,
+				especially when you know that the file will contain text written in
+				languages other than English.
+				
+				</p></li><li><h5><a id="id3052503"></a>Strings are immutable</h5><p>
+				
+				This means that once you have created a string, you cannot change it.
+				Although this might seem like a bad thing, it really isn't. We will see
+				why this is not a limitation in the various programs that we see later on.
+				
+				</p></li><li><h5><a id="id3052519"></a>String literal concatenation</h5><p>
+				
+				If you place two string literals side by side, they are automatically
+				concatenated by Python. For example, <code class="literal">'What\'s' 'your name?'</code>
+				is automatically converted in to <code class="literal">"What's your name?"</code>.
+				
+				</p></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note for C/C++ Programmers</h3><p>
+			
+			There is no separate <code class="classname">char</code> data type in Python. There is
+			no real need for it and I am sure you won't miss it.
+			
+			</p></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note for Perl/PHP Programmers</h3><p>
+			
+			Remember that single-quoted strings and double-quoted strings are the same - they
+			do not differ in any way.
+			
+			</p></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note for Regular Expression Users</h3><p>
+			
+			Always use raw strings when dealing with regular expressions. Otherwise, a lot of
+			backwhacking may be required. For example, backreferences can be referred to as
+			<code class="literal">'\\1'</code> or <code class="literal">r'\1'</code>.
+			
+			</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="numbers.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="basics.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="variables.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Numbers </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> Variables</td></tr></table></div></body></html>

@@ -1,0 +1,11 @@
+(dp1
+Vp o.xmode
+p2
+I23
+sVdl = dm.list_displays(dm)
+p3
+I44
+sVimport gtk
+p4
+I29
+s.

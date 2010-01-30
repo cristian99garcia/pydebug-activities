@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Untitled Document</title>
+<link href="CSS/Accessible_Design.css" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+<h1>What is an XO Activity? </h1>
+<p>The software which defines a &quot;Sugar Activity&quot; is totally contained in a directory and it's subdirectories. The name of this root directory describes the activity and ends with the &quot;.activity&quot; suffix (as an example, the command line activity is contained in the &quot;Terminal.activity&quot; subdirectory). Examine the files and folders that are installed  on your machine by clicking on the middle box on the left side of the project page. </p>
+<h3>Activity bundles </h3>
+For easy distribution and installation, there is a well defined bundling process which creates a zipped image of the files under the activity root, and names the resulting file in the formaat: &lt;some name&gt;&lt;some version number&gt;&quot;.XO&quot;. The software platform on the XO supports the automatic installation of these bundled (or XO zipped files)  into a parent directory that may change from one revision of the operating system to the next. So current location of installed directories is &quot;/home/olpc/Activities&quot;.
+<p>These activity bundles can come from at least three distinct sources: 
+
+<li type="circle">Many come loaded along with the operating system itself.
+<li type="circle">The user can browse the web, and download activities from web sites sponsored by OLPC. The browser that downloads the XO zipped file puts it into the Journal. Then it can be &quot;Resumed&quot; from the journal, which actually unzips and installs it. </li>
+<li>If the user collaborates with a buddy who has a new activitiy, the act of joining an activity which is loaded on the buddy's machine, but not on one's own machine, causes that activity to be transfered over and installed on the local machine.  </li>
+<p>&nbsp;</p>
+<h1>Project Page -- The basic services of the XO</h1><img class = "right" src="images/project_whole.jpg" width="400" height="300" alt="Project Page" />
+<p>The Project Page is divided vertically into two halves. The left side includes various sources and destinations where your program can reside. The right side shows the contents of the activity.info file and the collection of files that make up your application. The right side of the screen can be thought of as a sand box or playpen where your program can act, misbehave, and show all its &quot;bugs&quot;. As you develop the python programs that make up your activity you may want to save it fairly often just in case one of your ideas turns out to be a blind alley.</p>
+<p>The top box on the left side represents the journal. At any time you can save the current state of your program to the Journal. You do this by clicking on the left arrow between the Journal box and the playpen. The process of creating a bundle is computer intensive and slow, but the end result conserves space on the disk, and bandwidth when the activity is being shared across the network. When you do this it is saved in the bundled format mentioned above.</p>
+<p><img class="left" src="images/journal.jpg" alt="journal" width="400" height="254" /> </p>
+<p>When you click on the right arrow, you are instructing the debugger to load an XO file into the workspace. This will replace any activity that is already occupying the workspace. The checksum of the activity that is about to be overwritten will be checked against the checksum stored away the last time the activity was saved. If there have been changes since the last save, a notification will be presented before any changes are lost. </p>
+<p>The middle box initially labeled /home/olpc/Activities/. This is a list of all the Activities that are loaded on your XO. You can highlight any of these activities and load it into the workarea of the debugger. Then if you click on the edit tab, you will find that up to five python program files are automatically loaded. The /home/olpc/Activities/ directory, is read-only. You do not have sufficient permissions to write to this location. <img src="images/project page_3.png" alt="Activities Directory" width="643" height="303" /></p>
+<p>By clicking the &quot;home&quot; button, the user can switch to a location where storing data is permitted. In Unix computers, this place to store your own files, is sometimes called the &quot;home&quot; directory. When your home directory is displayed, the &quot;left arrow&quot; is visible, and the debugger is able to copy your whole directory tree, in the full unzipped form. Limited only by your total disk space you can keep any number of activity trees in your home directory. The &quot;home&quot; button toggles between the &quot;installed Activity&quot; directory and the &quot;home&quot; directory.</p>
+<p>The Examples box provides a set of templates and features of the XO which are chosen to be helpful toward the objective of developing activities.<img src="images/project page_2.png" alt="Examples" width="636" height="192" /> </p>
+<p>The workspace for the Activity under development is the right side of the screen:<img class= "right" src="images/project page.png" alt="playpen" width="586" height="817" />  </p>
+<p>The project name will be used as the first part of the root directory for your activity. In order to function properly, the second part of the root durectory will be set automatically by the debugger to &quot;.activity&quot;. The version is included in the XO file name, and displayed in the journal. It should be changed whenever you make a significant change to the program. </p>
+<p>The Unique ID must be some string of characters that is that: unique. This will be used by the dbus session manager to identify your activity and service it properly. The OLPC developers suggest that you use a url that you own, or the prefix &quot;org.laptop&quot; plus a name that you place in the OLPC git repository. </p>
+<p>To start up properly, using the standard desktop, the start-up script needs the name of the module, and the class which will start your activity. This will probably be the class you write which sub-classes the &quot;sugar.activity.activity.Activity&quot; which is the starting point for most activitiies. </p>
+<p>Your activity needs a &quot;SVG&quot; icon to represent it on the desktop. This needs to be placed in the &quot;activity.info&quot; sub directory under the root or your Activity. </p>
+<p>The activity size and bundled size give you some indication of the size on disk, and the size for transmission when your activity is being shared with other XO's over the network.</p>
+<p>The hostname and port fields and not useful debugging using a single XO machine. They should only be changed when two XO's are begin used to debug a program. In this case, you should enter the child's ip address into these fields on the parent machine.</p>
+<h1>Editing Python programs</h1>
+<p><img class = "right" src="file:///MacintoshHD/Users/ghunt/Pictures/screenshots_pydebug/Edit Page.jpg" width="400" height="300" alt="Edit Page" />When you load an Activity into the PyDebug workspace, the Editor will automatically load the 5 largest python programs, (those filenames ending with &quot;.py&quot;) from the root Activity directory. Whenever you start running your program, before the first breakpoint is reached, any changes that you have made to your programs will be saved to the disk. If you do not want this automatic saving of changes, you should click on the &quot;X&quot; on the tab of the file that you do not want to save, and answer no to the alert asking whether you want the program to be saved. If you do not have permissions to write a file, perhaps you have cut and pasted from an installed Activity, the debugger will not write any changes, and will not issue any error messages. </p>
+<p>One of the most productive ways to program is to find programs that do approximately what you want your program to do. Then cut and paste that small portion of code into yours, and modify it to do what you want.  Often, when you use cut and paste, you will need to change variable names. For this, use the find and replace (magnifier icon). </p>
+
+<h1>Running programs</h1>
+<p><img class="right" src="file:///MacintoshHD/Users/ghunt/Pictures/screenshots_pydebug/Terminal_Ipython Page.jpg" width="400" height="300" alt="termina page" />From the project page, click on the &quot;Run Program&quot; icon. Or if your have already changed to the &quot;Activity&quot; tab, you can type &quot;sugarun&quot; or the shorter alias &quot;sug&quot;. This will start your program as a sugar activity, if possble, and stop it at the first &quot;import&quot; statement. </p>
+<p>At that point you can enter a &quot;c&quot; for &quot;continue&quot;, and the program will continue until it finishes or until it encounters an unhandled exception. Alternatively you can set &quot;b&quot;reakpoints, &quot;s&quot;tep, or make the call and return to the &quot;n&quot;ext statement in the current routine. </p>
+<h3>Switching between the text-mode and graphical screens </h3>
+<p>Use &lt;alt&gt;-&lt;tab&gt; to switch between the graphical output page created by your application, and the text-mode debugging screen of the PyDebug Activity. </p>
+<p>The original plan, at this point not entirely abandoned, was to have your graphical output be visible as the third tab of the main Toolbar. At this point this objective seems less important than other objectives. </p>
+<h1>Getting help  </h1>
+<p>The help section of PyDebug is drawn from many web sites and includes useful information and documentation.</p>
+<p>One of the most useful sources of information is the python programs themselves that exist on your XO. The XXX icon on the help page starts up a local html server called pydoc. This will give you summary information and how to interface with all the sugar programs.</p>
+<p>For people who have some knowledge of programming, but are new to python, the &quot;DIVE INTO PYTHON&quot; is a short introduction to the python programming language.  </p>
+</body>
+</html>

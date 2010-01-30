@@ -1,0 +1,1000 @@
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+who
+gob
+macro
+gb
+o=_ip.options
+o.xmode
+o.xmode='Plain'
+o.xmode
+gb
+gb\
+gb
+who
+debug
+go
+who
+debug
+l
+u
+ed
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+l
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+who
+gob
+macro
+gb
+o=_ip.options
+o.xmode
+o.xmode='Plain'
+o.xmode
+gb
+gb\
+gb
+who
+debug
+go
+who
+debug
+who
+debug
+go
+o=-ip.options
+o=_ip.options
+p o.xmode
+go
+p o.xmode
+go
+import gtk.gdk
+dir(gtk.gdk)
+info(gtk.gdk)
+pinfo(gtk.gdk)
+from apihelper import info
+import gtk
+dm = gtk.gdk.DisplayManager
+dm??
+dm?
+dir(dm)
+dl = dm.list_displays
+dl
+dl = dm.list_displays()
+dm.list_displays?
+dm.list_displays??
+hist
+display = dm.get_display()
+display = gtk.gdk.get_display()
+str(display)
+dl = dm.list_displays(':0.0')
+dl = dm.list_displays(dm)
+hist
+dm?
+hist 1-
+hist 10
+go
+debug
+cmd_args
+l
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+l
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+who
+gob
+macro
+gb
+o=_ip.options
+o.xmode
+o.xmode='Plain'
+o.xmode
+gb
+gb\
+gb
+who
+debug
+go
+who
+debug
+l
+u
+ed
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+l
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+who
+gob
+macro
+gb
+o=_ip.options
+o.xmode
+o.xmode='Plain'
+o.xmode
+gb
+gb\
+gb
+who
+debug
+go
+who
+debug
+who
+debug
+u
+p handle
+dir(handle)
+p handle.object_id
+p handle.activity_id
+u
+p sys.argv
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+l
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+who
+gob
+macro
+gb
+o=_ip.options
+o.xmode
+o.xmode='Plain'
+o.xmode
+gb
+gb\
+gb
+who
+debug
+go
+who
+debug
+l
+u
+ed
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+l
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+p handle
+dir(handle)
+p go
+u
+p sys.argv
+d
+p sys.argv
+d
+l
+p bundle_id
+d
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+p self.child_path
+who
+p name
+q
+go
+ll
+macro
+p go
+p gob
+gob
+go
+gob
+go
+debug
+go
+debug
+go
+o = _ip.options
+o.xmode
+o.xmode=
+o=_ip.options
+o.xmode='Plain'
+go
+o.xmode
+debug
+who
+gob
+macro
+gb
+o=_ip.options
+o.xmode
+o.xmode='Plain'
+o.xmode
+gb
+gb\
+gb
+who
+debug
+go
+who
+debug
+who
+debug
+go
+o=-ip.options
+o=_ip.options
+p o.xmode
+go
+p o.xmode
+go
+import gtk.gdk
+dir(gtk.gdk)
+info(gtk.gdk)
+pinfo(gtk.gdk)
+from apihelper import info
+import gtk
+dm = gtk.gdk.DisplayManager
+dm??
+dm?
+dir(dm)
+dl = dm.list_displays
+dl
+dl = dm.list_displays()
+dm.list_displays?
+dm.list_displays??
+hist
+display = dm.get_display()
+display = gtk.gdk.get_display()
+str(display)
+dl = dm.list_displays(':0.0')
+dl = dm.list_displays(dm)
+hist
+dm?
+hist 1-
+hist 10
+go
+debug
+go
+debug
+go
+debug
+go
+g
+go

@@ -1,0 +1,7 @@
+[Activity]
+name = HelloWorld
+service_name = com.ywwg.HelloWorldActivity
+class = HelloWorldActivity.HelloWorldActivity
+icon = activity-helloworld
+activity_version = 1
+show_launcher = yes

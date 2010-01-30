@@ -1,0 +1,1050 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>User Interfaces</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="PLEAC-Python
+"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Database Access"
+HREF="dbaccess.html"><LINK
+REL="NEXT"
+TITLE="Process Management and Communication"
+HREF="processmanagementetc.html"><style type="text/css">    <!--
+      .comment {
+        /* font-lock-comment-face */
+        color: #bebebe;
+      }
+      .comment-delimiter {
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #b2dfee;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #ffa500;
+      }
+      .py-builtins {
+        /* py-builtins-face */
+        color: #ffa500;
+      }
+      .py-pseudo-keyword {
+        /* py-pseudo-keyword-face */
+        color: #ffa500;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #00cd00;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    -->
+    </style></head
+><BODY TEXT="#cecece" BGCOLOR="#4f6f6f" LINK="#f5deb3" VLINK="#d5ae83"
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PLEAC-Python
+</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="dbaccess.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="processmanagementetc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="USERINTERFACES"
+>15. User Interfaces</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN792"
+>Parsing Program Arguments</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Parsing program arguments
+</span><span class="comment-delimiter"># </span><span class="comment">-- getopt way (All Python versions)
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Preamble
+</span>
+<span class="keyword">import</span> sys
+<span class="keyword">import</span> getopt
+
+<span class="comment-delimiter"># </span><span class="comment">getopt() explicitly receives arguments for it to process.
+</span><span class="comment-delimiter"># </span><span class="comment">No magic. Explicit is better than implicit.
+</span>
+<span class="comment-delimiter"># </span><span class="comment">PERL: @ARGV
+</span>argv = sys.argv[1:]
+
+<span class="comment-delimiter"># </span><span class="comment">Note that sys.argv[0] is the script name, and need to be
+</span><span class="comment-delimiter"># </span><span class="comment">stripped.
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Short options
+</span>
+<span class="comment-delimiter"># </span><span class="comment">PERL: getopt("vDo");
+</span><span class="comment-delimiter"># </span><span class="comment">Polluting the caller's namespace is evil. Don't do that.
+</span>
+<span class="comment-delimiter"># </span><span class="comment">PERL: getopt("vDo:", \%opts);
+</span>opts, rest = getopt.getopt(argv, <span class="string">"vDo:"</span>)
+
+<span class="comment-delimiter"># </span><span class="comment">If you want switches to take arguments, you must say so.
+</span><span class="comment-delimiter"># </span><span class="comment">Unlike PERL, which silently performs its magic, switches
+</span><span class="comment-delimiter"># </span><span class="comment">specified without trailing colons are considered boolean
+</span><span class="comment-delimiter"># </span><span class="comment">flags by default.
+</span>
+<span class="comment-delimiter"># </span><span class="comment">PERL: getopt("vDo", \%opts);
+</span>opts, rest = getopt.getopt(argv, <span class="string">"v:D:o:"</span>)
+
+<span class="comment-delimiter"># </span><span class="comment">PERL: getopts("vDo:", \%opts);
+</span><span class="comment-delimiter"># </span><span class="comment">getopt/getopts distinction is not present in Python 'getopt'
+</span><span class="comment-delimiter"># </span><span class="comment">module.
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">getopt() return values, compared to PERL
+</span>
+<span class="comment-delimiter"># </span><span class="comment">getopt() returns two values. The first is a list of
+</span><span class="comment-delimiter"># </span><span class="comment">(option, value) pair. (Not a dictionary, i.e. Python hash.)
+</span><span class="comment-delimiter"># </span><span class="comment">The second is the list of arguments left unprocessed.
+</span>
+<span class="comment-delimiter"># </span><span class="comment">Example
+</span><span class="comment-delimiter"># </span><span class="comment">&gt;&gt;&gt; argv = "-v ARG1 -D ARG2 -o ARG3".split()
+</span><span class="comment-delimiter"># </span><span class="comment">&gt;&gt;&gt; opts, rest = getopt.getopt(argv, "v:D:o:")
+</span><span class="comment-delimiter"># </span><span class="comment">&gt;&gt;&gt; print opts
+</span><span class="comment-delimiter"># </span><span class="comment">[('-v', 'ARG1'), ('-D', 'ARG2'), ('-o', 'ARG3')]
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Long options
+</span>
+<span class="comment-delimiter"># </span><span class="comment">getopt() handles long options too. Pass a list of option
+</span><span class="comment-delimiter"># </span><span class="comment">names as the third argument. If an option takes an argument,
+</span><span class="comment-delimiter"># </span><span class="comment">append an equal sign.
+</span>
+opts, rest = getopt.getopt(argv, <span class="string">""</span>, [
+    <span class="string">"verbose"</span>, <span class="string">"Debug"</span>, <span class="string">"output="</span>])
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Switch clustering
+</span>
+<span class="comment-delimiter"># </span><span class="comment">getopt() does switch clustering just fine.
+</span>
+<span class="comment-delimiter"># </span><span class="comment">Example
+</span><span class="comment-delimiter"># </span><span class="comment">&gt;&gt;&gt; argv1 = '-r -f /tmp/testdir'.split()
+</span><span class="comment-delimiter"># </span><span class="comment">&gt;&gt;&gt; argv2 = '-rf /tmp/testdir'.split()
+</span><span class="comment-delimiter"># </span><span class="comment">&gt;&gt;&gt; print getopt.getopt(argv1, 'rf')
+</span><span class="comment-delimiter"># </span><span class="comment">([('-r', ''), ('-f', '')], ['/tmp/testdir'])
+</span><span class="comment-delimiter"># </span><span class="comment">&gt;&gt;&gt; print getopt.getopt(argv2, 'rf')
+</span><span class="comment-delimiter"># </span><span class="comment">([('-r', ''), ('-f', '')], ['/tmp/testdir'])
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span>
+<span class="comment-delimiter"># </span><span class="comment">TODO: Complete this section using 'getopt'. Show how to
+</span><span class="comment-delimiter"># </span><span class="comment">use the parsed result.
+</span>
+<span class="comment-delimiter"># </span><span class="comment">http://www.python.org/doc/current/lib/module-getopt.html
+</span><span class="comment-delimiter"># </span><span class="comment">Python library reference has a "typical usage" demo.
+</span>
+<span class="comment-delimiter"># </span><span class="comment">TODO: Introduce 'optparse', a very powerful command line
+</span><span class="comment-delimiter"># </span><span class="comment">option parsing module. New in 2.3.
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN795"
+>Testing Whether a Program Is Running Interactively</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">#------------------
+</span><span class="keyword">import</span> sys
+
+<span class="keyword">def</span> <span class="function-name">is_interactive_python</span>():
+    <span class="keyword">try:</span>
+        ps = sys.ps1
+    <span class="keyword">except:</span>
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">False</span>
+    <span class="keyword">return</span> <span class="py-pseudo-keyword">True</span>
+<span class="comment-delimiter">#</span><span class="comment">#------------------
+</span><span class="keyword">import</span> sys
+<span class="keyword">def</span> <span class="function-name">is_interactive</span>():
+    <span class="comment-delimiter"># </span><span class="comment">only False if stdin is redirected like "-t" in perl.
+</span>    <span class="keyword">return</span> sys.stdin.isatty()
+
+<span class="comment-delimiter"># </span><span class="comment">Or take advantage of Python's Higher Order Functions:
+</span>is_interactive = sys.stdin.isatty
+<span class="comment-delimiter">#</span><span class="comment">#------------------
+</span><span class="keyword">import</span> posix
+<span class="keyword">def</span> <span class="function-name">is_interactive_posix</span>():
+    tty = <span class="py-builtins">open</span>(<span class="string">"/dev/tty"</span>)
+    tpgrp = posix.tcgetpgrp(tty.fileno())
+    pgrp = posix.getpgrp()
+    tty.close()
+    <span class="keyword">return</span> (tpgrp == pgrp)
+
+<span class="comment-delimiter"># </span><span class="comment">test with:
+</span><span class="comment-delimiter">#  </span><span class="comment">python 15.2.py
+</span><span class="comment-delimiter">#  </span><span class="comment">echo "dummy" | python 15.2.py | cat
+</span><span class="keyword">print</span> <span class="string">"is python shell:"</span>, is_interactive_python()
+<span class="keyword">print</span> <span class="string">"is a tty:"</span>, is_interactive()
+<span class="keyword">print</span> <span class="string">"has no tty:"</span>, is_interactive_posix()
+
+<span class="keyword">if</span> is_interactive():
+    <span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+        <span class="keyword">try:</span>
+            ln = <span class="py-builtins">raw_input</span>(<span class="string">"Prompt:"</span>)
+        <span class="keyword">except:</span>
+            <span class="keyword">break</span>
+        <span class="keyword">print</span> <span class="string">"you typed:"</span>, ln</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN798"
+>Clearing the Screen</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="comment-delimiter"># </span><span class="comment">Python has no Term::Cap module.
+</span><span class="comment-delimiter"># </span><span class="comment">One could use the curses, but this was not ported to windows,
+</span><span class="comment-delimiter"># </span><span class="comment">use console.
+</span>
+<span class="comment-delimiter"># </span><span class="comment">just run clear
+</span><span class="keyword">import</span> os
+os.system(<span class="string">"clear"</span>)
+<span class="comment-delimiter"># </span><span class="comment">cache output
+</span>clear = os.popen(<span class="string">"clear"</span>).read()
+<span class="keyword">print</span> clear
+<span class="comment-delimiter"># </span><span class="comment">or to avoid print's newline
+</span>sys.stdout.write(clear)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN801"
+>Determining Terminal or Window Size</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Determining Terminal or Window Size
+</span>
+<span class="comment-delimiter"># </span><span class="comment">eiter use ioctl
+</span><span class="keyword">import</span> struct, fcntl, termios, sys
+
+s = struct.pack(<span class="string">"HHHH"</span>, 0, 0, 0, 0)
+hchar, wchar = struct.unpack(<span class="string">"HHHH"</span>, fcntl.ioctl(sys.stdout.fileno(),
+                                 termios.TIOCGWINSZ, s))[:2]
+<span class="comment-delimiter"># </span><span class="comment">or curses
+</span><span class="keyword">import</span> curses
+(hchar,wchar) = curses.getmaxyx()
+
+<span class="comment-delimiter"># </span><span class="comment">graph contents of values
+</span><span class="keyword">import</span> struct, fcntl, termios, sys
+width = struct.unpack(<span class="string">"HHHH"</span>, fcntl.ioctl(sys.stdout.fileno(),
+                                 termios.TIOCGWINSZ, 
+                                 struct.pack(<span class="string">"HHHH"</span>, 0, 0, 0, 0)))[1]
+<span class="keyword">if</span> width&lt;10:
+    <span class="keyword">print</span> <span class="string">"You must have at least 10 characters"</span>
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span>
+
+max_value = 0                    
+<span class="keyword">for</span> v <span class="keyword">in</span> values:
+    max_value = <span class="py-builtins">max</span>(max_value,v)
+    
+ratio = (width-10)/max_value   <span class="comment-delimiter"># </span><span class="comment">chars per unit
+</span><span class="keyword">for</span> v <span class="keyword">in</span> values:
+    <span class="keyword">print</span> <span class="string">"%8.1f %s"</span> % (v, <span class="string">"*"</span>*(v*ratio))</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN804"
+>Changing Text Color</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="comment-delimiter"># </span><span class="comment">there seems to be no standard ansi module
+</span><span class="comment-delimiter"># </span><span class="comment">and BLINK does not blink here.
+</span>RED = <span class="string">'\033[31m'</span>
+RESET = <span class="string">'\033[0;0m'</span>
+BLINK = <span class="string">'\033[05m'</span>
+NOBLINK = <span class="string">'\033[25m'</span>
+
+<span class="keyword">print</span> RED+<span class="string">"DANGER, Will Robinson!"</span>+RESET
+<span class="keyword">print</span> <span class="string">"This is just normal text"</span>
+<span class="keyword">print</span> <span class="string">"Will ``"</span>+BLINK+<span class="string">"Do you hurt yet?"</span>+NOBLINK+<span class="string">"'' and back"</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN807"
+>Reading from the Keyboard</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="comment-delimiter"># </span><span class="comment">Show ASCII values for keypresses
+</span>
+<span class="comment-delimiter"># </span><span class="comment">_Getch is from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/134892
+</span><span class="keyword">class</span> <span class="type">_Getch</span>:
+    <span class="string">"""Gets a single character from standard input.  Doesn't echo to screen."""</span>
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">try:</span>
+            <span class="py-pseudo-keyword">self</span>.impl = _GetchWindows()
+        <span class="keyword">except</span> <span class="py-builtins">ImportError</span>:
+            <span class="py-pseudo-keyword">self</span>.impl = _GetchUnix()
+
+    <span class="keyword">def</span> <span class="function-name">__call__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.impl()
+
+
+<span class="keyword">class</span> <span class="type">_GetchUnix</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">import</span> tty, sys
+
+    <span class="keyword">def</span> <span class="function-name">__call__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">import</span> sys, tty, termios
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+        <span class="keyword">try:</span>
+            tty.setraw(sys.stdin.fileno())
+            ch = sys.stdin.read(1)
+        <span class="keyword">finally:</span>
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+        <span class="keyword">return</span> ch
+
+
+<span class="keyword">class</span> <span class="type">_GetchWindows</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">import</span> msvcrt
+
+    <span class="keyword">def</span> <span class="function-name">__call__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">import</span> msvcrt
+        <span class="keyword">return</span> msvcrt.getch()
+
+
+getch = _Getch()
+
+<span class="keyword">print</span> <span class="string">"Press keys to see their ASCII values.  Use Ctrl-C to quit.\n"</span>
+<span class="keyword">try:</span>
+    <span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+        char = <span class="py-builtins">ord</span>(getch())
+        <span class="keyword">if</span> char == 3:
+            <span class="keyword">break</span>
+        <span class="keyword">print</span> <span class="string">" Decimal: %3d   Octal: %3o   Hex: x%02x"</span> % (char, char, char)
+<span class="keyword">except</span> KeyboardError:
+    <span class="keyword">pass</span>
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN810"
+>Ringing the Terminal Bell</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">print</span> <span class="string">"\aWake up!\n"</span>;
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN813"
+>Using POSIX termios</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN816"
+>Checking for Waiting Input</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">On Windows
+</span><span class="keyword">import</span> msvcrt
+<span class="keyword">if</span> msvcrt.kbhit():
+    c = msvcrt.getch
+
+<span class="comment-delimiter"># </span><span class="comment">See http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/134892
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN819"
+>Reading Passwords</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="keyword">import</span> getpass
+<span class="keyword">import</span> pwd
+<span class="keyword">import</span> crypt
+password = getpass.getpass(<span class="string">'Enter your password: '</span>)
+username = getpass.getuser()
+encrypted = pwd.getpwnam(username).pw_passwd
+<span class="keyword">if</span> <span class="keyword">not</span> encrypted <span class="keyword">or</span> encrypted == <span class="string">'x'</span>:
+    <span class="comment-delimiter"># </span><span class="comment">If using shadow passwords, this will be empty or 'x'
+</span>    <span class="keyword">print</span> <span class="string">"Cannot verify password"</span>
+<span class="keyword">elif</span> crypt.crypt(password, encrypted) != encrypted:
+    <span class="keyword">print</span> <span class="string">"You are not"</span>, username
+<span class="keyword">else:</span>
+    <span class="keyword">print</span> <span class="string">"Welcome,"</span>, username
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN822"
+>Editing Input</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="comment-delimiter"># </span><span class="comment">simply importing readline gives line edit capabilities to raw_
+</span><span class="keyword">import</span> readline
+readline.add_history(<span class="string">"fake line"</span>)
+line = <span class="py-builtins">raw_input</span>()
+
+<span class="comment-delimiter"># </span><span class="comment"><font size="-1"><a href="http://pleac.sourceforge.net/include/python/ch15/vbsh">download the following standalone program</a></font>
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/python
+</span><span class="comment-delimiter"># </span><span class="comment">vbsh - very bad shell
+</span>
+<span class="keyword">import</span> os
+<span class="keyword">import</span> readline
+
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+    <span class="keyword">try:</span>
+        cmd = <span class="py-builtins">raw_input</span>(<span class="string">'$ '</span>)
+    <span class="keyword">except</span> <span class="py-builtins">EOFError</span>:
+        <span class="keyword">break</span>
+    status = os.system(cmd)
+    exit_value = status &gt;&gt; 8
+    signal_num = status &amp; 127
+    dumped_core = status &amp; 128 <span class="keyword">and</span> <span class="string">"(core dumped)"</span> <span class="keyword">or</span> <span class="string">""</span>
+    <span class="keyword">print</span> <span class="string">"Program terminated with status %d from signal %d%s\n"</span> % (
+            exit_value, signal_num, dumped_core)
+
+
+
+readline.add_history(<span class="string">"some line!"</span>)
+readline.remove_history_item(position)
+line = readline.get_history_item(index)
+
+<span class="comment-delimiter"># </span><span class="comment">an interactive python shell would be
+</span><span class="keyword">import</span> code, readline
+code.InteractiveConsole().interact(<span class="string">"code.InteractiveConsole"</span>)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN825"
+>Managing the Screen</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN828"
+>Controlling Another Program with Expect</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">This entry uses pexpect, a pure Python Expect-like module.
+</span><span class="comment-delimiter"># </span><span class="comment">http://pexpect.sourceforge.net/
+</span>
+<span class="comment-delimiter"># </span><span class="comment">for more information, check pexpect's documentation and example.
+</span>
+<span class="keyword">import</span> pexpect
+
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">spawn program
+</span><span class="keyword">try:</span>
+    command = pexpect.spawn(<span class="string">"program to run"</span>)
+<span class="keyword">except</span> pexpect.ExceptionPexpect:
+    <span class="comment-delimiter"># </span><span class="comment">couldn't spawn program
+</span>    <span class="keyword">pass</span>
+
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">you can pass any filelike object to setlog
+</span><span class="comment-delimiter"># </span><span class="comment">passing None will stop logging
+</span>
+<span class="comment-delimiter"># </span><span class="comment">stop logging
+</span>command.setlog(<span class="py-pseudo-keyword">None</span>)
+
+<span class="comment-delimiter"># </span><span class="comment">log to stdout
+</span><span class="keyword">import</span> sys
+command.setlog(sys.stdout)
+
+<span class="comment-delimiter"># </span><span class="comment">log to specific file
+</span>fp = <span class="py-builtins">file</span>(<span class="string">"pexpect.log"</span>, <span class="string">"w"</span>)
+command.setlog(fp)
+
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">expecting simple string
+</span>command.expect(<span class="string">"ftp&gt;"</span>)
+
+<span class="comment-delimiter"># </span><span class="comment">expecting regular expression
+</span><span class="comment-delimiter"># </span><span class="comment">actually, string is always treated as regular expression
+</span>
+<span class="comment-delimiter"># </span><span class="comment">so it's the same thing
+</span>command.expect(<span class="string">"Name.*:"</span>)
+
+<span class="comment-delimiter"># </span><span class="comment">you can do it this way, too
+</span><span class="keyword">import</span> re
+regex = re.compile(<span class="string">"Name.*:"</span>)
+command.expect(regex)
+
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">expecting with timeout
+</span><span class="keyword">try:</span>
+    command.expect(<span class="string">"Password:"</span>, 10)
+<span class="keyword">except</span> pexpect.TIMEOUT:
+    <span class="comment-delimiter"># </span><span class="comment">timed out
+</span>    <span class="keyword">pass</span>
+
+<span class="comment-delimiter"># </span><span class="comment">setting default timeout
+</span>command.timeout = 10
+
+<span class="comment-delimiter"># </span><span class="comment">since we set default timeout, following does same as above
+</span><span class="keyword">try:</span>
+    command.expect(<span class="string">"Password:"</span>)
+<span class="keyword">except</span> pexpect.TIMEOUT:
+    <span class="comment-delimiter"># </span><span class="comment">timed out
+</span>    <span class="keyword">pass</span>
+
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">what? do you *really* want to wait forever?
+</span>
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">sending line: normal way
+</span>command.sendline(<span class="string">"get spam_and_ham"</span>)
+
+<span class="comment-delimiter"># </span><span class="comment">you can also treat it as file
+</span>print&gt;&gt;command, <span class="string">"get spam_and_ham"</span>
+
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">finalization
+</span>
+<span class="comment-delimiter"># </span><span class="comment">close connection with child process
+</span><span class="comment-delimiter"># </span><span class="comment">(that is, freeing file descriptor)
+</span>command.close()
+
+<span class="comment-delimiter"># </span><span class="comment">kill child process
+</span><span class="keyword">import</span> signal
+command.kill(signal.SIGKILL)
+
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">expecting multiple choices
+</span>which = command.expect([<span class="string">"invalid"</span>, <span class="string">"success"</span>, <span class="string">"error"</span>, <span class="string">"boom"</span>])
+
+<span class="comment-delimiter"># </span><span class="comment">return value is index of matched choice
+</span><span class="comment-delimiter"># </span><span class="comment">0: invalid
+</span><span class="comment-delimiter"># </span><span class="comment">1: success
+</span><span class="comment-delimiter"># </span><span class="comment">2: error
+</span><span class="comment-delimiter"># </span><span class="comment">3: boom
+</span>
+<span class="comment-delimiter">#</span><span class="comment">----------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">avoiding exception handling
+</span>choices = [<span class="string">"invalid"</span>, <span class="string">"success"</span>, <span class="string">"error"</span>, <span class="string">"boom"</span>]
+choices.append(pexpect.TIMEOUT)
+choices.append(pexpect.EOF)
+
+which = command.expect(choices)
+
+<span class="comment-delimiter"># </span><span class="comment">if TIMEOUT or EOF occurs, appropriate index is returned
+</span><span class="comment-delimiter"># </span><span class="comment">(instead of raising exception)
+</span><span class="comment-delimiter"># </span><span class="comment">4: TIMEOUT
+</span><span class="comment-delimiter"># </span><span class="comment">5: EOF
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN831"
+>Creating Menus with Tk</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">from</span> Tkinter <span class="keyword">import</span> *
+
+<span class="keyword">def</span> <span class="function-name">print_callback</span>():
+    <span class="keyword">print</span> <span class="string">"print_callback"</span>
+
+main = Tk()
+
+menubar = Menu(main)
+main.config(menu=menubar)
+
+file_menu = Menu(menubar)
+menubar.add_cascade(label=<span class="string">"File"</span>, underline=1, menu=file_menu)
+file_menu.add_command(label=<span class="string">"Print"</span>, command=print_callback)
+
+main.mainloop()
+
+<span class="comment-delimiter"># </span><span class="comment">using a class
+</span><span class="keyword">from</span> Tkinter <span class="keyword">import</span> *
+
+<span class="keyword">class</span> <span class="type">Application</span>(Tk):
+    <span class="keyword">def</span> <span class="function-name">print_callback</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">print</span> <span class="string">"print_callback"</span>
+    <span class="keyword">def</span> <span class="function-name">debug_callback</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">print</span> <span class="string">"debug:"</span>, <span class="py-pseudo-keyword">self</span>.debug.get()
+        <span class="keyword">print</span> <span class="string">"debug level:"</span>, <span class="py-pseudo-keyword">self</span>.debug_level.get()
+
+    <span class="keyword">def</span> <span class="function-name">createWidgets</span>(<span class="py-pseudo-keyword">self</span>):
+        menubar = Menu(<span class="py-pseudo-keyword">self</span>)
+        <span class="py-pseudo-keyword">self</span>.config(menu=menubar)
+        file_menu = Menu(menubar)
+        menubar.add_cascade(label=<span class="string">"File"</span>,      
+                    underline=1, menu=file_menu)
+        file_menu.add_command(label=<span class="string">"Print"</span>,
+                command=<span class="py-pseudo-keyword">self</span>.print_callback)
+        file_menu.add_command(label=<span class="string">"Quit Immediately"</span>,
+                command=sys.exit)
+        <span class="comment-delimiter"># </span><span class="comment">
+</span>        options_menu = Menu(menubar)
+        menubar.add_cascade(label=<span class="string">"Options"</span>,
+                underline=0, menu=options_menu)
+        options_menu.add_checkbutton(
+                label=<span class="string">"Create Debugging File"</span>,
+                variable=<span class="py-pseudo-keyword">self</span>.debug,
+                command=<span class="py-pseudo-keyword">self</span>.debug_callback,
+                onvalue=1, offvalue=0)
+        options_menu.add_separator()
+        options_menu.add_radiobutton(
+                label = <span class="string">"Level 1"</span>,
+                variable = <span class="py-pseudo-keyword">self</span>.debug_level,
+                value = 1
+                )
+        options_menu.add_radiobutton(
+                label = <span class="string">"Level 2"</span>,
+                variable = <span class="py-pseudo-keyword">self</span>.debug_level,
+                value = 2
+                )
+        options_menu.add_radiobutton(
+                label = <span class="string">"Level 3"</span>,
+                variable = <span class="py-pseudo-keyword">self</span>.debug_level,
+                value = 3
+                )
+
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, master=<span class="py-pseudo-keyword">None</span>):
+        Tk.__init__(<span class="py-pseudo-keyword">self</span>, master)
+        <span class="comment-delimiter"># </span><span class="comment">bound variables must be IntVar, StrVar, ...
+</span>        <span class="py-pseudo-keyword">self</span>.debug = IntVar()
+        <span class="py-pseudo-keyword">self</span>.debug.set(0)
+        <span class="py-pseudo-keyword">self</span>.debug_level = IntVar()
+        <span class="py-pseudo-keyword">self</span>.debug_level.set(1)
+        <span class="py-pseudo-keyword">self</span>.createWidgets()
+
+app = Application()
+app.mainloop()</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN834"
+>Creating Dialog Boxes with Tk</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN837"
+>Responding to Tk Resize Events</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN840"
+>Removing the DOS Shell Window with Windows Perl/Tk</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Start Python scripts without the annoying DOS window on win32
+</span><span class="comment-delimiter"># </span><span class="comment">Use extension ".pyw" on files - eg: "foo.pyw" instead of "foo.py"
+</span><span class="comment-delimiter"># </span><span class="comment">Or run programs using "pythonw.exe" rather than "python.exe" 
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN843"
+>Program: Small termcap program</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN846"
+>Program: tkshufflepod</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="dbaccess.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="processmanagementetc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Database Access</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Process Management and Communication</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

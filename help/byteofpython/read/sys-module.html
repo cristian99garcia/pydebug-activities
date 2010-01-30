@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>The sys module</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="stdlib.html" title="Chapter 14. The Python Standard Library" /><link rel="prev" href="stdlib.html" title="Chapter 14. The Python Standard Library" /><link rel="next" href="os-module.html" title="The os module" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The sys module</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="stdlib.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 14. The Python Standard Library</th><td width="20%" align="right"> <a accesskey="n" href="os-module.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="sys-module"></a>The sys module</h2></div></div></div><p>
+		
+		The <code class="literal">sys</code> module contains system-specific functionality. we have already
+		seen that the <code class="varname">sys.argv</code> list contains the command-line arguments.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="command-line-arguments"></a>Command Line Arguments</h3></div></div></div><div class="example"><a id="id3077190"></a><p class="title"><b>Example 14.1. Using sys.argv</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: cat.py</span>
+
+<span class="py-statement">import</span> <span class="py-builtin">sys</span>
+
+<span class="py-statement">def</span> <span class="py-identifier">readfile</span>(filename):
+	<span class="py-string">'''Print a file to the standard output.'''</span>
+	f = <span class="py-builtin">file</span>(filename)
+	<span class="py-statement">while</span> <span class="py-builtin">True</span>:
+		line = f.readline()
+		<span class="py-statement">if</span> <span class="py-builtin">len</span>(line) == <span class="py-number">0</span>:
+			<span class="py-statement">break</span>
+		<span class="py-statement">print</span> line, <span class="py-comment"># notice comma</span>
+	f.close()
+
+<span class="py-comment"># Script starts from here</span>
+<span class="py-statement">if</span> <span class="py-builtin">len</span>(<span class="py-builtin">sys</span>.argv) &lt; <span class="py-number">2</span>:
+	<span class="py-statement">print</span> <span class="py-string">'No action specified.'</span>
+	<span class="py-builtin">sys</span>.exit()
+
+<span class="py-statement">if</span> <span class="py-builtin">sys</span>.argv[<span class="py-number">1</span>].startswith(<span class="py-string">'--'</span>):
+	option = <span class="py-builtin">sys</span>.argv[<span class="py-number">1</span>][<span class="py-number">2</span>:]
+	<span class="py-comment"># fetch sys.argv[1] but without the first two characters</span>
+	<span class="py-statement">if</span> option == <span class="py-string">'version'</span>:
+		<span class="py-statement">print</span> <span class="py-string">'Version 1.2'</span>
+	<span class="py-statement">elif</span> option == <span class="py-string">'help'</span>:
+		<span class="py-statement">print</span> <span class="py-string">'''\
+This program prints files to the standard output.
+Any number of files can be specified.
+Options include:
+  --version : Prints the version number
+  --help    : Display this help'''</span>
+	<span class="py-statement">else</span>:
+		<span class="py-statement">print</span> <span class="py-string">'Unknown option.'</span>
+	<span class="py-builtin">sys</span>.exit()
+<span class="py-statement">else</span>:
+	<span class="py-statement">for</span> filename <span class="py-statement">in</span> <span class="py-builtin">sys</span>.argv[<span class="py-number">1</span>:]:
+		readfile(filename)
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3077202"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python cat.py
+No action specified.
+
+$ python cat.py --help
+This program prints files to the standard output.
+Any number of files can be specified.
+Options include:
+  --version : Prints the version number
+  --help    : Display this help
+
+$ python cat.py --version
+Version 1.2
+
+$ python cat.py --nonsense
+Unknown option.
+
+$ python cat.py poem.txt
+Programming is fun
+When the work is done
+if you wanna make your work also fun:
+        use Python!
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3077215"></a>How It Works</h4></div></div></div><p>
+				
+				This program tries to mimic the <span><strong class="command">cat</strong></span> command familiar to
+				Linux/Unix users. You just speicfy the names of some text files and it will
+				print them to the output.
+				
+				</p><p>
+				
+				When a Python program is run i.e. not an interactive mode, there is always
+				at least one item in the <code class="varname">sys.argv</code> list which is the name
+				of the current program being run and is available as 
+				<code class="literal">sys.argv[0]</code> since Python starts counting from 0. Other
+				command line arguments follow this item.
+				
+				</p><p>
+				
+				To make the program user-friendly we have supplied certain options that the
+				user can specify to learn more about the program. We use the first argument
+				to check if any options have been specified to our program. If the
+				<code class="literal">--version</code> option is used, the version number of the program
+				is printed. Similarly, when the <code class="literal">--help</code> option is specified,
+				we give a bit of explanation about the program. We make use of the
+				<code class="function">sys.exit</code> function to exit the running program. As always,
+				see <code class="literal">help(sys.exit)</code> for more details.
+				
+				</p><p>
+				
+				When no options are specified and filenames are passed to the program, it
+				simply prints out each line of each file, one after the other in the order
+				specified on the command line.
+				
+				</p><p>
+				
+				As an aside, the name <span><strong class="command">cat</strong></span> is short for
+				<span class="emphasis"><em>concatenate</em></span> which is basically what this program does
+				- it can print out a file or attach/concatenate two or more files together
+				in the output.
+				
+				</p></div></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="more-sys"></a>More sys</h3></div></div></div><p>
+			
+			The <code class="varname">sys.version</code> string gives you information about the version
+			of Python that you have installed. The <code class="varname">sys.version_info</code> tuple
+			gives an easier way of enabling Python-version specific parts of your program.
+			
+			</p><pre class="screen">
+			
+[swaroop@localhost code]$ python
+&gt;&gt;&gt; import sys
+&gt;&gt;&gt; sys.version
+'2.3.4 (#1, Oct 26 2004, 16:42:40) \n[GCC 3.4.2 20041017 (Red Hat 3.4.2-6.fc3)]'
+&gt;&gt;&gt; sys.version_info
+(2, 3, 4, 'final', 0)
+			
+			</pre><p>
+			
+			For experienced programmers, other items of interest in the <code class="literal">sys</code>
+			module include <code class="varname">sys.stdin</code>, <code class="varname">sys.stdout</code> and
+			<code class="varname">sys.stderr</code> which correspond to the standard input, standard
+			output and standard error streams of your program respectively.
+			
+			</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="stdlib.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="stdlib.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="os-module.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 14. The Python Standard Library </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> The os module</td></tr></table></div></body></html>

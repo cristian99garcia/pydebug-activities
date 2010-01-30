@@ -1,0 +1,1107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>File Access</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="PLEAC-Python
+"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Pattern Matching"
+HREF="patternmatching.html"><LINK
+REL="NEXT"
+TITLE="File Contents"
+HREF="filecontents.html"><style type="text/css">    <!--
+      .comment {
+        /* font-lock-comment-face */
+        color: #bebebe;
+      }
+      .comment-delimiter {
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #b2dfee;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #ffa500;
+      }
+      .py-builtins {
+        /* py-builtins-face */
+        color: #ffa500;
+      }
+      .py-pseudo-keyword {
+        /* py-pseudo-keyword-face */
+        color: #ffa500;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #00cd00;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    -->
+    </style></head
+><BODY TEXT="#cecece" BGCOLOR="#4f6f6f" LINK="#f5deb3" VLINK="#d5ae83"
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PLEAC-Python
+</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="patternmatching.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="filecontents.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="FILEACCESS"
+>7. File Access</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN359"
+>Introduction</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">for</span> line <span class="keyword">in</span> <span class="py-builtins">open</span>(<span class="string">"/usr/local/widgets/data"</span>):
+    <span class="keyword">if</span> blue <span class="keyword">in</span> line:
+        <span class="keyword">print</span> line[:-1]
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span><span class="keyword">import</span> sys, re
+pattern = re.compile(r<span class="string">"\d"</span>)
+<span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
+    <span class="keyword">if</span> <span class="keyword">not</span> pattern.search(line):
+        sys.stderr.write(<span class="string">"No digit found.\n"</span>)
+    sys.stdout.write(<span class="string">"Read: "</span> + line)
+sys.stdout.close()
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span>logfile = <span class="py-builtins">open</span>(<span class="string">"/tmp/log"</span>, <span class="string">"w"</span>)
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span>logfile.close()
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span>print&gt;&gt;logfile, <span class="string">"Countdown initiated ..."</span>
+<span class="keyword">print</span> <span class="string">"You have 30 seconds to reach minimum safety distance."</span>
+
+<span class="comment-delimiter"># </span><span class="comment">DONT DO THIS
+</span><span class="keyword">import</span> sys
+old_output, sys.stdout = sys.stdout, logfile
+<span class="keyword">print</span> <span class="string">"Countdown initiated ..."</span>
+sys.stdout = old_output
+<span class="keyword">print</span> <span class="string">"You have 30 seconds to reach minimum safety distance."</span>
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN362"
+>Opening a File</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Python's open() function somewhat covers both perl's open() and 
+</span><span class="comment-delimiter"># </span><span class="comment">sysopen() as it has optional arguments for mode and buffering.
+</span>source = <span class="py-builtins">open</span>(path)
+sink = <span class="py-builtins">open</span>(path, <span class="string">"w"</span>)
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span><span class="comment-delimiter"># </span><span class="comment">NOTE: almost no one uses the low-level os.open and os.fdopen
+</span><span class="comment-delimiter"># </span><span class="comment">commands, so their inclusion here is just silly.  If 
+</span><span class="comment-delimiter"># </span><span class="comment">os.fdopen(os.open(...)) were needed often, it would be turned
+</span><span class="comment-delimiter"># </span><span class="comment">into its own function.  Instead, I'll use 'fd' to hint that
+</span><span class="comment-delimiter"># </span><span class="comment">os.open returns a file descriptor
+</span><span class="keyword">import</span> os
+source_fd = os.open(path, os.O_RDONLY)
+source = os.fdopen(fd)
+sink_fd = os.open(path, os.O_WRONLY)
+sink = os.fdopen(sink_fd)
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span>myfile = <span class="py-builtins">open</span>(filename, <span class="string">"w"</span>)
+fd = os.open(filename, os.O_WRONLY | os.O_CREAT)
+myfile = <span class="py-builtins">open</span>(filename, <span class="string">"r+"</span>)
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span>fd = os.open(name, flags)
+fd = os.open(name, flags, mode)
+<span class="comment-delimiter">#</span><span class="comment">---------
+</span>myfile = <span class="py-builtins">open</span>(path)
+fd = os.open(path, os.O_RDONLY)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>myfile = <span class="py-builtins">open</span>(path, <span class="string">"w"</span>)
+fd = os.open(path, os.O_WRONLY|os.O_TRUNC|os.O_CREAT)
+fd = os.open(path, os.O_WRONLY|os.O_TRUNC|os.O_CREAT, 0600)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>fd = os.open(path, os.O_WRONLY|os.O_EXCL|os.O_CREAT)
+fd = os.open(path, os.O_WRONLY|os.O_EXCL|os.O_CREAT, 0600)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>myfile = <span class="py-builtins">open</span>(path, <span class="string">"a"</span>)
+fd = os.open(path, os.O_WRONLY|os.O_APPEND|os.O_CREAT)
+fd = os.open(path, os.O_WRONLY|os.O_APPEND|s.O_CREAT, 0600)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>fd = os.open(path, os.O_WRONLY|os.O_APPEND)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>myfile = <span class="py-builtins">open</span>(path, <span class="string">"rw"</span>)
+fd = os.open(path, os.O_RDWR)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>fd = os.open(path, os.O_RDWR|os.O_CREAT)
+fd = os.open(path, os.O_RDWR|os.O_CREAT, 0600)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>fd = os.open(path, os.O_RDWR|os.O_EXCL|os.O_CREAT)
+fd = os.open(path, os.O_RDWR|os.O_EXCL|os.O_CREAT, 0600)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN365"
+>Opening Files with Unusual Filenames</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Nothing different needs to be done with Python
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN368"
+>Expanding Tildes in Filenames</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">import</span> os
+filename = os.path.expanduser(filename)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN371"
+>Making Perl Report Filenames in Errors</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>myfile = <span class="py-builtins">open</span>(filename)   <span class="comment-delimiter"># </span><span class="comment">raise an exception on error
+</span>
+<span class="keyword">try:</span>
+    myfile = <span class="py-builtins">open</span>(filename)
+<span class="keyword">except</span> <span class="py-builtins">IOError</span>, err:
+    <span class="keyword">raise</span> <span class="py-builtins">AssertionError</span>(<span class="string">"Couldn't open %s for reading : %s"</span> %
+                         (filename, err.strerror))</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN374"
+>Creating Temporary Files</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">import</span> tempfile
+
+myfile = tempfile.TemporaryFile()
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">NOTE: The TemporaryFile() call is much more appropriate
+</span><span class="comment-delimiter"># </span><span class="comment">I would not suggest using this code for real work.
+</span><span class="keyword">import</span> os, tempfile
+
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+    name = os.tmpnam()
+    <span class="keyword">try:</span>
+        fd = os.open(name, os.O_RDWR|os.O_CREAT|os.O_EXCL)
+        <span class="keyword">break</span>
+    <span class="keyword">except</span> os.error:
+        <span class="keyword">pass</span>
+myfile = tempfile.TemporaryFileWrapper(os.fdopen(fd), name)
+
+<span class="comment-delimiter"># </span><span class="comment">now go on to use the file ...
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> os
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+    tmpname = os.tmpnam()
+    fd = os.open(tmpnam, os.O_RDWR | os.O_CREAT | os.O_EXCL)
+    <span class="keyword">if</span> fd:
+        tmpfile = os.fdopen(fd)
+        <span class="keyword">break</span>
+
+os.remove(tmpnam)
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> tempfile
+
+myfile = tempfile.TemporaryFile(bufsize = 0)
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(10):
+    print&gt;&gt;myfile, i
+myfile.seek(0)
+<span class="keyword">print</span> <span class="string">"Tmp file has:"</span>, myfile.read()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN377"
+>Storing Files Inside Your Program Text</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>DATA = <span class="string">"""\
+your data goes here
+"""</span>
+<span class="keyword">for</span> line <span class="keyword">in</span> DATA.split(<span class="string">"\n"</span>):
+    <span class="keyword">pass</span> <span class="comment-delimiter"># </span><span class="comment">process the line
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN380"
+>Writing a Filter</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="keyword">for</span> line <span class="keyword">in</span> sys.stdin:
+    <span class="keyword">pass</span> <span class="comment-delimiter"># </span><span class="comment">do something with the line
+</span>
+<span class="comment-delimiter"># </span><span class="comment">processing a list of files from commandline
+</span><span class="keyword">import</span> fileinput
+<span class="keyword">for</span> line <span class="keyword">in</span> fileinput.input():
+     do something with the line
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> sys
+
+<span class="keyword">def</span> <span class="function-name">do_with</span>(myfile):
+    <span class="keyword">for</span> line <span class="keyword">in</span> myfile:
+        <span class="keyword">print</span> line[:-1]
+
+filenames = sys.argv[1:]
+<span class="keyword">if</span> filenames:
+    <span class="keyword">for</span> filename <span class="keyword">in</span> filenames:
+        <span class="keyword">try:</span>
+            do_with(<span class="py-builtins">open</span>(filename))
+        <span class="keyword">except</span> <span class="py-builtins">IOError</span>, err:
+            sys.stderr.write(<span class="string">"Can't open %s: %s\n"</span> % (filename, err.strerror))
+            <span class="keyword">continue</span>
+<span class="keyword">else:</span>
+    do_with(sys.stdin)
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> sys, glob
+ARGV = sys.argv[1:] <span class="keyword">or</span> glob.glob(<span class="string">"*.[Cch]"</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">NOTE: the getopt module is the prefered mechanism for reading
+</span><span class="comment-delimiter"># </span><span class="comment">command line arguments
+</span><span class="keyword">import</span> sys
+args = sys.argv[1:]
+chop_first = 0
+
+<span class="keyword">if</span> args <span class="keyword">and</span> args[0] == <span class="string">"-c"</span>:
+    chop_first += 1
+    args = args[1:]
+
+<span class="comment-delimiter"># </span><span class="comment">arg demo 2: Process optional -NUMBER flag
+</span>
+<span class="comment-delimiter"># </span><span class="comment">NOTE: You just wouldn't process things this way for Python,
+</span><span class="comment-delimiter"># </span><span class="comment">but I'm trying to preserve the same semantics.
+</span>
+<span class="keyword">import</span> sys, re
+digit_pattern = re.compile(r<span class="string">"-(\d+)$"</span>)
+
+args = sys.argv[1:]
+<span class="keyword">if</span> args:
+    match = digit_pattern.match(args[0])
+    <span class="keyword">if</span> match:
+        columns = <span class="py-builtins">int</span>(match.group(1))
+        args = args[1:]
+
+<span class="comment-delimiter"># </span><span class="comment">NOTE: here's the more idiomatic way, which also checks
+</span><span class="comment-delimiter"># </span><span class="comment">for the "--" or a non "-" argument to stop processing
+</span>
+args = sys.argv[1:]
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(len(args)):
+    arg = args[i]
+    <span class="keyword">if</span> arg == <span class="string">"--"</span> <span class="keyword">or</span> <span class="keyword">not</span> arg.startwith(<span class="string">"-"</span>):
+        <span class="keyword">break</span>
+    <span class="keyword">if</span> arg[1:].isdigit():
+        columns = <span class="py-builtins">int</span>(arg[1:])
+        <span class="keyword">continue</span>
+
+
+
+<span class="comment-delimiter"># </span><span class="comment">arg demo 3: Process clustering -a, -i, -n, or -u flags
+</span><span class="keyword">import</span> sys, getopt
+<span class="keyword">try:</span>
+    args, filenames = getopt.getopt(sys.argv[1:], <span class="string">"ainu"</span>)
+<span class="keyword">except</span> getopt.error:
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span>(<span class="string">"usage: %s [-ainu] [filenames] ..."</span> % sys.argv[0])
+
+append = ignore_ints = nostdout = unbuffer = 0
+<span class="keyword">for</span> k, v <span class="keyword">in</span> args:
+    <span class="keyword">if</span> k == <span class="string">"-a"</span>: append += 1
+    <span class="keyword">elif</span> k == <span class="string">"-i"</span>: ignore_ints += 1
+    <span class="keyword">elif</span> k == <span class="string">"-n"</span>: nostdout += 1
+    <span class="keyword">elif</span> k == <span class="string">"-u"</span>: unbuffer += 1
+    <span class="keyword">else:</span>
+        <span class="keyword">raise</span> <span class="py-builtins">AssertionError</span>(<span class="string">"Unexpected argument: %s"</span> % k)
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Note: Idiomatic Perl get translated to idiomatic Python
+</span><span class="keyword">import</span> fileinput
+<span class="keyword">for</span> line <span class="keyword">in</span> fileinput.input():
+    sys.stdout.write(<span class="string">"%s:%s:%s"</span> %
+                     (fileinput.filename(), fileinput.filelineno(), line))
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/env python
+</span><span class="comment-delimiter"># </span><span class="comment">findlogin1 - print all lines containing the string "login"
+</span><span class="keyword">for</span> line <span class="keyword">in</span> fileinput.input(): <span class="comment-delimiter"># </span><span class="comment">loop over files on command line
+</span>    <span class="keyword">if</span> line.find(<span class="string">"login"</span>) != -1:
+        sys.stdout.write(line)
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/env python
+</span><span class="comment-delimiter"># </span><span class="comment">lowercase - turn all lines into lowercase
+</span><span class="comment-delimiter">#</span><span class="comment">## NOTE: I don't know how to do locales in Python
+</span><span class="keyword">for</span> line <span class="keyword">in</span> fileinput.input(): <span class="comment-delimiter"># </span><span class="comment">loop over files on command line
+</span>    sys.stdout.write(line.lower())
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/env python
+</span><span class="comment-delimiter"># </span><span class="comment">NOTE: The Perl code appears buggy, in that "Q__END__W" is considered
+</span><span class="comment-delimiter">#       </span><span class="comment">to be a __END__ and words after the __END__ on the same line
+</span><span class="comment-delimiter">#       </span><span class="comment">are included in the count!!!
+</span><span class="comment-delimiter"># </span><span class="comment">countchunks - count how many words are used.
+</span><span class="comment-delimiter"># </span><span class="comment">skip comments, and bail on file if __END__
+</span><span class="comment-delimiter"># </span><span class="comment">or __DATA__ seen.
+</span>chunks = 0
+<span class="keyword">for</span> line <span class="keyword">in</span> fileinput.input():
+    <span class="keyword">for</span> word <span class="keyword">in</span> line.split():
+        <span class="keyword">if</span> word.startswith(<span class="string">"#"</span>):
+            <span class="keyword">continue</span>
+        <span class="keyword">if</span> word <span class="keyword">in</span> (<span class="string">"__DATA__"</span>, <span class="string">"__END__"</span>):
+            fileinput.close()
+            <span class="keyword">break</span>
+        chunks += 1
+<span class="keyword">print</span> <span class="string">"Found"</span>, chunks, <span class="string">"chunks"</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN383"
+>Modifying a File in Place with Temporary File</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">import</span> shutil
+
+old = <span class="py-builtins">open</span>(<span class="string">"old"</span>)
+new = <span class="py-builtins">open</span>(<span class="string">"new"</span>,<span class="string">"w"</span>)
+
+<span class="keyword">for</span> line <span class="keyword">in</span> old:
+    new.writeline(line)
+new.close()
+old.close()
+
+shutil.copyfile(<span class="string">"old"</span>, <span class="string">"old.orig"</span>)
+shutil.copyfile(<span class="string">"new"</span>, <span class="string">"old"</span>)
+
+<span class="comment-delimiter"># </span><span class="comment">insert lines at line 20:
+</span><span class="keyword">for</span> i, line <span class="keyword">in</span> <span class="py-builtins">enumerate</span>(old):
+    <span class="keyword">if</span> i == 20:
+        print&gt;&gt;new, <span class="string">"Extra line 1\n"</span>
+        print&gt;&gt;new, <span class="string">"Extra line 2\n"</span>
+    print&gt;&gt;new, line
+
+
+<span class="comment-delimiter"># </span><span class="comment">or delete lines 20 through 30:
+</span><span class="keyword">for</span> i, line <span class="keyword">in</span> <span class="py-builtins">enumerate</span>(old):
+    <span class="keyword">if</span> 20 &lt;= i &lt;= 30:
+        <span class="keyword">continue</span>
+    print&gt;&gt;new, line</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN386"
+>Modifying a File in Place with -i Switch</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">modifying with "-i" commandline switch is a perl feature
+</span><span class="comment-delimiter"># </span><span class="comment">python has fileinput
+</span><span class="keyword">import</span> fileinput, sys, time
+today = time.strftime(<span class="string">"%Y-%m-%d"</span>,time.localtime())
+<span class="keyword">for</span> line <span class="keyword">in</span> fileinput.input(inplace=1, backup=<span class="string">".orig"</span>):
+    sys.stdout.write(line.replace(<span class="string">"DATE"</span>,today))
+
+<span class="comment-delimiter"># </span><span class="comment">set up to iterate over the *.c files in the current directory,
+</span><span class="comment-delimiter"># </span><span class="comment">editing in place and saving the old file with a .orig extension.
+</span><span class="keyword">import</span> glob, re
+match = re.compile(<span class="string">"(?&lt;=[pP])earl"</span>)
+files = fileinput.FileInput(glob.glob(<span class="string">"*.c"</span>), inplace=1, backup=<span class="string">".orig"</span>)
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+    line = files.readline()
+    sys.stderr.write(line)
+    <span class="keyword">if</span> <span class="keyword">not</span> line:
+        <span class="keyword">break</span>
+    <span class="keyword">if</span> files.isfirstline():
+        sys.stdout.write(<span class="string">"This line should appear at the top of each file\n"</span>)
+    sys.stdout.write(match.sub(<span class="string">"erl"</span>,line))</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN389"
+>Modifying a File in Place Without a Temporary File</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>myfile = <span class="py-builtins">open</span>(filename, <span class="string">"r+"</span>)
+data = myfile.read()
+<span class="comment-delimiter"># </span><span class="comment">change data here
+</span>myfile.seek(0, 0)
+myfile.write(data)
+myfile.truncate(myfile.tell())
+myfile.close()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>myfile = <span class="py-builtins">open</span>(filename, <span class="string">"r+"</span>)
+data = [process(line) <span class="keyword">for</span> line <span class="keyword">in</span> myfile]
+myfile.seek(0, 0)
+myfile.writelines(data)
+myfile.truncate(myfile.tell())
+myfile.close()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN392"
+>Locking a File</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>                                                                                                                                                                                                                                                               
+<span class="keyword">import</span> fcntl
+myfile = <span class="py-builtins">open</span>(somepath, <span class="string">'r+'</span>)
+fcntl.flock(myfile, fcntl.LOCK_EX)
+<span class="comment-delimiter"># </span><span class="comment">update file, then...
+</span>myfile.close()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>fcntl.LOCK_SH
+fcntl.LOCK_EX
+fcntl.LOCK_NB
+fcntl.LOCK_UN
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> warnings
+<span class="keyword">try:</span>
+    fcntl.flock(myfile, fcntl.LOCK_EX|fcntl.LOCK_NB)
+<span class="keyword">except</span> <span class="py-builtins">IOError</span>:
+    warnings.warn(<span class="string">"can't immediately write-lock the file ($!), blocking ..."</span>)
+    fcntl.flock(myfile, fcntl.LOCK_EX)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>fcntl.flock(myfile, fcntl.LOCK_UN)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">option "r+" instead "w+" stops python from truncating the file on opening
+</span><span class="comment-delimiter"># </span><span class="comment">when another process might well hold an advisory exclusive lock on it.
+</span>myfile = <span class="py-builtins">open</span>(somepath, <span class="string">"r+"</span>)
+fcntl.flock(myfile, fcntl.LOCK_EX)
+myfile.seek(0, 0)
+myfile.truncate(0)
+print&gt;&gt;myfile, <span class="string">"\n"</span>   <span class="comment-delimiter"># </span><span class="comment">or myfile.write("\n")
+</span>myfile.close()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN395"
+>Flushing Output</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Python doesn't have command buffering.  Files can have buffering set,
+</span><span class="comment-delimiter"># </span><span class="comment">when opened:
+</span>myfile = <span class="py-builtins">open</span>(filename, <span class="string">"r"</span>, buffering=0)   <span class="comment-delimiter">#</span><span class="comment">Unbuffered
+</span>myfile = <span class="py-builtins">open</span>(filename, <span class="string">"r"</span>, buffering=1)   <span class="comment-delimiter">#</span><span class="comment">Line buffered
+</span>myfile = <span class="py-builtins">open</span>(filename, <span class="string">"r"</span>, buffering=100) <span class="comment-delimiter">#</span><span class="comment">Use buffer of (approx) 100 bytes
+</span>myfile = <span class="py-builtins">open</span>(filename, <span class="string">"r"</span>, buffering=-1)  <span class="comment-delimiter">#</span><span class="comment">Use system default
+</span>
+myfile.flush()  <span class="comment-delimiter"># </span><span class="comment">Flush the I/O buffer
+</span>
+<span class="comment-delimiter"># </span><span class="comment">stdout is treated as a file.  If you ever need to flush it, do so:
+</span><span class="keyword">import</span> sys
+sys.stdout.flush()
+
+<span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS.  Use urllib, etc.
+</span><span class="keyword">import</span> socket
+mysock = socket.socket()
+mysock.connect((<span class="string">'www.perl.com'</span>, 80))
+<span class="comment-delimiter"># </span><span class="comment">mysock.setblocking(True)
+</span>mysock.send(<span class="string">"GET /index.html http/1.1\n\n"</span>)
+f = mysock.makefile()
+<span class="keyword">print</span> <span class="string">"Doc is:"</span>
+<span class="keyword">for</span> line <span class="keyword">in</span> f:
+    <span class="keyword">print</span> line[:-1]</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN398"
+>Reading from Many Filehandles Without Blocking</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">import</span> select
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+    rlist, wlist, xlist = select.select([file1, file2, file3], [], [], 0)
+    <span class="keyword">for</span> r <span class="keyword">in</span> rlist:
+        <span class="keyword">pass</span> <span class="comment-delimiter"># </span><span class="comment">Do something with the file handle
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN401"
+>Doing Non-Blocking I/O</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Use select.poll() on Unix systems.
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN404"
+>Determining the Number of Bytes to Read</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN407"
+>Storing Filehandles in Variables</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">NOTE: this is all much easier in Python
+</span><span class="keyword">def</span> <span class="function-name">subroutine</span>(myfile):
+    print&gt;&gt;myfile, <span class="string">"Hello, file"</span>
+
+variable = myfile
+subroutine(variable)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN410"
+>Caching Open Output Filehandles</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN413"
+>Printing to Many Filehandles Simultaneously</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">for</span> myfile <span class="keyword">in</span> files:
+    print&gt;&gt;myfile, stuff_to_print
+
+<span class="comment-delimiter"># </span><span class="comment">NOTE: This is unix specific
+</span><span class="keyword">import</span> os
+<span class="py-builtins">file</span> = os.popen(<span class="string">"tee file1 file2 file3 &gt;/dev/null"</span>, <span class="string">"w"</span>)
+print&gt;&gt;myfile, <span class="string">"whatever"</span>
+
+<span class="comment-delimiter"># </span><span class="comment">NOTE: the "make STDOUT go to three files" is bad programming style
+</span><span class="keyword">import</span> os, sys
+sys.stdout.file = os.popen(<span class="string">"tee file1 file2 file3"</span>, <span class="string">"w"</span>)
+<span class="keyword">print</span> <span class="string">"whatever"</span>
+sys.stdout.close()
+
+<span class="comment-delimiter"># </span><span class="comment">You could use a utility object to redirect writes:
+</span><span class="keyword">class</span> <span class="type">FileDispatcher</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, *files):
+        <span class="py-pseudo-keyword">self</span>.files = files
+
+    <span class="keyword">def</span> <span class="function-name">write</span>(<span class="py-pseudo-keyword">self</span>, msg):
+        <span class="keyword">for</span> f <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>.files:
+            f.write(msg)
+
+    <span class="keyword">def</span> <span class="function-name">close</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">for</span> f <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>.files:
+            f.close()
+
+x = <span class="py-builtins">open</span>(<span class="string">"C:/test1.txt"</span>, <span class="string">"w"</span>)
+y = <span class="py-builtins">open</span>(<span class="string">"C:/test2.txt"</span>, <span class="string">"w"</span>)
+z = <span class="py-builtins">open</span>(<span class="string">"C:/test3.txt"</span>, <span class="string">"w"</span>)
+
+fd = FileDispatcher(x, y, z)
+print&gt;&gt;fd, <span class="string">"Foo"</span>     <span class="comment-delimiter"># </span><span class="comment">equiv to fd.write("Foo"); fd.write("\n")
+</span>print&gt;&gt;fd, <span class="string">"Testing"</span>  
+fd.close()</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN416"
+>Opening and Closing File Descriptors by Number</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">import</span> os
+myfile = os.fdopen(fdnum) <span class="comment-delimiter"># </span><span class="comment">open the descriptor itself
+</span>myfile = os.fdopen(os.dup(fdnum)) <span class="comment-delimiter"># </span><span class="comment">open to a copy of the descriptor
+</span>
+<span class="comment-delimiter">#</span><span class="comment">##
+</span>outcopy = os.fdopen(os.dup(sys.stdin.fileno()), <span class="string">"w"</span>)
+incopy = os.fdopen(os.dup(sys.stdin.fileno()), <span class="string">"r"</span>)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN419"
+>Copying Filehandles</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>original = <span class="py-builtins">open</span>(<span class="string">"C:/test.txt"</span>)
+alias = original
+alias.close()
+<span class="keyword">print</span> original.closed
+<span class="comment-delimiter">#</span><span class="comment">=&gt;True
+</span>
+<span class="keyword">import</span> copy
+
+original = <span class="py-builtins">open</span>(<span class="string">"C:/test.txt"</span>)
+dupe = copy.copy(original)
+dupe.close()
+<span class="keyword">print</span> original.closed
+<span class="comment-delimiter">#</span><span class="comment">=&gt;False
+</span>
+<span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS.
+</span><span class="keyword">import</span> sys
+oldstderr = sys.stderr
+oldstdout = sys.stdout
+
+sys.stderr = <span class="py-builtins">open</span>(<span class="string">"C:/stderrfile.txt"</span>)
+sys.stdout = <span class="py-builtins">open</span>(<span class="string">"C:/stdoutfile.txt"</span>)
+
+<span class="keyword">print</span> <span class="string">"Blah"</span>  <span class="comment-delimiter"># </span><span class="comment">Will be written to C:/stdoutfile.txt
+</span>sys.stdout.close()
+
+sys.stdout = oldstdout
+sys.stderr = oldstderr</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN422"
+>Program: netlock</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN425"
+>Program: lockarea</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">On Windows:
+</span><span class="keyword">import</span> msvcrt
+myfile.seek(5, 0)
+msvcrt.locking(myfile.fileno(), msvcrt.LK_NBLCK, 3)
+
+<span class="comment-delimiter"># </span><span class="comment">On Unix:
+</span><span class="keyword">import</span> fcntl
+fcntl.lockf(myfile.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB, 3, 5)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="patternmatching.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="filecontents.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Pattern Matching</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>File Contents</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

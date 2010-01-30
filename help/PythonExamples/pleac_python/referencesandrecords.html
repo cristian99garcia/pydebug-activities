@@ -1,0 +1,1019 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>References and Records</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="PLEAC-Python
+"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Subroutines"
+HREF="subroutines.html"><LINK
+REL="NEXT"
+TITLE="Packages, Libraries, and Modules"
+HREF="packagesetc.html"><style type="text/css">    <!--
+      .comment {
+        /* font-lock-comment-face */
+        color: #bebebe;
+      }
+      .comment-delimiter {
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #b2dfee;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #ffa500;
+      }
+      .py-builtins {
+        /* py-builtins-face */
+        color: #ffa500;
+      }
+      .py-pseudo-keyword {
+        /* py-pseudo-keyword-face */
+        color: #ffa500;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #00cd00;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    -->
+    </style></head
+><BODY TEXT="#cecece" BGCOLOR="#4f6f6f" LINK="#f5deb3" VLINK="#d5ae83"
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PLEAC-Python
+</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="subroutines.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="packagesetc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="REFERENCESANDRECORDS"
+>11. References and Records</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN592"
+>Introduction</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">Introduction.
+</span><span class="comment-delimiter">#   </span><span class="comment">In Python, all names are references.
+</span><span class="comment-delimiter">#   </span><span class="comment">All objects are inherently anonymous, they don't know what names refer to them.
+</span><span class="keyword">print</span> ref   <span class="comment-delimiter"># </span><span class="comment">prints the value that the name ref refers to. 
+</span>ref = 3     <span class="comment-delimiter"># </span><span class="comment">assigns the name ref to the value 3.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>aref = mylist
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>aref = [3, 4, 5]    <span class="comment-delimiter"># </span><span class="comment">aref is a name for this list
+</span>href = {<span class="string">"How"</span>: <span class="string">"Now"</span>, <span class="string">"Brown"</span>: <span class="string">"Cow"</span>} <span class="comment-delimiter"># </span><span class="comment">href is a name for this dictionary
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#   </span><span class="comment">Python doesn't have autovivification as (for simple types) there is no difference between a name and a reference.
+</span><span class="comment-delimiter">#   </span><span class="comment">If we try the equivalent of the Perl code we get the list, not a reference to the list.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#   </span><span class="comment">To handle multidimensional arrays, you should use an extension to Python,
+</span><span class="comment-delimiter">#   </span><span class="comment">such as numarray (http://www.stsci.edu/resources/software_hardware/numarray)
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#   </span><span class="comment">In Python, assignment doesn't return anything. 
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>Nat = { <span class="string">"Name"</span>: <span class="string">"Leonhard Euler"</span>,
+        <span class="string">"Address"</span>: <span class="string">"1729 Ramanujan Lane\nMathworld, PI 31416"</span>,
+        <span class="string">"Birthday"</span>: 0x5bb5580
+}
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN595"
+>Taking References to Arrays</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>aref = mylist
+anon_list = [1, 3, 5, 7, 9]
+anon_copy = anon_list
+implicit_creation = [2, 4, 6, 8, 10]
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>anon_list.append(11)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>two = implicit_creation[0]
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#  </span><span class="comment">To get the last index of a list, you can use len() 
+</span><span class="comment-delimiter"># </span><span class="comment">[or list.__len__() - but don't] directly
+</span>last_idx = <span class="py-builtins">len</span>(aref) - 1
+
+<span class="comment-delimiter"># </span><span class="comment">Normally, though, you'd use an index of -1 for the last
+</span><span class="comment-delimiter"># </span><span class="comment">element, -2 for the second last, etc.
+</span><span class="keyword">print</span> implicit_creation[-1]
+<span class="comment-delimiter">#</span><span class="comment">=&gt; 10
+</span>
+num_items = <span class="py-builtins">len</span>(aref)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>last_idx = aref.__len__() - 1
+num_items = aref.__len__()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">if</span> <span class="keyword">not</span> <span class="py-builtins">isinstance</span>(someVar, <span class="py-builtins">type</span>([])):
+    <span class="keyword">print</span> <span class="string">"Expected a list"</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">print</span> list_ref
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#   </span><span class="comment">sort is in place.
+</span>list_ref.sort()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>list_ref.append(item)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">def</span> <span class="function-name">list_ref</span>():
+    <span class="keyword">return</span> []
+
+aref1 = list_ref()
+aref2 = list_ref()
+<span class="comment-delimiter">#   </span><span class="comment">aref1 and aref2 point to different lists.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>list_ref[N] <span class="comment-delimiter"># </span><span class="comment">refers to the Nth item in the list_ref list.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">The following two statements are equivalent and return up to 3 elements
+</span><span class="comment-delimiter"># </span><span class="comment">at indices 3, 4, and 5 (if they exist).
+</span>pie[3:6]
+pie[3:6:1]
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#   </span><span class="comment">This will insert 3 elements, overwriting elements at indices 3,4, or 5 - if they exist.
+</span>pie[3:6] = [<span class="string">"blackberry"</span>, <span class="string">"blueberry"</span>, <span class="string">"pumpkin"</span>]
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">for</span> item <span class="keyword">in</span> pie:
+    <span class="keyword">print</span> item
+
+<span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS (this type of indexing should be done with enumerate)
+</span><span class="comment-delimiter"># </span><span class="comment">xrange does not create a list 0..len(pie) - 1, it creates an object 
+</span><span class="comment-delimiter"># </span><span class="comment">that returns one index at a time.
+</span><span class="keyword">for</span> idx <span class="keyword">in</span> <span class="py-builtins">xrange</span>(len(pie)):
+    <span class="keyword">print</span> pie[idx]</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN598"
+>Making Hashes of Arrays</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Making Hashes of Arrays
+</span>
+hash[<span class="string">"KEYNAME"</span>].append(<span class="string">"new value"</span>)
+
+<span class="keyword">for</span> mystr <span class="keyword">in</span> hash.keys():
+    <span class="keyword">print</span> <span class="string">"%s: %s"</span> % (mystr, hash[mystr])
+
+hash[<span class="string">"a key"</span>] = [3, 4, 5]
+
+values = hash[<span class="string">"a key"</span>]
+
+hash[<span class="string">"a key"</span>].append(value)
+
+<span class="comment-delimiter"># </span><span class="comment">autovivification also does not work in python.
+</span>residents = phone2name[number]
+<span class="comment-delimiter"># </span><span class="comment">do this instead
+</span>residents = phone2name.get(number, [])</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN601"
+>Taking References to Hashes</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">Taking References to Hashes
+</span>
+href = <span class="py-builtins">hash</span>
+anon_hash = { <span class="string">"key1"</span>:<span class="string">"value1"</span>, <span class="string">"key2"</span> : <span class="string">"value2 ..."</span> }
+anon_hash_copy = anon_hash.copy()
+
+<span class="py-builtins">hash</span> = href
+value = href[key]
+<span class="py-builtins">slice</span> = [href[k] <span class="keyword">for</span> k <span class="keyword">in</span> (key1, key2, key3)]
+keys = hash.keys()
+
+<span class="keyword">import</span> types
+<span class="keyword">if</span> <span class="py-builtins">type</span>(someref) != types.DictType:
+    <span class="keyword">raise</span> <span class="string">"Expected a dictionary, not %s"</span> % <span class="py-builtins">type</span>(someref)
+<span class="keyword">if</span> <span class="py-builtins">isinstance</span>(someref,dict):
+    <span class="keyword">raise</span> <span class="string">"Expected a dictionary, not %s"</span> % <span class="py-builtins">type</span>(someref)
+
+<span class="keyword">for</span> href <span class="keyword">in</span> ( ENV, INC ):
+    <span class="keyword">for</span> key <span class="keyword">in</span> href.keys():
+        <span class="keyword">print</span> <span class="string">"%s =&gt; %s"</span> % (key, href[key])
+
+values = [hash_ref[k] <span class="keyword">for</span> k <span class="keyword">in</span> (key1, key2, key3)]
+
+<span class="keyword">for</span> key <span class="keyword">in</span> (<span class="string">"key1"</span>, <span class="string">"key2"</span>, <span class="string">"key3"</span>):
+    hash_ref[k] += 7    <span class="comment-delimiter"># </span><span class="comment">not like in perl but the same result.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN604"
+>Taking References to Functions</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>cref = func
+cref = <span class="keyword">lambda</span> a, b: ...
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>returned = cref(arguments)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>funcname = <span class="string">"thefunc"</span>
+<span class="py-builtins">locals</span>()[funcname]();
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>commands = {
+    <span class="string">'happy'</span>: joy,
+    <span class="string">'sad'</span>: sullen,
+    <span class="string">'done'</span>: (<span class="keyword">lambda</span> : sys.exit()),  <span class="comment-delimiter"># </span><span class="comment">In this case "done: sys.exit" would suffice
+</span>    <span class="string">'mad'</span>: angry,
+    }
+
+<span class="keyword">print</span> <span class="string">"How are you?"</span>,
+cmd = <span class="py-builtins">raw_input</span>()
+<span class="keyword">if</span> cmd <span class="keyword">in</span> commands:
+    commands[cmd]()
+<span class="keyword">else:</span>
+    <span class="keyword">print</span> <span class="string">"No such command: %s"</span> % cmd
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">def</span> <span class="function-name">counter_maker</span>():
+    start = [0]
+    <span class="keyword">def</span> <span class="function-name">counter_function</span>():
+        <span class="comment-delimiter"># </span><span class="comment">start refers to the variable defined in counter_maker, but
+</span>        <span class="comment-delimiter"># </span><span class="comment">we can't reassign or increment variables in parent scopes.
+</span>        <span class="comment-delimiter"># </span><span class="comment">By using a one-element list we can modify the list without
+</span>        <span class="comment-delimiter"># </span><span class="comment">reassigning the variable.  This way of using a list is very
+</span>        <span class="comment-delimiter"># </span><span class="comment">like a reference.
+</span>        start[0] += 1
+        <span class="keyword">return</span> start[0]-1
+    <span class="keyword">return</span> counter_function
+
+counter = counter_maker()
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(5):
+    <span class="keyword">print</span> counter()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>counter1 = counter_maker()
+counter2 = counter_maker()
+
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(5):
+    <span class="keyword">print</span> counter1()
+<span class="keyword">print</span> counter1(), counter2()
+<span class="comment-delimiter">#</span><span class="comment">=&gt; 0
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; 1
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; 2
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; 3
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; 4
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; 5 0
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> time
+<span class="keyword">def</span> <span class="function-name">timestamp</span>():
+    start_time = time.time()
+    <span class="keyword">def</span> <span class="function-name">elapsed</span>():
+        <span class="keyword">return</span> time.time() - start_time
+    <span class="keyword">return</span> elapsed
+early = timestamp()
+time.sleep(20)
+later = timestamp()
+time.sleep(10)
+<span class="keyword">print</span> <span class="string">"It's been %d seconds since early"</span> % early()
+<span class="keyword">print</span> <span class="string">"It's been %d seconds since later"</span> % later()
+<span class="comment-delimiter">#</span><span class="comment">=&gt; It's been 30 seconds since early.
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt; It's been 10 seconds since later.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN607"
+>Taking References to Scalars</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">A name is a reference to an object and an object can be referred to
+</span><span class="comment-delimiter"># </span><span class="comment">by any number of names. There is no way to manipulate pointers or
+</span><span class="comment-delimiter"># </span><span class="comment">an object's id.  This section is thus inapplicable.
+</span>x = 1
+y = x
+<span class="keyword">print</span> x, <span class="py-builtins">id</span>(x), y, <span class="py-builtins">id</span>(y)
+x += 1    <span class="comment-delimiter"># </span><span class="comment">"x" now refers to a different object than y
+</span><span class="keyword">print</span> x, <span class="py-builtins">id</span>(x), y, <span class="py-builtins">id</span>(y)
+y = 4     <span class="comment-delimiter"># </span><span class="comment">"y" now refers to a different object than it did before
+</span><span class="keyword">print</span> x, <span class="py-builtins">id</span>(x), y, <span class="py-builtins">id</span>(y)
+
+<span class="comment-delimiter"># </span><span class="comment">Some objects (including ints and strings) are immutable, however, which
+</span><span class="comment-delimiter"># </span><span class="comment">can give the illusion of a by-value/by-reference distinction:
+</span>a = x = [1]
+b = y = 1
+c = z = <span class="string">"s"</span>
+<span class="keyword">print</span> a, b, c
+<span class="comment-delimiter">#</span><span class="comment">=&gt; [1] 1 s
+</span>
+x += x      <span class="comment-delimiter"># </span><span class="comment">calls list.__iadd__ which is inplace.
+</span>y += y      <span class="comment-delimiter"># </span><span class="comment">can't find int.__iadd__ so calls int.__add__ which isn't inplace
+</span>z += z      <span class="comment-delimiter"># </span><span class="comment">can't find str.__iadd__ so calls str.__add__ which isn't inplace              
+</span><span class="keyword">print</span> a, b, c
+<span class="comment-delimiter">#</span><span class="comment">=&gt; [1, 1] 1 s
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN610"
+>Creating Arrays of Scalar References</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">As indicated by the previous section, everything is referenced, so
+</span><span class="comment-delimiter"># </span><span class="comment">just create a list as normal, and beware that augmented assignment
+</span><span class="comment-delimiter"># </span><span class="comment">works differently with immutable objects to mutable ones:
+</span>mylist = [1, <span class="string">"s"</span>, [1]]
+<span class="keyword">print</span> mylist
+<span class="comment-delimiter">#</span><span class="comment">=&gt; [1, s, [1]]
+</span>
+<span class="keyword">for</span> elem <span class="keyword">in</span> mylist:
+    elem *= 2
+<span class="keyword">print</span> mylist
+<span class="comment-delimiter">#</span><span class="comment">=&gt; [1, s, [1, 1]]
+</span>
+mylist[0] *= 2
+mylist[-1] *= 2
+<span class="keyword">print</span> mylist
+<span class="comment-delimiter">#</span><span class="comment">=&gt; [1, s, [1, 1, 1, 1]]
+</span>
+<span class="comment-delimiter"># </span><span class="comment">If you need to modify every value in a list, you should use a list comprehension
+</span><span class="comment-delimiter"># </span><span class="comment">which does NOT modify inplace:
+</span><span class="keyword">import</span> math
+mylist = [(val**3 * 4/3*math.pi) <span class="keyword">for</span> val <span class="keyword">in</span> mylist]</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN613"
+>Using Closures Instead of Objects</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>c1 = mkcounter(20)
+c2 = mkcounter(77)
+
+<span class="keyword">print</span> <span class="string">"next c1: %d"</span> % c1[<span class="string">'next'</span>]()  <span class="comment-delimiter"># </span><span class="comment">21
+</span><span class="keyword">print</span> <span class="string">"next c2: %d"</span> % c2[<span class="string">'next'</span>]()  <span class="comment-delimiter"># </span><span class="comment">78
+</span><span class="keyword">print</span> <span class="string">"next c1: %d"</span> % c1[<span class="string">'next'</span>]()  <span class="comment-delimiter"># </span><span class="comment">22
+</span><span class="keyword">print</span> <span class="string">"last c1: %d"</span> % c1[<span class="string">'prev'</span>]()  <span class="comment-delimiter"># </span><span class="comment">21
+</span><span class="keyword">print</span> <span class="string">"old  c2: %d"</span> % c2[<span class="string">'reset'</span>]() <span class="comment-delimiter"># </span><span class="comment">77
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS.  Use an object instead  
+</span><span class="keyword">def</span> <span class="function-name">mkcounter</span>(start):
+    count = [start]
+    <span class="keyword">def</span> <span class="function-name">next</span>():
+        count[0] += 1
+        <span class="keyword">return</span> count[0]
+    <span class="keyword">def</span> <span class="function-name">prev</span>():
+        count[0] -= 1
+        <span class="keyword">return</span> count[0]
+    <span class="keyword">def</span> <span class="function-name">get</span>():
+        <span class="keyword">return</span> count[0]
+    <span class="keyword">def</span> <span class="function-name">set</span>(value):
+        count[0] = value
+        <span class="keyword">return</span> count[0]
+    <span class="keyword">def</span> <span class="function-name">bump</span>(incr):
+        count[0] += incr
+        <span class="keyword">return</span> count[0]
+    <span class="keyword">def</span> <span class="function-name">reset</span>():
+        count[0] = start
+        <span class="keyword">return</span> count[0]
+    <span class="keyword">return</span> {
+        <span class="string">'next'</span>: next, <span class="string">'prev'</span>: prev, <span class="string">'get'</span>: get, <span class="string">'set'</span>: set,
+        <span class="string">'bump'</span>: bump, <span class="string">'reset'</span>: reset, <span class="string">'last'</span>: prev}
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN616"
+>Creating References to Methods</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>mref = obj.meth
+<span class="comment-delimiter"># </span><span class="comment">later...
+</span>mref(<span class="string">"args"</span>, <span class="string">"go"</span>, <span class="string">"here"</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN619"
+>Constructing Records</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>record = {
+    <span class="string">"name"</span>: <span class="string">"Jason"</span>,
+    <span class="string">"empno"</span>: 132,
+    <span class="string">"title"</span>: <span class="string">"deputy peon"</span>,
+    <span class="string">"age"</span>: 23,
+    <span class="string">"salary"</span>: 37000,
+    <span class="string">"pals"</span>: [<span class="string">"Norbert"</span>, <span class="string">"Rhys"</span>, <span class="string">"Phineas"</span>],
+}
+<span class="keyword">print</span> <span class="string">"I am %s, and my pals are %s."</span> % (record[<span class="string">"name"</span>],
+                                        <span class="string">", "</span>.join(record[<span class="string">"pals"</span>]))
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>byname = {}
+byname[record[<span class="string">"name"</span>]] = record
+
+rp = byname.get(<span class="string">"Aron"</span>)
+<span class="keyword">if</span> rp:
+     <span class="keyword">print</span> <span class="string">"Aron is employee %d."</span>% rp[<span class="string">"empno"</span>]
+
+byname[<span class="string">"Jason"</span>][<span class="string">"pals"</span>].append(<span class="string">"Theodore"</span>)
+<span class="keyword">print</span> <span class="string">"Jason now has %d pals."</span> % <span class="py-builtins">len</span>(byname[<span class="string">"Jason"</span>][<span class="string">"pals"</span>])
+
+<span class="keyword">for</span> name, record <span class="keyword">in</span> byname.items():
+    <span class="keyword">print</span> <span class="string">"%s is employee number %d."</span> % (name, record[<span class="string">"empno"</span>])
+
+employees = {}
+employees[record[<span class="string">"empno"</span>]] = record;
+
+<span class="comment-delimiter"># </span><span class="comment">lookup by id
+</span>rp = employees.get(132)
+<span class="keyword">if</span> (rp):
+    <span class="keyword">print</span> <span class="string">"Employee number 132 is %s."</span> % rp[<span class="string">"name"</span>]
+
+byname[<span class="string">"Jason"</span>][<span class="string">"salary"</span>] *= 1.035
+
+peons = [r <span class="keyword">for</span> r <span class="keyword">in</span> employees.values() <span class="keyword">if</span> r[<span class="string">"title"</span>] == <span class="string">"peon"</span>]
+tsevens = [r <span class="keyword">for</span> r <span class="keyword">in</span> employees.values() <span class="keyword">if</span> r[<span class="string">"age"</span>] == 27]
+
+<span class="comment-delimiter"># </span><span class="comment">Go through all records
+</span><span class="keyword">print</span> employees.values()
+
+<span class="keyword">for</span> rp <span class="keyword">in</span> sorted(employees.values(), key=<span class="keyword">lambda</span> x:x[<span class="string">"age"</span>]):
+    <span class="keyword">print</span> <span class="string">"%s is age %d."</span>%(rp[<span class="string">"name"</span>], rp[<span class="string">"age"</span>])
+
+<span class="comment-delimiter"># </span><span class="comment">use @byage, an array of arrays of records
+</span>byage = {}
+byage[record[<span class="string">"age"</span>]] = byage.get(record[<span class="string">"age"</span>], []) + [record]
+
+<span class="keyword">for</span> age, records <span class="keyword">in</span> byage.items():
+    <span class="keyword">print</span> records
+    <span class="keyword">print</span> <span class="string">"Age %s:"</span>%age,
+    <span class="keyword">for</span> rp <span class="keyword">in</span> records:
+        <span class="keyword">print</span> rp[<span class="string">"name"</span>],
+    <span class="keyword">print</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN622"
+>Reading and Writing Hash Records to Text Files</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>FieldName: Value
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">for</span> record <span class="keyword">in</span> list_of_records:
+    <span class="comment-delimiter"># </span><span class="comment">Note: sorted added in Python 2.4
+</span>    <span class="keyword">for</span> key <span class="keyword">in</span> sorted(record.keys()):
+        <span class="keyword">print</span> <span class="string">"%s: %s"</span> % (key, record[key])
+    <span class="keyword">print</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> re
+list_of_records = [{}]
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+    line = sys.stdin.readline()
+    <span class="keyword">if</span> <span class="keyword">not</span> line:
+        <span class="comment-delimiter"># </span><span class="comment">EOF
+</span>        <span class="keyword">break</span>
+    <span class="comment-delimiter"># </span><span class="comment">Remove trailing \n:
+</span>    line = line[:1]
+    <span class="keyword">if</span> <span class="keyword">not</span> line.strip():
+        <span class="comment-delimiter"># </span><span class="comment">New record
+</span>        list_of_records.append({})
+        <span class="keyword">continue</span>
+    key, value = re.split(r<span class="string">':\s*'</span>, line, 1)
+    <span class="comment-delimiter"># </span><span class="comment">Assign the key/value to the last item in the list_of_records:
+</span>    list_of_records[-1][key] = value
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN625"
+>Printing Data Structures</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"></span><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">import</span> pprint
+
+mylist = [[1,2,3], [4, [5,6,7], 8,9, [0,3,5]], 7, 8]
+mydict = {<span class="string">"abc"</span>: <span class="string">"def"</span>, <span class="string">"ghi"</span>:[1,2,3]}
+pprint.pprint(mylist, width=1)
+
+fmtdict = pprint.pformat(mydict, width=1)
+<span class="keyword">print</span> fmtdict
+<span class="comment-delimiter"># </span><span class="comment">"import pprint; help(pprint)" for more details
+</span>
+<span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">Note that pprint does not currently handle user objects
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN628"
+>Copying Data Structures</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"></span><span class="comment-delimiter"></span><span class="comment"></span>newlist = <span class="py-builtins">list</span>(mylist) <span class="comment-delimiter"># </span><span class="comment">shallow copy
+</span>newdict = <span class="py-builtins">dict</span>(mydict) <span class="comment-delimiter"># </span><span class="comment">shallow copy
+</span>
+<span class="comment-delimiter"># </span><span class="comment">Pre 2.3:
+</span><span class="keyword">import</span> copy
+newlist = copy.copy(mylist) <span class="comment-delimiter"># </span><span class="comment">shallow copy
+</span>newdict = copy.copy(mydict) <span class="comment-delimiter"># </span><span class="comment">shallow copy
+</span>
+<span class="comment-delimiter"># </span><span class="comment">shallow copies copy a data structure, but don't copy the items in those
+</span><span class="comment-delimiter"># </span><span class="comment">data structures so if there are nested data structures, both copy and
+</span><span class="comment-delimiter"># </span><span class="comment">original will refer to the same object
+</span>mylist = [<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>]
+newlist = <span class="py-builtins">list</span>(mylist)
+mylist[0] = <span class="string">"0"</span>
+<span class="keyword">print</span> mylist, newlist
+<span class="comment-delimiter">#</span><span class="comment">=&gt; ['0', '2', '3'] ['1', '2', '3']
+</span>
+mylist = [[<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>], 4]
+newlist = <span class="py-builtins">list</span>(mylist)
+mylist[0][0] = <span class="string">"0"</span>
+<span class="keyword">print</span> mylist, newlist
+<span class="comment-delimiter">#</span><span class="comment">=&gt; [['0', '2', '3'], 4] [['0', '2', '3'], 4]
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> copy
+newlist = copy.deepcopy(mylist) <span class="comment-delimiter"># </span><span class="comment">deep copy
+</span>newdict = copy.deepcopy(mydict) <span class="comment-delimiter"># </span><span class="comment">deep copy
+</span>
+<span class="comment-delimiter"># </span><span class="comment">deep copies copy a data structure recursively:
+</span><span class="keyword">import</span> copy
+
+mylist = [[<span class="string">"1"</span>, <span class="string">"2"</span>, <span class="string">"3"</span>], 4]
+newlist = copy.deepcopy(mylist)
+mylist[0][0] = <span class="string">"0"</span>
+<span class="keyword">print</span> mylist, newlist
+<span class="comment-delimiter">#</span><span class="comment">=&gt; [['0', '2', '3'], 4] [['1', '2', '3'], 4]
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN631"
+>Storing Data Structures to Disk</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"></span><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">import</span> pickle
+<span class="keyword">class</span> <span class="type">Foo</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.val = 1
+
+x = Foo()
+x.val = 3
+p_x = pickle.dumps(x)  <span class="comment-delimiter"># </span><span class="comment">Also pickle.dump(x, myfile) which writes to myfile
+</span><span class="keyword">del</span> x
+x = pickle.loads(p_x)  <span class="comment-delimiter"># </span><span class="comment">Also x = pickle.load(myfile) which loads from myfile
+</span><span class="keyword">print</span> x.val
+<span class="comment-delimiter">#</span><span class="comment">=&gt; 3
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN634"
+>Transparently Persistent Data Structures</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"></span><span class="comment-delimiter"></span><span class="comment"></span><span class="keyword">import</span> os, shelve
+fname = <span class="string">"testfile.db"</span>
+<span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(fname):
+    d = shelve.open(<span class="string">"testfile.db"</span>)
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(100000):
+        d[<span class="py-builtins">str</span>(i)] = i
+    d.close()
+
+d = shelve.open(<span class="string">"testfile.db"</span>)
+<span class="keyword">print</span> d[<span class="string">"100"</span>]
+<span class="keyword">print</span> d[<span class="string">"1212010201"</span>] <span class="comment-delimiter"># </span><span class="comment">KeyError
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN637"
+>Program: Binary Trees</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">bintree - binary tree demo program
+</span><span class="comment-delimiter"># </span><span class="comment">Use the heapq module instead?
+</span><span class="keyword">import</span> random
+<span class="keyword">import</span> warnings
+
+<span class="keyword">class</span> <span class="type">BTree</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.value = <span class="py-pseudo-keyword">None</span>
+    
+    <span class="comment-delimiter">#</span><span class="comment">## insert given value into proper point of
+</span>    <span class="comment-delimiter">#</span><span class="comment">## the tree, extending this node if necessary.
+</span>    <span class="keyword">def</span> <span class="function-name">insert</span>(<span class="py-pseudo-keyword">self</span>, value):
+        <span class="keyword">if</span> <span class="py-pseudo-keyword">self</span>.value <span class="keyword">is</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="py-pseudo-keyword">self</span>.left = BTree()
+            <span class="py-pseudo-keyword">self</span>.right = BTree()
+            <span class="py-pseudo-keyword">self</span>.value = value
+        <span class="keyword">elif</span> <span class="py-pseudo-keyword">self</span>.value &gt; value:
+            <span class="py-pseudo-keyword">self</span>.left.insert(value)
+        <span class="keyword">elif</span> <span class="py-pseudo-keyword">self</span>.value &lt; value:
+            <span class="py-pseudo-keyword">self</span>.right.insert(value)
+        <span class="keyword">else:</span>
+            warnings.warn(<span class="string">"Duplicate insertion of %s."</span>%value)
+            
+    <span class="comment-delimiter"># </span><span class="comment">recurse on left child, 
+</span>    <span class="comment-delimiter"># </span><span class="comment">then show current value, 
+</span>    <span class="comment-delimiter"># </span><span class="comment">then recurse on right child.
+</span>    <span class="keyword">def</span> <span class="function-name">in_order</span>(<span class="py-pseudo-keyword">self</span>):
+       <span class="keyword">if</span> <span class="py-pseudo-keyword">self</span>.value <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+           <span class="py-pseudo-keyword">self</span>.left.in_order()
+           <span class="keyword">print</span> <span class="py-pseudo-keyword">self</span>.value,
+           <span class="py-pseudo-keyword">self</span>.right.in_order()
+
+    <span class="comment-delimiter"># </span><span class="comment">show current value, 
+</span>    <span class="comment-delimiter"># </span><span class="comment">then recurse on left child, 
+</span>    <span class="comment-delimiter"># </span><span class="comment">then recurse on right child.
+</span>    <span class="keyword">def</span> <span class="function-name">pre_order</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">if</span> <span class="py-pseudo-keyword">self</span>.value <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="keyword">print</span> <span class="py-pseudo-keyword">self</span>.value,
+            <span class="py-pseudo-keyword">self</span>.left.pre_order()
+            <span class="py-pseudo-keyword">self</span>.right.pre_order()
+    
+    <span class="comment-delimiter"># </span><span class="comment">recurse on left child, 
+</span>    <span class="comment-delimiter"># </span><span class="comment">then recurse on right child,
+</span>    <span class="comment-delimiter"># </span><span class="comment">then show current value. 
+</span>    <span class="keyword">def</span> <span class="function-name">post_order</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">if</span> <span class="py-pseudo-keyword">self</span>.value <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="py-pseudo-keyword">self</span>.left.post_order()
+            <span class="py-pseudo-keyword">self</span>.right.post_order()
+            <span class="keyword">print</span> <span class="py-pseudo-keyword">self</span>.value,
+
+    <span class="comment-delimiter"># </span><span class="comment">find out whether provided value is in the tree.
+</span>    <span class="comment-delimiter"># </span><span class="comment">if so, return the node at which the value was found.
+</span>    <span class="comment-delimiter"># </span><span class="comment">cut down search time by only looking in the correct
+</span>    <span class="comment-delimiter"># </span><span class="comment">branch, based on current value.
+</span>    <span class="keyword">def</span> <span class="function-name">search</span>(<span class="py-pseudo-keyword">self</span>, value):
+        <span class="keyword">if</span> <span class="py-pseudo-keyword">self</span>.value <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="keyword">if</span> <span class="py-pseudo-keyword">self</span>.value == value:
+                <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>
+            <span class="keyword">if</span> value &lt; <span class="py-pseudo-keyword">self</span>.value:
+                <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.left.search(value)
+            <span class="keyword">else:</span>
+                <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.right.search(value)
+
+<span class="keyword">def</span> <span class="function-name">test</span>():
+    root = BTree()
+
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(20):
+        root.insert(random.randint(1, 1000))
+
+    <span class="comment-delimiter"># </span><span class="comment">now dump out the tree all three ways
+</span>    <span class="keyword">print</span> <span class="string">"Pre order: "</span>, root.pre_order()
+    <span class="keyword">print</span> <span class="string">"In order:  "</span>, root.in_order()
+    <span class="keyword">print</span> <span class="string">"Post order:"</span>, root.post_order()
+
+    <span class="comment-delimiter">#</span><span class="comment">## prompt until empty line
+</span>    <span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+        val = <span class="py-builtins">raw_input</span>(<span class="string">"Search? "</span>).strip()
+        <span class="keyword">if</span> <span class="keyword">not</span> val:
+            <span class="keyword">break</span>
+        val = <span class="py-builtins">int</span>(val)
+        found = root.search(val)
+        <span class="keyword">if</span> found:
+            <span class="keyword">print</span> <span class="string">"Found %s at %s, %s"</span>%(val, found, found.value)
+        <span class="keyword">else:</span>
+            <span class="keyword">print</span> <span class="string">"No %s in tree"</span> % val
+            
+<span class="keyword">if</span> <span class="py-builtins">__name__</span> == <span class="string">"__main__"</span>:
+    test()</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="subroutines.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="packagesetc.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Subroutines</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Packages, Libraries, and Modules</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,9 @@
+[Library]
+name = BeginnerPython
+global_name = BeginnerPython
+long_name = BeginnerPython
+category = media
+library_version = 1
+host_version = 1
+l10n = false
+locale = en
