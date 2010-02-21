@@ -2,4 +2,7 @@
 Vpinfo(gtk.gdk)
 p2
 I27
+sVimport gdk
+p3
+I53
 s.

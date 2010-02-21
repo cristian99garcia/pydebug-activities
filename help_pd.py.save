@@ -22,22 +22,13 @@ from gettext import gettext as _
 
 import gtk
 import gobject
-import glib
-import wnck
-from time import time
-from sugar import util
 
 from sugar.activity import activity
-from sugar.graphics.toolbox import Toolbox
-from sugar.activity.activityhandle import ActivityHandle
 from sugar.graphics.toolbutton import ToolButton
-from sugar.graphics.window import Window
-from jarabe.model import shell
 
 import hulahop
 hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
-import pytoolbar
-import notebook
+from zipfile import ZipFile, ZipInfo
 
 #from hulahop.webview import WebView
 from browser import Browser
@@ -48,15 +39,14 @@ gobject.threads_init()
 
 #HOME = os.path.join(activity.get_bundle_path(), 'help/index.html')
 #HOME = "http://website.com/something.html"
-HELP_PANE = 3
 
 # Initialize logging.
 import logging
-#from sugar import logger
+from sugar import logger
 #Get the standard logging directory. 
 _logger = logging.getLogger('PyDebug')
 
-
+ZIP_SUFFIXES = ['.xol','.zip',]
 sugar_activity_root = os.environ['SUGAR_ACTIVITY_ROOT']
 help_notebook_pages = []
 
@@ -86,106 +76,28 @@ class HelpToolbar(gtk.Toolbar):
         self.insert(home, -1)
         home.show()
 
-class Help(Window):
+class Help():
     current_url_prefix = ''
     file_changed = False
     current_web_view = None
     web_view_list = []
     def __init__(self, parent):
         self.pydebug = parent
-        self.handle = ActivityHandle()
-        #self._forward.connect('clicked', self.help_toolbar_parent._go_forward_cb)
-        self.handle.activity_id = util.unique_id()
-        Window.__init__(self)
-        self.parent_x11 = None
-        self.url_root = 'file://'+ self.pydebug.sugar_bundle_path +"/"+_('help/PyDebug.htm')
-
-        #set up tool box/menu buttonsself.help
-        self.toolbox = Toolbox()
-        self.toolbox.connect('current_toolbar_changed',self.goto_cb)
-        
-        activitybar = gtk.Toolbar()
-        self.toolbox.add_toolbar(_('Activity'), activitybar)
-        activitybar.show_all()
-        
-        editbar = gtk.Toolbar()
-        self.toolbox.add_toolbar(_('Edit'), editbar)
-        #editbar.connect('current_toolbar_changed', self.goto_cb,1)
-        editbar.show_all()
-        
-        projectbar = gtk.Toolbar()
-        self.toolbox.add_toolbar(_('Project'), projectbar)
-        #projectbar.connect('current_toolbar_changed', self.goto_cb,2)
-        projectbar.show_all()
-        
-        self.help_toolbar = HelpToolbar(self)
+        self.url_root = 'file://'+ self.sugar_bundle_path +"/"+_('help/PyDebug.htm')
+        self.help_toolbar = HelpToolbar(self.pydebug)
         self.help_toolbar.show()
-        self.toolbox.add_toolbar(_('Help'), self.help_toolbar)
-        self.toolbox._notebook.set_current_page(HELP_PANE)
-
-        
-        self.set_toolbox(self.toolbox)
-        self.toolbox.show()
-
         self.first_webview = self.new_tab(self.url_root)
         self.web_view_list.append(self.first_webview)
         self.current_web_view = self.first_webview
-        #self.first_webview.load_uri(self.url_root)
-        self.set_canvas(self._get_help_notebook())
-        self.connect('realize',self.realize_cb)
+        translation = self.translate_zip_url(self.url_root)
+        _logger.debug("this is url root: %s"%translation)
+        self.first_webview.load_uri(translation)
         
-        home_model = shell.get_model()
-        activity = home_model.get_activity_by_id(self.pydebug.handle.activity_id)
-        if activity:
-            window = activity.get_window()
-        else:
-            _logger.debug('activity lookup from activity_id failed')
-            window = None
-        if window:
-            self.pywin = window
-        else:
-            self.pywin = None
-            _logger.debug('pydebug_window was none')
-            
-    def realize_help(self):
-        _logger.debug('realize help called')
-        self.show_all()
-        return self
-    
-    def realize_cb(self, window):
-        self.help_id = util.unique_id()
-        wm.set_activity_id(window, self.help_id)
-            
-    def activate_help(self):
-        _logger.debug('activate_help called')
-        home_model = shell.get_model()
-        activity = home_model.get_activity_by_id(self.help_id)
-        window = activity.get_window()
-        if window:
-            window.activate(gtk.get_current_event_time())
-        else:
-            _logger.debug('wnck_window was none')
-                
-    def goto_cb(self, page, tab):
-        _logger.debug('current_toolbar_changed event called goto_cb. tab: %s'%tab)
-        if tab == HELP_PANE: return
-        self.pydebug.set_toolbar(tab)
-        if self.pywin:
-            pywiin.activate(gtk.get_current_event_time())
+    def get_help_toolbar(self):
+        return self.help_toolbar
         
-    def delay(self, msec):
-        end = time() + msec / 1000.0
-        while time() < end:
-            glib.MainContext.iteration(may_block=False)
-            
     def _get_help_canvas(self):
         nb = gtk.Notebook()
-        nb.show()        
-        nb.append_page(self.first_webview)
-        return nb
-        
-    def _get_help_notebook(self):
-        nb = notebook.Notebook( can_close_tabs=True)
         nb.show()        
         nb.append_page(self.first_webview)
         self.help_notebook = nb
@@ -206,10 +118,7 @@ class Help(Window):
         progress_listener.connect('loading-stop', self._loading_stop_cb)
 
         return self._web_view
-        
-    def get_help_toolbar(self):
-        return self.help_toolbar
-
+    
     def repaint(self):
         self._web_view.load_uri(self.current_url)
         
@@ -217,8 +126,53 @@ class Help(Window):
         return self.first_webview
 
     def _location_changed_cb(self, progress_listener, uri):
+        myuri=''
+        myuri = str(uri)
+        _logger.debug('location changed callback %s'%(myuri))
         self.update_navigation_buttons()
+        target = self.translate_zip_url(uri)
+        _logger.debug(' which translated to %s'%(target))
+        #self.current_webview.load_uri(target)
+        uri = target
     
+    def translate_zip_url(self,uri): #string in, string returned
+        #if this file is already unzipped then allow normal processing
+        if os.path.isfile(uri[7:]):  #don't want the leading 'file://'
+            return uri
+        #look for the zip suffixes in the uri
+        self.current_url_prefix = ''
+        for pattern in ZIP_SUFFIXES:
+            if uri.find(pattern) > -1:
+                self.current_url_prefix = uri[:uri.find(pattern)] + pattern
+                found_pattern = pattern
+        if self.current_url_prefix == '':
+            return uri
+        _logger.debug('pattern found:%s. Prefix: %s'%(found_pattern,self.current_url_prefix))
+
+        #find the file in the zip, write it somewhere writeable, load this url instead
+        zipfile_name = self.current_url_prefix[7:] #clip off the leading "file:"
+        name_in_zip = uri[len(self.current_url_prefix)+1:]
+        try:
+            zf = ZipFile(zipfile_name,'r')
+        except:
+            _logger.debug('Opening Zip file failed: %s'%zipfile_name)             
+            return uri
+        try: #first check to see if this location is already filled
+            dest = os.path.join(sugar_activity_root,'tmp')
+            write_zip_to_here = os.path.join(dest, name_in_zip)
+            if os.path.isfile(write_zip_to_here):
+                return write_zip_to_here
+            else:
+                zf.extract(name_in_zip,dest)
+                _logger.debug('Writing Zip file to %s '%(write_zip_to_here))             
+        except:
+            _logger.debug('Extracting Zip file %s to %s failed'%(name_in_zip,dest))             
+        #self.current_web_view.load_uri(dest)
+        self.last_file_unzipped = write_zip_to_here
+        url = 'file://' + self.last_file_unzipped
+        uri.replace(url)
+        return(url)
+
     def _loading_stop_cb(self, progress_listener):
         self.update_navigation_buttons()
 

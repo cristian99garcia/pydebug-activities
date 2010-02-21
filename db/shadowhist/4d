@@ -1,11 +1,14 @@
 (dp1
-Vp o.xmode
+Vdd = dm.get_default_display()
 p2
-I23
-sVdl = dm.list_displays(dm)
+I54
+sVp o.xmode
 p3
-I44
+I23
 sVimport gtk
 p4
 I29
+sVdl = dm.list_displays(dm)
+p5
+I44
 s.

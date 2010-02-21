@@ -140,7 +140,6 @@ class Help(Window):
             window = activity.get_window()
         else:
             _logger.debug('activity lookup from activity_id failed')
-            window = None
         if window:
             self.pywin = window
         else:

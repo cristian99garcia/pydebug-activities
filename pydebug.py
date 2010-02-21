@@ -44,6 +44,7 @@ from sugar.graphics.alert import *
 import sugar.activity.bundlebuilder as bundlebuilder
 from sugar.bundle.activitybundle import ActivityBundle
 from sugar.activity import activityfactory
+from jarabe.model import shell
 
 #application stuff
 from terminal_pd import Terminal
@@ -94,7 +95,7 @@ class SearchOptions(Options):
     pass
 S_WHERE = sourceview_editor.S_WHERE
     
-class PyDebugActivity(Activity,Terminal,Help):
+class PyDebugActivity(Activity,Terminal):
     MIME_TYPE = 'application/vnd.olpc-sugar'
     DEPRECATED_MIME_TYPE = 'application/vnd.olpc-x-sugar'
     _zipped_extension = '.xo'
@@ -102,7 +103,9 @@ class PyDebugActivity(Activity,Terminal,Help):
     dirty = False
     
     def __init__(self, handle):
-        _logger.debug('Activity id:%s.Object id: %s. uri:%s'%(handle.activity_id, handle.object_id, handle.uri))
+        self.handle = handle
+        _logger.debug('Activity id:%s.Object id: %s. uri:%s'%(handle.activity_id, 
+                    handle.object_id, handle.uri))
         #Save a global poiinter so remote procedure calls can communicate with pydebug
         global pydebug_instance
         pydebug_instance = self
@@ -113,6 +116,7 @@ class PyDebugActivity(Activity,Terminal,Help):
         self.source_directory = None
         self.data_file = None
         self.help = None
+        self.help_x11 = None
         self.project_dirty = False
         self.sock = None
         self.last_filename = None
@@ -129,7 +133,7 @@ class PyDebugActivity(Activity,Terminal,Help):
         # init the Classes we are subclassing
         Activity.__init__(self, handle,  create_jobject = False)
         #Terminal has no needs for init
-        Help.__init__(self,self)
+        #Help.__init__(self,self)
         
         # setup the search options
         self.s_opts = SearchOptions(where = S_WHERE.multifile,
@@ -375,8 +379,8 @@ class PyDebugActivity(Activity,Terminal,Help):
         projectbar.insert(project_run, -1)
         self.toolbox.add_toolbar(_('Project'), projectbar)
         
-        #self.help = Help(self)
-        helpbar = self.get_help_toolbar()
+        self.help = Help(self)
+        helpbar = self.help.get_help_toolbar()
         self.toolbox.add_toolbar(_('Help'), helpbar)
 
         
@@ -544,13 +548,21 @@ class PyDebugActivity(Activity,Terminal,Help):
         return fr
 
              
+    def _get_help_canvas(self):
+        fr = gtk.Frame()
+        label = gtk.Label(_("Loading Help Page"))
+        label.show()       
+        fr.add(label)
+        fr.show()
+        return fr
+
     def get_icon_pixbuf(self, stock):
         return self.treeview.render_icon(stock_id=getattr(gtk, stock),
                                 size=gtk.ICON_SIZE_MENU,
                                 detail=None)
 
  
-        
+    """    
     def _get_help_canvas(self):
         fr = gtk.Frame() #FIXME explore whether frame is still needed--was to fix webview problem
         fr.show()
@@ -560,7 +572,7 @@ class PyDebugActivity(Activity,Terminal,Help):
         nb.append_page(self.get_first_webview())
         self.help_notebook = nb
         return fr
-    
+    """
         
     def _child_cb(self,event):
         pass
@@ -574,6 +586,8 @@ class PyDebugActivity(Activity,Terminal,Help):
         if index == self.panes['TERMINAL']:
             self.set_terminal_focus()
             self.editor.save_all()
+        elif index == self.panes['HELP']:
+            self.help_selected()
         self.current_pd_page = index
                 
     def _toolbar_changed_cb(self,widget,tab_no):
@@ -1393,6 +1407,30 @@ class PyDebugActivity(Activity,Terminal,Help):
         os.unlink(self.delete_file_storage)
         self.manifest_class.set_file_sys_root(self.child_path)
         self.manifest_class.position_recent()
+     
+     
+    ################  Help routines
+    def help_selected(self):
+        """
+        if help is not created in a gtk.mainwindow then create it
+        else just switch to that viewport
+        """
+        if not self.help_x11:
+            self.help_x11 = self.help.realize_help()
+            #self.x11_window = self.get_x11()
+        else:
+            self.help.activate_help()
+            #self.help.reshow()
+            #self.help.toolbox.set_current_page(self.panes['HELP']
+    
+    def get_x11(self):
+        home_model = shell.get_model()
+        activity = home_model.get_active_activity()
+        if activity and activity.get_window():
+            
+            return activity.get_window().activate(1)
+        else:
+            return None
     
     ################  save config state from one invocation to another -- not activity state 
     def get_config(self):
