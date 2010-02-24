@@ -1350,6 +1350,7 @@ class PyDebugActivity(Activity,Terminal):
     def write_activity_info(self):
         #write the activity.info file
         _logger.debug('entered write_actiity_info')
+        if self.child_path == None: return
         filen = os.path.join(self.child_path,'activity','activity.info')
         #try:
         with open(filen,'r') as fd:

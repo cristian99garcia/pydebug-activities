@@ -18,6 +18,7 @@
 #       The browser.py and webview.py modules included are essential for PyDebug
 #
 import os
+
 from gettext import gettext as _
 
 import gtk
@@ -32,7 +33,10 @@ from sugar.graphics.toolbox import Toolbox
 from sugar.activity.activityhandle import ActivityHandle
 from sugar.graphics.toolbutton import ToolButton
 from sugar.graphics.window import Window
+from sugar import wm
 from jarabe.model import shell
+#from IPython.Debugger import Tracer
+from pdb import *
 
 import hulahop
 hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
@@ -91,6 +95,7 @@ class Help(Window):
     file_changed = False
     current_web_view = None
     web_view_list = []
+    pywin = None
     def __init__(self, parent):
         self.pydebug = parent
         self.handle = ActivityHandle()
@@ -134,32 +139,28 @@ class Help(Window):
         self.set_canvas(self._get_help_notebook())
         self.connect('realize',self.realize_cb)
         
-        home_model = shell.get_model()
-        activity = home_model.get_activity_by_id(self.pydebug.handle.activity_id)
-        if activity:
-            window = activity.get_window()
-        else:
-            _logger.debug('activity lookup from activity_id failed')
-        if window:
-            self.pywin = window
-        else:
-            self.pywin = None
-            _logger.debug('pydebug_window was none')
-            
+        #self.pywin = self.pydebug.window.window
+        
+           
     def realize_help(self):
         _logger.debug('realize help called')
+        print('about to enter Tracer')
+        #Tracer()
         self.show_all()
         return self
     
     def realize_cb(self, window):
         self.help_id = util.unique_id()
-        wm.set_activity_id(window, self.help_id)
+        #print('xid:%s'%window.window.get_xid())
+        wm.set_activity_id(window.window, self.help_id)
             
     def activate_help(self):
         _logger.debug('activate_help called')
         home_model = shell.get_model()
         activity = home_model.get_activity_by_id(self.help_id)
-        window = activity.get_window()
+        window = None
+        if activity:
+            window = activity.get_window()
         if window:
             window.activate(gtk.get_current_event_time())
         else:
@@ -169,8 +170,15 @@ class Help(Window):
         _logger.debug('current_toolbar_changed event called goto_cb. tab: %s'%tab)
         if tab == HELP_PANE: return
         self.pydebug.set_toolbar(tab)
+        home_model = shell.get_model()
+        activity = home_model.get_activity_by_id(str(self.pydebug.handle.activity_id))
+        set_trace()
+        if activity:
+            self.pywin = activity.get_window()
+        else:
+            _logger.debug('activity of pydebug window lookup from activity_id failed')
         if self.pywin:
-            pywiin.activate(gtk.get_current_event_time())
+            self.pywin.activate(gtk.get_current_event_time())
         
     def delay(self, msec):
         end = time() + msec / 1000.0

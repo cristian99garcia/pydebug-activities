@@ -103,7 +103,9 @@ class PyDebugActivity(Activity,Terminal):
     dirty = False
     
     def __init__(self, handle):
-        _logger.debug('Activity id:%s.Object id: %s. uri:%s'%(handle.activity_id, handle.object_id, handle.uri))
+        self.handle = handle
+        _logger.debug('Activity id:%s.Object id: %s. uri:%s'%(handle.activity_id, 
+                    handle.object_id, handle.uri))
         #Save a global poiinter so remote procedure calls can communicate with pydebug
         global pydebug_instance
         pydebug_instance = self

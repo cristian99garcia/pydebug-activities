@@ -44,21 +44,23 @@ class ActivityToolbar(gtk.Toolbar):
         activity.connect('notify::max_participants',
                          self.__max_participants_changed_cb)
 
-        if activity.metadata:
+        #if activity.metadata:
+        if True:
             self.title = gtk.Entry()
-            self.title.set_size_request(int(gtk.gdk.screen_width() / 3), -1)
-            self.title.set_text(activity.metadata['title'])
+            self.title.set_size_request(int(gtk.gdk.screen_width() / 6), -1)
+            if activity.metadata:
+                self.title.set_text(activity.metadata['title'])
+                activity.metadata.connect('updated', self.__jobject_updated_cb)
             self.title.connect('changed', self.__title_changed_cb)
             self._add_widget(self.title)
 
-            activity.metadata.connect('updated', self.__jobject_updated_cb)
-
+        """
         separator = gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_expand(True)
         self.insert(separator, -1)
         separator.show()
-
+        """
         self.share = ToolComboBox(label_text=_('Traceback:'))
         self.share.combo.connect('changed', self.__traceback_changed_cb)
         self.share.combo.append_item("traceback_plain", _('Plain'))

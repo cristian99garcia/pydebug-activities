@@ -1,3 +1,31 @@
+#!/usr/bin/env python
+#
+# Copyright (C) 2009, George Hunt <georgejhunt@gmail.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+import gtk
+import gconf
+
+from sugar.graphics.toolbox import Toolbox
+from sugar.graphics.xocolor import XoColor
+from sugar.graphics.icon import Icon
+from sugar.graphics.toolcombobox import ToolComboBox
+from sugar.graphics.toolbutton import ToolButton
+from gettext import gettext as _
+
 class ActivityToolbar(gtk.Toolbar):
     """The Activity toolbar with the Journal entry title, sharing,
        Keep and Stop buttons
@@ -16,14 +44,16 @@ class ActivityToolbar(gtk.Toolbar):
         activity.connect('notify::max_participants',
                          self.__max_participants_changed_cb)
 
-        if activity.metadata:
+        #if activity.metadata:
+        if True:
             self.title = gtk.Entry()
-            self.title.set_size_request(int(gtk.gdk.screen_width() / 3), -1)
-            self.title.set_text(activity.metadata['title'])
+            self.title.set_size_request(int(gtk.gdk.screen_width() / 8), -1)
+            if activity.metadata:
+                self.title.set_text(activity.metadata['title'])
+                activity.metadata.connect('updated', self.__jobject_updated_cb)
             self.title.connect('changed', self.__title_changed_cb)
             self._add_widget(self.title)
 
-            activity.metadata.connect('updated', self.__jobject_updated_cb)
 
         separator = gtk.SeparatorToolItem()
         separator.props.draw = False
@@ -31,11 +61,11 @@ class ActivityToolbar(gtk.Toolbar):
         self.insert(separator, -1)
         separator.show()
 
-        self.share = ToolComboBox(label_text=_('Share with:'))
-        self.share.combo.connect('changed', self.__share_changed_cb)
-        self.share.combo.append_item(SCOPE_PRIVATE, _('Private'), 'zoom-home')
-        self.share.combo.append_item(SCOPE_NEIGHBORHOOD, _('My Neighborhood'),
-                                     'zoom-neighborhood')
+        self.share = ToolComboBox(label_text=_('Traceback:'))
+        self.share.combo.connect('changed', self.__traceback_changed_cb)
+        self.share.combo.append_item("traceback_plain", _('Plain'))
+        self.share.combo.append_item('traceback_context', _('Context'))
+        self.share.combo.append_item('traceback_verbose', _('Verbose'))
         self.insert(self.share, -1)
         self.share.show()
 
@@ -75,15 +105,19 @@ class ActivityToolbar(gtk.Toolbar):
 
         self._updating_share = False
     
-    def __share_changed_cb(self, combo):
-        if self._updating_share:
-            return
-
+    def __traceback_changed_cb(self, combo):
         model = self.share.combo.get_model()
         it = self.share.combo.get_active_iter()
         (scope, ) = model.get(it, 0)
-        if scope == SCOPE_NEIGHBORHOOD:
-            self._activity.share()
+        if scope == 'traceback_plain':
+            self._activity.traceback = 'Plain'
+            self._activity.debug_dict['traceback'] = 'plain'
+        elif scope == 'traceback_context':
+            self._activity.traceback = 'Context'        
+            self._activity.debug_dict['traceback'] = 'context'
+        elif scope == 'traceback_verbose':
+            self._activity.traceback = 'Verbose'
+            self._activity.debug_dict['traceback'] = 'verbose'
 
     def __keep_clicked_cb(self, button):
         self._activity.copy()
@@ -128,67 +162,6 @@ class ActivityToolbar(gtk.Toolbar):
 
     def __max_participants_changed_cb(self, activity, pspec):
         self._update_share()
-
-class EditToolbar(gtk.Toolbar):
-    """Provides the standard edit toolbar for Activities.
- 
-    Members:
-        undo  -- the undo button
-        redo  -- the redo button
-        copy  -- the copy button
-        paste -- the paste button
-        separator -- A separator between undo/redo and copy/paste
-    
-    This class only provides the 'edit' buttons in a standard layout,
-    your activity will need to either hide buttons which make no sense for your
-    Activity, or you need to connect the button events to your own callbacks:
-    
-        ## Example from Read.activity:
-        # Create the edit toolbar:
-        self._edit_toolbar = EditToolbar(self._view)
-        # Hide undo and redo, they're not needed
-        self._edit_toolbar.undo.props.visible = False
-        self._edit_toolbar.redo.props.visible = False
-        # Hide the separator too:
-        self._edit_toolbar.separator.props.visible = False
-        
-        # As long as nothing is selected, copy needs to be insensitive:
-        self._edit_toolbar.copy.set_sensitive(False)
-        # When the user clicks the button, call _edit_toolbar_copy_cb()
-        self._edit_toolbar.copy.connect('clicked', self._edit_toolbar_copy_cb)
-        
-        # Add the edit toolbar:
-        toolbox.add_toolbar(_('Edit'), self._edit_toolbar)
-        # And make it visible:
-        self._edit_toolbar.show()
-    """
-    def __init__(self):
-        gtk.Toolbar.__init__(self)
-
-        self.undo = ToolButton('edit-undo')
-        self.undo.set_tooltip(_('Undo'))
-        self.insert(self.undo, -1)
-        self.undo.show()
-
-        self.redo = ToolButton('edit-redo')
-        self.redo.set_tooltip(_('Redo'))
-        self.insert(self.redo, -1)
-        self.redo.show()
-
-        self.separator = gtk.SeparatorToolItem()
-        self.separator.set_draw(True)
-        self.insert(self.separator, -1)
-        self.separator.show()
-
-        self.copy = ToolButton('edit-copy')
-        self.copy.set_tooltip(_('Copy'))
-        self.insert(self.copy, -1)
-        self.copy.show()
-
-        self.paste = ToolButton('edit-paste')
-        self.paste.set_tooltip(_('Paste'))
-        self.insert(self.paste, -1)
-        self.paste.show()
 
 class ActivityToolbox(Toolbox):
     """Creates the Toolbox for the Activity
