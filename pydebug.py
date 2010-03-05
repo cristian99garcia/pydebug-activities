@@ -25,11 +25,12 @@ import gtk
 import gtk.glade
 import vte
 import pango
-import gconf
+#import gconf
 #import glib
 import pickle
 import hashlib
 import time
+import gio
 
 #sugar stuff
 from sugar.graphics.toolbutton import ToolButton
@@ -44,7 +45,7 @@ from sugar.graphics.alert import *
 import sugar.activity.bundlebuilder as bundlebuilder
 from sugar.bundle.activitybundle import ActivityBundle
 from sugar.activity import activityfactory
-from jarabe.model import shell
+#from jarabe.model import shell
 
 #application stuff
 from terminal_pd import Terminal
@@ -106,13 +107,19 @@ class PyDebugActivity(Activity,Terminal):
         self.handle = handle
         _logger.debug('Activity id:%s.Object id: %s. uri:%s'%(handle.activity_id, 
                     handle.object_id, handle.uri))
+        ds = datastore.get(handle.object_id)
+        debugstr = ''
+        for key in ds.metadata.keys():
+            if key == 'preview': continue
+            debugstr += key + ':'+str(ds.metadata[key]) + ', '
+        _logger.debug('initial datastore metadata dictionary==>: %r'%debugstr)
         #Save a global poiinter so remote procedure calls can communicate with pydebug
         global pydebug_instance
         pydebug_instance = self
 
         #init variables
         self.make_paths()
-        
+        self.save_icon_clicked = False
         self.source_directory = None
         self.data_file = None
         self.help = None
@@ -124,14 +131,14 @@ class PyDebugActivity(Activity,Terminal):
         self.activity_dict = {}
         self.file_pane_is_activities = False
         self.manifest_treeview = None  #set up to recognize an re-display of playpen
-        self.set_title(_('PyDebug Activity'))
+        #self.set_title(_('PyDebug Activity'))
         self.ds = None #datastore pointer
         self._logger = _logger
         self.traceback = 'Context'
         self.abandon_changes = False
         
         # init the Classes we are subclassing
-        Activity.__init__(self, handle,  create_jobject = False)
+        Activity.__init__(self, handle,  create_jobject = True)
         #Terminal has no needs for init
         #Help.__init__(self,self)
         
@@ -391,7 +398,7 @@ class PyDebugActivity(Activity,Terminal):
         self.font_size = self.debug_dict.get('font_size',8) 
         
         
-        self.get_config ()
+        #self.get_config ()
         
         #set which PANE is visible initially
         self.set_visible_canvas(self.panes['PROJECT'])
@@ -419,34 +426,33 @@ class PyDebugActivity(Activity,Terminal):
             self.editor.change_font_size(self.font_size)
             self.debug_dict['font_size'] = self.font_size
        
-    #this code will probably be deleted
+    def command_line(self,cmd):
+        _logger.debug('command_line cmd:%s'%cmd)
+        p1 = Popen(cmd,stdout=PIPE, shell=True)
+        output = p1.communicate()
+        if p1.returncode != 0:
+            self.alert(' command returned non zero\n'+output[0])
+            return None
+        return output[0]
+        
+    def sugar_version(self):
+        cmd = '/bin/rpm -q sugar'
+        reply = self.command_line(cmd)
+        if reply and reply.find('sugar') > -1:
+            version = reply.split('-')[1]
+            version_chunks = version.split('.')
+            major_minor = version_chunks[0] + '.' + version_chunks[1]
+            return float(major_minor) 
+        return None
+        
     def non_blocking_server(self):
         start_threaded_server()
-        """
-        if self.sock == None:
-            self.sock = create_listener_socket(DEFAULT_PORT)
-            self.sock.setblocking(0)
-        rlist, wlist, slist = select.select([self.sock],[],[],0)
-        try:
-            if bool(rlist):
-                self.conn = Connection(self.sock)
-                self.conn.poll()
-                self.conn.close()
-        except:
-            pass
-        return True  #continue the call backs
-    """
     
     def new_pane(self,funct,i):
         self.panes[PANES[i]] = i
         self.canvas_list.append(funct())
         i += 1
         return i
-    """
-    def _get_debug_page(self):
-        n = self.pydebug_notebook.get_current_page()
-        return self.pydebug_notebook.get_nth_page(n)
-    """
     
     def make_paths(self):
         self.pydebug_path = os.environ['SUGAR_BUNDLE_PATH']
@@ -457,7 +463,7 @@ class PyDebugActivity(Activity,Terminal):
         _logger.debug('sugar_bundle_path:%s\nsugar_activity_root:%s'%(os.environ['SUGAR_BUNDLE_PATH'],
                                                                       os.environ['SUGAR_ACTIVITY_ROOT']))
         self.debugger_home = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'data')
-    
+        self.child_path = None
         os.environ["HOME"]=self.debugger_home
         os.environ['PATH'] = os.path.join(self.pydebug_path,'bin:') + os.environ['PATH']
         self.storage = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'data/pydebug')
@@ -465,20 +471,6 @@ class PyDebugActivity(Activity,Terminal):
         self.activity_playpen = os.path.join(self.storage,'playpen')
         if not os.path.isdir(self.activity_playpen):
             os.makedirs(self.activity_playpen)
-        """
-        loaded_list = os.listdir(self.activity_playpen)
-        basename = []
-        for f in loaded_list:
-            if f.startswith('.'):continue
-            if not f.endswith('.activity'):continue
-            basename.append(f) #if more than one pick the last
-        #when activity is loaded, child_path endswith '.activity' and is sub-dir of playpen
-        if basename != '':
-            self.child_path = os.path.join(self.activity_playpen,basename)
-        else:
-            self.child_path = None
-        #os.chdir(self.activity_playpen)
-        """
         
     def _get_edit_canvas(self):
         self.editor =  sourceview_editor.GtkSourceview2Editor(self)
@@ -726,17 +718,16 @@ class PyDebugActivity(Activity,Terminal):
     ######  SUGAR defined read and write routines -- do not let them overwrite what's on disk
     
     def read_file(self, file_path):
-        interesting_keys = ['mtime','mime_type','package','checksum','title','timestamp','icon-color','uid']
-        for key in interesting_keys:
-            if self.metadata.has_key(key):
-                self.activity_dict[key] = self.metadata[key]
-        _logger.debug('RELOADING ACTIVITY DATA...Mime_type:%s. File_path:%s.'%(self.metadata['mime_type'],
-                                                                               file_path))
+        #interesting_keys = ['mtime','mime_type','package','checksum','title','timestamp','icon-color','uid']
+        #for key in interesting_keys:
+        #if self.metadata.has_key(key):
+        self.activity_dict = self.metadata.copy()
+        #_logger.debug('RELOADING ACTIVITY DATA in read_file ...Object_id:%s. File_path:%s.'%(self.metadata['object_id'],file_path))
         debugstr = ''
         for key in self.activity_dict.keys():
             debugstr += key + ':'+str(self.activity_dict[key]) + ', '
         _logger.debug ('In read_file: activity dictionary==> %s'%debugstr)
-        return
+        self.get_config()    
     
     def write_file(self, file_path):
         """
@@ -746,13 +737,29 @@ class PyDebugActivity(Activity,Terminal):
         on disk, but not yet saved in the journal is highly undesireable. So we'll let the user save to
         the journal, and perhaps optionally to the sd card (because it is removable, should the system die)
         """
-        _logger.debug('write file object_id: %s'%self.debug_dict['jobject_id'])
+        if self.save_icon_clicked == True:
+            self.save_icon_clicked = False
+            _logger.debug('saving current playpen contents')
+            self.to_home_clicked_cb(None)
+            git_id = self.do_git_commit(self._to_home_dest)
+            if git_id:
+                self._jobject.metadata['commit_id'] = git_id
+                datastore.write(self._jobject)
+                self.debug_dict['jobject_id'] = ''
+                self.get_config()
+                self._jobject = self.debug_dict['jobject_id']
+        jid = self.debug_dict.get('jobject_id','')
+        _logger.debug('write file object_id: %s'%jid)
         self._jobject.metadata['title'] = 'PyDebug'
+        self._jobject.metadata['activity'] = 'org.laptop.PyDebug'
         datastore.write(self._jobject)
         self.write_activity_info()
         self.put_config()
         return
         
+    def do_git_commit(self, tree):
+        return None
+    
     def write_binary_to_datastore(self):
         """
         Check to see if there is a child loaded.
@@ -1103,6 +1110,20 @@ class PyDebugActivity(Activity,Terminal):
         if self.child_path and self.child_path.endswith('.activity') and \
                                 os.path.isdir(self.child_path):
             self.setup_new_activity()
+        #get set to sense addition of a usb flash drive
+        self.volume_monitor = gio.volume_monitor_get()
+        self.volume_monitor.connect('mount-added',self.__mount_added_cb)
+        self.volume_monitor.connect('mount-removed',self.__mount_removed_cb)
+        mount_list = self.volume_monitor.get_mounts()
+        for m in mount_list:
+            s = m.get_root().get_path()
+            if s.startswith('/media'):_logger.debug('volume:%s',s)
+    
+    def __mount_added_cb(self, vm, mount):
+        pass
+    
+    def __mount_removed_cb(self, vm, mount):
+        pass
         
     def display_current_project(self):            
         self.manifest_treeview = self.wTree.get_widget('manifest')
@@ -1418,12 +1439,12 @@ class PyDebugActivity(Activity,Terminal):
         """
         if not self.help_x11:
             self.help_x11 = self.help.realize_help()
-            #self.x11_window = self.get_x11()
+            #self.x11_window = self.get_x11()os.geteuid()
         else:
             self.help.activate_help()
             #self.help.reshow()
             #self.help.toolbox.set_current_page(self.panes['HELP']
-    
+    """
     def get_x11(self):
         home_model = shell.get_model()
         activity = home_model.get_active_activity()
@@ -1432,7 +1453,7 @@ class PyDebugActivity(Activity,Terminal):
             return activity.get_window().activate(1)
         else:
             return None
-    
+    """
     ################  save config state from one invocation to another -- not activity state 
     def get_config(self):
         try:
@@ -1470,19 +1491,19 @@ class PyDebugActivity(Activity,Terminal):
             self._jobject = jobject
             datastore.write(self._jobject)
             #self.metadata = jobject.metadata
-            self.debug_dict['jobject_id'] = str(self.metadata['uid'])
+            self.debug_dict['jobject_id'] = str(self._jobject.object_id)
             _logger.debug('in get_config created jobject id:%s'%self.debug_dict['jobject_id'])
         else:
             self._jobject = datastore.get(object_id)
         self.child_path = self.debug_dict.get('child_path','')
         if self.child_path == '' or not os.path.isdir(self.child_path):
             self.child_path = None
-        """
+    
         debugstr = ''
         for key in self.debug_dict.keys():
             debugstr += key + ':'+str(self.debug_dict[key]) + ', '
         _logger.debug ('In get_config: debug dictionary==> %s'%debugstr)
-        """
+        
         if self.child_path and self.debug_dict.get('tree_md5',''):
             if self.debug_dict.get('tree_md5','') == self.md5sum_tree(self.child_path):
                 self.setup_new_activity()

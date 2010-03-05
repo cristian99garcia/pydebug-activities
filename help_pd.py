@@ -1,3 +1,5 @@
+# Copyright (C) 2006, Red Hat, Inc.
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
@@ -11,104 +13,62 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-#
-#NOTE: The webview module shipped with FC11 does a get_Main_window.hide()
-#       which makes it unusable in the PyDebug application. A more recent git version
-#       toggles the visibility of the gecko engine and is more compatible.
-#       The browser.py and webview.py modules included are essential for PyDebug
-#
-import os
 
+import os, sys
 from gettext import gettext as _
+from subprocess import Popen, PIPE
+import shutil
 
 import gtk
 import gobject
-import glib
 import wnck
-from time import time
+#from time import time
 from sugar import util
 
 from sugar.activity import activity
+from sugar.graphics.window import Window
 from sugar.graphics.toolbox import Toolbox
 from sugar.activity.activityhandle import ActivityHandle
-from sugar.graphics.toolbutton import ToolButton
-from sugar.graphics.window import Window
-from sugar import wm
-from jarabe.model import shell
+from sugar import wm, env
 #from IPython.Debugger import Tracer
 from pdb import *
+from sugar.graphics.toolbutton import ToolButton
 
 import hulahop
 hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
-import pytoolbar
-import notebook
 
 #from hulahop.webview import WebView
 from browser import Browser
-#import xpcom
-#from xpcom.components import interfaces
+import xpcom
+from xpcom.components import interfaces
 
 gobject.threads_init()
 
-#HOME = os.path.join(activity.get_bundle_path(), 'help/index.html')
+HOME = os.path.join(activity.get_bundle_path(), _('help/PyDebug.htm'))
 #HOME = "http://website.com/something.html"
 HELP_PANE = 3
 
 # Initialize logging.
 import logging
-#from sugar import logger
-#Get the standard logging directory. 
 _logger = logging.getLogger('PyDebug')
 
-
-sugar_activity_root = os.environ['SUGAR_ACTIVITY_ROOT']
-help_notebook_pages = []
-
-class HelpToolbar(gtk.Toolbar):
-    def __init__(self, parent):
-        gtk.Toolbar.__init__(self)
-        self.help_toolbar_parent = parent
-        self.child_root = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'tmp')
-
-        self._back = ToolButton('go-previous-paired')
-        self._back.set_tooltip(_('Back'))
-        self._back.props.sensitive = False
-        self._back.connect('clicked', self.help_toolbar_parent._go_back_cb)
-        self.insert(self._back, -1)
-        self._back.show()
-
-        self._forward = ToolButton('go-next-paired')
-        self._forward.set_tooltip(_('Forward'))
-        self._forward.props.sensitive = False
-        self._forward.connect('clicked', self.help_toolbar_parent._go_forward_cb)
-        self.insert(self._forward, -1)
-        self._forward.show()
-
-        home = ToolButton('zoom-home')
-        home.set_tooltip(_('Home'))
-        home.connect('clicked', self.help_toolbar_parent._go_home_cb)
-        self.insert(home, -1)
-        home.show()
-
 class Help(Window):
-    current_url_prefix = ''
-    file_changed = False
-    current_web_view = None
-    web_view_list = []
-    pywin = None
     def __init__(self, parent):
         self.pydebug = parent
+        self.help_id = None
         self.handle = ActivityHandle()
-        #self._forward.connect('clicked', self.help_toolbar_parent._go_forward_cb)
         self.handle.activity_id = util.unique_id()
         Window.__init__(self)
-        self.parent_x11 = None
-        self.url_root = 'file://'+ self.pydebug.sugar_bundle_path +"/"+_('help/PyDebug.htm')
+        self.connect('realize',self.realize_cb)
 
-        #set up tool box/menu buttonsself.help
+        #self.props.max_participants = 1
+
+        self._web_view = Browser()
+
         self.toolbox = Toolbox()
         self.toolbox.connect('current_toolbar_changed',self.goto_cb)
-        
+        self.set_toolbox(self.toolbox)
+        self.toolbox.show()
         activitybar = gtk.Toolbar()
         self.toolbox.add_toolbar(_('Activity'), activitybar)
         activitybar.show_all()
@@ -123,126 +83,142 @@ class Help(Window):
         #projectbar.connect('current_toolbar_changed', self.goto_cb,2)
         projectbar.show_all()
         
-        self.help_toolbar = HelpToolbar(self)
+        self.help_toolbar = Toolbar(self._web_view)
         self.help_toolbar.show()
         self.toolbox.add_toolbar(_('Help'), self.help_toolbar)
         self.toolbox._notebook.set_current_page(HELP_PANE)
 
-        
-        self.set_toolbox(self.toolbox)
-        self.toolbox.show()
+        self.set_canvas(self._web_view)
+        self._web_view.show()
 
-        self.first_webview = self.new_tab(self.url_root)
-        self.web_view_list.append(self.first_webview)
-        self.current_web_view = self.first_webview
-        #self.first_webview.load_uri(self.url_root)
-        self.set_canvas(self._get_help_notebook())
-        self.connect('realize',self.realize_cb)
-        
-        #self.pywin = self.pydebug.window.window
-        
-           
+        self.toolbox.set_current_toolbar(HELP_PANE)
+
+        self._web_view.load_uri(HOME)
+
+    def get_help_toolbar(self):
+        return self.help_toolbar
+
     def realize_help(self):
         _logger.debug('realize help called')
-        print('about to enter Tracer')
-        #Tracer()
         self.show_all()
+        self.toolbox._notebook.set_current_page(HELP_PANE)
         return self
     
     def realize_cb(self, window):
         self.help_id = util.unique_id()
-        #print('xid:%s'%window.window.get_xid())
         wm.set_activity_id(window.window, self.help_id)
             
     def activate_help(self):
         _logger.debug('activate_help called')
-        home_model = shell.get_model()
-        activity = home_model.get_activity_by_id(self.help_id)
-        window = None
-        if activity:
-            window = activity.get_window()
+        window = self.get_wnck_window_from_activity_id(self.help_id)
+        self.toolbox._notebook.set_current_page(HELP_PANE)
         if window:
             window.activate(gtk.get_current_event_time())
         else:
-            _logger.debug('wnck_window was none')
-                
+            _logger.debug('failed to get window')
+            
     def goto_cb(self, page, tab):
         _logger.debug('current_toolbar_changed event called goto_cb. tab: %s'%tab)
         if tab == HELP_PANE: return
+        if not self.help_id: return
         self.pydebug.set_toolbar(tab)
-        home_model = shell.get_model()
-        activity = home_model.get_activity_by_id(str(self.pydebug.handle.activity_id))
-        #set_trace()
-        if activity:
-            self.pywin = activity.get_window()
-        else:
-            _logger.debug('activity of pydebug window lookup from activity_id failed')
+        self.pywin = self.get_wnck_window_from_activity_id(str(self.pydebug.handle.activity_id))
         if self.pywin:
             self.pywin.activate(gtk.get_current_event_time())
+
+    def command_line(self,cmd):
+        _logger.debug('command_line cmd:%s'%cmd)
+        p1 = Popen(cmd,stdout=PIPE, shell=True)
+        output = p1.communicate()
+        if p1.returncode != 0:
+            self.alert(' command returned non zero\n'+output[0])
+            return None
+        return output[0]
         
-    def delay(self, msec):
-        end = time() + msec / 1000.0
-        while time() < end:
-            glib.MainContext.iteration(may_block=False)
-            
-    def _get_help_canvas(self):
-        nb = gtk.Notebook()
-        nb.show()        
-        nb.append_page(self.first_webview)
-        return nb
+    def sugar_version(self):
+        cmd = '/bin/rpm -q sugar'
+        reply = self.command_line(cmd)
+        if reply and reply.find('sugar') > -1:
+            version = reply.split('-')[1]
+            version_chunks = version.split('.')
+            major_minor = version_chunks[0] + '.' + version_chunks[1]
+            return float(major_minor) 
+        return None
         
-    def _get_help_notebook(self):
-        nb = notebook.Notebook( can_close_tabs=True)
-        nb.show()        
-        nb.append_page(self.first_webview)
-        self.help_notebook = nb
-        return nb
-       
-    def new_tab(self,url = None):
-        if url == None:
-            url = self.url_root
-        self._web_view = Browser()
-        _logger.debug('loading new tab with url: %s' % url  )
-        self._web_view.load_uri(url)
-        self._web_view.connect('destroy',self._web_view.hide)
-        self.current_url = url
-        self._web_view.show()
+    def get_wnck_window_from_activity_id(self, activity_id):
+        """Use shell model to look up the wmck window associated with activity_id
+           --the home_model code changed between .82 and .84 sugar
+           --so do the lookup differently depending on sugar version
+        """
+        version = self.sugar_version() 
+        _logger.debug('sugar version %s'%version)
+        if version and version >= 0.839:
+            from jarabe.model import shell
+            home_model = shell.get_model()
+            activity = home_model.get_activity_by_id(activity_id)
+        else:
+            if not '/usr/share/sugar/shell/' in sys.path:
+                sys.path.append('/usr/share/sugar/shell/')
+            import view.Shell
+            instance = view.Shell.get_instance()
+            home_model = instance.get_model().get_home()
+            activity = home_model._get_activity_by_id(activity_id)
+        if activity:
+            return activity.get_window()
+        else:
+            _logger.debug('wnck_window was none')
+            return None
+                
+class Toolbar(gtk.Toolbar):
+    def __init__(self, web_view):
+        gobject.GObject.__init__(self)
+
+        self._web_view = web_view
+
+        self._back = ToolButton('go-previous-paired')
+        self._back.set_tooltip(_('Back'))
+        self._back.props.sensitive = False
+        self._back.connect('clicked', self._go_back_cb)
+        self.insert(self._back, -1)
+        self._back.show()
+
+        self._forward = ToolButton('go-next-paired')
+        self._forward.set_tooltip(_('Forward'))
+        self._forward.props.sensitive = False
+        self._forward.connect('clicked', self._go_forward_cb)
+        self.insert(self._forward, -1)
+        self._forward.show()
+
+        home = ToolButton('zoom-home')
+        home.set_tooltip(_('Home'))
+        home.connect('clicked', self._go_home_cb)
+        self.insert(home, -1)
+        home.show()
+
         progress_listener = self._web_view.progress
         progress_listener.connect('location-changed',
                                   self._location_changed_cb)
         progress_listener.connect('loading-stop', self._loading_stop_cb)
 
-        return self._web_view
-        
-    def get_help_toolbar(self):
-        return self.help_toolbar
-
-    def repaint(self):
-        self._web_view.load_uri(self.current_url)
-        
-    def get_first_webview(self):
-        return self.first_webview
-
     def _location_changed_cb(self, progress_listener, uri):
         self.update_navigation_buttons()
-    
+
     def _loading_stop_cb(self, progress_listener):
         self.update_navigation_buttons()
-
+        
     def update_navigation_buttons(self):
-        can_go_back = self.current_web_view.web_navigation.canGoBack
-        self.help_toolbar._back.props.sensitive = can_go_back
+        can_go_back = self._web_view.web_navigation.canGoBack
+        self._back.props.sensitive = can_go_back
 
-        can_go_forward = self.current_web_view.web_navigation.canGoForward
-        self.help_toolbar._forward.props.sensitive = can_go_forward
+        can_go_forward = self._web_view.web_navigation.canGoForward
+        self._forward.props.sensitive = can_go_forward
 
     def _go_back_cb(self, button):
-        self.current_web_view.web_navigation.goBack()
+        self._web_view.web_navigation.goBack()
     
     def _go_forward_cb(self, button):
-        self.current_web_view.web_navigation.goForward()
+        self._web_view.web_navigation.goForward()
 
     def _go_home_cb(self, button):
-        self.current_web_view.load_uri(self.url_root)
+        self._web_view.load_uri(HOME)
 
-        

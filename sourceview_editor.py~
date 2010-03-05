@@ -228,8 +228,8 @@ class GtkSourceview2Editor(notebook.Notebook):
                 page.save()
     
     def remove_all(self):
-        for i in range(self.get_n_pages()):
-            self.remove_page(i)
+        for i in range(self.get_n_pages(),0,-1):
+            self.remove_page(i-1)
         """
             page = self.get_nth_page(i)
             if isinstance(page,GtkSourceview2Page):

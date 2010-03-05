@@ -17,7 +17,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import gtk
-import gconf
+#import gconf
 
 from sugar.graphics.toolbox import Toolbox
 from sugar.graphics.xocolor import XoColor
@@ -72,9 +72,10 @@ class ActivityToolbar(gtk.Toolbar):
         self._update_share()
 
         self.keep = ToolButton(tooltip=_('Keep'))
-        client = gconf.client_get_default()
-        color = XoColor(client.get_string('/desktop/sugar/user/color'))
-        keep_icon = Icon(icon_name='document-save', xo_color=color)
+        #client = gconf.client_get_default()
+        #color = XoColor(client.get_string('/desktop/sugar/user/color'))
+        #keep_icon = Icon(icon_name='document-save', xo_color=color)
+        keep_icon = Icon(icon_name='document-save')
         self.keep.set_icon_widget(keep_icon)
         keep_icon.show()
         self.keep.props.accelerator = '<Ctrl>S'
@@ -120,6 +121,7 @@ class ActivityToolbar(gtk.Toolbar):
             self._activity.debug_dict['traceback'] = 'verbose'
 
     def __keep_clicked_cb(self, button):
+        self._activity.save_icon_clicked = True
         self._activity.copy()
 
     def __stop_clicked_cb(self, button):

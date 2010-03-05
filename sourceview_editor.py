@@ -535,8 +535,8 @@ class GtkSourceview2Page(SearchablePage):
             self.text_buffer.set_modified(False)
             msg = _("File saved: %s md5sumn:%s"%(os.path.basename(self.fullPath),self.md5sum))
             _logger.debug(msg)
-        except IOError as (errno, strerror):
-            msg = _("I/O error({0}): {1}".format(errno, strerror))
+        except IOError:
+            msg = _("I/O error(%s): %s"%(IOError[0], IOError[1]))
             self.activity.alert(msg)
         except:
             msg = "Unexpected error:", sys.exc_info()[0]

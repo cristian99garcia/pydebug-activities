@@ -24,7 +24,7 @@ import xpcom
 from xpcom.nsError import *
 from xpcom import components
 from xpcom.components import interfaces
-from webview import WebView
+from hulahop.webview import WebView
 
 from sugar.datastore import datastore
 from sugar import profile

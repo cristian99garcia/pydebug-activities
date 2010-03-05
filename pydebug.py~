@@ -25,7 +25,7 @@ import gtk
 import gtk.glade
 import vte
 import pango
-import gconf
+#import gconf
 #import glib
 import pickle
 import hashlib
@@ -44,7 +44,7 @@ from sugar.graphics.alert import *
 import sugar.activity.bundlebuilder as bundlebuilder
 from sugar.bundle.activitybundle import ActivityBundle
 from sugar.activity import activityfactory
-from jarabe.model import shell
+#from jarabe.model import shell
 
 #application stuff
 from terminal_pd import Terminal
@@ -1350,6 +1350,7 @@ class PyDebugActivity(Activity,Terminal):
     def write_activity_info(self):
         #write the activity.info file
         _logger.debug('entered write_actiity_info')
+        if self.child_path == None: return
         filen = os.path.join(self.child_path,'activity','activity.info')
         #try:
         with open(filen,'r') as fd:
@@ -1417,12 +1418,12 @@ class PyDebugActivity(Activity,Terminal):
         """
         if not self.help_x11:
             self.help_x11 = self.help.realize_help()
-            #self.x11_window = self.get_x11()
+            #self.x11_window = self.get_x11()os.geteuid()
         else:
             self.help.activate_help()
             #self.help.reshow()
             #self.help.toolbox.set_current_page(self.panes['HELP']
-    
+    """
     def get_x11(self):
         home_model = shell.get_model()
         activity = home_model.get_active_activity()
@@ -1431,7 +1432,7 @@ class PyDebugActivity(Activity,Terminal):
             return activity.get_window().activate(1)
         else:
             return None
-    
+    """
     ################  save config state from one invocation to another -- not activity state 
     def get_config(self):
         try:
@@ -1469,7 +1470,7 @@ class PyDebugActivity(Activity,Terminal):
             self._jobject = jobject
             datastore.write(self._jobject)
             #self.metadata = jobject.metadata
-            self.debug_dict['jobject_id'] = str(self.metadata['uid'])
+            self.debug_dict['jobject_id'] = str(os.geteuid())
             _logger.debug('in get_config created jobject id:%s'%self.debug_dict['jobject_id'])
         else:
             self._jobject = datastore.get(object_id)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Dec 28 17:54:52 2009 -->
+<!--Generated with glade3 3.4.5 on Mon Mar  1 08:24:18 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="toplevel">
     <property name="width_request">1200</property>
@@ -199,76 +199,22 @@
               <placeholder/>
             </child>
             <child>
-              <widget class="GtkButton" id="file_toggle">
+              <widget class="GtkButton" id="from_journal">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="label" translatable="yes">Home</property>
-                <property name="response_id">0</property>
-                <signal name="clicked" handler="file_toggle_clicked_cb"/>
-              </widget>
-              <packing>
-                <property name="top_attach">13</property>
-                <property name="bottom_attach">14</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="to_activities">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="response_id">0</property>
-                <signal name="clicked" handler="to_activities_clicked_cb"/>
+                <property name="image_position">GTK_POS_TOP</property>
+                <property name="response_id">1</property>
+                <signal name="clicked" handler="from_journal_clicked_cb"/>
                 <child>
-                  <widget class="GtkArrow" id="arrow4">
-                    <property name="visible">True</property>
-                    <property name="arrow_type">GTK_ARROW_LEFT</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="top_attach">11</property>
-                <property name="bottom_attach">12</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="from_examples">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="response_id">0</property>
-                <signal name="clicked" handler="from_examples_clicked_cb"/>
-                <child>
-                  <widget class="GtkArrow" id="arrow7">
+                  <widget class="GtkArrow" id="arrow1">
                     <property name="visible">True</property>
                   </widget>
                 </child>
               </widget>
               <packing>
-                <property name="top_attach">17</property>
-                <property name="bottom_attach">18</property>
-                <property name="x_options">GTK_FILL</property>
-                <property name="y_options">GTK_FILL</property>
-              </packing>
-            </child>
-            <child>
-              <widget class="GtkButton" id="from_activities">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">True</property>
-                <property name="response_id">0</property>
-                <signal name="clicked" handler="from_activities_clicked_cb"/>
-                <child>
-                  <widget class="GtkArrow" id="arrow3">
-                    <property name="visible">True</property>
-                  </widget>
-                </child>
-              </widget>
-              <packing>
-                <property name="top_attach">9</property>
-                <property name="bottom_attach">10</property>
+                <property name="top_attach">2</property>
+                <property name="bottom_attach">3</property>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options">GTK_FILL</property>
               </packing>
@@ -295,24 +241,78 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkButton" id="from_journal">
+              <widget class="GtkButton" id="from_activities">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="image_position">GTK_POS_TOP</property>
-                <property name="response_id">1</property>
-                <signal name="clicked" handler="from_journal_clicked_cb"/>
+                <property name="response_id">0</property>
+                <signal name="clicked" handler="from_activities_clicked_cb"/>
                 <child>
-                  <widget class="GtkArrow" id="arrow1">
+                  <widget class="GtkArrow" id="arrow3">
                     <property name="visible">True</property>
                   </widget>
                 </child>
               </widget>
               <packing>
-                <property name="top_attach">2</property>
-                <property name="bottom_attach">3</property>
+                <property name="top_attach">9</property>
+                <property name="bottom_attach">10</property>
                 <property name="x_options">GTK_FILL</property>
                 <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="from_examples">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="response_id">0</property>
+                <signal name="clicked" handler="from_examples_clicked_cb"/>
+                <child>
+                  <widget class="GtkArrow" id="arrow7">
+                    <property name="visible">True</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="top_attach">17</property>
+                <property name="bottom_attach">18</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="to_activities">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="response_id">0</property>
+                <signal name="clicked" handler="to_activities_clicked_cb"/>
+                <child>
+                  <widget class="GtkArrow" id="arrow4">
+                    <property name="visible">True</property>
+                    <property name="arrow_type">GTK_ARROW_LEFT</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="top_attach">11</property>
+                <property name="bottom_attach">12</property>
+                <property name="x_options">GTK_FILL</property>
+                <property name="y_options">GTK_FILL</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkButton" id="file_toggle">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="label" translatable="yes">Home</property>
+                <property name="response_id">0</property>
+                <signal name="clicked" handler="file_toggle_clicked_cb"/>
+              </widget>
+              <packing>
+                <property name="top_attach">13</property>
+                <property name="bottom_attach">14</property>
               </packing>
             </child>
           </widget>
@@ -439,156 +439,56 @@
                       <placeholder/>
                     </child>
                     <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <placeholder/>
-                    </child>
-                    <child>
-                      <widget class="GtkButton" id="button1">
+                      <widget class="GtkEntry" id="savetarget">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="label" translatable="yes">Delete File</property>
-                        <property name="response_id">0</property>
-                        <signal name="clicked" handler="delete_file_clicked_cb"/>
                       </widget>
                       <packing>
-                        <property name="left_attach">7</property>
-                        <property name="right_attach">10</property>
+                        <property name="left_attach">2</property>
+                        <property name="right_attach">7</property>
                         <property name="top_attach">7</property>
                         <property name="bottom_attach">8</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkButton" id="Run">
+                      <widget class="GtkCheckButton" id="saveto">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <property name="receives_default">True</property>
-                        <property name="label" translatable="yes">Run</property>
+                        <property name="label" translatable="yes">Save to:</property>
                         <property name="response_id">0</property>
-                        <signal name="clicked" handler="Run_clicked_cb"/>
+                        <property name="draw_indicator">True</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">8</property>
-                        <property name="right_attach">10</property>
+                        <property name="right_attach">2</property>
+                        <property name="top_attach">7</property>
+                        <property name="bottom_attach">8</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkLabel" id="label13">
-                        <property name="visible">True</property>
-                        <property name="xalign">1</property>
-                        <property name="label" translatable="yes">Version: </property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">7</property>
-                        <property name="right_attach">9</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkEntry" id="version">
+                      <widget class="GtkEntry" id="module">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
-                        <signal name="changed" handler="verson_changed_cb"/>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">9</property>
-                        <property name="right_attach">10</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkEntry" id="class">
-                        <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <signal name="changed" handler="class_changed_cb"/>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">7</property>
-                        <property name="right_attach">10</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label11">
-                        <property name="visible">True</property>
-                        <property name="xalign">1</property>
-                        <property name="label" translatable="yes">Class:  </property>
-                      </widget>
-                      <packing>
-                        <property name="left_attach">6</property>
-                        <property name="right_attach">7</property>
-                        <property name="top_attach">3</property>
-                        <property name="bottom_attach">4</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label10">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Project Data</property>
+                        <signal name="changed" handler="module_changed_cb"/>
                       </widget>
                       <packing>
                         <property name="left_attach">3</property>
-                        <property name="right_attach">7</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label5">
-                        <property name="visible">True</property>
-                        <property name="xalign">1</property>
-                        <property name="label" translatable="yes">Project Name:  </property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="right_attach">3</property>
-                        <property name="top_attach">1</property>
-                        <property name="bottom_attach">2</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label6">
-                        <property name="visible">True</property>
-                        <property name="xalign">1</property>
-                        <property name="label" translatable="yes">Unique id:  </property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="right_attach">3</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                      </packing>
-                    </child>
-                    <child>
-                      <widget class="GtkLabel" id="label7">
-                        <property name="visible">True</property>
-                        <property name="xalign">1</property>
-                        <property name="label" translatable="yes">Module:  </property>
-                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
-                      </widget>
-                      <packing>
-                        <property name="right_attach">3</property>
+                        <property name="right_attach">6</property>
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkEntry" id="bundle_id">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">3</property>
+                        <property name="right_attach">10</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                        <property name="x_options">GTK_FILL</property>
+                        <property name="y_options"></property>
                       </packing>
                     </child>
                     <child>
@@ -607,30 +507,135 @@
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="bundle_id">
+                      <widget class="GtkLabel" id="label7">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
+                        <property name="xalign">1</property>
+                        <property name="label" translatable="yes">Module:  </property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
                       </widget>
                       <packing>
-                        <property name="left_attach">3</property>
-                        <property name="right_attach">10</property>
-                        <property name="top_attach">2</property>
-                        <property name="bottom_attach">3</property>
-                        <property name="x_options">GTK_FILL</property>
-                        <property name="y_options"></property>
+                        <property name="right_attach">3</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
                       </packing>
                     </child>
                     <child>
-                      <widget class="GtkEntry" id="module">
+                      <widget class="GtkLabel" id="label6">
                         <property name="visible">True</property>
-                        <property name="can_focus">True</property>
-                        <signal name="changed" handler="module_changed_cb"/>
+                        <property name="xalign">1</property>
+                        <property name="label" translatable="yes">Unique id:  </property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
+                        <property name="right_attach">3</property>
+                        <property name="top_attach">2</property>
+                        <property name="bottom_attach">3</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label5">
+                        <property name="visible">True</property>
+                        <property name="xalign">1</property>
+                        <property name="label" translatable="yes">Project Name:  </property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
+                        <property name="right_attach">3</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label10">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Project Data</property>
                       </widget>
                       <packing>
                         <property name="left_attach">3</property>
-                        <property name="right_attach">6</property>
+                        <property name="right_attach">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label11">
+                        <property name="visible">True</property>
+                        <property name="xalign">1</property>
+                        <property name="label" translatable="yes">Class:  </property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">6</property>
+                        <property name="right_attach">7</property>
                         <property name="top_attach">3</property>
                         <property name="bottom_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkEntry" id="class">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="changed" handler="class_changed_cb"/>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">7</property>
+                        <property name="right_attach">10</property>
+                        <property name="top_attach">3</property>
+                        <property name="bottom_attach">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkEntry" id="version">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <signal name="changed" handler="verson_changed_cb"/>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">9</property>
+                        <property name="right_attach">10</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkLabel" id="label13">
+                        <property name="visible">True</property>
+                        <property name="xalign">1</property>
+                        <property name="label" translatable="yes">Version: </property>
+                        <property name="justify">GTK_JUSTIFY_RIGHT</property>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">7</property>
+                        <property name="right_attach">9</property>
+                        <property name="top_attach">1</property>
+                        <property name="bottom_attach">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkButton" id="Run">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="label" translatable="yes">Run</property>
+                        <property name="response_id">0</property>
+                        <signal name="clicked" handler="Run_clicked_cb"/>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">8</property>
+                        <property name="right_attach">10</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <widget class="GtkButton" id="button1">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="label" translatable="yes">Delete File</property>
+                        <property name="response_id">0</property>
+                        <signal name="clicked" handler="delete_file_clicked_cb"/>
+                      </widget>
+                      <packing>
+                        <property name="left_attach">7</property>
+                        <property name="right_attach">10</property>
+                        <property name="top_attach">7</property>
+                        <property name="bottom_attach">8</property>
                       </packing>
                     </child>
                   </widget>
@@ -752,110 +757,14 @@
           <placeholder/>
         </child>
         <child>
-          <widget class="GtkButton" id="find_close">
+          <widget class="GtkEntry" id="entry1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="label" translatable="yes">Close</property>
-            <property name="response_id">0</property>
-            <signal name="clicked" handler="find_close_clicked_cb"/>
           </widget>
           <packing>
-            <property name="left_attach">6</property>
             <property name="right_attach">9</property>
-            <property name="top_attach">4</property>
-            <property name="bottom_attach">5</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkLabel" id="label18">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">Find What:</property>
-          </widget>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">4</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkEntry" id="find_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <signal name="changed" handler="find_entry_changed_cb"/>
-          </widget>
-          <packing>
-            <property name="right_attach">5</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkLabel" id="label19">
-            <property name="visible">True</property>
-            <property name="label" translatable="yes">Replace with:</property>
-          </widget>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="right_attach">4</property>
-            <property name="top_attach">2</property>
-            <property name="bottom_attach">3</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkEntry" id="replace_entry">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <signal name="changed" handler="replace_entry_changed_cb"/>
-          </widget>
-          <packing>
-            <property name="right_attach">5</property>
-            <property name="top_attach">3</property>
-            <property name="bottom_attach">4</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkCheckButton" id="checkbutton1">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="label" translatable="yes">Match Case</property>
-            <property name="xalign">0.40000000596046448</property>
-            <property name="response_id">0</property>
-            <property name="draw_indicator">True</property>
-          </widget>
-          <packing>
-            <property name="right_attach">5</property>
-            <property name="top_attach">4</property>
-            <property name="bottom_attach">5</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkButton" id="find_previous">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="label" translatable="yes"> Previous</property>
-            <property name="response_id">0</property>
-            <signal name="clicked" handler="find_previous_clicked_cb"/>
-          </widget>
-          <packing>
-            <property name="left_attach">6</property>
-            <property name="right_attach">9</property>
-          </packing>
-        </child>
-        <child>
-          <widget class="GtkButton" id="find_next">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="receives_default">True</property>
-            <property name="label" translatable="yes">Next</property>
-            <property name="response_id">0</property>
-            <signal name="clicked" handler="find_next_clicked_cb"/>
-          </widget>
-          <packing>
-            <property name="left_attach">6</property>
-            <property name="right_attach">9</property>
-            <property name="top_attach">1</property>
-            <property name="bottom_attach">2</property>
+            <property name="top_attach">5</property>
+            <property name="bottom_attach">6</property>
           </packing>
         </child>
         <child>
@@ -875,14 +784,110 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkEntry" id="entry1">
+          <widget class="GtkButton" id="find_next">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="label" translatable="yes">Next</property>
+            <property name="response_id">0</property>
+            <signal name="clicked" handler="find_next_clicked_cb"/>
           </widget>
           <packing>
+            <property name="left_attach">6</property>
             <property name="right_attach">9</property>
-            <property name="top_attach">5</property>
-            <property name="bottom_attach">6</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkButton" id="find_previous">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="label" translatable="yes"> Previous</property>
+            <property name="response_id">0</property>
+            <signal name="clicked" handler="find_previous_clicked_cb"/>
+          </widget>
+          <packing>
+            <property name="left_attach">6</property>
+            <property name="right_attach">9</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkCheckButton" id="checkbutton1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="label" translatable="yes">Match Case</property>
+            <property name="xalign">0.40000000596046448</property>
+            <property name="response_id">0</property>
+            <property name="draw_indicator">True</property>
+          </widget>
+          <packing>
+            <property name="right_attach">5</property>
+            <property name="top_attach">4</property>
+            <property name="bottom_attach">5</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkEntry" id="replace_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="changed" handler="replace_entry_changed_cb"/>
+          </widget>
+          <packing>
+            <property name="right_attach">5</property>
+            <property name="top_attach">3</property>
+            <property name="bottom_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label19">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Replace with:</property>
+          </widget>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">4</property>
+            <property name="top_attach">2</property>
+            <property name="bottom_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkEntry" id="find_entry">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <signal name="changed" handler="find_entry_changed_cb"/>
+          </widget>
+          <packing>
+            <property name="right_attach">5</property>
+            <property name="top_attach">1</property>
+            <property name="bottom_attach">2</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkLabel" id="label18">
+            <property name="visible">True</property>
+            <property name="label" translatable="yes">Find What:</property>
+          </widget>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="right_attach">4</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkButton" id="find_close">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="receives_default">True</property>
+            <property name="label" translatable="yes">Close</property>
+            <property name="response_id">0</property>
+            <signal name="clicked" handler="find_close_clicked_cb"/>
+          </widget>
+          <packing>
+            <property name="left_attach">6</property>
+            <property name="right_attach">9</property>
+            <property name="top_attach">4</property>
+            <property name="bottom_attach">5</property>
           </packing>
         </child>
       </widget>
