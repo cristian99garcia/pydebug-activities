@@ -100,6 +100,10 @@ class Help(Window):
 
     def realize_help(self):
         _logger.debug('realize help called')
+        #trial and error suggest the following pydebug activation is necesssary to return reliably to pydebug window
+        self.pywin = self.get_wnck_window_from_activity_id(str(self.pydebug.handle.activity_id))
+        if self.pywin:
+            self.pywin.activate(gtk.get_current_event_time())
         self.show_all()
         self.toolbox._notebook.set_current_page(HELP_PANE)
         return self
@@ -126,40 +130,17 @@ class Help(Window):
         if self.pywin:
             self.pywin.activate(gtk.get_current_event_time())
 
-    def command_line(self,cmd):
-        _logger.debug('command_line cmd:%s'%cmd)
-        p1 = Popen(cmd,stdout=PIPE, shell=True)
-        output = p1.communicate()
-        if p1.returncode != 0:
-            self.alert(' command returned non zero\n'+output[0])
-            return None
-        return output[0]
-        
-    def sugar_version(self):
-        cmd = '/bin/rpm -q sugar'
-        reply = self.command_line(cmd)
-        if reply and reply.find('sugar') > -1:
-            version = reply.split('-')[1]
-            version_chunks = version.split('.')
-            major_minor = version_chunks[0] + '.' + version_chunks[1]
-            return float(major_minor) 
-        return None
-        
     def get_wnck_window_from_activity_id(self, activity_id):
         """Use shell model to look up the wmck window associated with activity_id
            --the home_model code changed between .82 and .84 sugar
            --so do the lookup differently depending on sugar version
         """
-        version = self.sugar_version() 
+        _logger.debug('get_wnck_window_from_activity_id. id:%s'%activity_id)
         _logger.debug('sugar version %s'%version)
         if version and version >= 0.839:
-            from jarabe.model import shell
             home_model = shell.get_model()
             activity = home_model.get_activity_by_id(activity_id)
         else:
-            if not '/usr/share/sugar/shell/' in sys.path:
-                sys.path.append('/usr/share/sugar/shell/')
-            import view.Shell
             instance = view.Shell.get_instance()
             home_model = instance.get_model().get_home()
             activity = home_model._get_activity_by_id(activity_id)
@@ -221,4 +202,30 @@ class Toolbar(gtk.Toolbar):
 
     def _go_home_cb(self, button):
         self._web_view.load_uri(HOME)
+
+def command_line(cmd):
+    _logger.debug('command_line cmd:%s'%cmd)
+    p1 = Popen(cmd,stdout=PIPE, shell=True)
+    output = p1.communicate()
+    if p1.returncode != 0:
+        return None
+    return output[0]
+    
+def sugar_version():
+    cmd = '/bin/rpm -q sugar'
+    reply = command_line(cmd)
+    if reply and reply.find('sugar') > -1:
+        version = reply.split('-')[1]
+        version_chunks = version.split('.')
+        major_minor = version_chunks[0] + '.' + version_chunks[1]
+        return float(major_minor) 
+    return None
+
+version = sugar_version() 
+if version and version >= 0.839:
+    from jarabe.model import shell
+else:
+    if not '/usr/share/sugar/shell/' in sys.path:
+        sys.path.append('/usr/share/sugar/shell/')
+    import view.Shell
 

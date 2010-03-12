@@ -113,7 +113,7 @@ class DataStoreTree():
         #_logger.debug('fetch datastore data. limit:%s. offset: %s'%(self.limit,self.journal_page_num * self.journal_page_size))
         #(results,count)=datastore.find({'limit':self.limit,'offset':self.journal_page_num * self.journal_page_size})
         """
-        results,count=datastore.find({'Activity':'org.laptop.PyDebug'})
+        results,count=datastore.find({'activity':'org.laptop.PyDebug'})
         if count < self.limit:
             self.journal_max = self.journal_page_num * self.journal_page_size + count
         _logger.debug( 'datastoretree-get_datastore_list: count= %s'%count)
@@ -123,12 +123,16 @@ class DataStoreTree():
             datastoredict=jobject.get_metadata().get_dictionary() #get the property dictionary
             src = jobject.get_file_path() #returns the full path of the file
             datastoredict['object_id'] = jobject.object_id
-            if src == '': #if null, there is no file related to this meta data
+            
+            if False: #if  src null, there is no file related to this meta data
                 jobject.destroy()
                 continue	#go get the next iterations
-            info = os.stat(src) #get the directory information about this file
             #add in the info that we intend to use
-            datastoredict['size'] = info.st_size
+            if src:
+                info = os.stat(src) #get the directory information about this file
+                datastoredict['size'] = info.st_size
+            else:
+                 datastoredict['size'] = 0               
             datastoredict['file_path'] = src
             for key in keys:
                 if datastoredict.has_key(key):
@@ -143,9 +147,9 @@ class DataStoreTree():
                 itemlist.append(pkg)
             itemlist.append(datastoredict['title'])
             itemlist.append(jobject.object_id)
-            text = 'Mime_type: %s, Activity: %s, Package: %s'%(datastoredict.get('mime_type',''),
-                                                                  datastoredict.get('activity','').split('.')[-1:][0],
-                                                                  datastoredict.get('package',''))
+            text = 'Mime_type: %s, Journal ID: %s, GIT: %s'%(datastoredict.get('mime_type',''),
+                                                                  datastoredict.get('uid',''),
+                                                                  datastoredict.get('object_id',''))
             itemlist.append(text)
             #_logger.debug('journal tooltip:%s'%text)
             dslist.append(itemlist)

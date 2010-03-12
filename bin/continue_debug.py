@@ -77,8 +77,8 @@ child_path = db.child_path
 _logger.debug('child path: %s'%child_path)
 
 #set the traceback level of detail
-ip.options.xmode = db.traceback
-
+ip.options.xmode = db.debug_dict['traceback']
+_logger.debug('xmode set to %s'%db.debug_dict['traceback'])
 """ if this were to work properly we should set go equal to object Macro
 go_cmd = 'run -d -b %s %s'%(os.path.join(db.pydebug_path,'bin','start_debug.py'),child_path)
 _logger.debug('defining go: %s'%go_cmd)

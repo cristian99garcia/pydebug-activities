@@ -17,6 +17,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import gtk
+import gobject
 #import gconf
 
 from sugar.graphics.toolbox import Toolbox
@@ -70,7 +71,7 @@ class ActivityToolbar(gtk.Toolbar):
         self.share.show()
 
         self._update_share()
-
+        """
         self.keep = ToolButton(tooltip=_('Keep'))
         #client = gconf.client_get_default()
         #color = XoColor(client.get_string('/desktop/sugar/user/color'))
@@ -81,7 +82,13 @@ class ActivityToolbar(gtk.Toolbar):
         self.keep.props.accelerator = '<Ctrl>S'
         self.keep.connect('clicked', self.__keep_clicked_cb)
         self.insert(self.keep, -1)
-        self.keep.show()
+        self.keep.hide()
+        """
+        separator = gtk.SeparatorToolItem()
+        separator.props.draw = False
+        separator.set_expand(True)
+        self.insert(separator, -1)
+        separator.show()
 
         self.stop = ToolButton('activity-stop', tooltip=_('Stop'))
         self.stop.props.accelerator = '<Ctrl>Q'
@@ -119,7 +126,8 @@ class ActivityToolbar(gtk.Toolbar):
         elif scope == 'traceback_verbose':
             self._activity.traceback = 'Verbose'
             self._activity.debug_dict['traceback'] = 'verbose'
-
+        self._activity.set_ipython_traceback()
+        
     def __keep_clicked_cb(self, button):
         self._activity.save_icon_clicked = True
         self._activity.copy()

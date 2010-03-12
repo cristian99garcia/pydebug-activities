@@ -417,6 +417,7 @@ class GtkSourceview2Page(SearchablePage):
 
         self.fullPath = fullPath
         self.activity = activity
+        self.interactive_close = False
 
         self.text_buffer = gtksourceview2.Buffer()
         self.text_view = gtksourceview2.View(self.text_buffer)
