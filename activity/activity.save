@@ -1,7 +1,7 @@
 [Activity]
 name = PyDebug
 bundle_id = org.laptop.PyDebug
-activity_version = 6
+activity_version = 4
 icon = PyDebug
 exec = PyDebug.sh
 mime_types =

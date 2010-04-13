@@ -20,6 +20,8 @@ from __future__ import with_statement
 
 import os
 import sys
+from subprocess import PIPE, Popen
+from gettext import gettext as _
 
 #debug tool to analyze the activity environment
 # Initialize logging.
@@ -29,6 +31,30 @@ _logger.setLevel(logging.DEBUG)
 
 from sugar.activity import activityfactory
 from sugar.bundle.activitybundle import ActivityBundle
+from sugar import profile
+from sugar.graphics.xocolor import XoColor
+
+#figure out which version of sugar we are dealing with
+def command_line(cmd):
+    _logger.debug('command_line cmd:%s'%cmd)
+    p1 = Popen(cmd,stdout=PIPE, shell=True)
+    output = p1.communicate()
+    if p1.returncode != 0:
+        return None
+    return output[0]
+    
+def sugar_version():
+    cmd = '/bin/rpm -q sugar'
+    reply = command_line(cmd)
+    if reply and reply.find('sugar') > -1:
+        version = reply.split('-')[1]
+        version_chunks = version.split('.')
+        major_minor = version_chunks[0] + '.' + version_chunks[1]
+        return float(major_minor) 
+    return None
+
+version = 0.0
+version = sugar_version() 
 
 #define the interface with the GUI
 from Rpyc import *
@@ -75,9 +101,12 @@ ip.set_hook('synchronize_with_editor',sync_called)
 #get the information about the Activity we are about to debug
 child_path = db.child_path
 _logger.debug('child path: %s'%child_path)
-
+if not child_path:
+    print _('\n\nThere is no program loaded into the Work Area. \nPlease use the "Project" tab so set up the debug session\n\n')
+    sys.exit(1)
 #set the traceback level of detail
-ip.options.xmode = db.debug_dict['traceback']
+#ip.options.xmode = db.debug_dict['traceback']
+__IPYTHON__.magic_xmode(db.debug_dict['traceback'])
 _logger.debug('xmode set to %s'%db.debug_dict['traceback'])
 """ if this were to work properly we should set go equal to object Macro
 go_cmd = 'run -d -b %s %s'%(os.path.join(db.pydebug_path,'bin','start_debug.py'),child_path)
@@ -92,15 +121,36 @@ os.chdir(path)
 os.environ['SUGAR_BUNDLE_PATH'] = path
 _logger.debug('sugar_bundle_path set to %s'%path)
 
-#set up module search path
+#set up python module search path
 sys.path.insert(0,path)
-activity = ActivityBundle(path)
-cmd_args = activityfactory.get_command(activity)
-_logger.debug('command args:%r'%cmd_args)
-bundle_name = activity.get_name()
+bundle_info = ActivityBundle(path)
+bundle_id = bundle_info.get_bundle_id()
+
+#following two statements eliminate differences between sugar 0.82 and 0.84
+bundle_info.path = path
+bundle_info.bundle_id = bundle_id
+
+bundle_name = bundle_info.get_name()
 os.environ['SUGAR_BUNDLE_NAME'] = bundle_name
-bundle_id = activity.get_bundle_id()
 os.environ['SUGAR_BUNDLE_ID'] = bundle_id
+
+if version and version >= 0.839:
+    #do 0.84 stuff
+    cmd_args = activityfactory.get_command(bundle_info)
+else:
+    from sugar.activity.registry import get_registry
+    registry = get_registry()
+    registry.add_bundle(path)
+    activity_list = registry.find_activity(bundle_id)
+    if len(activity_list) == 0:
+        _logger.error('Activity %s not found'%bundle_id)
+        print 'Activity %s not found'%bundle_id
+        exit(1)
+    cmd_args = activityfactory.get_command(activity_list[0])
+    myprofile = profile.get_profile()
+    myprofile.color = XoColor()
+_logger.debug('command args:%r'%cmd_args)
+    
 
 #need to get activity root, but activity bases off of HOME which some applications need to change
 #following will not work if storage system changes with new OS
@@ -110,15 +160,17 @@ os.environ['SUGAR_ACTIVITY_ROOT'] = activity_root
 _logger.debug('sugar_activity_root set to %s'%activity_root)
 
 #following is useful for its side-effects    
-info = activityfactory.get_environment(activity)
+info = activityfactory.get_environment(bundle_info)
 
 _logger.debug("Command args:%s."%cmd_args)
 if not cmd_args[0].startswith('sugar-activity'):
     #it is a batch file which will try to set up the environment
-    target = os.path.join(pydebug_home,os.path.basename(cmd_args[0]))
-    with open(target,'w') as write_script_fd:
+    #debugger will try to preserve python path, path settings
+    target = os.path.join(pydebug_home,'pydebug','.hide',os.path.basename(cmd_args[0]))
+    source = './' + os.path.join('bin',cmd_args[0])
+    with open(target,'w+') as write_script_fd:
         #rewrite the batch file in the debugger home directory without exec line
-        with open(cmd_args[0],'r') as read_script_fd:
+        with open(source,'r') as read_script_fd:
             for line in read_script_fd.readlines():
                 if line.startswith('exec') or line.startswith('sugar-activity'):
                     pass
@@ -140,29 +192,38 @@ if not cmd_args[0].startswith('sugar-activity'):
             skip_line = False
             start_scan = 0
             if not line.startswith('export'):
-                pass
+                continue
+            #we will only deal with attempts to set the environment
             payload = line.split()[1]
             pair = payload.split('=')
             if len(pair)> 1:
                 key = pair[0]
                 value = pair[1]
                 value = value[1:-1] #clip off quote marks
-                index = value.find(pydebug_home[:-6], start_scan)
-                while index > -1:
-                    #the batch file commonly in use uses $0 to capture curdir
-                    # this will be incorrect since we executed the script in pydebug_home
-                    testvalue = value[index:index + len(path)]
-                    if index > -1 and testvalue != path:
-                        #substitute path for pydebug_home
-                        testval = value[index + len(pydebug_home) - 5:]
-                        value = value[:index] + path + testval
-                        #permit repeated debug runs without creating monster environment strings
-                        if os.environ.has_key(key):
-                            if os.environ[key] == value: skip_line = True
-                    if not skip_line: env_dict[key] = value
-                    start_scan = index + len(path)
+                _logger.debug('key:%s.value:%s'%(key,value,))
+                if key == 'PYTHONPATH':
+                    os.environ['PYTHONPATH']= value + ':' +os.environ['PYTHONPATH']
+                elif key == 'LD_LIBRARY_PATH':
+                    os.environ['LD_LIBRARY_PATH']= value + ':' +os.environ.get('LD_LIBRARY_PATH','')
+                elif key == 'HOME':
+                    continue
+                else:
                     index = value.find(pydebug_home[:-6], start_scan)
-    os.environ = env_dict        
+                    while index > -1:
+                        #the batch file commonly in use uses $0 to capture curdir
+                        # this will be incorrect since we executed the script in pydebug_home
+                        testvalue = value[index:index + len(path)]
+                        if index > -1 and testvalue != path:
+                            #substitute path for pydebug_home
+                            testval = value[index + len(pydebug_home) - 5:]
+                            value = value[:index] + path + testval
+                            #permit repeated debug runs without creating monster environment strings
+                            if os.environ.has_key(key):
+                                if os.environ[key] == value: skip_line = True
+                        if not skip_line: env_dict[key] = value
+                        start_scan = index + len(path)
+                        index = value.find(pydebug_home[:-6], start_scan)
+    #os.environ = env_dict        
 #bundle_id = cmd_args[5]
 #sys.argv = [None, cmd_args[1],'-s'] + cmd_args[1:]
 #sys.argv = [None, cmd_args[1],] + cmd_args[1:]
