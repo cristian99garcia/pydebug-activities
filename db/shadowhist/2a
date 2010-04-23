@@ -2,7 +2,10 @@
 Vll
 p2
 I2
-sVdir(ip)
+sV__IP.magic_xmode('verbose')
 p3
+I88
+sVdir(ip)
+p4
 I76
 s.
