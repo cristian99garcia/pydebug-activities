@@ -147,5 +147,6 @@ class Notebook(gtk.Notebook):
         page = self.page_num(child)
         #If the close icon is clicked and file changed, ask about saving
         self.interactive_close = True
+        self.save_page()
         if page != -1:
             self.remove_page(page)

@@ -1,0 +1,25 @@
+[Sound]
+volume = 81
+
+[Shell]
+favoriteslayout = ring-layout
+
+[Buddy]
+color = #5E008C,#AC32FF
+nickname = ghunt
+
+[Power]
+automaticpm = False
+extremepm = False
+
+[Frame]
+hotcorners = 0.0
+warmedges = 1000.0
+
+[Date]
+timezone = UTC
+
+[Jabber]
+registered = False
+server = 
+

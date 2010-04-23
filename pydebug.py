@@ -30,8 +30,9 @@ import pango
 import pickle
 import hashlib
 import time
-import gio
+#import gio
 import datetime
+import gobject
 
 #sugar stuff
 from sugar.graphics.toolbutton import ToolButton
@@ -46,18 +47,19 @@ from sugar.graphics.alert import *
 import sugar.activity.bundlebuilder as bundlebuilder
 from sugar.bundle.activitybundle import ActivityBundle
 from sugar.activity import activityfactory
-#from jarabe.model import shell
+#following only works in sugar 0.82
+#from sugar.activity.registry import get_registry
+from sugar.activity.activity import Activity
+from sugar import profile
 
 #application stuff
 from terminal_pd import Terminal
-#public api for ipython
 
+#public api for ipython
 #from IPython.core import ipapi 0.11 requires this
 import IPython.ipapi
 
-#from sourceview import SourceViewPd
 import sourceview_editor
-from sugar.activity.activity import Activity
 from help_pd import Help
 
 #following taken from Rpyc module
@@ -70,6 +72,7 @@ from filetree import FileTree
 from datastoretree import DataStoreTree
 import pytoolbar
 #from pytoolbar import ActivityToolBox
+from IPython.Shell import IPShellEmbed
 
 import logging
 from  pydebug_logging import _logger, log_environment
@@ -80,6 +83,11 @@ MASKED_ENVIRONMENT = [
 ]
 #PANES = ['TERMINAL','EDITOR','CHILD','PROJECT','HELP']
 PANES = ['TERMINAL','EDITOR','PROJECT','HELP']
+
+#colors for the playpen side of the project page
+PROJECT_FG = '#990000'
+PROJECT_BASE = "#fdd99b"
+PROJECT_BG = '#FFFFCC'
 
 #global module variable communicates to debugged programs
 pydebug_instance = None
@@ -98,6 +106,7 @@ class SearchOptions(Options):
 S_WHERE = sourceview_editor.S_WHERE
     
 class PyDebugActivity(Activity,Terminal):
+    #ipshell = IPShellEmbed()
     MIME_TYPE = 'application/vnd.olpc-sugar'
     DEPRECATED_MIME_TYPE = 'application/vnd.olpc-x-sugar'
     _zipped_extension = '.xo'
@@ -109,14 +118,20 @@ class PyDebugActivity(Activity,Terminal):
         self.handle = handle
         _logger.debug('Activity id:%s.Object id: %s. uri:%s'%(handle.activity_id, 
                     handle.object_id, handle.uri))
+        self.passed_in_ds_object = None
         if handle.object_id and handle.object_id != '':
             self.passed_in_ds_object = datastore.get(handle.object_id)
             debugstr = ''
-            for key in self.passed_in_ds_object.metadata.keys():
-                if key == 'preview': continue
-                debugstr += key + ':'+str(self.passed_in_ds_object.metadata[key]) + ', '
-            _logger.debug('initial datastore metadata dictionary==>: %r'%debugstr)
-            
+            if self.passed_in_ds_object:
+                for key in self.passed_in_ds_object.metadata.keys():
+                    if key == 'preview': continue
+                    debugstr += key + ':'+str(self.passed_in_ds_object.metadata[key]) + ', '
+                _logger.debug('initial datastore metadata dictionary==>: %r'%debugstr)
+            self.request_new_jobject = False
+        else:
+            self.request_new_jobject = True
+            _logger.debug('no initial datastore object id passed in via handle')
+
         #Save a global poiinter so remote procedure calls can communicate with pydebug
         global pydebug_instance
         pydebug_instance = self
@@ -135,19 +150,46 @@ class PyDebugActivity(Activity,Terminal):
         self.activity_dict = {}
         self.file_pane_is_activities = False
         self.manifest_treeview = None  #set up to recognize an re-display of playpen
+        self.manifest_class = None
         #self.set_title(_('PyDebug Activity'))
         self.ds = None #datastore pointer
         self._logger = _logger
         self.traceback = 'Context'
         self.abandon_changes = False
+        self.journal_class = None
+        self.delete_after_load = None
+        self.find_window = None
+        self.icon_outline = 'icon_square'
+        self.icon_window = None
+        self.last_icon_file = None
+        self.activity_data_changed = False
         
+        #sugar 0.82 has a different way of getting colors and dies during init unless the following
+        self.profile = profile.get_profile()
+        self.profile.color = XoColor()
+        
+        #get the persistent data across all debug sessions
+        self.get_config ()
+        if self.request_new_jobject and self.debug_dict.get('jobject_id','') != '':
+            self.request_new_jobject = False
+            
+        #keep on using the same journal entry
+        if self.debug_dict.get('jobject_id','') != '':
+            handle.object_id = self.debug_dict.get('jobject_id','')
+
         # init the Classes we are subclassing
-        Activity.__init__(self, handle,  create_jobject = False)
+        Activity.__init__(self, handle,  create_jobject = self.request_new_jobject)
+        if self.request_new_jobject:
+            #check to see if the object was created
+            if self._jobject:
+                self.debug_dict['jobject_id'] = str(self._jobject.object_id)
+            else:
+                _logger.debug('failed to create jobject in Activity.__init__')
         #Terminal has no needs for init
         #Help.__init__(self,self)
         
         # setup the search options
-        self.s_opts = SearchOptions(where = S_WHERE.multifile,
+        self.s_opts = SearchOptions(where = S_WHERE.file,
                                     use_regex = False,
                                     ignore_caps = True,
                                     replace_all = False,
@@ -185,7 +227,7 @@ class PyDebugActivity(Activity,Terminal):
                 
         #set up tool box/menu buttons
         self.toolbox = pytoolbar.ActivityToolbox(self)
-        self.toolbox.connect('current_toolbar_changed',self._toolbar_changed_cb)
+        self.toolbox.connect_after('current_toolbar_changed',self._toolbar_changed_cb)
         
         activity_toolbar = self.toolbox.get_activity_toolbar()
         activity_toolbar.share.props.visible = True
@@ -249,7 +291,7 @@ class PyDebugActivity(Activity,Terminal):
         editopen.set_stock_id('gtk-new')
         editopen.set_icon_widget(None)
         editopen.set_tooltip(_('New File'))
-        editopen.connect('clicked', self._read_file_cb)
+        editopen.connect('clicked', self._new_file_cb)
         #editopen.props.accelerator = '<Ctrl>O'
         editopen.show()
         editbar.insert(editopen, -1)
@@ -390,7 +432,7 @@ class PyDebugActivity(Activity,Terminal):
         separator.set_expand(True)
         separator.show()
         
-        self.keep = ToolButton(tooltip=_('Save Snapshot of the program in the Playpen to the GIT repository'))
+        self.keep = ToolButton(tooltip=_('Save Snapshot of the program in the Playpen to the Journal'))
         #client = gconf.client_get_default()
         #color = XoColor(client.get_string('/desktop/sugar/user/color'))
         #keep_icon = Icon(icon_name='document-save', xo_color=color)
@@ -417,15 +459,12 @@ class PyDebugActivity(Activity,Terminal):
         self.set_toolbox(self.toolbox)
         self.toolbox.show()
         
-        #get the persistent data across all debug sessions
-        self.get_config ()
-        
         #set the default contents for edit
         self.font_size = self.debug_dict.get('font_size',8) 
                 
         #get the journal datastore information and resume previous activity
         #self.metadata = self.ds
-        if self.passed_in_ds_object.get_file_path():
+        if self.passed_in_ds_object and self.passed_in_ds_object.get_file_path():
             ds_file = self.passed_in_ds_object.get_file_path()
         else:
             ds_file = ''
@@ -463,13 +502,13 @@ class PyDebugActivity(Activity,Terminal):
         output = p1.communicate()
         if p1.returncode != 0 :
             _logger.debug('error returned from shell command: %s was %s'%(cmd,output[0]))
-            if alert_error: self.alert(' Command returned non zero\n'+output[0])
-        return output[0]
+            if alert_error: self.alert(_('%s Command returned non zero\n'%cmd+output[0]))
+        return output[0],p1.returncode
         
     def sugar_version(self):
         cmd = '/bin/rpm -q sugar'
         reply = self.command_line(cmd)
-        if reply and reply.find('sugar') > -1:
+        if reply and reply[0].find('sugar') > -1:
             version = reply.split('-')[1]
             version_chunks = version.split('.')
             major_minor = version_chunks[0] + '.' + version_chunks[1]
@@ -488,28 +527,68 @@ class PyDebugActivity(Activity,Terminal):
     def make_paths(self):
         self.pydebug_path = os.environ['SUGAR_BUNDLE_PATH']
         p_path = os.environ['SUGAR_BUNDLE_PATH']
-        if not os.environ.get("PYTHONPATH",'') == '':
-            p_path = p_path + ':'        
-        os.environ['PYTHONPATH'] = p_path + os.environ.get("PYTHONPATH",'')
+        if os.environ.get("PYTHONPATH",'') == '':
+            os.environ['PYTHONPATH'] = self.pydebug_path
+        else:
+            p_path_list = os.environ['PYTHONPATH'].split(':')
+            if not self.pydebug_path in p_path_list:
+                os.environ['PYTHONPATH'] = self.pydebug_path + ':' + os.environ.get("PYTHONPATH",'')
         _logger.debug('sugar_bundle_path:%s\nsugar_activity_root:%s'%(os.environ['SUGAR_BUNDLE_PATH'],
                                                                       os.environ['SUGAR_ACTIVITY_ROOT']))
         self.debugger_home = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'data')
         self.child_path = None
         os.environ["HOME"]=self.debugger_home
-        os.environ['PATH'] = os.path.join(self.pydebug_path,'bin:') + os.environ['PATH']
+        if not os.path.isfile(os.path.join(self.debugger_home,'.bashrc')):
+            self.setup_home_directory()
+        path_list = os.environ['PATH'].split(':')
+        new_path = os.path.join(self.pydebug_path,'bin:')
+        if not new_path in path_list:
+            os.environ['PATH'] = new_path + os.environ['PATH']
         self.storage = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'data/pydebug')
         self.sugar_bundle_path = os.environ['SUGAR_BUNDLE_PATH']
         self.activity_playpen = os.path.join(self.storage,'playpen')
         if not os.path.isdir(self.activity_playpen):
             os.makedirs(self.activity_playpen)
+        self.hide = os.path.join(self.storage,'.hide')
+        if not os.path.isdir(self.hide):
+            os.makedirs(self.hide)
+    
+    def setup_home_directory(self):
+        src = os.path.join(self.pydebug_path,'bin','.bashrc')
+        try:
+            shutil.copy(src,self.debugger_home)
+        except Exception,e:
+            _logger.debug('copy .bashrc exception %r'%e)
+        try:
+            shutil.rmtree(os.path.join(self.debugger_home,'.ipython'))
+        except Exception,e:
+            pass
+            #_logger.debug('rmtree exception %r trying to setup .ipython '%e)
+        try:
+            shutil.copytree(os.path.join(self.pydebug_path,'bin','.ipython'),self.debugger_home)
+        except Exception,e:
+            _logger.debug('copytree exception %r trying to copy .ipython directory'%e)
+        #for build 802 (sugar 0.82) we need a config file underneath home -- which pydebug moves
+        # we will place the config file at ~/.sugar/default/
+        try:
+            shutil.rmtree(os.path.join(self.debugger_home,'.sugar'))
+        except Exception,e:
+            pass
+            #_logger.debug('rmtree exception %r trying to setup .ipython '%e)
+        try:
+            shutil.copytree(os.path.join(self.pydebug_path,'bin','.sugar'),self.debugger_home)
+        except Exception,e:
+            _logger.debug('copytree exception %r trying to copy .sugar directory'%e)
+        #make sure we will have write permission when rainbow changes our identity
+        self.set_permissions(self.debugger_home)
         
     def _get_edit_canvas(self):
         self.editor =  sourceview_editor.GtkSourceview2Editor(self)
         return self.editor
            
     def setup_terminal(self):
-        os.environ['IPYTHONDIR'] = self.pydebug_path
-        _logger.debug('Set IPYTHONDIR to %s'%self.pydebug_path)
+        os.environ['IPYTHONDIR'] = self.debugger_home
+        _logger.debug('Set IPYTHONDIR to %s'%self.debugger_home)
         self._create_tab({'cwd':self.sugar_bundle_path})
         self._create_tab({'cwd':self.sugar_bundle_path})
         #start the debugger user interface
@@ -616,11 +695,18 @@ class PyDebugActivity(Activity,Terminal):
     def set_visible_canvas(self,index): #track the toolbox tab clicks
         self.pydebug_notebook.set_current_page(index)
         if index == self.panes['TERMINAL']:
-            self.set_terminal_focus()
+            gobject.idle_add(self.set_terminal_focus)
             self.editor.save_all()
         elif index == self.panes['HELP']:
             self.help_selected()
+        elif index == self.panes['PROJECT'] and self.manifest_class:
+            self.manifest_class.set_file_sys_root(self.child_path)
         self.current_pd_page = index
+        gobject.idle_add(self.grab_notebook_focus)
+        
+    def grab_notebook_focus(self):
+        self.pydebug_notebook.grab_focus()
+        return False
                 
     def _toolbar_changed_cb(self,widget,tab_no):
         _logger.debug('tool tab changed notification %d'%tab_no)
@@ -692,18 +778,31 @@ class PyDebugActivity(Activity,Terminal):
     
     
     def show_find(self,button):
-        self.find_window = self.wTree.get_widget("find")
+        if not self.find_window:
+            self._find_width = 400
+            self._find_height = 300
+            self.find_window = self.wTree.get_widget("find")
+            self.find_window.connect('destroy',self.close_find_window)
+            self.find_window.connect('delete_event',self.close_find_window)
+            self.find_connect()
+            self.find_window.set_title(_('FIND OR REPLACE'))
+            self.find_window.set_size_request(self._find_width,self._find_height)
+            self.find_window.set_decorated(False)
+            self.find_window.set_resizable(False)
+            self.find_window.set_modal(False)
+            self.find_window.connect('size_request',self._size_request_cb)
+        #if there is any selected text, put it in the find entry field, and grab focus
+        selected = self.editor.get_selected()
+        _logger.debug('selected text is %s'%selected)
+        self._search_entry.props.text = selected
+        self._search_entry.grab_focus()
         self.find_window.show()
-        self.find_window.connect('destroy',self.close_find_window)
-        self.find_connect()
-        self.find_window.set_title(_('FIND OR REPLACE'))
-        self.find_window.set_size_request(400, 200)
-        self.find_window.set_decorated(True)
-        self.find_window.set_resizable(True)
-        self.find_window.set_modal(False)
-        #self.find_window.set_position(gtk.WIN_POS_CENTER_ALWAYS)
-        self.find_window.set_border_width(10)
         
+    def _size_request_cb(self, widget, req):
+        x = gtk.gdk.screen_width() -self._find_width - 50
+        self.find_window._width = req.width
+        self.find_window._height = req.height
+        self.find_window.move(x,150)       
         
     def find_connect(self):
         mdict = {
@@ -729,10 +828,6 @@ class PyDebugActivity(Activity,Terminal):
         
     def close_find_window(self,button):
         self.find_window.hide()
-        
-    def delete_event(self,widget,event):
-        if widget == self.find_window:
-            self.find_window.hide()
         return True
     
     def find_entry_changed_cb(self,button):
@@ -753,38 +848,33 @@ class PyDebugActivity(Activity,Terminal):
         self.start_debugging()
         
     def __keep_clicked_cb(self, button):
-        self.save_icon_clicked = True
-        self.copy()
-        
-    ######  SUGAR defined read and write routines -- do not let them overwrite what's on disk
+        self.write_binary_to_datastore()
+
+
+    ######  SUGAR defined read and write routines -- do not let them overwrite what's being debugged
     
     def read_file(self, file_path):
         """
         If the ds_object passed to PyDebug is the last one saved, then just assume that the playpen is valid.
         If the ds_object is not the most recent one,  try to load the playpen with the contents referenced by the git_id
+        (reading the wiki, I discover we cannot count on metadata -- so cancel the git_id scheme)
         """
         #keep our own copy of the metadata
-        self.activity_dict = self.metadata.copy()
-        debugstr = ''
-        for key in self.activity_dict.keys():
-            if key == 'preview': continue
-            debugstr += key + ':'+str(self.activity_dict[key]) + ', '
-        _logger.debug ('In read_file: activity dictionary==> %s'%debugstr)
+        if self.metadata:
+            for key in self.metadata.keys():  #merge in journal information
+                self.activity_dict[key] = self.metadata[key]
+        self.log_dict(self.activity_dict,"read_file merged")
         if not self.debug_dict: self.get_config()
         if self.activity_dict.get('uid','XxXxXx') == self.debug_dict.get('jobject_id','YyYyY'):
             _logger.debug('pick up where we left off')
-            if self.activity_dict.get('child_path') and os.path.isdir(self.activity_dict.get('child_path')):
+            #OLPC bug reports suggest not all keys are preserved, so restore what we really need
+            self.activity_dict['child_path'] = self.debug_dict.get('child_path','')
+            if os.path.isdir(self.activity_dict.get('child_path')):
                 self.child_path = self.activity_dict['child_path']
                 self.setup_new_activity()
-                return
-        if self.activity_dict.has_key('git_id') and self.debug_dict['git_id'] != '':
-            os.chdir(self.activity_dict['git_home'])
-            cmd = 'git checkout %s'%self.activity_dict.get('git_id')
-            git_output = self.command_line(cmd)
-            if git_output:
-                self.load_activity_to_playpen(self.activity_dict.get('git_home'))
-            return
-            
+        #update the journal display - required when the journal is used to delete an item
+        if self.journal_class: 
+            self.journal_class.new_directory()            
                        
     def write_file(self, file_path):
         """
@@ -794,168 +884,209 @@ class PyDebugActivity(Activity,Terminal):
         on disk, but not yet saved in the journal is highly undesireable. So we'll let the user save to
         the journal, and perhaps optionally to the sd card (because it is removable, should the system die)
         """
-        if self.save_icon_clicked == True: #this was a specific request to save a commit to git
-            self.save_icon_clicked = False
-            _logger.debug('saving current playpen contents')
-            alert = self.alert(_('Saving current Activity to Home Directory'))
-            self.to_home_clicked_cb(None) #copies playpen and sets self._to_home_dest
-            if alert: self.remove_alert(alert)
-            alert = self.alert(_('Copying changes to GIT repository'))
-            git_id = self.do_git_commit(self._to_home_dest)
-            if alert: self.remove_alert(alert)
-            if git_id:
-                self.alert(_('GIT commit successful. ID:%s')%git_id)
-                self._jobject.metadata['commit_id'] = git_id
-                self._jobject.metadata['git_home'] = self._to_home_dest
-                today = datetime.date.today()               
-                self._jobject.metadata['title'] = self.activity_dict['name'] +' GIT-'+ git_id #self.activity_dict.get('commit_text',today)
-                datastore.write(self._jobject)
-                self._jobject.destroy()
-                #get a new dsobject
-                self.debug_dict['jobject_id'] = str(self.get_new_dsobject())
-                self._jobject = self.debug_dict['jobject_id']
+        try:
+            fd = open(file_path,'w+')
+            if fd:
+                fd.close()
             else:
-                alert = self.alert(_('GIT repository unchanged. File Tree is unchanged from previous COMMIT'))
-        jid = self.debug_dict.get('jobject_id','')
-        _logger.debug('write file debug-dict.jobject_id: %s. Jobject passed to write:%s'%(jid,self.metadata.get('uid','')))
-        chunk = self.activity_dict.get('name','')            
-        self._jobject.metadata['title'] = 'PyDebug_' + chunk
-        self._jobject.metadata['activity'] = 'org.laptop.PyDebug'
-        self._jobject.metadata['version'] = self.activity_dict.get('version','')
-        self._jobject.metadata['name'] = self.activity_dict.get('name','')
-        self._jobject.metadata['bundle_id'] = self.activity_dict.get('bundle_id','')
-        self._jobject.metadata['icon'] = self.activity_dict.get('icon','')
-        self._jobject.metadata['child_path'] = self.child_path
-    
-        datastore.write(self._jobject)
-        self.write_activity_info()
-        self.put_config()
+                _logger.debug('failed to open output file')
+            self.update_metadata()    
+            self.write_activity_info()
+            self.save_editor_status()
+            self.put_config()
+        except Exception,e:
+            _logger.debug('Write file exception %s'%e)
         return
         
-    def do_git_commit(self, tree):
-        """ First check the status of the source tree, if it is modified, do a commit, and store the
-        commit id in the metadata.
-        Input: path of the source tree
-        Returns: Commit id or None if there is an error
-        """
-        os.chdir(tree)
-        if not os.path.isdir(os.path.join(tree,'.git')):
-            cmd = 'git init'
-            cmd_output = self.command_line(cmd, alert_error=False)
-            cmd = 'git add *'
-            cmd_output = self.command_line(cmd, alert_error=False)        
-        cmd = 'git status'
-        cmd_output = self.command_line(cmd, alert_error=False)
-        do_commit = False
-        if cmd_output:
-            for line in cmd_output.split('\n'):
-                if line.find('modified') > -1: do_commit = True
-                if line.find('new file:') > -1: do_commit = True
-        if not do_commit:
-            _logger.debug('git did not commit because no unmodified files were detected')    
-            return  None #there have been no changes to write to library
-        today = datetime.date.today()
-        commit_message = self.activity_dict.get('commit_text',today)
-        cmd = 'git commit -a -m "%s"'%commit_message
-        cmd_output = self.command_line(cmd)
-        git_id = None
-        if not cmd_output:
-            _logger.debug('git commit returned no response')    
-            return None
-        _logger.debug('git commit response:%s'%cmd_output)
-        for line in cmd_output.split('\n'):
-            chunks = line.split()
-            if len(chunks) < 2: continue
-            if chunks[0] == '[master':
-                if chunks[1][:-1] == ']':
-                    git_id = chunks[1][:-1]
-                if len(chunks) < 3: continue
-                if chunks[2][:-1] == ']':
-                    git_id = chunks[2][:-1]
-        if not git_id: return None
-        self.activity_dict['git_id'] = git_id
-        return git_id
-    
+    def update_metadata(self):
+        obj = self._jobject
+        #ipshell()
+        if obj:
+            md = obj.get_metadata()
+            obj._file_path = None
+            if md:
+                self.log_dict(md,'journal metadata')                
+                _logger.debug('write file  Jobject passed to write:%s'%(obj.object_id,))
+                chunk = self.activity_dict.get('name','')            
+                for key in self.activity_dict.keys():
+                    if key == 'title' or key == 'activity': continue
+                    md[key] = self.activity_dict[key]
+                md['title'] = 'PyDebug_' + chunk
+                md['bundle_id'] = 'org.laptop.PyDebug'
+                try:
+                    pass
+                    #datastore.write(obj)
+                except Exception, e:
+                    _logger.debug('datastore write exception %s'%e)
+            else:
+                _logger.error('no metadata in write_file')
+        else:
+            _logger.error('no jobject in write_file')
+            
+    def log_dict(self, d, label = ''):
+        debugstr = ''
+        for key in d.keys():
+            if key == 'preview': continue
+            debugstr += key + ':'+str(d[key]) + ', '
+        _logger.debug('%s Dictionary ==>:%s'%(label,debugstr))
+
     def write_binary_to_datastore(self):
         """
         Check to see if there is a child loaded.
-        Then copy the home directory data for this application into the bundle
         then bundle it up and write it to the journal
         lastly serialize the project information and write it to the journal
         """
-        _logger.debug('Entered write_binary_to_datastore with child_path:%s'%self.child_path)
-        if not (os.path.isdir(self.child_path) and self.child_path.split('.')[-1:][0] == 'activity'):
-            self.alert(_('No Program loaded'))
-            return
-        dsobject = datastore.create()
-        dsobject.metadata['mime_type'] = 'binary'
+        if self.child_path == None: return
+        dist_dir = os.path.join(self.child_path,'dist')
+        try:
+            os.rmtree(dist_dir)
+        except:
+            _logger.debug('failed to rmtree %s'%dist_dir)
+        try:
+            os.mkdir(dist_dir)
+        except:
+            _logger.debug('failed to os.mkdir %s'%dist_dir)
+            
+        #the activity info file is read by the bundle maker - must be updated from screen
+        self.write_activity_info()
         
-        #copy the home directory config stuff into the bundle
-        home_dir = os.path.join(self.child_path,'HOME')
-        try:
-            os.rmtree(home_dir)
-        except:
-            pass
-        try:
-            os.mkdir(home_dir)
-        except:
-            pass
-        source = self.debugger_home
-        dest = os.path.join(self.child_path,'HOME')
-        _logger.debug('writing HOME info from %s to %s.'%(source,dest))
-        for f in os.listdir(self.debugger_home):
-            if f == '.': continue
-            if f == '..': continue
-            if f == 'pydebug': continue
-            if f == '.sugar': continue
-            try:
-                if os.path.isdir(f):
-                    shutil.copytree(f,dest)
-                else:
-                    shutil.copy(f,dest)
-            except:
-                pass
-
         #create the manifest for the bundle
+        config = self.write_manifest()
+        do_tgz = True
+        mime = 'binary'
+        activity = 'org.laptop.PyDebug'
+        #if manifest was successful, write the xo bundle to the instance directory
+        if config:
+            do_tgz = False
+            try:                
+                #actually write the xo file
+                packager = bundlebuilder.XOPackager(bundlebuilder.Builder(config))
+                packager.package()
+                source = os.path.join(self.child_path,'dist',str(config.xo_name))
+                dest = os.path.join(self.get_activity_root(),'instance',str(config.xo_name))
+                _logger.debug('writing to the journal from %s to %s.'%(source,dest))
+                if os.path.isfile(dest):
+                    os.unlink(dest)
+                try:
+                    package = str(config.xo_name)
+                    shutil.copy(source,dest)
+                    mime = self.MIME_TYPE
+                    activity = self.activity_dict.get('activity','')
+                    self.to_removable_bin(source)
+                except IOError:
+                    _logger.debug('shutil.copy error %d: %s. ',IOError[0],IOError[1])
+                    do_tgz = True
+            except Exception, e:
+                _logger.debug('outer exception %r'%e)
+                do_tgz = True
+        else:
+            _logger.debug('unable to create manifest')
+        if do_tgz:
+            dest = self.just_do_tar_gz()
+            if dest:
+                package = os.path.basename(dest)                
+        dsobject = datastore.create()
+        dsobject.metadata['package'] = package
+        dsobject.metadata['title'] = package  
+        dsobject.metadata['mime_type'] = mime
+        dsobject.metadata['icon'] = self.activity_dict.get('icon','')
+        dsobject.metadata['bundle_id'] = self.activity_dict.get('bundle_id','')
+        dsobject.metadata['activity'] = activity
+        dsobject.metadata['version'] = self.activity_dict.get('version',1) 
+        #calculate and store the new md5sum
+        self.debug_dict['tree_md5'] = self.md5sum_tree(self.child_path)
+        dsobject.metadata['tree_md5'] = self.debug_dict['tree_md5']
+        if dest: dsobject.set_file_path(dest)
+        
+        #actually make the call which writes to the journal
+        try:
+            datastore.write(dsobject,transfer_ownership=True)
+            _logger.debug('succesfully wrote to the journal from %s.'%(dest))
+        except Exception, e:
+            _logger.error('datastore.write exception %r'%e)
+            return
+        #update the project display
+        if self.journal_class: 
+            self.journal_class.new_directory()
+        #write snapshot of source tree to removable media if /pydebug directory exists
+        self.removable_backup()
+        
+    def removable_backup(self):
+        rs = self.removable_storage()
+        _logger.debug('removable storage %r'%rs)
+        for dest in rs:
+            root = os.path.join(dest,'pydebug')
+            if os.path.isdir(root):  #there is a pydebug directory in the root of this device
+                today = datetime.date.today()               
+                name = self.child_path.split('/')[-1].split(".")[0] + '-' + str(today)
+                #change name if necessary to prevent collision 
+                basename = self.non_conflicting(root,name)
+                try:
+                    shutil.copytree(self.child_path, os.path.join(root,basename))
+                    self.set_permissions(os.path.join(root,basename))
+                except Exception, e:
+                    _logger.error('copytree exception %r'%e)
+    
+    def to_removable_bin(self, source):
+        for dest in self.removable_storage():
+            root = os.path.join(dest,'bin')
+            if not os.path.isdir(root):  #there is no bin directory in the root of this device
+                try:
+                    os.mkdir(root)
+                except Exception, e:
+                    _logger.debug('mkdir exception %r'%e)
+            if os.path.isdir(root):
+                basename = os.path.basename(source)
+                target = os.path.join(root,basename)
+                if os.path.isfile(target):
+                    os.unlink(target)
+                _logger.debug('copying %s to %s'%(source,target))
+                shutil.copyfile(source,target)
+    
+    def removable_storage(self):
+        cmd = 'mount'
+        ret = []
+        resp, status = self.command_line(cmd)
+        if status == 0:
+            for line in resp.split('\n'):
+                chunks = line.split()
+                if len(chunks) > 2:
+                    if chunks[2].startswith('/media'):
+                        if chunks[2] == '/media/Boot': continue
+                        _logger.debug('mount point: %s'%chunks[2])
+                        ret.append(chunks[2])
+            return ret
+        return None
+    
+    def write_manifest(self):
         try:
             os.remove(os.path.join(self.child_path,'MANIFEST'))
         except:
             pass
         dest = self.child_path
         _logger.debug('Writing manifest to %s.'%(dest))
-        config = bundlebuilder.Config(dest)
-        b = bundlebuilder.Builder(config)
         try:
+            config = bundlebuilder.Config(dest)
+            b = bundlebuilder.Builder(config)
             b.fix_manifest()
         except:
-            _logger.debug('fix manifest error: ',sys.exc_type,sys.exc_info[0],sys.exc_info[1])
+            _logger.debug('fix manifest error: ',sys.exc_type,sys.exc_info()[0],sys.exc_info()[1])
+            return None
+        return config
 
-        #actually write the xo file
-        packager = bundlebuilder.XOPackager(bundlebuilder.Builder(config))
-        packager.package()
-        source = os.path.join(self.child_path,'dist',str(config.xo_name))
-        dest = os.path.join(self.get_activity_root(),'instance',str(config.xo_name))
-        _logger.debug('writing to the journal from %s to %s.'%(source,dest))
-        try:
-            shutil.copy(source,dest)
-        except IOError:
-            _logger.debug('shutil.copy error %d: %s. ',IOError[0],IOError[1])
-        #try:
-        dsobject.metadata['package'] = config.xo_name
-        dsobject.metadata['title'] = config.xo_name  #_('PyDebug Zipped app')
-        dsobject.metadata['mime_type'] = 'binary'
-        dsobject.metadata['activity'] = 'org.laptop.PyDebug'
-        dsobject.metadata['icon'] = self.debug_dict.get('icon','')
-        #calculate and store the new md5sum
-        self.debug_dict['tree_md5'] = self.md5sum_tree(self.child_path)
-        dsobject.metadata['tree_md5'] = self.debug_dict['tree_md5']
-        dsobject.set_file_path(dest)
-        
-        #actually make the call which writes to the journal
-        datastore.write(dsobject,transfer_ownership=True)
-        _logger.debug('succesfully wrote to the journal from %s.'%(dest))
-        #update the project display
-        self.journal_class = DataStoreTree(self,self.journal_treeview,self.wTree)
+    def just_do_tar_gz(self):
+        """
+        tar and compress the child_path tree to the journal
+        """
+        name = self.child_path.split('/')[-1].split(".")[0]+'.tar.gz'
+        os.chdir(self.activity_playpen)
+        dest = os.path.join(self.get_activity_root(),'instance',name)
+        cmd = 'tar czf %s %s'%(dest,'./'+os.path.basename(self.child_path))
+        ans = self.command_line(cmd)
+        _logger.debug('cmd:%s'%cmd)
+        if ans[1]!=0:
+            return None
+        return dest
         
     def load_activity_to_playpen(self,file_path):
         """loads from a disk tree"""
@@ -965,8 +1096,7 @@ class PyDebugActivity(Activity,Terminal):
         
     def try_to_load_from_journal(self,object_id):
         """
-        loads a zipped XO application file,  asks whether it is ok to
-        delete/overwrite path if the md5 has changed.
+        loads a zipped XO or tar.gz application file (tar.gz if bundler cannot parse the activity.info file)
         """
         self.ds = datastore.get(object_id[0])
         if not self.ds:
@@ -975,40 +1105,37 @@ class PyDebugActivity(Activity,Terminal):
         dsdict=self.ds.get_metadata()
         file_name_from_ds = self.ds.get_file_path()
         project = dsdict.get('package','')
-        if not project.endswith('.xo'):
+        if not (project.endswith('.xo') or project.endswith('.tar.gz')):
             self.alert(_('This journal item does not appear to be a zipped activity. Package:%s.'%project))
             self.ds.destroy()
             self.ds = None
             return
         filestat = os.stat(file_name_from_ds)         
         size = filestat.st_size
-
         _logger.debug('In try_to_load_from_journal. Object_id %s. File_path %s. Size:%s'%(object_id[0], file_name_from_ds, size))
-        try:
-            self._bundler = ActivityBundle(file_name_from_ds)
-        except:
-            self.alert('Error:  Malformed Activity Bundle')
-            self.ds.destroy()
-            self.ds = None
-            return
-        self._new_child_path = os.path.join(self.activity_playpen,self._bundler.get_name()+'.activity')
-        self._load_playpen(file_name_from_ds, iszip=True)
-        
-    def _load_playpen(self,source_fn, iszip = False):
-        """entry point for both xo and file tree sources"""
-        self.iszip = iszip
-        self._load_to_playpen_source = source_fn
-        if self.child_path and os.path.isdir(self.child_path):
-            #check to see if it has been modified
-            stored_hash = self.debug_dict.get('tree_md5','')
-            if stored_hash != '' and stored_hash != self.md5sum_tree(self.child_path):
-                self.confirmation_alert(_('The currently loaded %s project in the playpen has been changed.'%os.path.basename(self.child_path)),_('Ok to abandon changes?'),self._clear_playpen_cb)
+        if project.endswith('.xo'):
+            try:
+                self._bundler = ActivityBundle(file_name_from_ds)
+                name = self._bundler.get_name()
+                iszip=True
+                istar = False
+            except:
+                self.alert('Error:  Malformed Activity Bundle')
+                self.ds.destroy()
+                self.ds = None
                 return
-        self._clear_playpen_cb(None,None)
-    
-    def _clear_playpen_cb(self,alert, response):
+        else:
+            name = project.split('.')[0]
+            #self.delete_after_load = os.path.abspath(file_name_from_ds,name)
+            iszip = False
+            istar = True
+        self._new_child_path = os.path.join(self.activity_playpen,name+'.activity')
+        self._load_playpen(file_name_from_ds, iszip, istar)
+        
+    def _load_playpen(self,source_fn, iszip = False, istar=False):
+        """entry point for both xo and file tree sources"""
+        self._load_to_playpen_source = source_fn
         #if necessary clean up contents of playpen
-        if alert != None: self.remove_alert(alert)
         if self.child_path and os.path.isdir(self.child_path):        
             self.abandon_changes = True
             self.debug_dict['tree_md5'] = ''
@@ -1020,58 +1147,105 @@ class PyDebugActivity(Activity,Terminal):
         if self._load_to_playpen_source == None:
             #having done the clearing, just stop
             return
-        if self.iszip:
+        if iszip:
             self._bundler.install(self.activity_playpen)
             if self.ds: self.ds.destroy()
             self.ds = None
+        elif istar:
+            dsdict = self.ds.get_metadata()
+            project = dsdict.get('package','dummy.tar.gz')
+            name = project.split('.')[0]
+            dest = os.path.join(self.activity_playpen,project)
+            shutil.copy(source_fn,dest)
+            os.chdir(self.activity_playpen)
+            cmd = 'tar zxf %s'%dest
+            _logger.debug('loading tar.gz with cmd %s'%cmd)
+            rtn = self.command_line(cmd)
+            if rtn[1] != 0: return
+            #os.unlink(dest)
+            if self.ds: self.ds.destroy()
+            self.ds = None
         else:
-            
+            """
             if self.activity_playpen[-1] == '/':
                 dest = self.activity_playpen[:-1]
             else:
                 dest = self.activity_playpen
+            
             os.chdir(self._load_to_playpen_source)
             cmd = 'rsync -av %s %s'%(self._load_to_playpen_source,self.activity_playpen)
             output = self.command_line(cmd)
-            if not output:
+            if not output[1] == 0:
                 return
+            """
+            #get the source directory
+            source_basename = os.path.basename(self._load_to_playpen_source)
+            dest = os.path.join(self.activity_playpen,source_basename)
+            if os.path.isdir(dest):
+                try:
+                    shutil.rmtree(dest)
+                except Exception, error:
+                    _logger.debug('rmtree exception %r'%error)
+            try:
+                shutil.copytree(self._load_to_playpen_source,dest)
+                self.set_permissions(dest)
+            except Exception, error:
+                _logger.debug('copytree exception %r'%error)
+                return
+            if self.delete_after_load:
+                shutil.rmtree(self.delete_after_load, ignore_errors=True)
         self.debug_dict['source_tree'] = self._load_to_playpen_source
         self.child_path = self._new_child_path
         self.setup_new_activity()
             
     def  setup_new_activity(self):
         _logger.debug('in setup_new_activity. child path before chdir:%s'%self.child_path)
-        if self.child_path == None:
+        if self.child_path == None or not os.path.isdir(self.child_path):
             return
         os.chdir(self.child_path)
         self.read_activity_info(self.child_path)
+        self.debug_dict['child_path'] = self.child_path
         self.display_current_project()
         
+        #set the current working directory for debugging in the child context
+        cwd_cmd = 'cd %s\n'%(self.child_path,)
+        self.feed_virtual_terminal(0,cwd_cmd)
+
         #add the bin directory to path
-        os.environ['PATH'] = os.path.join(self.child_path,'bin') + ':' + os.environ['PATH']
+        if self.child_path not in os.environ['PATH'].split(':'):
+            os.environ['PATH'] = os.path.join(self.child_path,'bin') + ':' + os.environ['PATH']
         
         #calculate and store the md5sum
         self.debug_dict['tree_md5'] = self.md5sum_tree(self.child_path)
         
-        #find largest python files for editor
-        list = [f for f in os.listdir(self.child_path) if f[0] <> '.']
-        #list = self.manifest_class.get_filenames_list(self.child_path)
-        if not list: return
-        sizes = []
-        for f in list:
-            full_path = os.path.join(self.child_path,f)
-            if not f.endswith('.py'):continue
-            size = self.manifest_class.file_size(full_path)
-            sizes.append((size,full_path,))
-            #_logger.debug('python file "%s size %d'%(f,size))
-        for s,f in sorted(sizes,reverse=True)[:5]:
-            self.editor.load_object(f,os.path.basename(f)) 
-        self.editor.set_current_page(0)           
+        #if this is a resumption, open previous python files and position to previous location
+        if self.debug_dict.get(os.path.basename(self.child_path)):
+            for filenm, line in self.debug_dict.get(os.path.basename(self.child_path)):
+                if os.path.isfile(filenm):
+                    self.editor.load_object(filenm,os.path.basename(filenm)) 
+                    self.editor.position_to(filenm,line)
+                current_page = self.debug_dict.get(os.path.basename(self.child_path)+'-page',0) 
+                self.editor.set_current_page(current_page)           
+        else:             
+            #find largest python files for editor
+            list = [f for f in os.listdir(self.child_path) if f[0] <> '.']
+            #list = self.manifest_class.get_filenames_list(self.child_path)
+            if not list: return
+            sizes = []
+            for f in list:
+                full_path = os.path.join(self.child_path,f)
+                if not f.endswith('.py'):continue
+                size = self.manifest_class.file_size(full_path)
+                sizes.append((size,full_path,))
+                #_logger.debug('python file "%s size %d'%(f,size))
+            for s,f in sorted(sizes,reverse=True)[:5]:
+                self.editor.load_object(f,os.path.basename(f)) 
+            self.editor.set_current_page(0)           
         
     #####################            ALERT ROUTINES   ##################################
     
     def alert(self,msg,title=None):
-        alert = NotifyAlert(10)
+        alert = NotifyAlert(0)
         if title != None:
             alert.props.title=_('There is no Activity file')
         alert.props.msg = msg
@@ -1104,6 +1278,9 @@ class PyDebugActivity(Activity,Terminal):
         if response_id is gtk.RESPONSE_OK and this_alert.pydebug_cb != None:
             this_alert.pydebug_cb (this_alert, response_id)
             
+    def _new_file_cb(self, widget):
+        full_path = self.non_conflicting(self.child_path,'Unsaved_Document.py')
+        self.editor.load_object(full_path,os.path.basename(full_path))
         
     def _read_file_cb(self,widget):
         _logger.debug('Reading a file into editor')
@@ -1115,7 +1292,10 @@ class PyDebugActivity(Activity,Terminal):
         dialog.set_default_response(gtk.RESPONSE_OK)
         if self.last_filename == None:
             self.last_filename = self.child_path
-        dialog.set_current_folder(os.path.dirname(self.last_filename))       
+        if not self.last_filename:  
+            self.last_filename = self.activity_playpen                 
+        if self.last_filename:       
+            dialog.set_current_folder(os.path.dirname(self.last_filename))       
         
         filter = gtk.FileFilter()
         filter.set_name("All files")
@@ -1143,6 +1323,9 @@ class PyDebugActivity(Activity,Terminal):
         dialog.destroy()
 
     def save_file_cb(self, button):
+        """
+        impliments the SaveAs function
+        """
         chooser = gtk.FileChooserDialog(title=None,action=gtk.FILE_CHOOSER_ACTION_SAVE,
                                         buttons=(gtk.STOCK_CANCEL,gtk.RESPONSE_CANCEL,gtk.STOCK_SAVE,
                                                  gtk.RESPONSE_OK))
@@ -1158,9 +1341,14 @@ class PyDebugActivity(Activity,Terminal):
             self.save_cb(None,new_fn)
             
     def save_cb(self,button,new_fn=None):
-        if new_fn and not new_fn.startswith(self.child_root):
-            self.alert(_('You can only write %s to subdirectories of %s'%(os.path.basename(new_fn),
-                                                                          self.child_root,)))
+        if new_fn:
+            full_path = new_fn
+        else:
+            full_path = self.editor.get_full_path()
+        if os.path.basename(full_path).startswith('Unsaved_Document'): #force a choice to keep or change the name
+            #fd = open(full_path,'w')
+            #fd.close()
+            self.save_file_cb(None)            
             return
         page = self.editor._get_page()
         if  new_fn:
@@ -1210,6 +1398,20 @@ class PyDebugActivity(Activity,Terminal):
                 #print abs_path
         return h.hexdigest()
     
+    def set_permissions(self,root, perms='664'):
+        if not os.path.isdir(root):
+            return None
+        for dirpath, dirnames, filenames in os.walk(root):
+            for filename in filenames:
+                abs_path = os.path.join(dirpath, filename)
+                old_perms = os.stat(abs_path).st_mode
+                if os.path.isdir(abs_path):
+                    new_perms = int(perms,8) | int('771',8)
+                else:
+                    new_perms = old_perms | int(perms,8)
+                os.chmod(abs_path,new_perms)
+    
+    
         
         
     ##############    Following code services the Project page   #####################
@@ -1232,9 +1434,30 @@ class PyDebugActivity(Activity,Terminal):
         self.journal_class = DataStoreTree(self,self.journal_treeview,self.wTree)
         self.connect_object()  #make connections to signals from buttons
         self.activity_toggled_cb(None)
+        
+        self.icon_type = self.wTree.get_widget('icon_outline')
+        model = gtk.ListStore(str,str)
+        model.append(["icon_circle", _('Circle')])
+        model.append(['icon_square', _('Square')])
+        model.append(['icon_diamond', _('Diamond')])
+        model.append(['icon_star', _('Star')])
+        cell = gtk.CellRendererText()
+        self.icon_type.set_model(model)
+        self.icon_type.pack_start(cell)
+        self.icon_type.add_attribute(cell,'text',1)
+        self.icon_type.set_active(self.debug_dict.get('icon_active',1))
+        
         if self.child_path and self.child_path.endswith('.activity') and \
                                 os.path.isdir(self.child_path):
             self.setup_new_activity()
+        """
+        ds_mounts = datastore.mounts()
+        for x in ds_mounts:
+            _logger.debug('Title:%s Uri:%s'%(x.get('title'),x.get('uri')))
+        """
+        self.activity_data_changed = False
+        
+        """
         #get set to sense addition of a usb flash drive
         self.volume_monitor = gio.volume_monitor_get()
         self.volume_monitor.connect('mount-added',self.__mount_added_cb)
@@ -1243,7 +1466,7 @@ class PyDebugActivity(Activity,Terminal):
         for m in mount_list:
             s = m.get_root().get_path()
             if s.startswith('/media'):_logger.debug('volume:%s',s)
-    
+        """
     def __mount_added_cb(self, vm, mount):
         pass
     
@@ -1251,18 +1474,54 @@ class PyDebugActivity(Activity,Terminal):
         pass
         
     def display_current_project(self):            
-        self.manifest_treeview = self.wTree.get_widget('manifest')
-        self.manifest_class = FileTree(self, self.manifest_treeview,self.wTree)
-        if self.child_path:
-            self.manifest_class.set_file_sys_root(self.child_path)
-        else:
-            self.manifest_class.set_file_sys_root(self.activity_playpen)
+        #try to colorize the playpen
+        pp = self.wTree.get_widget('playpen_event_box')
+        map = pp.get_colormap()
+        color = map.alloc_color(PROJECT_BG)
+        style = pp.get_style().copy()
+        style.bg[gtk.STATE_NORMAL] = color
+        pp.set_style(style)
         
-        self.wTree.get_widget('name').set_text(self.activity_dict.get('name',''))        
-        self.wTree.get_widget('version').set_text(self.activity_dict.get('version',''))
-        self.wTree.get_widget('bundle_id').set_text(self.activity_dict.get('bundle_id',''))
-        self.wTree.get_widget('class').set_text(self.activity_dict.get('class',''))
-        self.wTree.get_widget('module').set_text(self.activity_dict.get('module',''))
+        self.manifest_treeview = self.wTree.get_widget('manifest')
+        map =self.manifest_treeview.get_colormap()
+        color = map.alloc_color(PROJECT_BASE)
+        style = self.manifest_treeview.get_style().copy()
+        style.bg[gtk.STATE_NORMAL] = color
+        color = map.alloc_color(PROJECT_BASE)
+        style.base[gtk.STATE_NORMAL] = color
+        self.manifest_treeview.set_style(style)
+        if self.manifest_class == None:
+            self.manifest_class = FileTree(self, self.manifest_treeview,self.wTree)
+        self.manifest_class.set_file_sys_root(self.child_path)
+        
+        name = self.wTree.get_widget('name')
+        #map = name.get_colormap()
+        color = map.alloc_color(PROJECT_BASE)
+        style = name.get_style().copy()
+        style.base[gtk.STATE_NORMAL] = color
+        name.set_style(style)        
+        name.set_text(self.activity_dict.get('name',''))
+        
+        version = self.wTree.get_widget('version')
+        version.set_style(style)
+        version.set_text(self.activity_dict.get('version',''))
+        
+        bundle = self.wTree.get_widget('bundle_id')
+        bundle.set_style(style)
+        bundle.set_text(self.activity_dict.get('bundle_id',''))
+        
+        pyclass = self.wTree.get_widget('class')
+        pyclass.set_style(style)
+        pyclass.set_text(self.activity_dict.get('class',''))
+        
+        pymodule = self.wTree.get_widget('module')
+        pymodule.set_style(style)
+        pymodule.set_text(self.activity_dict.get('module',''))
+
+        pyicon = self.wTree.get_widget('icon_chr')
+        pyicon.set_style(style)
+        pyicon.set_text(self.activity_dict.get('icon_chr',''))
+
         """
         self.wTree.get_widget('home_save').set_text(self.activity_dict.get('home_save',''))
         self.wTree.get_widget('host').set_text(self.debug_dict.get('host',''))
@@ -1285,17 +1544,20 @@ class PyDebugActivity(Activity,Terminal):
             self.wTree=wTree
         if self.wTree:"""
         mdict = {
-                 'name_changed_cb':self.name_changed_cb,
-                 'bundle_id_changed_cb':self.bundle_id_changed_cb,
-                 'class_changed_cb':self.class_changed_cb,
-                 'icon_changed_cb':self.icon_changed_cb,
-                 'version_changed_cb':self.version_changed_cb,
+                 'name_leave_notify_event_cb':self.name_changed_cb,
+                 'bundle_id_leave_notify_event_cb':self.bundle_id_changed_cb,
+                 'module_leave_notify_event_cb':self.module_changed_cb,
+                 'class_leave_notify_event_cb':self.class_changed_cb,
+                 'icon_outline_changed_cb':self.icon_changed_cb,
+                 'version_leave_notify_event_cb':self.version_changed_cb,
                  'file_toggle_clicked_cb':self.activity_toggled_cb,
                  'to_activities_clicked_cb':self.to_home_clicked_cb,
                  'from_activities_clicked_cb':self.from_home_clicked_cb,
                  'from_examples_clicked_cb':self.from_examples_clicked_cb,
-                 'run_clicked_cb':self.project_run_cb,
+                 'help_clicked_cb':self.project_help_cb,
+                 'create_icon_clicked_cb':self.create_icon_cb,
                  'delete_file_clicked_cb':self.delete_file_cb,
+                 'clear_clicked_cb':self.clear_clicked_cb,
              }
         self.wTree.signal_autoconnect(mdict)
         button = self.wTree.get_widget('file_toggle')
@@ -1304,61 +1566,168 @@ class PyDebugActivity(Activity,Terminal):
         button.set_tooltip_text(_('Copy the files in the debug workplace to your "home" storage directory'))
         button = self.wTree.get_widget('from_examples')
         button.set_tooltip_text(_('Load and modify these example programs. See the help Tutorials'))
+
+        button = self.wTree.get_widget('delete_file')
+        map = button.get_colormap()
+        color = map.alloc_color(PROJECT_FG)
+        style = button.get_style().copy()
+        style.bg[gtk.STATE_NORMAL] = color
+        button.set_style(style)
+         
+        button = self.wTree.get_widget('clear')
+        button.set_style(style)
+         
+        button = self.wTree.get_widget('help')
+        button.set_style(style)
+
+        button = self.wTree.get_widget('create_icon')
+        button.set_style(style)
+         
+        button = self.wTree.get_widget('icon_outline')
+        button.set_style(style)
+         
+         
+    def project_help_cb(self):
+        self.help_selected()
         
-        
-    def name_changed_cb(self, widget):
+    def name_changed_cb(self, widget, event):
+        self.activity_data_changed = True
+        oldname = self.activity_dict.get('name')
         self.activity_dict['name'] = widget.get_text()
-        
-    def bundle_id_changed_cb(self,widget):
+        if oldname != self.activity_dict['name']:
+            #change the module name
+            new_child =  os.path.join(self.activity_playpen,self.activity_dict['name']+'.activity')
+            cmd = 'mv %s %s'%(self.child_path,new_child)
+            resp,status = self.command_line(cmd)
+            if status != 0:
+                _logger.error('not able to change activity name using cmd:%s'%cmd)
+                return
+            old_start = os.path.join(self.child_path,oldname + '.py')
+            if os.path.isfile(old_start):
+                cmd = 'mv %s %s'%(old_start,os.path.join(new_child,self.activity_dict['name']) + '.py')
+                resp,status = self.command_line(cmd)
+                if status == 0:
+                    self.activity_dict['module'] = self.activity_dict['name']
+                bundle_id_entry = self.wTree.get_widget('bundle_id')
+                bundle_id = bundle_id_entryl.get_text()
+                if bundle_id != '':
+                    new_bundle_id = bundle_id.split('.')[:-1] +'.'+self.activity_dict['name']
+                    self.activity_dict['bundle_id'] = new_bundle_id
+                else:
+                    self.activity_dict['bundle_id'] = 'org.laptop.' + self.activity_dict['name']
+            self.debug_dict[os.path.basename(self.child_path)] = []
+            self.child_path = new_child
+            self.activity_dict['child_path'] = new_child
+            self.debug_dict['child_path'] = new_child
+            self.update_metadata()
+            self.display_current_project()
+            
+    def bundle_id_changed_cb(self,widget, event):
+        self.activity_data_changed = True
         self.activity_dict['bundle_id'] = widget.get_text()
+        self.update_metadata()
         
-    def class_changed_cb(self, widget): 
-        self.activity_dict['class'] = widget.get_text()
+    def module_changed_cb(self, widget, event): 
+        self.activity_data_changed = True
+        self.activity_dict['module'] = widget.get_text()
+        self.update_metadata()
      
-    def icon_changed_cb(self, widget):
-        self.activity_dict['icon'] = widget.get_text()
-        
-    def version_changed_cb(self, widget):
+    def class_changed_cb(self, widget, event): 
+        self.activity_data_changed = True
+        self.activity_dict['class'] = widget.get_text()
+        self.update_metadata()
+     
+    def version_changed_cb(self, widget, event):
+        self.activity_data_changed = True
         self.activity_dict['version'] = widget.get_text()
+        _logger.debug('version changed to %s'%self.activity_dict['version'])
+        self.update_metadata()
         
-    def name_changed_cb(self, widget):
-        self.activity_dict['name'] = widget.get_text()
-        
-    def commit_changed_cb(self, widget):
-        self.activity_dict['commit_text'] = widget.get_text()
-        
-    def volume_drop_changed_cb(self, widget):
-        self.activity_dict['name'] = widget.get_text()
-        
-    def volume_save_cb(self, widget):
-        self.activity_dict['save'] = widget.get_text()
+    def icon_changed_cb(self, combo):
+        self.activity_data_changed = True
+        model = combo.get_model()
+        i = combo.get_active()
+        self.icon_outline = model[i][0]
+        _logger.debug('icon outline select is %s'%self.icon_outline)
+        self.debug_dict['icon_active'] = i
                 
+    def create_icon_cb(self,widget):
+        self.activity_data_changed = True
+        #get the two characters and substitute them in the proper svg template
+        chrs_entry = self.wTree.get_widget('icon_chr')
+        chars = chrs_entry.get_text()
+        _logger.debug('CREATE A NEW ICON !!!!text characters: %s'%chars)
+        if chars == '':chars = '??'
+        template = os.path.join(self.pydebug_path,'bin',self.icon_outline)+'.svg'
+        try:
+            icon_fd = file(template,'r')
+            icon_str = icon_fd.read()
+        except IOError, e:
+            _logger.error('read exception %s'%e)
+            return
+        icon_str = icon_str.replace('??', chars)
+        self.activity_dict['icon_base'] = os.path.join(self.child_path, 'activity',\
+                        self.activity_dict.get('bundle_id','dummy').split('.')[-1] + chars + self.icon_outline[5:6])
+        target =  self.activity_dict['icon_base'] + '.svg'
+        if self.last_icon_file:
+            os.unlink(self.last_icon_file)
+            self.last_icon_file = None
+        try:
+            _file = file(target, 'w+')
+            _file.write(icon_str)
+            _file.close()
+        except IOError, e:
+            msg = _("I/O error(%s): %s"%(e))
+            _logger.error(msg)
+        except Exception, e:
+            msg = "Unexpected error:%s"%e
+            _logger.error(msg)
+        if _file:
+            self.last_icon_file = target
+            _file.close()
+        self.activity_dict['icon'] = self.activity_dict.get('name')
+        self.update_metadata()
+        _logger.debug('about to POP UP THE ICON')
+        if self.icon_window:
+            self.icon_window.destroy()
+        self.icon_window = Icon_Panel(None)
+        self.icon_window._icon.set_file(target)
+        self.icon_window._icon.show()
+        self.icon_window.connect_button_press(self.button_press_event)
+        self.icon_window.show()
+        
+    def button_press_event(self,event, data=None):
+        self.icon_window.destroy()
+        self.icon_window = None
+            
     def activity_toggled_cb(self, widget):
         _logger.debug('Entered activity_toggled_cb. Button: %r'%self.file_pane_is_activities)
         but = self.wTree.get_widget('to_activities')
         to_what = self.wTree.get_widget('file_toggle')
         window_label = self.wTree.get_widget('file_system_label')
         if self.file_pane_is_activities == True:
-            to_what.set_label('Installed')
+            to_what.set_label('Installed_')
             but.show()
-            display_label = self.storage[:18]+' . . . '+self.storage[-24:]
+            #display_label = self.storage[:18]+' . . . '+self.storage[-24:]
+            display_label = 'PyDebug SHELF storage:'
             self.activity_window.set_file_sys_root(self.storage)
             button = self.wTree.get_widget('from_activities')
-            button.set_tooltip_text(_('Copy the selected directory  from your "home" storage to the debug workplace'))
+            button.set_tooltip_text(_('Copy the selected directory or file from your "home" storage to the debug workplace'))
             window_label.set_text(display_label)
         else:
-            to_what.set_label('home')
+            to_what.set_label('shelf')
             but.hide()
             self.activity_window.set_file_sys_root('/home/olpc/Activities')
             button = self.wTree.get_widget('from_activities')
-            button.set_tooltip_text(_('Copy the selected Activity to the debug workplace and start debugging'))
-            window_label.set_text('/home/olpc/Activities')
+            button.set_tooltip_text(_('Copy the selected Activity or file to the debug workplace'))
+            window_label.set_text('INSTALLED ACTIVITIES:')
         self.file_pane_is_activities =  not self.file_pane_is_activities
+    
     
     def to_home_clicked_cb(self,widget):
         _logger.debug('Entered to_home_clicked_cb')
         self._to_home_dest = os.path.join(self.storage,self.activity_dict['name']+'.activity')
-        if os.path.isdir(self._to_home_dest):
+        if False: #os.path.isdir(self._to_home_dest):
             target_md5sum = self.md5sum_tree(self._to_home_dest)
             if target_md5sum != self.debug_dict.get('tree_md5',''):
                 self.confirmation_alert(_('OK to delete/overwrite %s?'%self._to_home_dest),
@@ -1370,6 +1739,7 @@ class PyDebugActivity(Activity,Terminal):
     def _to_home_cb(self, alert, response_id):
         if alert != None: self.remove_alert(alert)
         if response_id is gtk.RESPONSE_OK:
+            """
             cmd = ['rsync','-av',self.child_path + '/',self._to_home_dest]
             _logger.debug('do to_home_cb with cmd:%s'%cmd)
             p1 = Popen(cmd,stdout=PIPE)
@@ -1377,6 +1747,12 @@ class PyDebugActivity(Activity,Terminal):
             if p1.returncode != 0:
                 self.alert('rsync command returned non zero\n'+output[0]+ 'COPY FAILURE')
                 return
+            """
+            _logger.debug('removing tree, and then copying to %s'%self._to_home_dest)
+            if os.path.isdir(self._to_home_dest):
+                shutil.rmtree(self._to_home_dest, ignore_errors=True)
+            shutil.copytree(self.child_path,self._to_home_dest)
+            self.set_permissions(self._to_home_dest)
             #redraw the treeview
             self.activity_window.set_file_sys_root(self.storage)
 
@@ -1411,13 +1787,15 @@ class PyDebugActivity(Activity,Terminal):
         basename = basename.split('.')
         word = basename[0]
         if len(basename) > 1:
-            ext = basename[1]
+            ext = '.' + basename[1]
         adder = ''
         index = 0
-        while os.path.isfile(os.path.join(root,word+adder+'.'+ext)):
+        while (os.path.isfile(os.path.join(root,word+adder+ext)) or 
+                                os.path.isdir(os.path.join(root,word+adder+ext))):
             index +=1
             adder = '-%s'%index
-        return os.path.join(root,word+adder+'.'+ext)
+        _logger.debug('non conflicting:%s'%os.path.join(root,word+adder+ext))
+        return os.path.join(root,word+adder+ext)
     
     def from_examples_clicked_cb(self,widget):
         _logger.debug('Entered from_examples_clicked_cb')
@@ -1488,74 +1866,106 @@ class PyDebugActivity(Activity,Terminal):
         _logger.debug ('In read_activity: activity dictionary==> %s'%debugstr)       
         """                                                     
         try:
+            _logger.debug ('passed in file path: %s'%path)       
             bundle = ActivityBundle(path)
-        except:
-            msg = _('%s not recognized by ActivityBundle parser. Does activity/activity.info exist?'
-                    %os.path.basename(path))
-            self.alert(msg)
+        except Exception,e:
+            _logger.debug('exception %r'%e)
+            #msg = _('%s not recognized by ActivityBundle parser. Does activity/activity.info exist?'%os.path.basename(path))
+            #self.alert(msg)
+            self.init_activity_dict()
             return  #maybe should issue an alert here
         self.activity_dict['version'] = str(bundle.get_activity_version())
         self.activity_dict['name'] = bundle.get_name()
         self.activity_dict['bundle_id'] = bundle.get_bundle_id()
         self.activity_dict['command'] = bundle.get_command()
-        cmd_args = activityfactory.get_command(bundle)
-        mod_class = cmd_args[1]
-        if '.' in mod_class:
-            self.activity_dict['class'] = mod_class.split('.')[1]  
-            self.activity_dict['module'] = mod_class.split('.')[0]              
+        cmd_args = bundle.get_command()
+        self.activity_dict['command'] = cmd_args
+        if cmd_args.startswith('sugar-activity'):
+            mod_class = cmd_args.split()[1]
+            if '.' in mod_class:
+                self.activity_dict['class'] = mod_class.split('.')[1]  
+                self.activity_dict['module'] = mod_class.split('.')[0]
+        else:
+            self.activity_dict['module'] = cmd_args
+            self.activity_dict['class'] = ''
         self.activity_dict['icon'] = bundle.get_icon()
-           
+        self.activity_dict['title'] = 'PyDebug_' + self.activity_dict['name']
+        self.log_dict(self.activity_dict,'Contents of activity_dict')
+        self.update_metadata()
+        
+    def init_activity_dict(self):
+        self.activity_dict['version'] = '1'
+        self.activity_dict['name'] = 'untitled'
+        self.activity_dict['bundle_id'] = ''
+        self.activity_dict['command'] = ''
+        self.activity_dict['class'] = ''
+        self.activity_dict['module'] = ''           
+        self.activity_dict['icon'] = ''
+        self.activity_dict['activity_id'] = ''
+        self.activity_dict['package'] = ''
+        self.activity_dict['jobject _id'] = ''
+        
     def write_activity_info(self):
         #write the activity.info file
-        _logger.debug('entered write_actiity_info')
         if self.child_path == None: return
+        if not self.activity_data_changed: return
         filen = os.path.join(self.child_path,'activity','activity.info')
-        #try:
-        with open(filen,'r') as fd:
-            #and also write to a new file
-            filewr = os.path.join(self.child_path,'activity','activity.new')
-            #try:
-            with open(filewr,'w') as fdw:
-                #write the required lines
-                _logger.debug('writing activity info to %s'%filewr)
-                fdw.write('[Activity]\n')
-                fdw.write('name = %s\n'%self.activity_dict.get('name'))
-                fdw.write('bundle_id = %s\n'%self.activity_dict.get('bundle_id'))
-                fdw.write('activity_version = %s\n'%self.activity_dict.get('version'))
-                icon = self.activity_dict.get('icon')[len(self.child_path)+10:-4]
-                fdw.write('icon = %s\n'%icon)
-                if self.activity_dict.get('class','') == '':
-                    fdw.write('exec = %s\n'%self.activity_dict.get('module'))
-                else:
-                    fdw.write('class = %s.%s\n'%(self.activity_dict.get('module'),
-                                                    self.activity_dict.get('class')))                       
-                #pass the rest of the input to the output
-                passup = ('[activity]','exec','activity_version','name','bundle_id',
-                            'service_name','icon','class')                        
-                for line in  fd.readlines():
-                    tokens = line.split('=')
-                    keyword = tokens[0].lower().rstrip()
-                    if keyword in passup: continue
-                    fdw.write(line)
-        """
-                except EnvironmentError:
-                    _logger.debug('failed to open %s for writing. msg:%s'%(filewr,EnvironmentError[1]))
-
-        except EnvironmentError:
-            _logger.debug('failed to open %s msg:%s'%(filen,EnvironmentError[1]))
-        """
+        try:
+            with open(filen,'r') as fd:
+                #and also write to a new file
+                filewr = os.path.join(self.child_path,'activity','activity.new')
+                _logger.debug('write from %s to %s'%(filen,filewr))
+                #try:
+                with open(filewr,'w+') as fdw:
+                    #write the required lines
+                    _logger.debug('writing activity info to %s'%filewr)
+                    fdw.write('[Activity]\n')
+                    fdw.write('name = %s\n'%self.activity_dict.get('name'))
+                    fdw.write('bundle_id = %s\n'%self.activity_dict.get('bundle_id'))
+                    fdw.write('activity_version = %s\n'%self.activity_dict.get('version'))
+                    icon = self.activity_dict.get('icon')
+                    icon_nibble = self.activity_dict.get('bundle_id','').split('.')[-1]
+                    fdw.write('icon = %s\n'%icon_nibble)
+                    if self.activity_dict.get('class','') == '' and self.activity_dict.get('module'):
+                        fdw.write('exec = %s\n'%self.activity_dict.get('module'))
+                    else:
+                        fdw.write('class = %s.%s\n'%(self.activity_dict.get('module'),
+                                                        self.activity_dict.get('class')))                       
+                    #pass the rest of the input to the output
+                    passup = ('[activity]','exec','activity_version','name','bundle_id',
+                                'service_name','icon','class')                        
+                    for line in  fd.readlines():
+                        tokens = line.split('=')
+                        keyword = tokens[0].lower().rstrip()
+                        if keyword in passup: continue
+                        fdw.write(line)
+                if fdw: fdw.close()
+                filesave = filen.rsplit('.',1)[:-1][0] + '.save'
+                _logger.debug('filesave:%s'%filesave)
+                if not os.path.isfile(filesave):
+                    cmd = 'mv %s %s'%(filen,filesave)
+                    results,status = self.command_line(cmd)
+                if os.path.isfile(filen):                
+                    os.unlink(filen)
+                cmd = 'mv %s %s'%(filewr,filen)
+                results,status = self.command_line(cmd)                    
+            return True
+        except Exception, e:
+            _logger.debug('exception %r'%e)
+            return False
         
     def delete_file_cb(self,widget):
         selection=self.manifest_treeview.get_selection()
         (model,iter)=selection.get_selected()
         if iter == None:
-            self.alert(_('Must select File delete'))
+            self.alert(_('Must select a File or Folder to delete'))
             return
         fullpath = model.get(iter,4)[0]
-        _logger.debug(' delete_file_clicked_cb. File: %s'%os.path.basename(fullpath))
+        _logger.debug(' delete_file_clicked_cb. File: %s'%(fullpath))
         self.delete_file_storage = fullpath
         if os.path.isdir(fullpath):
-            self.alert(_('Use the terminal "rm -rf <directory> --CAREFULLY','Cannot delete Folders!'))
+            self.confirmation_alert(_('Would you like to continue deleting %s?'%os.path.basename(fullpath)),
+                                    _('CAUTION: You are about to DELETE a FOLDER!!'),self.do_delete_folder)
             return
         self.confirmation_alert(_('Would you like to continue deleting %s?'%os.path.basename(fullpath)),
                                 _('ABOUT TO DELETE A FILE!!'),self.do_delete)
@@ -1567,7 +1977,20 @@ class PyDebugActivity(Activity,Terminal):
         self.manifest_class.set_file_sys_root(self.child_path)
         self.manifest_class.position_recent()
      
+    def do_delete_folder(self, alert, response):
+        _logger.debug('doing delete of: %s'%self.delete_file_storage)
+        self.manifest_point_to(self.delete_file_storage)
+        shutil.rmtree(self.delete_file_storage)
+        self.manifest_class.set_file_sys_root(self.child_path)
+        self.manifest_class.position_recent()
      
+    def clear_clicked_cb(self, button):
+        self.editor.remove_all()
+        self.init_activity_dict()
+        self.child_path = None
+        self.manifest_class.set_file_sys_root(self.child_path)        
+        self.display_current_project()
+        
     ################  Help routines
     def help_selected(self):
         """
@@ -1575,6 +1998,9 @@ class PyDebugActivity(Activity,Terminal):
         else just switch to that viewport
         """
         if not self.help_x11:
+            screen = gtk.gdk.screen_get_default()
+            self.pdb_window = screen.get_root_window()
+            _logger.debug('xid for pydebug:%s'%self.pdb_window.xid)
             #self.window_instance = self.window.window
             self.help_x11 = self.help.realize_help()
             #self.x11_window = self.get_x11()os.geteuid()
@@ -1609,9 +2035,6 @@ class PyDebugActivity(Activity,Terminal):
         except:
             try:
                 fd = open(os.path.join(self.debugger_home,'pickl'),'wb')
-                self.debug_dict['host'] = 'localhost'
-                self.debug_dict['port'] = 18812
-                self.debug_dict['autosave'] = True
                 self.debug_dict['child_path'] = ''
                 local = self.debug_dict.copy()
                 pickle.dump(local,fd,pickle.HIGHEST_PROTOCOL)
@@ -1621,7 +2044,7 @@ class PyDebugActivity(Activity,Terminal):
         finally:
             fd.close()
         object_id = self.debug_dict.get('jobject_id','')
-        if object_id == '':
+        if False: #object_id == '':
             jobject = self.get_new_dsobject()
             self._jobject = jobject
             self.debug_dict['jobject_id'] = str(self._jobject.object_id)
@@ -1636,7 +2059,7 @@ class PyDebugActivity(Activity,Terminal):
         debugstr = ''
         for key in self.debug_dict.keys():
             debugstr += key + ':'+str(self.debug_dict[key]) + ', '
-        _logger.debug ('In get_config: debug dictionary==> %s'%debugstr)
+        #_logger.debug ('In get_config: debug dictionary==> %s'%debugstr)
         
     def get_new_dsobject(self):
             jobject = datastore.create()
@@ -1660,9 +2083,22 @@ class PyDebugActivity(Activity,Terminal):
     def startup_continue(self,alert,response):
         self.setup_new_activity()
         
+    def save_editor_status(self):
+        if self.editor.get_n_pages() == 0: return
+        current_page = self.editor.get_current_page()
+        edit_files = []
+        for i in range(self.editor.get_n_pages()):
+            page = self.editor.get_nth_page(i)
+            if isinstance(page,sourceview_editor.GtkSourceview2Page):
+                _logger.debug('updating debug_dict with %s' % page.fullPath)
+                edit_files.append([page.fullPath, page.get_iter().get_line()])
+        self.debug_dict[os.path.basename(self.child_path)] = edit_files
+        self.debug_dict[os.path.basename(self.child_path)+'-page'] = current_page
+                
+
     def put_config(self):
         if self.child_path:
-            self.debug_dict['tree_md5'] = self.md5sum_tree(self.child_path)
+            #self.debug_dict['tree_md5'] = self.md5sum_tree(self.child_path)
             self.debug_dict['child_path'] = self.child_path 
         try:
             fd = open(os.path.join(self.debugger_home,'pickl'),'wb')
@@ -1680,3 +2116,51 @@ class PyDebugActivity(Activity,Terminal):
             debugstr += key + ':'+str(self.debug_dict[key]) + ', '
         _logger.debug ('In put_config: debug dictionary==> %s'%debugstr)
             
+class Icon_Panel(gtk.Window):
+
+    def __init__(self, icon):
+        gtk.Window.__init__(self)
+
+        self.set_decorated(False)
+        self.set_resizable(False)
+        self.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG)
+
+        self.set_border_width(0)
+
+        self.props.accept_focus = False
+
+        #Setup estimate of width, height
+        w, h = gtk.icon_size_lookup(gtk.ICON_SIZE_LARGE_TOOLBAR)
+        self._width = w
+        self._height = h
+
+        self.connect('size-request', self._size_request_cb)
+
+        screen = self.get_screen()
+        screen.connect('size-changed', self._screen_size_changed_cb)
+
+        self._button = gtk.Button()
+        self._button.set_relief(gtk.RELIEF_NONE)
+
+        self._icon = Icon( icon_size=gtk.ICON_SIZE_LARGE_TOOLBAR)
+        self._button.add(self._icon)
+
+        self._button.show()
+        self.add(self._button)
+        _logger.debug('completed init of icon_panel')
+
+    def connect_button_press(self, cb):
+        self._button.connect('button-press-event', cb)
+
+    def _reposition(self):
+        x = gtk.gdk.screen_width() - self._width
+        self.move(x, 347)
+
+    def _size_request_cb(self, widget, req):
+        self._width = req.width
+        self._height = req.height
+        self._reposition()
+
+    def _screen_size_changed_cb(self, screen):
+        self._reposition()
+

@@ -94,16 +94,19 @@ class Help(Window):
         self.toolbox.set_current_toolbar(HELP_PANE)
 
         self._web_view.load_uri(HOME)
+        self.pid = Popen(['/usr/bin/pydoc','-p','23432'])
 
     def get_help_toolbar(self):
         return self.help_toolbar
 
     def realize_help(self):
-        _logger.debug('realize help called')
+        _logger.debug('realize help called Version: %s pydebug activity id:%s'%(version, self.pydebug.handle.activity_id))
         #trial and error suggest the following pydebug activation is necesssary to return reliably to pydebug window
-        self.pywin = self.get_wnck_window_from_activity_id(str(self.pydebug.handle.activity_id))
-        if self.pywin:
-            self.pywin.activate(gtk.get_current_event_time())
+        if version > 0.839:
+            self.pywin = self.get_wnck_window_from_activity_id(str(self.pydebug.handle.activity_id))
+            if self.pywin:
+                self.pywin.activate(gtk.get_current_event_time())
+                _logger.debug('pywin.activate called')
         self.show_all()
         self.toolbox._notebook.set_current_page(HELP_PANE)
         return self
@@ -111,9 +114,12 @@ class Help(Window):
     def realize_cb(self, window):
         self.help_id = util.unique_id()
         wm.set_activity_id(window.window, self.help_id)
+        self.help_window = window
             
     def activate_help(self):
         _logger.debug('activate_help called')
+        self.help_window.show()
+        if version < 0.838: return
         window = self.get_wnck_window_from_activity_id(self.help_id)
         self.toolbox._notebook.set_current_page(HELP_PANE)
         if window:
@@ -126,6 +132,8 @@ class Help(Window):
         if tab == HELP_PANE: return
         if not self.help_id: return
         self.pydebug.set_toolbar(tab)
+        self.help_window.hide()
+        if version < 0.838: return
         self.pywin = self.get_wnck_window_from_activity_id(str(self.pydebug.handle.activity_id))
         if self.pywin:
             self.pywin.activate(gtk.get_current_event_time())
@@ -221,6 +229,7 @@ def sugar_version():
         return float(major_minor) 
     return None
 
+version = 0.0
 version = sugar_version() 
 if version and version >= 0.839:
     from jarabe.model import shell

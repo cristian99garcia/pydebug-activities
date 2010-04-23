@@ -52,11 +52,8 @@ class GtkSourceview2Editor(notebook.Notebook):
         self.connect('switch-page', self._switch_page_cb)
 
     def _page_removed_cb(self, notebook, page, n):
-        _logger.debug('removing page %d'%n)
-        if self.interactive_close:
-            self.interactive_close = False
-            page.save(interactive_close=True)
-        page.save()
+        pg_obj = self._get_page()
+        _logger.debug('removing page %d. interactive_close:%r. Modified:%r'%(n,self.interactive_close,page.text_buffer.can_undo()))
     
     def _switch_page_cb(self, notebook, page_gptr, page_num):
         pass
@@ -79,6 +76,7 @@ class GtkSourceview2Editor(notebook.Notebook):
         self.add_page(label, page)
         #label object is passed back in Notebook object -- remember it
         page.label = self.tab_label
+        page.label.set_tooltip_text(fullPath)
         _logger.debug('new label text: %s'%page.label.get_text())
         self.set_current_page(-1)
         self._changed_cb(page.text_buffer)
@@ -87,7 +85,14 @@ class GtkSourceview2Editor(notebook.Notebook):
         self.load_object(fullPath, os.path.basename(fullPath))
         page = self._get_page()
         page._scroll_to_line(line)
-        
+
+    def save_page(self):        
+        page = self._get_page()
+        if self.interactive_close:
+            self.interactive_close = False
+            page.save(interactive_close=True)
+            return
+        page.save()
 
     def _changed_cb(self, buffer):
         if not buffer.can_undo():
@@ -277,6 +282,14 @@ class SearchablePage(gtk.ScrolledWindow):
         _iter = self.text_buffer.get_iter_at_mark(insert)
         return _iter.get_offset()
     
+    def get_iter(self):
+        """
+        Return the current character position in the currnet file.
+        """
+        insert = self.text_buffer.get_insert()
+        _iter = self.text_buffer.get_iter_at_mark(insert)
+        return _iter
+
     def copy(self):
         """
         Copy the currently selected text to the clipboard.
@@ -389,12 +402,14 @@ class SearchablePage(gtk.ScrolledWindow):
         _iter = self.text_buffer.get_iter_at_offset(offset)
         _iter2 = self.text_buffer.get_iter_at_offset(bound)
         self.text_buffer.select_range(_iter,_iter2)
-        self.text_view.scroll_mark_onscreen(self.text_buffer.get_insert())
+        mymark = self.text_buffer.create_mark('mymark',_iter)
+        self.text_view.scroll_to_mark(mymark,0.0,True)
         
     def _scroll_to_line(self,line):
         _iter = self.text_buffer.get_iter_at_line(line)
         self.text_buffer.select_range(_iter,_iter)
-        self.text_view.scroll_mark_onscreen(self.text_buffer.get_insert())
+        mymark = self.text_buffer.create_mark('mymark',_iter)
+        self.text_view.scroll_to_mark(mymark,0.0,True)
         
     
     def __eq__(self,other):
@@ -462,10 +477,11 @@ class GtkSourceview2Page(SearchablePage):
         Load the text, and optionally scroll to the given offset in the file.
         """
         self.text_buffer.begin_not_undoable_action()
-        _file = file(self.fullPath)
-        self.text_buffer.set_text(_file.read())
-        _file.close()
-        self.save_hash()
+        if not os.path.basename(self.fullPath).startswith('Unsaved_Document'):
+            _file = file(self.fullPath)
+            self.text_buffer.set_text(_file.read())
+            _file.close()
+            self.save_hash()
         if offset is not None:
             self._scroll_to_offset(offset)
         
@@ -474,7 +490,7 @@ class GtkSourceview2Page(SearchablePage):
         else:
             self.text_buffer.set_highlight_syntax(False)
         mime_type = mimetypes.guess_type(self.fullPath)[0]
-        if mime_type:
+        if mime_type and not os.path.basename(self.fullPath).startswith('Unsaved_Document'):
             lang_manager = gtksourceview2.language_manager_get_default()
             if hasattr(lang_manager, 'list_languages'):
                langs = lang_manager.list_languages()
@@ -500,10 +516,15 @@ class GtkSourceview2Page(SearchablePage):
         self.save()
    
     def save(self,skip_md5 = False, interactive_close=False):
-        if not self.text_buffer.can_undo() or self.activity.abandon_changes:
+        if os.path.basename(self.fullPath).startswith('Unsaved_Document') and \
+                            self.text_buffer.can_undo():
+            self.activity.save_cb(None)
+            return
+        if not self.text_buffer.can_undo() or self.activity.abandon_changes: 
             if not self.text_buffer.can_undo():
                 _logger.debug('no changes for %s'%os.path.basename(self.fullPath))
             return  #only save if there's something to save
+        """
         if not skip_md5:
             hash = self.activity.md5sum(self.fullPath)
             if self.md5sum != hash: #underlying file has changed
@@ -514,17 +535,28 @@ class GtkSourceview2Page(SearchablePage):
                                                  _('The Underlying File Has Been Changed By Another Application'),
                                                  self.continue_save)
                 return
-        if self.interactive_close and self.text_buffer.can_undo():
-            self.activity.confirmation_alert(_('Would you to Save the file, or cancel the Save?',
-                                            _('This File Has Been Changed'),self.continue_save))
+        """
+        if not self.fullPath.startswith(self.activity.storage):
+            _logger.debug('failed to save self.fullPath: %s, Checked for starting with %s'%(self.fullPath, \
+                                                                                            self.activity.debugger_home))
+            self.activity.confirmation_alert(_('Would you like to include %s in your project?'%os.path.basename(self.fullPath)),\
+                                             _('This MODIFIED File is not in your package'),self.save_to_project_cb)
+            return
+        if interactive_close and self.text_buffer.can_undo():
+            self.activity.confirmation_alert(_('Would you like to Save the file, or cancel the Save?'),
+                                            _('This File Has Been Changed'),self.continue_save)
                                            
         self.continue_save(None)
+    
+    def save_to_project_cb(self,alert, response=None):
+        basename = os.path.basename(self.fullPath)
+        new_name = self.activity.non_conflicting(self.activity.child_path,basename)
+        self.fullPath = new_name
+        self.continue_save(None)
+        self.activity.manifest_class.set_file_sys_root(self.activity.child_path)
         
+            
     def continue_save(self, alert, response = None):         
-        if not self.fullPath.startswith(self.activity.debugger_home):
-            self.activity.alert(_('Can only save in locations under %s'%self.activity.debugger_home))
-            _logger.debug('failed to save self.fullPath: %s, Checked for starting with %s'%(self.fullPath, self.activity.debugger_home))
-            return
         _logger.debug('saving %s'%os.path.basename(self.fullPath))
         text = self.get_text()
         _file = file(self.fullPath, 'w')
@@ -540,7 +572,7 @@ class GtkSourceview2Page(SearchablePage):
             msg = _("I/O error(%s): %s"%(IOError[0], IOError[1]))
             self.activity.alert(msg)
         except:
-            msg = "Unexpected error:", sys.exc_info()[0]
+            msg = "Unexpected error:", sys.exc_info()[1]
             self.activity.alert(msg)
         if _file:
             _file.close()

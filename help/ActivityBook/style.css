@@ -1,14 +1,14 @@
 body {
 	font-family : trebuchet,verdana, sans-serif;
-	font-size: 22px; 
-	line-height:26px;
+	font-size: 100%; 
+	/*line-height:26px;*/
 }
 #content {
 	padding:10px;
 	position:absolute;
 	top:20px;
-	left:200px;
-	width:950px;
+	left:20%;
+	width:75%;
 	border-width:4px;
 	border-style:solid;
 	border-color:#666666;
@@ -16,15 +16,15 @@ body {
 #index {
 	 color:  #ff7f00;
 	 font-family: trebuchet,sans-serif;
-	 font-size: 16px;
-	 line-height:18px;
+	 font-size: .75em;
+	 line-height:18px;*/
 	 position:absolute;
 	 top:20px;
 	 left :10px;
 }
 
 #index UL {
-	 width: 155px;
+	 width: 15%;
 	 list-style-type: None;
 	 padding-left: 0px;
 	 border: 14px solid #ff7f00;
@@ -60,7 +60,7 @@ body {
 	 background-color: #ff7f00;
 	 color: #FBF4E9;
 	 font-weight: bolder;
-	 font-size:20px;
+	 /*font-size:20px;*/
 	 padding-bottom: 20px;
   }
 
@@ -122,7 +122,7 @@ font-weight : Bold;
 margin-bottom: -12px; 
 }
 pre, span.Code, span.verbatim {
-font-size:18px;
+font-size:1.2em;
 line-height:1.5em;
 background-color:#FFE5CC;
 border: 0px solid #000000;

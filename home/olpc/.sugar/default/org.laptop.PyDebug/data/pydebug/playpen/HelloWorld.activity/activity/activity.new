@@ -1,0 +1,7 @@
+[Activity]
+name = None
+bundle_id = None
+activity_version = None
+icon = 
+exec = None
+show_launcher = yes

@@ -126,6 +126,8 @@ class Terminal():
         box.label = label
         
         index = self.terminal_notebook.append_page(box, label)
+        if index == 0:
+            vt.set_colors(gtk.gdk.color_parse('#000000'), gtk.gdk.color_parse('#FFFFCC'), [])            
         self.terminal_notebook.show_all()
     
         # Uncomment this to only show the tab bar when there is at least one tab.
@@ -167,7 +169,7 @@ class Terminal():
     
     def feed_virtual_terminal(self,terminal,command):
         if terminal > len(self.terminal_notebook)-1 or terminal < 0:
-            _logging.debug('in feed_virtual_terminal: terminal out of bounds %s'%terminal)
+            _logger.debug('in feed_virtual_terminal: terminal out of bounds %s'%terminal)
             return
         self.terminal_notebook.set_current_page(terminal)
         vt = self.terminal_notebook.get_nth_page(terminal).vt  
@@ -202,6 +204,7 @@ class Terminal():
         vt = page.vt
         vt.grab_focus()
         _logger.debug('attemped to grab focus')
+        return False
         
     def _fullscreen_cb(self, btn):
         self.fullscreen()

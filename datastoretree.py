@@ -52,7 +52,7 @@ class DataStoreTree():
         self.journal_max = 0
         self.new_directory()
         button = self.wTree.get_widget('from_journal')
-        button.set_tooltip_text(_('Load the selected Journal XO file to the debug workplace'))
+        button.set_tooltip_text(_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
         button = self.wTree.get_widget('to_journal')
         button.set_tooltip_text(_('Zip up all the files in your debug workplace and store them in the Journal'))
 
@@ -113,7 +113,9 @@ class DataStoreTree():
         #_logger.debug('fetch datastore data. limit:%s. offset: %s'%(self.limit,self.journal_page_num * self.journal_page_size))
         #(results,count)=datastore.find({'limit':self.limit,'offset':self.journal_page_num * self.journal_page_size})
         """
-        results,count=datastore.find({'activity':'org.laptop.PyDebug'})
+        self.journal_model.clear()
+        #results,count=datastore.find({'activity':'org.laptop.PyDebug'})
+        results,count=datastore.find({})
         if count < self.limit:
             self.journal_max = self.journal_page_num * self.journal_page_size + count
         _logger.debug( 'datastoretree-get_datastore_list: count= %s'%count)
@@ -147,9 +149,9 @@ class DataStoreTree():
                 itemlist.append(pkg)
             itemlist.append(datastoredict['title'])
             itemlist.append(jobject.object_id)
-            text = 'Mime_type: %s, Journal ID: %s, GIT: %s'%(datastoredict.get('mime_type',''),
-                                                                  datastoredict.get('uid',''),
-                                                                  datastoredict.get('object_id',''))
+            text = 'Mime_type: %s, Journal ID: %s, Bundle: %s'%(datastoredict.get('mime_type',''),
+                                                                  datastoredict.get('object_id',''),
+                                                                  datastoredict.get('package',''))
             itemlist.append(text)
             #_logger.debug('journal tooltip:%s'%text)
             dslist.append(itemlist)

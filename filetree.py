@@ -55,6 +55,7 @@ class FileTree():
             self.treeview = gtk.TreeView()
         self.treeview.set_model(self.ft_model)
         self.treeview.show()
+        self.treeview.set_tooltip_column(4)
         self.show_hidden = False
 
     def init_columns(self):
@@ -95,6 +96,7 @@ class FileTree():
         if not dirlist: return
         for file in dirlist:
             if file.endswith('.pyc'): continue
+            if file.endswith('.pyo'): continue
             if file.endswith('~'): continue
             fullname = os.path.join(self.dirname,file)
             if len(file)>16:
@@ -112,6 +114,7 @@ class FileTree():
         self.file_sys_root = root
         self.dirname = root
         self.ft_model.clear()
+        if not root: return
         self.new_directory(root)
         #self.current_citer = self.ft_model.append(None,[None,os.path.basename(self.file_sys_root),
                                                               #None,None,self.file_sys_root,])
