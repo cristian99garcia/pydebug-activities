@@ -1,3 +1,0 @@
-#copy the remote pydebug tree to the git tree
-rsync  -p -r -v root@192.168.123.119:/home/olpc/Activities/PyDebug.activity/ /home/ghunt/git/pydebug/PyDebug.activity
-
