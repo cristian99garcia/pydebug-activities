@@ -114,8 +114,12 @@ class DataStoreTree():
         #(results,count)=datastore.find({'limit':self.limit,'offset':self.journal_page_num * self.journal_page_size})
         """
         self.journal_model.clear()
-        #results,count=datastore.find({'activity':'org.laptop.PyDebug'})
-        results,count=datastore.find({})
+        #results,count=datastore.find({'activity':'org.laptop.PyDebug
+        try:
+            results,count=datastore.find({})
+        except Exception,e:
+            _logger.error('datastore error %s'%e)
+            return []
         if count < self.limit:
             self.journal_max = self.journal_page_num * self.journal_page_size + count
         _logger.debug( 'datastoretree-get_datastore_list: count= %s'%count)

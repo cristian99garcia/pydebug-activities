@@ -46,8 +46,8 @@ from IPython.macro import Macro
 ip = ipapi.get()
 
 #define 2 macros, one which sets pdb on, the other off
-cmd = 'run -b 156 -d %s\n'% os.path.join(pydebug_path,'bin','continue_debug.py')
-if not ip.user_ns.has_key('gob'):
+cmd = 'run -b 237 -d %s\n'% os.path.join(pydebug_path,'bin','continue_debug.py')
+if not ip.user_ns.has_key('gb'):
     ip.user_ns['gb'] = Macro(cmd)
 cmd = 'run  %s\n'% os.path.join(pydebug_path,'bin','continue_debug.py')
 if not ip.user_ns.has_key('go'):

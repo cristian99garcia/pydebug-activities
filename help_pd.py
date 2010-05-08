@@ -35,13 +35,13 @@ from pdb import *
 from sugar.graphics.toolbutton import ToolButton
 
 import hulahop
-hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
+#hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
 
-#from hulahop.webview import WebView
+"""#from hulahop.webview import WebView
 from browser import Browser
 import xpcom
 from xpcom.components import interfaces
-
+"""
 gobject.threads_init()
 
 HOME = os.path.join(activity.get_bundle_path(), _('help/PyDebug.htm'))
@@ -55,6 +55,11 @@ _logger = logging.getLogger('PyDebug')
 class Help(Window):
     def __init__(self, parent):
         self.pydebug = parent
+        hulahop.startup(os.path.join(parent.debugger_home, 'gecko'))
+        #from hulahop.webview import WebView
+        from browser import Browser
+        import xpcom
+        from xpcom.components import interfaces
         self.help_id = None
         self.handle = ActivityHandle()
         self.handle.activity_id = util.unique_id()
