@@ -7,6 +7,30 @@
 </head>
 
 <body>
+<h1>What Does it mean to Debug a Program? </h1>
+<h2>Debugging is part of the larger process of writing a computer program</h2>
+<p>The reader is referred to James Simmons book &quot;Writing Sugar Activities&quot;, included in the Help section of PyDebug, for a more general discussion of the things that must happen before a program is ready to be debugged. </p>
+<h3>Python programs are realatively easy to debug </h3>
+<p>Programs can be written in a large number of languages, some compiled, others interpreted. Compiled languages are translated into the machine language of the (micro)-processor they are running on, and tend to execute faster. The process of debugging a compiled language is generally more complex than an interpreted language, because the errors that occur at the machine language level need to be translated back up to the program language level. Python is interpreted. The interpreter works with the program language directly. When errors occur, the error messages tend to be fairly descriptive of the real problem, and therefore pretty easy to fix.</p>
+<p>One major exception to this occurs early in debugging a python program. Sometimes, the error will be attributed to the line after the one where the actual error occurs (unmatched parentheses, quotes, etc.).</p>
+<h3>Python interpreter is a two pass interpreter, but requires an additional phase for graphical interface debugging </h3>
+<p>First pass discovers, or doesn't, all imported module resources, class definitions, and functions within each class. During the first pass, each line of code is read to make sure that it can be understood by the interpreter. The interpreter will stop with an error message at the first problem it finds. So this first phase of debugging requires rapid switching between the debugger and the editor in back and forth quick turnaround manner. PyDebug, will automatically save any edited file, when you switch from the &quot;edit&quot; to &quot;activity&quot; ipython pages. Some debuggers will automatically re-execute the debugged program, when there is a return from the editor. Using PyDebug, you can quickly rexecute your program by switching to ipythonm, typing &lt;up arrow&gt;&lt;enter&gt;. </p>
+<p> Some errors show up during the second pass. Files that cannot be read, or written, variables that are used before they are given a value will show up during this pass. Second pass creates  the objects as requested by some top level program statement. Typically you will want to include the following lines at the bottom of each module you write </p>
+<pre>if __name__ == __main__: 
+    some_result = some_function_or_class(&quot;some_input&quot;,123)
+	  print(some_result)	
+</pre>
+<p>In this way you can try out the classes and functions that you have defined earlier in the file. At some later time, when you know that the functions and classes are working the way you want, you can import this code into some other module.</p>
+<p>During the debugging of a graphical interface, like the GTK interface used on the XO, python code is executed via call backs attached to buttons, and other graphical screen objects. During the debug phase, you will have to switch between the graphical window created by your program and the debugger by using the
+  <alt>
+  <tab> keys on your keypboard (your graphical window will be represented by the round grey circle just to the right of the PyDebug icon.</p>
+<p>During the phase when you are debugging the GTK graphical interface, you will interact with your GUI (graphical user interface) until it stops responding. That will be the clue that the python interpreter has stopped on an error. Then you will need to &lt;alt&gt;&lt;tab&gt; to PyDebug to see what the error message is. In PyDebug, at the IPython prompt you can enter what is called a &quot;post mortem&quot; (after death) interaction by typing &quot;debug&quot;. Use &quot;?&quot; to remind you of the possible commands -- though I have only used &quot;u&quot;, &quot;d&quot;, and &quot;l&quot;. The &quot;u&quot; and &quot;d&quot; permit you to travel up and down the calling stack, and permit you to examine the values of the variables at each level. Ususally, if you turn on the &quot;verbose&quot; traceback, the variables you really are interested in will already be displayed. </p>
+<p>Debugging proceed through distinct phases</p>
+<p>Each phase requires slightly different strategies and techniques  </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
 <p>One of the most useful approaches when starting to write an activity is to read a lot of python code, hopefully finding pieces that do some of what you  want to do.  </p>
 <p>PyDebug makes it easy to browse through python code that comes on your computer. When you find something that you can modify to do what you want it to do, select the file, or folder on the left side of the screen and click on a right arrow to import it into the playpen. If you change your mind, it's easy to delete anything you don't want anymore.</p>
 <p>You can start with the HelloWorld template, or any of the other examples that are a little more complex, but do more what you want. </p>
