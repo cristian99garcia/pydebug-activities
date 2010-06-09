@@ -1,0 +1,66 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-03-24 18:52-0500\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: activity/activity.info:2
+msgid "Sugar Commander"
+msgstr ""
+
+#: sugarcommander.py:58 sugarcommander.py:102
+msgid "Title"
+msgstr ""
+
+#: sugarcommander.py:62
+msgid "MIME"
+msgstr ""
+
+#: sugarcommander.py:74
+msgid "Journal"
+msgstr ""
+
+#: sugarcommander.py:86
+msgid "Save"
+msgstr ""
+
+#: sugarcommander.py:92
+msgid "Delete"
+msgstr ""
+
+#: sugarcommander.py:113
+msgid "Description"
+msgstr ""
+
+#: sugarcommander.py:126
+msgid "Tags"
+msgstr ""
+
+#: sugarcommander.py:160
+msgid "Copy File To The Journal"
+msgstr ""
+
+#: sugarcommander.py:164
+msgid "Files"
+msgstr ""
+
+#: sugarcommander.py:345
+msgid "Success"
+msgstr ""
+
+#: sugarcommander.py:345
+#, python-format
+msgid "%s added to Journal."
+msgstr ""

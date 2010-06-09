@@ -515,15 +515,18 @@ class GtkSourceview2Page(SearchablePage):
     def remove(self):
         self.save()
    
-    def save(self,skip_md5 = False, interactive_close=False):
+    def save(self,skip_md5 = False, interactive_close=False,new_file=None):
         if os.path.basename(self.fullPath).startswith('Unsaved_Document') and \
                             self.text_buffer.can_undo():
             self.activity.save_cb(None)
             return
-        if not self.text_buffer.can_undo() or self.activity.abandon_changes: 
+        if not new_fn and (not self.text_buffer.can_undo() or self.activity.abandon_changes): 
             if not self.text_buffer.can_undo():
                 _logger.debug('no changes for %s'%os.path.basename(self.fullPath))
             return  #only save if there's something to save
+        if new_file:
+            self.fullPath = new_file
+        
         """
         if not skip_md5:
             hash = self.activity.md5sum(self.fullPath)

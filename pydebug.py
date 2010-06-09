@@ -1353,7 +1353,7 @@ class PyDebugActivity(Activity,Terminal):
         page = self.editor._get_page()
         if  new_fn:
             page.fullPath = new_fn
-            page.save(skip_md5 = True)
+            page.save(skip_md5 = True,new_file=new_fn)
         else:
             page.save()
         self.editor.clear_changed_star()
@@ -1828,9 +1828,9 @@ class PyDebugActivity(Activity,Terminal):
             #check to see if current activity in playpen needs to be saved, and load new activity if save is ok
             self._load_playpen(fullpath, istar=True)
             return
-        if os.path.isdir(fullpath):
-            self._new_child_path = self.child_path
-            self._load_playpen(fullpath)
+        #if os.path.isdir(fullpath):
+        self._new_child_path = self.child_path
+        self._load_playpen(fullpath)
    
     def filetree_activated(self):
         _logger.debug('entered pydebug filetree_activated')
