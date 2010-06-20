@@ -1167,9 +1167,10 @@ class PyDebugActivity(Activity,Terminal):
             if self.ds: self.ds.destroy()
             self.ds = None
         elif os.path.isdir(self._load_to_playpen_source):
+            #shutil.copy dies if the target exists, so rmtree if target exists
             basename = self._load_to_playpen_source.split('/')[-1]
             if basename.endswith('.activity'):
-                dest = self.child_path
+                dest = self._new_child_path
             else:
                 dest = os.path.join(self.child_path,basename)
             if  os.path.isdir(dest):
@@ -1178,6 +1179,7 @@ class PyDebugActivity(Activity,Terminal):
             _logger.debug('dest:%s'%dest)
             _logger.debug('copying tree from %s to %s'%(self._load_to_playpen_source,dest))
             shutil.copytree(self._load_to_playpen_source,dest)
+            _logger.debug('returned from copytree')
         elif os.path.isfile(self._load_to_playpen_source):
             source_basename = os.path.basename(self._load_to_playpen_source)
             dest = os.path.join(self.child_path,source_basename)
@@ -1516,10 +1518,12 @@ class PyDebugActivity(Activity,Terminal):
         pyclass = self.wTree.get_widget('class')
         pyclass.set_style(style)
         pyclass.set_text(self.activity_dict.get('class',''))
+        self.pdbclass = pyclass
         
         pymodule = self.wTree.get_widget('module')
         pymodule.set_style(style)
         pymodule.set_text(self.activity_dict.get('module',''))
+        self.pdbmodule = pymodule.get_text()
 
         pyicon = self.wTree.get_widget('icon_chr')
         pyicon.set_style(style)
@@ -2012,10 +2016,10 @@ class PyDebugActivity(Activity,Terminal):
                 return False
 
     def write_new_activity_info(self,fn):
-        base = os.path.basename(fn)
-        if not os.path.isdir(base):
+        abspath = os.path.abspath(fn)
+        if not os.path.isdir(abspath):
             try:
-                os.mkdir(base)
+                os.makedirs(abspath)
             except:
                 pass
             try:

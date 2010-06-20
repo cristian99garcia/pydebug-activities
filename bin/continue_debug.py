@@ -63,8 +63,8 @@ try:
     db = c.modules.pydebug.pydebug_instance
 except AttributeError:
     print('cannot connect to localhost')
-except e:
-    print(e[1])
+except Exception,e:
+    print(str(e))
     assert False
 
 #define interface with the command line ipython instance
@@ -80,7 +80,7 @@ except:
 
 def edit_glue(self,filename,linenumber=0):
     _logger.debug('position to editor file:%s. Line:%d'%(filename,linenumber))
-    if filename.endswith('.pyc'):
+    if filename.endswith('.pyc') or filename.endswith('.pyo'):
         filename = filename[:-1]
     if linenumber > 0:
         linenumber -= 1
@@ -104,10 +104,16 @@ _logger.debug('child path: %s'%child_path)
 if not child_path:
     print _('\n\nThere is no program loaded into the Work Area. \nPlease use the "Project" tab so set up the debug session\n\n')
     sys.exit(1)
+    
 #set the traceback level of detail
 #ip.options.xmode = db.debug_dict['traceback']
 __IPYTHON__.magic_xmode(db.debug_dict['traceback'])
 _logger.debug('xmode set to %s'%db.debug_dict['traceback'])
+
+#put module in top level namespace so it can be dreload()-ed
+exec 'import ' + db.pdbmodule
+exec 'reload(%s)'%db.pdbmodule
+
 """ if this were to work properly we should set go equal to object Macro
 go_cmd = 'run -d -b %s %s'%(os.path.join(db.pydebug_path,'bin','start_debug.py'),child_path)
 _logger.debug('defining go: %s'%go_cmd)

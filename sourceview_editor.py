@@ -520,7 +520,7 @@ class GtkSourceview2Page(SearchablePage):
                             self.text_buffer.can_undo():
             self.activity.save_cb(None)
             return
-        if not new_fn and (not self.text_buffer.can_undo() or self.activity.abandon_changes): 
+        if not new_file and (not self.text_buffer.can_undo() or self.activity.abandon_changes): 
             if not self.text_buffer.can_undo():
                 _logger.debug('no changes for %s'%os.path.basename(self.fullPath))
             return  #only save if there's something to save
@@ -642,7 +642,7 @@ class GtkSourceview2Page(SearchablePage):
             return result
         else: #replace, the &find part handled by caller
             try:
-                start,end = self.text_buffer.get_selection_bounds()
+                (start,end) = self.text_buffer.get_selection_bounds()
             except TypeError:
                 return False
             match = self._match(ftext,
