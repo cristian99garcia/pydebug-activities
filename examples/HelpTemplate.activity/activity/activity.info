@@ -1,0 +1,6 @@
+[Activity]
+name = HelpTemplate
+bundle_id = org.laptop.HelpTemplate
+activity_version = 1
+icon = HelpTemplate
+class = helptemplate.HelpTemplate

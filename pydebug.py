@@ -164,6 +164,7 @@ class PyDebugActivity(Activity,Terminal):
         self.last_icon_file = None
         self.activity_data_changed = False
         self.ignore_changes = True #disable the change callbacks on the activity.info panel
+        self.icon_basename = None
         
         #sugar 0.82 has a different way of getting colors and dies during init unless the following
         self.profile = profile.get_profile()
@@ -432,7 +433,7 @@ class PyDebugActivity(Activity,Terminal):
         separator.set_draw(False)
         separator.set_expand(True)
         separator.show()
-        
+        """ Keep seems similar to left arrow to journal or home,--confuses the issue
         self.keep = ToolButton(tooltip=_('Write the activity.info with this project data'))
         #client = gconf.client_get_default()
         #color = XoColor(client.get_string('/desktop/sugar/user/color'))
@@ -444,12 +445,12 @@ class PyDebugActivity(Activity,Terminal):
         self.keep.connect('clicked', self.__keep_clicked_cb)
         #self.insert(self.keep, -1)
         self.keep.show()
-
+        """
         projectbar = gtk.Toolbar()
         projectbar.show_all()
         projectbar.insert(project_run, -1)
         projectbar.insert(separator, -1)
-        projectbar.insert(self.keep,-1)
+        #projectbar.insert(self.keep,-1)
         self.toolbox.add_toolbar(_('Project'), projectbar)
         
         self.help = Help(self)
@@ -949,7 +950,7 @@ class PyDebugActivity(Activity,Terminal):
             _logger.debug('failed to os.mkdir %s'%dist_dir)
             
         #the activity info file is read by the bundle maker - must be updated from screen
-        self.write_activity_info()
+        #self.write_activity_info()
         
         #create the manifest for the bundle
         config = self.write_manifest()
@@ -1564,7 +1565,7 @@ class PyDebugActivity(Activity,Terminal):
                  'to_activities_clicked_cb':self.to_home_clicked_cb,
                  'from_activities_clicked_cb':self.from_home_clicked_cb,
                  'from_examples_clicked_cb':self.from_examples_clicked_cb,
-                 'help_clicked_cb':self.project_help_cb,
+                 'help_clicked_cb':self._keep_activity_info,
                  'create_icon_clicked_cb':self.create_icon_cb,
                  'delete_file_clicked_cb':self.delete_file_cb,
                  'clear_clicked_cb':self.clear_clicked_cb,
@@ -1670,8 +1671,10 @@ class PyDebugActivity(Activity,Terminal):
             _logger.error('read exception %s'%e)
             return
         icon_str = icon_str.replace('??', chars)
-        self.activity_dict['icon_base'] = os.path.join(self.child_path, 'activity',\
-                        self.activity_dict.get('bundle_id','dummy').split('.')[-1] + chars + self.icon_outline[5:6])
+        self.icon_basename = self.activity_dict.get('bundle_id','dummy').split('.')[-1] + \
+                '_' + chars + '_' + self.icon_outline[5:6]
+        self.activity_dict['icon_base'] = os.path.join(self.child_path,'activity',self.icon_basename)
+                        
         target =  self.activity_dict['icon_base'] + '.svg'
         if self.last_icon_file:
             os.unlink(self.last_icon_file)
@@ -1842,46 +1845,7 @@ class PyDebugActivity(Activity,Terminal):
     def read_activity_info(self, path):
         """
         Parses the ./activity/activity.info file 
-        
-        filen = os.path.join(self.child_path,'activity','activity.info')
-        try:
-            fd = open(filen,'r')
-        except:
-            _logger.debug('failed to open %s'%filen)
-            return
-        for line in  fd.readlines():
-            if line.lstrip() == '': continue
-            _logger.debug('activity line %s'%line)
-            tokens = line.split('=')
-
-            if len(tokens) > 1:
-                keyword = tokens[0].lower().rstrip()
-                rside = tokens[1].split()
-                if keyword == 'class':
-                    if '.' in rside[0]:
-                        self.activity_dict['class'] = rside[0].split('.')[1]                    
-                        self.activity_dict['module'] = rside[0].split('.')[0]
-                elif keyword == 'exec':
-                    if rside[0] == 'sugar-activity' and '.' in rside[1]:
-                        self.activity_dict['class'] = rside[1].split('.')[1]                    
-                        self.activity_dict['module'] = rside[1].split('.')[0]
-                    else:
-                        self.activity_dict['module'] = rside[0]
-                elif keyword == 'bundle_id' or keyword == 'service_name': 
-                    self.activity_dict['bundle_id'] = rside[0]  
-                elif keyword == 'activity_version':
-                    self.activity_dict['version'] = rside[0]
-                elif keyword == 'name':
-                    self.activity_dict['name'] = rside[0]
-                elif keyword == 'icon':
-                    self.activity_dict['icon'] = rside[0]
-        fd.close() 
-               
-        debugstr = ''
-        for key in self.activity_dict.keys():
-            debugstr += key + ':'+str(self.activity_dict[key]) + ', '
-        _logger.debug ('In read_activity: activity dictionary==> %s'%debugstr)       
-        """                                                     
+        """
         try:
             _logger.debug ('passed in file path: %s'%path)       
             bundle = ActivityBundle(path)
@@ -1926,36 +1890,19 @@ class PyDebugActivity(Activity,Terminal):
         self.activity_dict['package'] = ''
         self.activity_dict['jobject _id'] = ''
         
-    def _keep_activity_info(self):
-        """ Act on the changes made to the screen project data fields"""
-        _logger.debug('keep_activity')
+    def _keep_activity_info(self,widget):
+        """ Act on the changes made to the screen project data fields
+        changing the name of the activity turns out to be a big deal --
+        it will be done frequently in order to branch off an experimental branch
+        and it requires changing the root path, and therefore all the open edit files which
+        include the old root name in the path.  There's also the meta- that has to be updated.
+        So let's deal with writing the activity.info file first
+        """
+        _logger.debug('in keep_activity_activity.info')
         name_widget = self.wTree.get_widget('name')
         name = name_widget.get_text()
-        new_name = name + '.activity'
-        new_child_path = os.path.join(self.activity_playpen,new_name)
-        if name.startswith('untitled'):
-            self.alert(_("Activities must be given a unique name"))
-            return
-        if name != self.activity_dict.get('name'):
-            #check to see if the folder already exists, if so change its name
-            if os.path.isdir(self.child_path) and os.path.basename(self.child_path) ==  self.activity_dict.get('name'):
-                cmd = 'mv %s %s'%(self.child_path,new_child_path)
-                result,status = self.command_line(cmd)
-                if status != 0:
-                    _logger.error('tried to rename %s directory unsuccessfully'%self.child_path)
-                    return
-                #if the icon has the old name change it also
-                if os.path.basename(self.activity_dict.get('icon')) == self.activity_dict.get('name') + ".svg":
-                    cmd = 'mv %s %s'%(self.activity_dict.get('icon'),os.path.join(self.activity_playpen,'activity',name+'.svg'))
-                    result,status = self.command_line(cmd)
-                    if status != 0:
-                        _logger.error('tried to rename icon file unsuccessfully')
-                        return
-        else: #need to create the directories
-            if not os.path.isdir(os.path.join(new_child_path,'activity')):
-                os.makedirs(os.path.join(new_child_path,'activity'))
-                
-        #then update the metadata
+        old_name =  self.activity_dict['name']
+        self.old_icon = self.activity_dict.get('icon')
         self.activity_dict['name'] = name
                 
         name_widget = self.wTree.get_widget('version')
@@ -1976,14 +1923,42 @@ class PyDebugActivity(Activity,Terminal):
         self.update_metadata()
         self.write_activity_info()
         
+        #now the to the more difficult part -- is renaming required?       
+        new_name = name + '.activity'
+        new_child_path = os.path.join(self.activity_playpen,new_name)
+        if name.startswith('untitled'):
+            self.alert(_("Activities must be given a new and unique name"))
+            return
+        if old_name != self.activity_dict.get('name'):
+            #check to see if the folder already exists, if so change its name
+            _logger.debug('need to make decision to move or create child base:%s. new_name:%s'%\
+                          (os.path.basename(self.child_path), new_name))
+            if os.path.isdir(self.child_path) and os.path.basename(self.child_path) !=  new_name:
+                self.editor.remove_all()
+                self.init_activity_dict()
+
+                cmd = 'mv %s %s'%(self.child_path,new_child_path)
+                result,status = self.command_line(cmd)
+                if status != 0:
+                    _logger.error('tried to rename %s directory unsuccessfully'%self.child_path)
+                    return
+        else: #need to create the directories
+            if not os.path.isdir(os.path.join(new_child_path,'activity')):
+                os.makedirs(os.path.join(new_child_path,'activity'))
+                
+        
     def write_activity_info(self):
         #write the activity.info file
-        if self.child_path == None: return
-        if not self.activity_data_changed: return
+        #if not self.activity_data_changed: return
         filen = os.path.join(self.child_path,'activity','activity.info')
-        _logger.debug('write_activity ')
-        if not os.path.isfile(filen):
-            self.write_new_activity_info(filen)
+        _logger.debug('write_activity_info to %s'%filen)
+        if os.path.isfile(filen): #set aside the info file encountered
+            new_filename = self.non_conflicting(os.path.join(self.child_path,'activity'),'activity.info')
+            _logger.debug('decided to move %s to %s'%(filen,new_filename))
+            cmd = 'mv %s %s'%(filen,new_filename)
+            results,status = self.command_line(cmd)    
+        self.write_new_activity_info(filen)
+        """
         else:            
             try:
                 with open(filen,'r') as fd:
@@ -2014,37 +1989,41 @@ class PyDebugActivity(Activity,Terminal):
             except Exception, e:
                 _logger.debug('exception %r'%e)
                 return False
-
+        """
     def write_new_activity_info(self,fn):
-        abspath = os.path.abspath(fn)
-        if not os.path.isdir(abspath):
+        dirname = os.path.dirname(fn)
+        if not os.path.isdir(dirname):
             try:
-                os.makedirs(abspath)
+                os.makedirs(dirname)
             except:
                 pass
-            try:
-                with open(fn,'w+') as fdw:
-                    #write the required lines
-                    _logger.debug('writing activity info to %s'%fn)
-                    fdw.write('[Activity]\n')
-                    fdw.write('name = %s\n'%self.activity_dict.get('name'))
-                    fdw.write('bundle_id = %s\n'%self.activity_dict.get('bundle_id'))
-                    fdw.write('activity_version = %s\n'%self.activity_dict.get('version'))
-                    icon = self.activity_dict.get('icon')
-                    icon_nibble = self.activity_dict.get('bundle_id','').split('.')[-1]
-                    fdw.write('icon = %s\n'%icon_nibble)
-                    if self.activity_dict.get('class','') == '':
-                        if self.activity_dict.get('module'):
-                            fdw.write('exec = %s\n'%self.activity_dict.get('module'))
-                        else:
-                            fdw.write('exec = %s\n'%self.activity_dict.get('name'))
+        try:
+            with open(fn,'w+') as fdw:
+                #write the required lines
+                _logger.debug('writing activity info to %s'%fn)
+                fdw.write('[Activity]\n')
+                fdw.write('name = %s\n'%self.activity_dict.get('name'))
+                fdw.write('bundle_id = %s\n'%self.activity_dict.get('bundle_id'))
+                fdw.write('activity_version = %s\n'%self.activity_dict.get('version'))
+                fdw.write('show_launcher = yes\n')
+                icon = self.activity_dict.get('icon')
+                if self.icon_basename:
+                    icon_nibble = self.icon_basename
+                else:
+                    icon_nibble = os.path.basename(self.old_icon).split('.')[0]
+                fdw.write('icon = %s\n'%icon_nibble)
+                if self.activity_dict.get('class','') == '':
+                    if self.activity_dict.get('module'):
+                        fdw.write('exec = %s\n'%self.activity_dict.get('module'))
                     else:
-                        fdw.write('class = %s.%s\n'%(self.activity_dict.get('module'),
-                                                    self.activity_dict.get('class')))                       
-                    fdw.close()
-            except Exception, e:
-                _logger.debug('write new activity info file exception %s'%e)
-                raise e
+                        fdw.write('exec = %s\n'%self.activity_dict.get('name'))
+                else:
+                    fdw.write('class = %s.%s\n'%(self.activity_dict.get('module'),
+                                                self.activity_dict.get('class')))                       
+                fdw.close()
+        except Exception, e:
+            _logger.debug('write new activity info file exception %s'%e)
+            raise e
                 
     def delete_file_cb(self,widget):
         selection=self.manifest_treeview.get_selection()
