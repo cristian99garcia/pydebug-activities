@@ -91,6 +91,7 @@ PROJECT_BG = '#FFFFCC'
 
 #global module variable communicates to debugged programs
 pydebug_instance = None
+start_clock = 0
 
 #following options taken from Develop_App
 class Options:
@@ -112,6 +113,7 @@ class PyDebugActivity(Activity,Terminal):
     _zipped_extension = '.xo'
     _unzipped_extension = '.activity'
     dirty = False
+    #global start_clock
     
     def __init__(self, handle):
         #handle object contains command line inputs to this activity
@@ -135,6 +137,7 @@ class PyDebugActivity(Activity,Terminal):
         #Save a global poiinter so remote procedure calls can communicate with pydebug
         global pydebug_instance
         pydebug_instance = self
+        start_clock = time.clock()
 
         #init variables
         self.make_paths()
@@ -180,6 +183,7 @@ class PyDebugActivity(Activity,Terminal):
             handle.object_id = self.debug_dict.get('jobject_id','')
 
         # init the Classes we are subclassing
+        _logger.debug('about to init  superclass activity. Elapsed time: %f'%(time.clock()-start_clock))
         Activity.__init__(self, handle,  create_jobject = self.request_new_jobject)
         if self.request_new_jobject:
             #check to see if the object was created
@@ -187,6 +191,7 @@ class PyDebugActivity(Activity,Terminal):
                 self.debug_dict['jobject_id'] = str(self._jobject.object_id)
             else:
                 _logger.debug('failed to create jobject in Activity.__init__')
+        self.connect('realize',self.realize_cb)
         #Terminal has no needs for init
         #Help.__init__(self,self)
         
@@ -207,6 +212,7 @@ class PyDebugActivity(Activity,Terminal):
         
         
         #set up the PANES for the different functions of the debugger
+        _logger.debug('about to set up Menu panes. Elapsed time: %f'%(time.clock()-start_clock))
         self.canvas_list = []
         self.panes = {}
         pane_index = 0
@@ -453,6 +459,8 @@ class PyDebugActivity(Activity,Terminal):
         #projectbar.insert(self.keep,-1)
         self.toolbox.add_toolbar(_('Project'), projectbar)
         
+        _logger.debug('about to init Help. Elapsed time: %f'%(time.clock()-start_clock))
+
         self.help = Help(self)
         helpbar = self.help.get_help_toolbar()
         self.toolbox.add_toolbar(_('Help'), helpbar)
@@ -470,6 +478,7 @@ class PyDebugActivity(Activity,Terminal):
             ds_file = self.passed_in_ds_object.get_file_path()
         else:
             ds_file = ''
+        _logger.debug('about to  call read  routine Elapsed time: %f'%(time.clock()-start_clock))
         self.read_file(ds_file)
         
         #set which PANE is visible initially
@@ -477,12 +486,16 @@ class PyDebugActivity(Activity,Terminal):
         self.set_toolbar(self.panes['PROJECT'])
         self.non_blocking_server()
         #glib.idle_add(self.non_blocking_server)
+        _logger.debug('about to setup_project_page. Elapsed time: %f'%(time.clock()-start_clock))
         self.setup_project_page()
         _logger.debug('child path for program to be debugged is %r\nUser Id:%s'%(self.child_path,os.geteuid()))
 
         #create the terminal tabs, start up the socket between 1st and 2nd terminal instances
+        _logger.debug('about to setup terminal. Elapsed time: %f'%(time.clock()-start_clock))
         self.setup_terminal()
         
+    def realize_cb(self):
+        _logger.debug('about total time to realize event: %f'%(time.clock()-start_clock))
         
     def __stop_clicked_cb(self,button):
         _logger('caught stop clicked call back')
@@ -1244,7 +1257,7 @@ class PyDebugActivity(Activity,Terminal):
             for s,f in sorted(sizes,reverse=True)[:5]:
                 self.editor.load_object(f,os.path.basename(f)) 
             self.editor.set_current_page(0)           
-        
+            _logger.debug('about completed setup new activity. Elapsed time: %f'%(time.clock()-start_clock))        
     #####################            ALERT ROUTINES   ##################################
     
     def alert(self,msg,title=None):
@@ -1476,7 +1489,8 @@ class PyDebugActivity(Activity,Terminal):
     def __mount_removed_cb(self, vm, mount):
         pass
         
-    def display_current_project(self):            
+    def display_current_project(self):
+        global start_clock            
         #try to colorize the playpen
         pp = self.wTree.get_widget('playpen_event_box')
         map = pp.get_colormap()
@@ -1532,6 +1546,7 @@ class PyDebugActivity(Activity,Terminal):
 
         #re-enable the on change callbacks
         self.ignore_changes = False
+        _logger.debug('about completed display current project. Elapsed time: %f'%(time.clock()-start_clock))
         
         """
         self.wTree.get_widget('home_save').set_text(self.activity_dict.get('home_save',''))
