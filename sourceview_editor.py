@@ -25,6 +25,7 @@ import mimetypes
 from exceptions import *
 import hashlib
 from gettext import gettext as _
+import shutil
 
 # Initialize logging.
 import logging
@@ -47,6 +48,8 @@ class GtkSourceview2Editor(notebook.Notebook):
         notebook.Notebook.__init__(self, can_close_tabs=True)
         self._can_close_tabs = True #redundant, but above call broken for some reason
         self.activity = activity
+        self.breakpoints_changed = False
+        self.embeds_exist = False        
         self.set_size_request(900, 350)
         self.connect('page-removed', self._page_removed_cb)
         self.connect('switch-page', self._switch_page_cb)
@@ -76,7 +79,9 @@ class GtkSourceview2Editor(notebook.Notebook):
         self.add_page(label, page)
         #label object is passed back in Notebook object -- remember it
         page.label = self.tab_label
-        page.label.set_tooltip_text(fullPath)
+        tt = gtk.Tooltips()
+        tt.set_tip(page.label,fullPath)
+        #page.label.set_tooltip_text(fullPath)
         _logger.debug('new label text: %s'%page.label.get_text())
         self.set_current_page(-1)
         self._changed_cb(page.text_buffer)
@@ -221,6 +226,56 @@ class GtkSourceview2Editor(notebook.Notebook):
             if isinstance(page,GtkSourceview2Page):
                 yield page.fullPath
 
+    def get_all_breakpoints(self):
+        break_list = []
+        for i in range(self.get_n_pages()):
+            page = self.get_nth_page(i)
+            if isinstance(page,GtkSourceview2Page):
+                iter = page.text_buffer.get_iter_at_line_offset(0,0)
+                while page.text_buffer.forward_iter_to_source_mark(iter,page.brk_cat):
+                    break_list.append('%s:%s'%(page.fullPath,iter.get_line()+1,))
+        return break_list
+
+    def remove_all_embeds(self):
+        for i in range(self.get_n_pages()):
+            page = self.get_nth_page(i)
+            if isinstance(page,GtkSourceview2Page):
+                iter = page.text_buffer.get_iter_at_line_offset(0,0)
+                while page.text_buffer.forward_iter_to_source_mark(iter,page.embed_cat):
+                    embed_line = iter.copy()
+                    embed_line.backward_line()
+                    delete_candidate = self.text_buffer.get_text(embed_line,iter)
+                    _logger.debug('delete candidate line:%s'%(delete_candidate,))
+                    if delete_candidate.find('PyDebugTemp') > -1:
+                        self.text_buffer.delete(embed_line,iter)
+                        
+    def get_list_of_embeded_files(self):
+        file_list = []
+        for i in range(self.get_n_pages()):
+            page = self.get_nth_page(i)
+            if isinstance(page,GtkSourceview2Page):
+                if len(page.embeds) > 0:
+                    file_list.append(page.fullPath)
+        return file_list
+                    
+    def remove_embeds_from_file(self,fullPath):
+        text = ''
+        try:
+            f = open(fullPath,"r")
+            for line in f:
+                if line.find('PyDebugTemp') == -1:
+                    text += line
+            _file = file(fullPath, 'w')
+            _file.write(text)
+            _file.close()
+        except IOException,e:
+            _logger.error('unable to rewrite%s Exception:%s'%(fullPath,e))
+                          
+    def clear_embeds(self):
+        flist = self.get_list_of_embeded_files()
+        for f in flist:
+            self.remove_embeds_from_file(f)
+            
     def save_all(self):
         _logger.info('save all %i Editor pages' % self.get_n_pages())
         #if self.activity.is_foreign_dir():
@@ -231,7 +286,26 @@ class GtkSourceview2Editor(notebook.Notebook):
             if isinstance(page,GtkSourceview2Page):
                 _logger.debug('%s' % page.fullPath)
                 page.save()
-    
+        if self.breakpoints_changed:
+            self.breakpoints_changed = False
+            self.write_pdbrc_file()
+            
+    def write_pdbrc_file(self):
+        fn = os.path.join(os.environ['HOME'],'.pdbrc')
+        break_list = self.get_all_breakpoints()
+        _logger.debug("writing %s breakpoints"%(len(break_list),))
+        try:
+            fd = file(fn,'w')
+            fd.write('#Print instance variables (usage "pi classInstance")\n')
+            fd.write('alias pi for k in %1.__dict__.keys(): print "%1",k,"=",%1.__dict__[k]\n')
+            fd.write('#Print insance variables in self\n')
+            fd.write('alias ps pi self\n')
+            for break_line in break_list:
+                fd.write('break %s\n'%(break_line,))
+            fd.close()
+        except Exception,e:
+            _logger.error('unable to write to %s exception:%s'%(fn,e,))
+            
     def remove_all(self):
         for i in range(self.get_n_pages(),0,-1):
             self.remove_page(i-1)
@@ -258,6 +332,10 @@ class GtkSourceview2Editor(notebook.Notebook):
     def change_font_size(self,size):
         page = self._get_page()
         page.set_font_size(size)
+
+    def toggle_breakpoint(self):
+        page = self._get_page()
+        page.break_at()
 
 class SearchablePage(gtk.ScrolledWindow):
     def get_selected(self):
@@ -411,6 +489,10 @@ class SearchablePage(gtk.ScrolledWindow):
         mymark = self.text_buffer.create_mark('mymark',_iter)
         self.text_view.scroll_to_mark(mymark,0.0,True)
         
+    def break_at(self):
+        offset = self.get_offset()
+        _logger.debug('breakpoint at character %s'%(offset,))
+        
     
     def __eq__(self,other):
         if isinstance(other,GtkSourceview2Page):
@@ -421,7 +503,16 @@ class SearchablePage(gtk.ScrolledWindow):
             return other == self.fullPath
         else:
             return False
-
+        
+class BreakPoint():
+    def __init__(self,page,textmark):
+        self._page = page
+        self._textmark = textmark
+        self.is_set = False
+        
+    def is_set(self,textmark):
+        pass
+    
 class GtkSourceview2Page(SearchablePage):
 
     def __init__(self, fullPath, activity):
@@ -429,13 +520,20 @@ class GtkSourceview2Page(SearchablePage):
         Do any initialization here.
         """
         gtk.ScrolledWindow.__init__(self)
+        self.breakpoints = {}
+        self.embeds = {}
 
         self.fullPath = fullPath
         self.activity = activity
         self.interactive_close = False
 
         self.text_buffer = gtksourceview2.Buffer()
+        self.text_buffer.create_tag('breakpoint',background="#ffeeee")
+        self.text_buffer.create_tag('embed_shell',background="#eeffee")
         self.text_view = gtksourceview2.View(self.text_buffer)
+        self.text_view.connect('button_press_event',self._pd_button_press_cb)
+        self.brk_cat = 'BREAKPOINT'
+        self.embed_cat = 'EMBEDED_SHELL'
        
         self.text_view.set_size_request(900, 350)
         self.text_view.set_editable(True)
@@ -454,12 +552,28 @@ class GtkSourceview2Page(SearchablePage):
         self.set_font_size(self.activity.font_size)
 
         # We could change the color theme here, if we want to.
+        """ folowing does not work on build 650
         mgr = gtksourceview2.StyleSchemeManager()
         mgr.prepend_search_path(self.activity.pydebug_path)
         _logger.debug('search path for gtksourceview is %r'%mgr.get_search_path())
+        """
+        #build 650 doesn't seem to have the same means of specifying the search directory
+        info = self.activity.sugar_version()
+        if len(info)>0:
+            (major,minor,micro,release) = info
+            _logger.debug('sugar version major:%s minor:%s micro:%s release:%s'%info)
+        else:
+            _logger.debug('sugar version failure')
+            minor = 70
+        if minor > 80:
+            mgr = gtksourceview2.StyleSchemeManager()
+        else:
+            mgr = gtksourceview2.StyleManager()
+        mgr.prepend_search_path(self.activity.pydebug_path)
         style_scheme = mgr.get_scheme('vibrant')
-        self.text_buffer.set_style_scheme(style_scheme)
-
+        if style_scheme:
+            self.text_buffer.set_style_scheme(style_scheme)
+        
         self.set_policy(gtk.POLICY_AUTOMATIC,
                       gtk.POLICY_AUTOMATIC)
         self.add(self.text_view)
@@ -522,7 +636,7 @@ class GtkSourceview2Page(SearchablePage):
             return
         if not new_file and (not self.text_buffer.can_undo() or self.activity.abandon_changes): 
             if not self.text_buffer.can_undo():
-                _logger.debug('no changes for %s'%os.path.basename(self.fullPath))
+                _logger.debug('no changes:%s for %s'%(self.text_buffer.can_undo(),os.path.basename(self.fullPath),))
             return  #only save if there's something to save
         if new_file:
             self.fullPath = new_file
@@ -546,7 +660,7 @@ class GtkSourceview2Page(SearchablePage):
                                              _('This MODIFIED File is not in your package'),self.save_to_project_cb)
             return
         if interactive_close and self.text_buffer.can_undo():
-            self.activity.confirmation_alert(_('Would you like to Save the file, or cancel the Save?'),
+            self.activity.confirmation_alert(_('Would you like to Save the file, or cancel and abandon the changes?'),
                                             _('This File Has Been Changed'),self.continue_save)
                                            
         self.continue_save(None)
@@ -559,7 +673,8 @@ class GtkSourceview2Page(SearchablePage):
         self.activity.manifest_class.set_file_sys_root(self.activity.child_path)
         
             
-    def continue_save(self, alert, response = None):         
+    def continue_save(self, alert, response = None):
+        if response != gtk.RESPONSE_OK: return
         _logger.debug('saving %s'%os.path.basename(self.fullPath))
         text = self.get_text()
         _file = file(self.fullPath, 'w')
@@ -587,7 +702,7 @@ class GtkSourceview2Page(SearchablePage):
 
         #Do any work that is specific to the type of button clicked.
         if response_id is gtk.RESPONSE_OK:
-            self.continue_save()
+            self.continue_save(response_id)
         elif response_id is gtk.RESPONSE_CANCEL:
             return
         
@@ -670,3 +785,81 @@ class GtkSourceview2Page(SearchablePage):
             return False
         else:
             return True
+        
+    def _pd_button_press_cb(self,widget,event):
+        _logger.debug('got button press at x:%s y:%s'%(event.x,event.y))
+        # was click in left gutter:
+        if event.window == self.text_view.get_window(gtk.TEXT_WINDOW_LEFT):
+            x_buf, y_buf = self.text_view.window_to_buffer_coords(gtk.TEXT_WINDOW_LEFT,
+                                                                  int(event.x,),int(event.y))
+            #get line
+            line_start = self.text_view.get_line_at_y(y_buf)[0]
+            line_end = line_start.copy()
+            if event.button == 1: 
+                self.activity.editor.breakpoints_changed = True
+                if line_end.forward_line():
+                    #get markers in this line
+                    mark_list = self.text_buffer.get_source_marks_at_line(line_start.get_line(),self.brk_cat)
+                    #search for brk_category mark
+                    for m in mark_list:
+                        if m.get_category() == self.brk_cat:
+                            self.text_buffer.remove_tag_by_name('breakpoint',line_start,line_end)
+                            self.text_buffer.delete_mark(m)
+                            _logger.debug('clear breakpoint')
+                            break
+                    else:
+                        self.text_buffer.apply_tag_by_name('breakpoint',line_start,line_end)
+                        mark = self.text_buffer.create_source_mark(None,self.brk_cat,line_start)
+                        #breakpoints simulates a sparse array of marks stored in a dictionary by keyed by line number
+                        self.breakpoints[line_start.get_line()] = mark
+                        _logger.debug('set breakpoint')
+            else:  #the right button
+                insertion = 'from ipy_sh import PydShellEmbed as PSE; pyd = PSE(); pyd() #PyDebugTemp\n'
+                self.activity.editor.embeds_exist = True
+                if line_end.forward_line():
+                    #get markers in this line
+                    current_line = self.text_buffer.get_text(line_start,line_end)
+                    if current_line.find('PyDebugTemp') > -1:
+                        line_start.forward_line()
+                        line_end.forward_line()
+                    _logger.debug('current line:%s'%(current_line,))
+                    mark_list = self.text_buffer.get_source_marks_at_line(line_start.get_line(),self.embed_cat)
+                    #search for embed_category mark
+                    for m in mark_list:
+                        if m.get_category() == self.embed_cat:
+                            self.text_buffer.remove_tag_by_name('embed_shell',line_start,line_end)
+                            self.text_buffer.delete_mark(m)
+                            #now delete the embed code in the line preceedng the marker line
+                            debug_start = line_start.copy()
+                            debug_start.backward_line()
+                            delete_candidate = self.text_buffer.get_text(debug_start,line_start)
+                            _logger.debug('delete candidate line:%s'%(delete_candidate,))
+                            if delete_candidate.find('PyDebugTemp') > -1:
+                                self.text_buffer.delete(debug_start,line_start)
+                            _logger.debug('clear embeded shell')
+                            break
+                    else:
+                        self.text_buffer.apply_tag_by_name('embed_shell',line_start,line_end)
+                        padding = self.get_indent(current_line)
+                        indent = self.pad(padding)
+                        self.text_buffer.insert(line_start,indent+insertion)
+                        mark = self.text_buffer.create_source_mark(None,self.embed_cat,line_start)
+                        #embeds simulates a sparse array of marks stored in a dictionary by keyed by line number
+                        self.embeds[line_start.get_line()] = mark
+                        _logger.debug('set embeded shell')
+        return False        
+
+    def get_indent(self,line):
+        i = 0
+        for i in range(len(line)):
+            if line[i] == ' ':
+                i += 1
+            else:
+                break
+        return i
+    
+    def pad(self,num_spaces):
+        rtn = ''
+        for i in range(num_spaces):
+            rtn += ' '
+        return rtn

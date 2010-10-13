@@ -55,7 +55,7 @@ class FileTree():
             self.treeview = gtk.TreeView()
         self.treeview.set_model(self.ft_model)
         self.treeview.show()
-        self.treeview.set_tooltip_column(4)
+        #self.treeview.set_tooltip_column(4)
         self.show_hidden = False
 
     def init_columns(self):

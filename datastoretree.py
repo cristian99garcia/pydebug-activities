@@ -41,6 +41,7 @@ class DataStoreTree():
     
     def __init__(self, parent, widget=None,wTree=None):
         self.parent = parent
+        self._activity = parent
         self.treeview = widget
         self.wTree = wTree
         self.init_model()
@@ -52,9 +53,13 @@ class DataStoreTree():
         self.journal_max = 0
         self.new_directory()
         button = self.wTree.get_widget('from_journal')
-        button.set_tooltip_text(_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
+        tt = gtk.Tooltips()
+        tt.set_tip(button,_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
+        #button.set_tooltip_text(_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
         button = self.wTree.get_widget('to_journal')
-        button.set_tooltip_text(_('Zip up all the files in your debug workplace and store them in the Journal'))
+        tt = gtk.Tooltips()
+        tt.set_tip(button,_('Zip up all the files in your debug workplace and store them in the Journal'))
+        #button.set_tooltip_text(_('Zip up all the files in your debug workplace and store them in the Journal'))
 
         
     def connect_object(self,  wTree=None):
@@ -74,7 +79,7 @@ class DataStoreTree():
         self.treeview.set_model(self.journal_model)
         self.treeview.show()
         #self.treeview.has_tooltip = True
-        self.treeview.set_tooltip_column(10)
+        #self.treeview.set_tooltip_column(10)
         #self.treeview.connect('query-tooltip',self.display_tooltip)
         self.show_hidden = False
 
@@ -114,17 +119,35 @@ class DataStoreTree():
         #(results,count)=datastore.find({'limit':self.limit,'offset':self.journal_page_num * self.journal_page_size})
         """
         self.journal_model.clear()
-        #results,count=datastore.find({'activity':'org.laptop.PyDebug
+        ds_list = []
+        num_found = 0
+        mime_list = [self._activity.MIME_TYPE,'application/zip']
+        
+        #build 650 doesn't seem to understand correctly the dictionary with a list right hand side
+        info = self._activity.sugar_version()
+        if len(info)>0:
+            (major,minor,micro,release) = info
+            _logger.debug('sugar version major:%s minor:%s micro:%s release:%s'%info)
+        else:
+            _logger.debug('sugar version failure')
+            minor = 70
         try:
-            results,count=datastore.find({})
+            if minor > 80:
+                (ds_list,num_found) = datastore.find({'mime_type': mime_list})
+            else:
+                (results,count) = datastore.find({'mime_type': self._activity.MIME_TYPE})
+                ds_list.extend(results)
+                num_found += count            
+                (results,count) = datastore.find({'mime_type': 'application/zip'})
+                ds_list.extend(results)
         except Exception,e:
             _logger.error('datastore error %s'%e)
             return []
-        if count < self.limit:
-            self.journal_max = self.journal_page_num * self.journal_page_size + count
-        _logger.debug( 'datastoretree-get_datastore_list: count= %s'%count)
+        if num_found < self.limit:
+            self.journal_max = self.journal_page_num * self.journal_page_size + num_found
+        _logger.debug( 'datastoretree-get_datastore_list: count= %s'%num_found)
         keys = ('title','size','timestamp','activity','package','mime_type','file_path')
-        for jobject in results:
+        for jobject in ds_list:
             itemlist = [None,]
             datastoredict=jobject.get_metadata().get_dictionary() #get the property dictionary
             src = jobject.get_file_path() #returns the full path of the file

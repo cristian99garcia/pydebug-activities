@@ -79,7 +79,7 @@ class ActivityToolbar(gtk.Toolbar):
         keep_icon = Icon(icon_name='document-save')
         self.keep.set_icon_widget(keep_icon)
         keep_icon.show()
-        self.keep.props.accelerator = '<Ctrl>S'
+        #self.keep.props.accelerator = '<Ctrl>S'
         self.keep.connect('clicked', self.__keep_clicked_cb)
         self.insert(self.keep, -1)
         self.keep.hide()
@@ -90,11 +90,12 @@ class ActivityToolbar(gtk.Toolbar):
         self.insert(separator, -1)
         separator.show()
 
-        self.stop = ToolButton('activity-stop', tooltip=_('Stop'))
-        self.stop.props.accelerator = '<Ctrl>Q'
-        self.stop.connect('clicked', self.__stop_clicked_cb)
-        self.insert(self.stop, -1)
-        self.stop.show()
+        stop_button = ToolButton('activity-stop')
+        stop_button.set_tooltip(_('Stop'))
+        #stop_button.props.accelerator = '<Ctrl>Q'
+        stop_button.connect('clicked', self.__stop_clicked_cb)
+        self.insert(stop_button, -1)
+        stop_button.show()
 
         self._update_title_sid = None
 
@@ -140,8 +141,8 @@ class ActivityToolbar(gtk.Toolbar):
 
     def __title_changed_cb(self, entry):
         if not self._update_title_sid:
-            self._update_title_sid = gobject.timeout_add_seconds(
-                                                1, self.__update_title_cb)
+            self._update_title_sid = gobject.timeout_add(
+                                                1000, self.__update_title_cb)
 
     def __update_title_cb(self):
         title = self.title.get_text()

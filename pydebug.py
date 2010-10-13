@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 from __future__ import with_statement
-import os, os.path, simplejson, ConfigParser, shutil, sys
+import os, os.path, ConfigParser, shutil, sys
 from subprocess import Popen, PIPE
 
 from gettext import gettext as _
@@ -192,6 +192,8 @@ class PyDebugActivity(Activity,Terminal):
             else:
                 _logger.debug('failed to create jobject in Activity.__init__')
         self.connect('realize',self.realize_cb)
+        self.accelerator = gtk.AccelGroup()
+        self.add_accel_group(self.accelerator)
         #Terminal has no needs for init
         #Help.__init__(self,self)
         
@@ -251,6 +253,7 @@ class PyDebugActivity(Activity,Terminal):
         activity_go.set_icon_widget(None)
         activity_go.set_tooltip(_('Start Debugging'))
         activity_go.connect('clicked', self.project_run_cb)
+        activity_go.add_accelerator('clicked',self.accelerator,ord('O'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
         #activity_go.props.accelerator = '<Ctrl>O'
         activity_go.show()
         activity_toolbar.insert(activity_go, 0)
@@ -259,27 +262,28 @@ class PyDebugActivity(Activity,Terminal):
         activity_copy_tb = ToolButton('edit-copy')
         activity_copy_tb.set_tooltip(_('Copy'))
         activity_copy_tb.connect('clicked', self._copy_cb)
-        #activity_copy_tb.props.accelerator = '<Ctrl>C'
         activity_toolbar.insert(activity_copy_tb, 3)
         activity_copy_tb.show()
 
         activity_paste_tb = ToolButton('edit-paste')
         activity_paste_tb.set_tooltip(_('Paste'))
         activity_paste_tb.connect('clicked', self._paste_cb)
+        activity_paste_tb.add_accelerator('clicked',self.accelerator,ord('V'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
         #activity_paste_tb.props.accelerator = '<Ctrl>V'
         activity_toolbar.insert(activity_paste_tb, 4)
         activity_paste_tb.show()
 
         activity_tab_tb = sugar.graphics.toolbutton.ToolButton('list-add')
         activity_tab_tb.set_tooltip(_("Open New Tab"))
-        activity_tab_tb.props.accelerator = '<Ctrl>T'
+        activity_tab_tb.add_accelerator('clicked',self.accelerator,ord('T'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #activity_tab_tb.props.accelerator = '<Ctrl>T'
         activity_tab_tb.show()
         activity_tab_tb.connect('clicked', self._open_tab_cb)
         activity_toolbar.insert(activity_tab_tb, 5)
 
         activity_tab_delete_tv = sugar.graphics.toolbutton.ToolButton('list-remove')
         activity_tab_delete_tv.set_tooltip(_("Close Tab"))
-        activity_tab_delete_tv.props.accelerator = '<Ctrl><Shift>X'
+        #activity_tab_delete_tv.props.accelerator = '<Ctrl><Shift>X'
         activity_tab_delete_tv.show()
         activity_tab_delete_tv.connect('clicked', self._close_tab_cb)
         activity_toolbar.insert(activity_tab_delete_tv, 6)
@@ -287,7 +291,7 @@ class PyDebugActivity(Activity,Terminal):
 
         activity_fullscreen_tb = sugar.graphics.toolbutton.ToolButton('view-fullscreen')
         activity_fullscreen_tb.set_tooltip(_("Fullscreen"))
-        activity_fullscreen_tb.props.accelerator = '<Alt>Enter'
+        #activity_fullscreen_tb.props.accelerator = '<Alt>Enter'
         activity_fullscreen_tb.connect('clicked', self._fullscreen_cb)
         activity_toolbar.insert(activity_fullscreen_tb, 7)
         activity_fullscreen_tb.hide()
@@ -300,6 +304,7 @@ class PyDebugActivity(Activity,Terminal):
         editopen.set_icon_widget(None)
         editopen.set_tooltip(_('New File'))
         editopen.connect('clicked', self._new_file_cb)
+        editopen.add_accelerator('clicked',self.accelerator,ord('N'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
         #editopen.props.accelerator = '<Ctrl>O'
         editopen.show()
         editbar.insert(editopen, -1)
@@ -309,7 +314,8 @@ class PyDebugActivity(Activity,Terminal):
         editfile.set_icon_widget(None)
         editfile.set_tooltip(_('Open File'))
         editfile.connect('clicked', self._read_file_cb)
-        editfile.props.accelerator = '<Ctrl>O'
+        editfile.add_accelerator('clicked',self.accelerator,ord('O'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #editfile.props.accelerator = '<Ctrl>O'
         editfile.show()
         editbar.insert(editfile, -1)
         
@@ -317,7 +323,8 @@ class PyDebugActivity(Activity,Terminal):
         editsave.set_stock_id('gtk-save')
         editsave.set_icon_widget(None)
         editsave.set_tooltip(_('Save File'))
-        editsave.props.accelerator = '<Ctrl>S'
+        editsave.add_accelerator('clicked',self.accelerator,ord('S'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #editsave.props.accelerator = '<Ctrl>S'
         editsave.connect('clicked', self.save_cb)
         editsave.show()
         editbar.insert(editsave, -1)
@@ -339,7 +346,7 @@ class PyDebugActivity(Activity,Terminal):
         journal_icon = Icon(icon_name='document-save', xo_color=color)
         editjournal.set_icon_widget(journal_icon)
         editjournal.connect('clicked', self._show_journal_object_picker_cb)
-        editjournal.props.accelerator = '<Ctrl>J'
+        #editjournal.props.accelerator = '<Ctrl>J'
         editjournal.show()
         editbar.insert(editjournal, -1)
         """
@@ -352,14 +359,16 @@ class PyDebugActivity(Activity,Terminal):
         editundo = ToolButton('undo')
         editundo.set_tooltip(_('Undo'))
         editundo.connect('clicked', self.editor.undo)
-        editundo.props.accelerator = '<Ctrl>Z'
+        editundo.add_accelerator('clicked',self.accelerator,ord('Z'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #editundo.props.accelerator = '<Ctrl>Z'
         editundo.show()
         editbar.insert(editundo, -1)
 
         editredo = ToolButton('redo')
         editredo.set_tooltip(_('Redo'))
         editredo.connect('clicked', self.editor.redo)
-        editredo.props.accelerator = '<Ctrl>Y'
+        editredo.add_accelerator('clicked',self.accelerator,ord('Y'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #editredo.props.accelerator = '<Ctrl>Y'
         editredo.show()
         editbar.insert(editredo, -1)
 
@@ -373,21 +382,24 @@ class PyDebugActivity(Activity,Terminal):
         editcut.set_icon_widget(None)
         editcut.set_tooltip(_('Cut'))
         self.edit_cut_handler_id = editcut.connect('clicked', self.editor.cut)
-        editcut.props.accelerator = '<Ctrl>X'
+        editcut.add_accelerator('clicked',self.accelerator,ord('X'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #editcut.props.accelerator = '<Ctrl>X'
         editbar.insert(editcut, -1)
         editcut.show()
 
         editcopy = ToolButton('edit-copy')
         editcopy.set_tooltip(_('Copy'))
         self.edit_copy_handler_id = editcopy.connect('clicked', self.editor.copy)
-        editcopy.props.accelerator = '<Ctrl>C'
+        editcopy.add_accelerator('clicked',self.accelerator,ord('C'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #editcopy.props.accelerator = '<Ctrl>C'
         editbar.insert(editcopy, -1)
         editcopy.show()
 
         editpaste = ToolButton('edit-paste')
         editpaste.set_tooltip(_('Paste'))
         self.edit_paste_handler_id = editpaste.connect('clicked', self.editor.paste)
-        editpaste.props.accelerator = '<Ctrl>V'
+        editpaste.add_accelerator('clicked',self.accelerator,ord('V'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #editpaste.props.accelerator = '<Ctrl>V'
         editpaste.show()
         editbar.insert(editpaste, -1)
 
@@ -399,7 +411,8 @@ class PyDebugActivity(Activity,Terminal):
         editfind = ToolButton('viewmag1')
         editfind.set_tooltip(_('Find and Replace'))
         editfind.connect('clicked', self.show_find)
-        editfind.props.accelerator = '<Ctrl>F'
+        editfind.add_accelerator('clicked',self.accelerator,ord('F'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        #editfind.props.accelerator = '<Ctrl>F'
         editfind.show()
         editbar.insert(editfind, -1)
 
@@ -432,6 +445,7 @@ class PyDebugActivity(Activity,Terminal):
         project_run.set_icon_widget(None)
         project_run.set_tooltip(_('Start Debugging'))
         project_run.connect('clicked', self.project_run_cb)
+        project_run.add_accelerator('clicked',self.accelerator,ord('G'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
         #project_run.props.accelerator = '<Ctrl>C'
         project_run.show()
         
@@ -607,10 +621,10 @@ class PyDebugActivity(Activity,Terminal):
         self._create_tab({'cwd':self.sugar_bundle_path})
         self._create_tab({'cwd':self.activity_playpen})
         #start the debugger user interface
-        alias_cmd = 'alias go="%s/bin/ipython.py"\n'%(self.sugar_bundle_path,)
+        alias_cmd = 'alias go="%s/bin/ipython.py -gthread"\n'%(self.sugar_bundle_path,)
         self.feed_virtual_terminal(0,alias_cmd)
 
-        self.feed_virtual_terminal(0,'%s/bin/ipython.py  \n'%self.sugar_bundle_path)
+        self.feed_virtual_terminal(0,'%s/bin/ipython.py  -gthread\n'%self.sugar_bundle_path)
         #cmd = 'run ' + os.path.join(self.sugar_bundle_path,'bin','start_debug.py') + '\n'
         #self.feed_virtual_terminal(0,cmd)
         
@@ -961,14 +975,17 @@ class PyDebugActivity(Activity,Terminal):
             os.mkdir(dist_dir)
         except:
             _logger.debug('failed to os.mkdir %s'%dist_dir)
-            
+        
+        #remove any embeded shell breakpoints
+        self.editor.clear_embeds()
+        
         #the activity info file is read by the bundle maker - must be updated from screen
         #self.write_activity_info()
         
         #create the manifest for the bundle
         config = self.write_manifest()
         do_tgz = True
-        mime = 'binary'
+        mime = 'application/binary'
         activity = 'org.laptop.PyDebug'
         #if manifest was successful, write the xo bundle to the instance directory
         if config:
@@ -991,6 +1008,7 @@ class PyDebugActivity(Activity,Terminal):
                 except IOError:
                     _logger.debug('shutil.copy error %d: %s. ',IOError[0],IOError[1])
                     do_tgz = True
+                    mime = 'application/zip'
             except Exception, e:
                 _logger.debug('outer exception %r'%e)
                 do_tgz = True
@@ -1219,6 +1237,8 @@ class PyDebugActivity(Activity,Terminal):
         if self.child_path == None or not os.path.isdir(self.child_path):
             return
         os.chdir(self.child_path)
+        #cd_cmd = 'cd %s'%self.child_path
+        #self.feed_virtual_terminal(0,cd_cmd)
         self.read_activity_info(self.child_path)
         self.debug_dict['child_path'] = self.child_path
         self.display_current_project()
@@ -1586,12 +1606,21 @@ class PyDebugActivity(Activity,Terminal):
                  'clear_clicked_cb':self.clear_clicked_cb,
              }
         self.wTree.signal_autoconnect(mdict)
+        
         button = self.wTree.get_widget('file_toggle')
-        button.set_tooltip_text(_('Switch views between the "Installed" Activities directory and your "home" storage directory'))
+        tt = gtk.Tooltips()
+        tt.set_tip(button,_('Switch views between the "Installed" Activities directory and your "home" storage directory'))
+        #button.set_tooltip_text(_('Switch views between the "Installed" Activities directory and your "home" storage directory'))
+        
         button = self.wTree.get_widget('to_activities')
-        button.set_tooltip_text(_('Copy the files in the debug workplace to your "home" storage directory'))
+        tt = gtk.Tooltips()
+        tt.set_tip(button,_('Copy the files in the debug workplace to your "home" storage directory'))
+        #button.set_tooltip_text(_('Copy the files in the debug workplace to your "home" storage directory')
+        
         button = self.wTree.get_widget('from_examples')
-        button.set_tooltip_text(_('Load and modify these example programs. See the help Tutorials'))
+        tt = gtk.Tooltips()
+        tt.set_tip(button,_('Load and modify these example programs. See the help Tutorials'))
+        #button.set_tooltip_text(_('Load and modify these example programs. See the help Tutorials'))
 
         button = self.wTree.get_widget('delete_file')
         map = button.get_colormap()
@@ -1734,14 +1763,18 @@ class PyDebugActivity(Activity,Terminal):
             display_label = 'PyDebug SHELF storage:'
             self.activity_window.set_file_sys_root(self.storage)
             button = self.wTree.get_widget('from_activities')
-            button.set_tooltip_text(_('Copy the selected directory or file from your "home" storage to the debug workplace'))
+            tt = gtk.Tooltips()
+            tt.set_tip(button,_('Copy the selected directory or file from your "home" storage to the debug workplace'))
+            #button.set_tooltip_text(_('Copy the selected directory or file from your "home" storage to the debug workplace'))
             window_label.set_text(display_label)
         else:
             to_what.set_label('shelf')
             but.hide()
             self.activity_window.set_file_sys_root('/home/olpc/Activities')
             button = self.wTree.get_widget('from_activities')
-            button.set_tooltip_text(_('Copy the selected Activity or file to the debug workplace'))
+            tt = gtk.Tooltips()
+            tt.set_tip(button,_('Copy the selected Activity or file to the debug workplace'))
+            #button.set_tooltip_text(_('Copy the selected Activity or file to the debug workplace'))
             window_label.set_text('INSTALLED ACTIVITIES:')
         self.file_pane_is_activities =  not self.file_pane_is_activities
     
@@ -1770,6 +1803,10 @@ class PyDebugActivity(Activity,Terminal):
                 self.alert('rsync command returned non zero\n'+output[0]+ 'COPY FAILURE')
                 return
             """
+            
+            #remove any embeded shell breakpoints
+            self.editor.clear_embeds()
+
             _logger.debug('removing tree, and then copying to %s'%self._to_home_dest)
             if os.path.isdir(self._to_home_dest):
                 shutil.rmtree(self._to_home_dest, ignore_errors=True)
@@ -1788,9 +1825,11 @@ class PyDebugActivity(Activity,Terminal):
         fullpath = model.get(iter,4)[0]
         if os.path.isdir(fullpath):
             if fullpath.endswith('.activity'):
-                #self.alert(_('Use this button for Activities or Files'),
-                           #_('ERROR: This folder name does not end with ".activity"'))
-                #return
+                if fullpath.startswith(self.activity_playpen): #just re-initialize the project
+                    self.debug_dict['source_tree'] = fullpath
+                    self.child_path = fullpath
+                    self.setup_new_activity()
+                    return
                 self.load_activity_to_playpen(fullpath)
             else: #this is a file folder, just copy it to project
                 source_basename = os.path.basename(fullpath)
@@ -1957,6 +1996,7 @@ class PyDebugActivity(Activity,Terminal):
                 if status != 0:
                     _logger.error('tried to rename %s directory unsuccessfully'%self.child_path)
                     return
+                self.child_path = new_child_path
         else: #need to create the directories
             if not os.path.isdir(os.path.join(new_child_path,'activity')):
                 os.makedirs(os.path.join(new_child_path,'activity'))
@@ -2216,6 +2256,17 @@ class PyDebugActivity(Activity,Terminal):
             debugstr += key + ':'+str(self.debug_dict[key]) + ', '
         _logger.debug ('In put_config: debug dictionary==> %s'%debugstr)
             
+    def sugar_version(self):
+        cmd = 'rpm -q sugar'
+        reply,err = self.command_line(cmd)
+        if reply and reply.find('sugar') > -1:
+            version = reply.split('-')[1]
+            version_chunks = version.split('.')
+            release_holder = reply.split('-')[2]
+            release = release_holder.split('.')[0]
+            return (int(version_chunks[0]),int(version_chunks[1]),int(version_chunks[2]),int(release),)
+        return ()
+
 class Icon_Panel(gtk.Window):
 
     def __init__(self, icon):
@@ -2263,4 +2314,4 @@ class Icon_Panel(gtk.Window):
 
     def _screen_size_changed_cb(self, screen):
         self._reposition()
-
+        

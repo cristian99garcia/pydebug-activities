@@ -111,8 +111,8 @@ __IPYTHON__.magic_xmode(db.debug_dict['traceback'])
 _logger.debug('xmode set to %s'%db.debug_dict['traceback'])
 
 #put module in top level namespace so it can be dreload()-ed
-exec 'import ' + db.pdbmodule
-exec 'reload(%s)'%db.pdbmodule
+#exec 'import ' + db.pdbmodule
+#exec 'reload(%s)'%db.pdbmodule
 
 """ if this were to work properly we should set go equal to object Macro
 go_cmd = 'run -d -b %s %s'%(os.path.join(db.pydebug_path,'bin','start_debug.py'),child_path)
@@ -239,8 +239,12 @@ sys.argv = cmd_args
 log_environment()
 _logger.debug('about to call main.main() with args %r'%sys.argv)
 
-from sugar.activity import main
-main.main()
+if version and version >= 0.839:
+    from sugar.activity import main
+    main.main()
+else:
+    #main650 is the build 650 sugar-activity file, renamed, placed in  pythonpath
+    import main650
 
             
 
