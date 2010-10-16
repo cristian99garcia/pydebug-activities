@@ -27,6 +27,15 @@ STABLE.
 import gtk
 import gobject
 
+# Initialize logging.
+import logging
+from sugar import logger
+#Get the standard logging directory. 
+std_log_dir = logger.get_logs_dir()
+_logger = logging.getLogger('PyDebug')
+
+_logger.setLevel(logging.DEBUG)
+
 class Notebook(gtk.Notebook):
     __gtype_name__ = 'SugarNotebook'
 

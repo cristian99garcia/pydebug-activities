@@ -38,11 +38,11 @@ print('./bin/start_debug.py established connectioon. pydebug path: %s'%pydebug_p
 
 #these alternative definitions are required for ipython v0.11 and greater
 #define interface with the command line ipython instance
-#from IPython.core import ipapi
-#from IPython.core.macro import Macro
+from IPython.core import ipapi
+from IPython.core.macro import Macro
 
-from IPython import ipapi
-from IPython.macro import Macro
+#from IPython import ipapi
+# IPython.macro import Macro #0,10
 ip = ipapi.get()
 
 #define 2 macros, one which sets pdb on, the other off

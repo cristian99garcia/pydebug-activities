@@ -1,11 +1,10 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
-"""IPython -- An enhanced Interactive Python
+"""Terminal-based IPython entry point.
 
-The actual ipython script to be installed with 'python setup.py install' is
-in './scripts' directory. This file is here (ipython source root directory)
-to facilitate non-root 'zero-installation' (just copy the source tree
-somewhere and run ipython.py) and development. """
+Note: this is identical to IPython/frontend/terminal/scripts/ipython for now.
+Once 0.11 is closer to release, we will likely need to reorganize the script
+entry points."""
 
-import IPython.Shell
-IPython.Shell.start().mainloop()
+from IPython.frontend.terminal.ipapp import launch_new_instance
+
+launch_new_instance()

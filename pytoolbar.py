@@ -27,6 +27,15 @@ from sugar.graphics.toolcombobox import ToolComboBox
 from sugar.graphics.toolbutton import ToolButton
 from gettext import gettext as _
 
+# Initialize logging.
+import logging
+from sugar import logger
+#Get the standard logging directory. 
+std_log_dir = logger.get_logs_dir()
+_logger = logging.getLogger('PyDebug')
+
+_logger.setLevel(logging.DEBUG)
+
 class ActivityToolbar(gtk.Toolbar):
     """The Activity toolbar with the Journal entry title, sharing,
        Keep and Stop buttons
@@ -62,16 +71,20 @@ class ActivityToolbar(gtk.Toolbar):
         self.insert(separator, -1)
         separator.show()
         """
-        self.share = ToolComboBox(label_text=_('Traceback:'))
-        self.share.combo.connect('changed', self.__traceback_changed_cb)
-        self.share.combo.append_item("traceback_plain", _('Plain'))
-        self.share.combo.append_item('traceback_context', _('Context'))
-        self.share.combo.append_item('traceback_verbose', _('Verbose'))
-        self.insert(self.share, -1)
-        self.share.show()
-
-        self._update_share()
+        lookup = {'plain':0,'context':1,'verbose':2}
+        traceback = ToolComboBox(label_text=_('Traceback:'))
+        traceback.combo.append_item("plain", _('Plain'))
+        traceback.combo.append_item('context', _('Context'))
+        traceback.combo.append_item('verbose', _('Verbose'))
+        index = self._activity.debug_dict.get('traceback',0)
+        _logger.debug('retrieved traceback:%s'%(index,))
+        traceback.combo.set_active(lookup.get(index,0))
+        traceback.combo.connect('changed', self.__traceback_changed_cb)
+        self.insert(traceback, -1)
+        traceback.show()
         """
+        self._update_share()
+        
         self.keep = ToolButton(tooltip=_('Keep'))
         #client = gconf.client_get_default()
         #color = XoColor(client.get_string('/desktop/sugar/user/color'))
@@ -115,17 +128,17 @@ class ActivityToolbar(gtk.Toolbar):
         self._updating_share = False
     
     def __traceback_changed_cb(self, combo):
-        model = self.share.combo.get_model()
-        it = self.share.combo.get_active_iter()
-        (scope, ) = model.get(it, 0)
-        if scope == 'traceback_plain':
-            self._activity.traceback = 'Plain'
+        it = combo.get_active_iter()
+        value = combo.get_active()
+        _logger.debug('combo box value:%s'%(value,))
+        if value == 0:
+            self._activity.traceback = 'plain'
             self._activity.debug_dict['traceback'] = 'plain'
-        elif scope == 'traceback_context':
-            self._activity.traceback = 'Context'        
+        elif value == 1:
+            self._activity.traceback = 'context'        
             self._activity.debug_dict['traceback'] = 'context'
-        elif scope == 'traceback_verbose':
-            self._activity.traceback = 'Verbose'
+        elif value == 2:
+            self._activity.traceback = 'verbose'
             self._activity.debug_dict['traceback'] = 'verbose'
         self._activity.set_ipython_traceback()
         

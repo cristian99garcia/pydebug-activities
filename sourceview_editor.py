@@ -26,6 +26,7 @@ from exceptions import *
 import hashlib
 from gettext import gettext as _
 import shutil
+import gobject  
 
 # Initialize logging.
 import logging
@@ -53,6 +54,7 @@ class GtkSourceview2Editor(notebook.Notebook):
         self.set_size_request(900, 350)
         self.connect('page-removed', self._page_removed_cb)
         self.connect('switch-page', self._switch_page_cb)
+        self.load_breakpoints = False
 
     def _page_removed_cb(self, notebook, page, n):
         pg_obj = self._get_page()
@@ -60,7 +62,10 @@ class GtkSourceview2Editor(notebook.Notebook):
     
     def _switch_page_cb(self, notebook, page_gptr, page_num):
         pass
-        #self.activity.update_sidebar_to_page(self.get_nth_page(page_num))
+        return
+        _logger.debug('got a switch page event')
+        page = self.get_nth_page(page_num)
+        line = page.text_buffer.set_cursor_visible()
         
     def set_to_page_like(self,eq_to_page):
         for n in range(self.get_n_pages()):
@@ -82,9 +87,15 @@ class GtkSourceview2Editor(notebook.Notebook):
         tt = gtk.Tooltips()
         tt.set_tip(page.label,fullPath)
         #page.label.set_tooltip_text(fullPath)
-        _logger.debug('new label text: %s'%page.label.get_text())
         self.set_current_page(-1)
         self._changed_cb(page.text_buffer)
+        """
+        #if we have visited this page before, return to the same place
+        line = self.activity.get_remembered_line_number(fullPath)
+        if line:
+            page._scroll_to_line(line)
+        """
+        #_logger.debug('new label text: %s position to line:%s'%(page.label.get_text(),line,))
         
     def position_to(self, fullPath, line = 0, col = 0):
         self.load_object(fullPath, os.path.basename(fullPath))
@@ -286,8 +297,10 @@ class GtkSourceview2Editor(notebook.Notebook):
             if isinstance(page,GtkSourceview2Page):
                 _logger.debug('%s' % page.fullPath)
                 page.save()
+                page.save_breakpoints()
         if self.breakpoints_changed:
             self.breakpoints_changed = False
+            #the pdbrc file in home directory initializes breakpoints whenever pdb session starts
             self.write_pdbrc_file()
             
     def write_pdbrc_file(self):
@@ -485,10 +498,15 @@ class SearchablePage(gtk.ScrolledWindow):
         
     def _scroll_to_line(self,line):
         _iter = self.text_buffer.get_iter_at_line(line)
-        self.text_buffer.select_range(_iter,_iter)
-        mymark = self.text_buffer.create_mark('mymark',_iter)
-        self.text_view.scroll_to_mark(mymark,0.0,True)
-        
+        mark = self.text_buffer.get_mark('mymark')
+        if not mark:
+            mark = self.text_buffer.create_mark('mymark',_iter)
+        else:
+            self.text_buffer.move_mark(mark,_iter)
+        self.text_view.scroll_to_mark(mark,0.0,True)
+        mark_iter = self.text_buffer.get_iter_at_mark(mark)
+        _logger.debug('scroll to line:%s mark is at line %s'%(line,mark_iter.get_line(),))
+
     def break_at(self):
         offset = self.get_offset()
         _logger.debug('breakpoint at character %s'%(offset,))
@@ -504,15 +522,6 @@ class SearchablePage(gtk.ScrolledWindow):
         else:
             return False
         
-class BreakPoint():
-    def __init__(self,page,textmark):
-        self._page = page
-        self._textmark = textmark
-        self.is_set = False
-        
-    def is_set(self,textmark):
-        pass
-    
 class GtkSourceview2Page(SearchablePage):
 
     def __init__(self, fullPath, activity):
@@ -525,7 +534,7 @@ class GtkSourceview2Page(SearchablePage):
 
         self.fullPath = fullPath
         self.activity = activity
-        self.interactive_close = False
+        #self.interactive_close = False
 
         self.text_buffer = gtksourceview2.Buffer()
         self.text_buffer.create_tag('breakpoint',background="#ffeeee")
@@ -619,10 +628,36 @@ class GtkSourceview2Page(SearchablePage):
                             self.text_buffer.set_highlight(True)
                         else:
                             self.text_buffer.set_highlight_syntax(True)
+        self.restore_breakpoints()
         self.text_buffer.end_not_undoable_action()
         self.text_buffer.set_modified(False)
         self.text_view.grab_focus()
+    
+    def restore_breakpoints(self):
+        file_nickname = self.activity.glean_file_id_from_fullpath(self.fullPath)
+        self.break_list = self.activity.debug_dict.get(file_nickname + '-breakpoints')
+        if not self.break_list: return
+        del self.activity.debug_dict[file_nickname + '-breakpoints']
+        if not self.activity.editor.load_breakpoints:
+            alert = self.activity.confirmation_alert(_('Chose OK to restore, Cancel to delete them.'),
+                                                      _('This Activity has Breakpoints!'),
+                                                      self._restore_brkpt_cb)
+        else:
+            self._restore_brkpt_cb(None,None)
 
+    def _restore_brkpt_cb(self,alert,response):
+        #callback not taken if not response ok
+        self.activity.editor.load_breakpoints = True
+        self.break_list = self.break_list.split(',')
+        for line in self.break_list:
+            line_start = self.text_buffer.get_iter_at_line(int(line) - 1)
+            line_end = line_start.copy()
+            line_end.forward_line()
+            self.text_buffer.apply_tag_by_name('breakpoint',line_start,line_end)
+            mark = self.text_buffer.create_source_mark(None,self.brk_cat,line_start)
+            #breakpoints simulates a sparse array of marks stored in a dictionary by keyed by line number
+            _logger.debug('set breakpoint on line:%s'%line)
+                
     def save_hash(self):   
         self.md5sum = self.activity.md5sum(self.fullPath)
 
@@ -630,6 +665,8 @@ class GtkSourceview2Page(SearchablePage):
         self.save()
    
     def save(self,skip_md5 = False, interactive_close=False,new_file=None):
+        if interactive_close:
+            self.activity.remember_line_no(self.fullPath,self.get_iter().get_line())
         if os.path.basename(self.fullPath).startswith('Unsaved_Document') and \
                             self.text_buffer.can_undo():
             self.activity.save_cb(None)
@@ -663,13 +700,14 @@ class GtkSourceview2Page(SearchablePage):
             self.activity.confirmation_alert(_('Would you like to Save the file, or cancel and abandon the changes?'),
                                             _('This File Has Been Changed'),self.continue_save)
                                            
-        self.continue_save(None)
+        self.continue_save(None,gtk.RESPONSE_OK)
     
     def save_to_project_cb(self,alert, response=None):
         basename = os.path.basename(self.fullPath)
         new_name = self.activity.non_conflicting(self.activity.child_path,basename)
         self.fullPath = new_name
-        self.continue_save(None)
+        self.continue_save(None,gtk.RESPONSE_OK)
+        #update the project treeview
         self.activity.manifest_class.set_file_sys_root(self.activity.child_path)
         
             
@@ -705,6 +743,20 @@ class GtkSourceview2Page(SearchablePage):
             self.continue_save(response_id)
         elif response_id is gtk.RESPONSE_CANCEL:
             return
+        
+    def save_breakpoints(self):
+        """breakpoints saved in debug_dict {<activity folder> - <filename> : [<numeric list>]}"""
+        break_list = ''
+        file_nickname = self.activity.glean_file_id_from_fullpath(self.fullPath)
+        iter = self.text_buffer.get_iter_at_line_offset(0,0)
+        while self.text_buffer.forward_iter_to_source_mark(iter,self.brk_cat):
+            break_list += str(iter.get_line()+1) + ','
+        if len(break_list) > 0:
+            #trim off last ','
+            break_list = break_list[:-1]
+            self.activity.debug_dict[file_nickname + '-breakpoints'] = break_list
+            self.activity.log_dict(self.activity.debug_dict,'debug_dict showing breakpoints ==>:')
+
         
     def can_undo_redo(self):
         """
@@ -814,7 +866,7 @@ class GtkSourceview2Page(SearchablePage):
                         self.breakpoints[line_start.get_line()] = mark
                         _logger.debug('set breakpoint')
             else:  #the right button
-                insertion = 'from ipy_sh import PydShellEmbed as PSE; pyd = PSE(); pyd() #PyDebugTemp\n'
+                insertion = 'from IPython.frontend.terminal.embed import embed; embed() #PyDebugTemp\n'
                 self.activity.editor.embeds_exist = True
                 if line_end.forward_line():
                     #get markers in this line

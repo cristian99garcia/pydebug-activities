@@ -21,15 +21,16 @@ name = 'ipython'
 # bdist_deb does not accept underscores (a Debian convention).
 
 development = True    # change this to False to do a release
-version_base = '0.11'
+version_base = '0.11.alpha1'
 branch = 'ipython'
-revision = '1205'
+# This needs to be updated to something that is meaningful for git
+revision = '0' 
 
 if development:
     if branch == 'ipython':
-        version = '%s.bzr.r%s' % (version_base, revision)
+        version = '%s.git' % (version_base)
     else:
-        version = '%s.bzr.r%s.%s' % (version_base, revision, branch)
+        version = '%s.git.%s' % (version_base, branch)
 else:
     version = version_base
 

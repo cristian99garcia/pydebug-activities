@@ -1,4 +1,4 @@
-""" User configuration file for IPython
+F""" User configuration file for IPython
 
 This is a more flexible and safe way to configure ipython than *rc files
 (ipythonrc, ipythonrc-pysh etc.)
@@ -18,8 +18,9 @@ description on what you could do here.
 
 # Most of your config files and extensions will probably start with this import
 
-import IPython.ipapi
-ip = IPython.ipapi.get()
+#import IPython.ipapi
+from IPython.core import ipapi
+ip = ipapi.get()
 
 # You probably want to uncomment this if you did %upgrade -nolegacy
 # import ipy_defaults    

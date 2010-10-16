@@ -56,8 +56,9 @@ from sugar import profile
 from terminal_pd import Terminal
 
 #public api for ipython
-#from IPython.core import ipapi 0.11 requires this
-import IPython.ipapi
+from IPython.core import ipapi #0.11 requires this
+#changes to debugger.py line 508, magic.py:1567
+#import IPython.ipapi
 
 import sourceview_editor
 from help_pd import Help
@@ -72,7 +73,7 @@ from filetree import FileTree
 from datastoretree import DataStoreTree
 import pytoolbar
 #from pytoolbar import ActivityToolBox
-from IPython.Shell import IPShellEmbed
+from IPython.frontend.terminal.embed import InteractiveShellEmbed
 
 import logging
 from  pydebug_logging import _logger, log_environment
@@ -125,10 +126,8 @@ class PyDebugActivity(Activity,Terminal):
             self.passed_in_ds_object = datastore.get(handle.object_id)
             debugstr = ''
             if self.passed_in_ds_object:
-                for key in self.passed_in_ds_object.metadata.keys():
-                    if key == 'preview': continue
-                    debugstr += key + ':'+str(self.passed_in_ds_object.metadata[key]) + ', '
-                _logger.debug('initial datastore metadata dictionary==>: %r'%debugstr)
+                d = self.passed_in_ds_object.metadata
+                #self.log_dict(d,'initial datastore metadata ==>:')
             self.request_new_jobject = False
         else:
             self.request_new_jobject = True
@@ -240,7 +239,7 @@ class PyDebugActivity(Activity,Terminal):
         self.toolbox.connect_after('current_toolbar_changed',self._toolbar_changed_cb)
         
         activity_toolbar = self.toolbox.get_activity_toolbar()
-        activity_toolbar.share.props.visible = True
+        #activity_toolbar.share.props.visible = True
         #activity_toolbar.keep.props.visible = True
 
         separator = gtk.SeparatorToolItem()
@@ -621,10 +620,12 @@ class PyDebugActivity(Activity,Terminal):
         self._create_tab({'cwd':self.sugar_bundle_path})
         self._create_tab({'cwd':self.activity_playpen})
         #start the debugger user interface
-        alias_cmd = 'alias go="%s/bin/ipython.py -gthread"\n'%(self.sugar_bundle_path,)
+        #alias_cmd = 'alias go="%s/bin/ipython.py -gthread"\n'%(self.sugar_bundle_path,)
+        alias_cmd = 'alias go="%s/bin/ipython.py "\n'%(self.sugar_bundle_path,)
         self.feed_virtual_terminal(0,alias_cmd)
 
-        self.feed_virtual_terminal(0,'%s/bin/ipython.py  -gthread\n'%self.sugar_bundle_path)
+        #self.feed_virtual_terminal(0,'%s/bin/ipython.py  -gthread\n'%self.sugar_bundle_path)
+        self.feed_virtual_terminal(0,'%s/bin/ipython.py  \n'%self.sugar_bundle_path)
         #cmd = 'run ' + os.path.join(self.sugar_bundle_path,'bin','start_debug.py') + '\n'
         #self.feed_virtual_terminal(0,cmd)
         
@@ -726,10 +727,13 @@ class PyDebugActivity(Activity,Terminal):
         if index == self.panes['TERMINAL']:
             gobject.idle_add(self.set_terminal_focus)
             self.editor.save_all()
+            self.icon_window.hide()
         elif index == self.panes['HELP']:
             self.help_selected()
         elif index == self.panes['PROJECT'] and self.manifest_class:
             self.manifest_class.set_file_sys_root(self.child_path)
+        if self.icon_window:
+            self.icon_window.destroy()
         self.current_pd_page = index
         gobject.idle_add(self.grab_notebook_focus)
         
@@ -954,9 +958,13 @@ class PyDebugActivity(Activity,Terminal):
             
     def log_dict(self, d, label = ''):
         debugstr = ''
-        for key in d.keys():
-            if key == 'preview': continue
-            debugstr += key + ':'+str(d[key]) + ', '
+        for a_key in d.keys():
+            if a_key == 'preview': continue
+            try:
+                dict_value = '%s:%s, '%(a_key, d[a_key], )
+                debugstr += dict_value
+            except:
+                pass
         _logger.debug('%s Dictionary ==>:%s'%(label,debugstr))
 
     def write_binary_to_datastore(self):
@@ -1261,7 +1269,8 @@ class PyDebugActivity(Activity,Terminal):
                     self.editor.load_object(filenm,os.path.basename(filenm)) 
                     self.editor.position_to(filenm,line)
                 current_page = self.debug_dict.get(os.path.basename(self.child_path)+'-page',0) 
-                self.editor.set_current_page(current_page)           
+                self.editor.set_current_page(current_page)
+            self.editor.load_breakpoints = False
         else:             
             #find largest python files for editor
             list = [f for f in os.listdir(self.child_path) if f[0] <> '.']
@@ -1354,6 +1363,9 @@ class PyDebugActivity(Activity,Terminal):
             fname = dialog.get_filename()
             self.last_filename = fname
             self.editor.load_object(fname,os.path.basename(fname))
+            line = self.get_remembered_line_number(fname)
+            if line:
+                self.editor.position_to(fname,line)
         elif response == gtk.RESPONSE_CANCEL:
             _logger.debug( 'File chooseer closed, no files selected')
         dialog.destroy()
@@ -1893,8 +1905,8 @@ class PyDebugActivity(Activity,Terminal):
         self._new_child_path = self.child_path
         self._load_playpen(fullpath)
    
-    def filetree_activated(self):
-        _logger.debug('entered pydebug filetree_activated')
+    #def filetree_activated(self):
+    #_logger.debug('entered pydebug filetree_activated')
     
     def read_activity_info(self, path):
         """
@@ -2195,12 +2207,7 @@ class PyDebugActivity(Activity,Terminal):
         self.child_path = self.debug_dict.get('child_path','')
         if self.child_path == '' or not os.path.isdir(self.child_path):
             self.child_path = None
-    
-        debugstr = ''
-        for key in self.debug_dict.keys():
-            debugstr += key + ':'+str(self.debug_dict[key]) + ', '
-        #_logger.debug ('In get_config: debug dictionary==> %s'%debugstr)
-        
+            
     def get_new_dsobject(self):
             jobject = datastore.create()
             jobject.metadata['title'] = 'PyDebug'
@@ -2234,8 +2241,30 @@ class PyDebugActivity(Activity,Terminal):
                 edit_files.append([page.fullPath, page.get_iter().get_line()])
         self.debug_dict[os.path.basename(self.child_path)] = edit_files
         self.debug_dict[os.path.basename(self.child_path)+'-page'] = current_page
-                
-
+    
+    def remember_line_no(self,fullPath,line):
+        activity_name = self.glean_file_id_from_fullpath(fullPath)
+        if activity_name:         
+            self.debug_dict[activity_name] = line
+        _logger.debug('remembering id:%s at line:%s'%(activity_name,line,))
+        
+    def glean_file_id_from_fullpath(self,fullPath):
+        """use folder name of activity as namespace for filename"""
+        folder_list = fullPath.split('/')
+        activity_name = ''
+        for folder in folder_list:
+            if folder.find('.activity') >-1:
+                activity_name = folder
+        i = folder_list.index(activity_name)
+        ret = '/'.join(folder_list[i:])
+        _logger.debug('file_id:%s'%ret)
+        return ret
+    
+    def get_remembered_line_number(self,fullPath):
+        activity_name = self.glean_file_id_from_fullpath(fullPath)
+        if activity_name:
+            return self.debug_dict.get(activity_name)
+            
     def put_config(self):
         if self.child_path:
             #self.debug_dict['tree_md5'] = self.md5sum_tree(self.child_path)
@@ -2250,11 +2279,7 @@ class PyDebugActivity(Activity,Terminal):
             return
         finally:
             fd.close()
-        debugstr = ''
-        return
-        for key in self.debug_dict.keys():
-            debugstr += key + ':'+str(self.debug_dict[key]) + ', '
-        _logger.debug ('In put_config: debug dictionary==> %s'%debugstr)
+        #self.log_dict(self.debug.dict,'put config debug_dict contents:)
             
     def sugar_version(self):
         cmd = 'rpm -q sugar'

@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """ Imports and provides the 'correct' version of readline for the platform.
 
-Readline is used throughout IPython as 'import IPython.utils.rlineimpl as readline'.
+Readline is used throughout IPython as::
+
+    import IPython.utils.rlineimpl as readline
 
 In addition to normal readline stuff, this module provides have_readline
-boolean and _outputfile variable used in genutils.
+boolean and _outputfile variable used in IPython.utils.
 """
 
 import sys
@@ -33,7 +35,19 @@ if sys.platform == 'win32' and have_readline:
 uses_libedit = False
 if sys.platform == 'darwin' and have_readline:
     import commands
-    (status, result) = commands.getstatusoutput( "otool -L %s | grep libedit" % _rl.__file__ )
+    # Boyd's patch had a 'while True' here, I'm always a little worried about
+    # infinite loops with such code, so for now I'm taking a more conservative
+    # approach. See https://bugs.launchpad.net/ipython/+bug/411599.
+    for i in range(10):
+        try:
+            (status, result) = commands.getstatusoutput( "otool -L %s | grep libedit" % _rl.__file__ )
+            break
+        except IOError, (errno, strerror):
+            if errno == 4:
+                continue
+            else:
+                break
+
     if status == 0 and len(result) > 0:
         # we are bound to libedit - new in Leopard
         _rl.parse_and_bind("bind ^I rl_complete")
