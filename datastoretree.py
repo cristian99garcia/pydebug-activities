@@ -124,7 +124,7 @@ class DataStoreTree():
         mime_list = [self._activity.MIME_TYPE,'application/zip']
         
         #build 650 doesn't seem to understand correctly the dictionary with a list right hand side
-        info = self._activity.sugar_version()
+        info = self._activity.util.sugar_version()
         if len(info)>0:
             (major,minor,micro,release) = info
             _logger.debug('sugar version major:%s minor:%s micro:%s release:%s'%info)
@@ -218,7 +218,7 @@ class DataStoreTree():
         self.get_datastore_list(next=True)
         
     def save_to_journal_cb(self,button):
-        self.parent.write_binary_to_datastore()
+        self.parent.proj_funct.write_binary_to_datastore()
         
     def load_from_journal_cb(self,button):
         selection=self.treeview.get_selection()
@@ -228,7 +228,7 @@ class DataStoreTree():
             return
         object_id = model.get(iter,9)
         _logger.debug('object id %s from journal'%object_id)
-        self.parent.try_to_load_from_journal(object_id)
+        self.parent.proj_funct.try_to_load_from_journal(object_id)
         
     def datastore_row_activated_cb(self):
         self.load_from_journal_cb()

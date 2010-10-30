@@ -99,6 +99,7 @@ class FileTree():
             if file.endswith('.pyo'): continue
             if file.endswith('~'): continue
             fullname = os.path.join(self.dirname,file)
+            if not os.path.isdir(fullname) and not os.path.isfile(fullname): continue
             if len(file)>16:
                 short_file = file[:10] + '...' + file[-5:]
             else: short_file = file

@@ -44,4 +44,16 @@ def log_environment():
     for k in os.environ:
         if k.find('SUGAR') > -1 or k.find('PATH')>-1:
             print('%s => %s'%(k,os.environ[k]))
+
+def log_dict( d, label = ''):
+    debugstr = ''
+    for a_key in d.keys():
+        if a_key == 'preview': continue
+        try:
+            dict_value = '%s:%s, '%(a_key, d[a_key], )
+            debugstr += dict_value
+        except:
+            pass
+    _logger.debug('%s Dictionary ==>:%s'%(label,debugstr))
+
             

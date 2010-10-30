@@ -48,12 +48,12 @@ class ActivityToolbar(gtk.Toolbar):
 
         self._activity = activity
         self._updating_share = False
-
+        """
         activity.connect('shared', self.__activity_shared_cb)
         activity.connect('joined', self.__activity_shared_cb)
         activity.connect('notify::max_participants',
                          self.__max_participants_changed_cb)
-
+        """
         #if activity.metadata:
         if True:
             self.title = gtk.Entry()

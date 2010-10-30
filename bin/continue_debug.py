@@ -80,21 +80,33 @@ except:
 
 def edit_glue(self,filename,linenumber=0):
     _logger.debug('position to editor file:%s. Line:%d'%(filename,linenumber))
+    if filename.find('<console') > -1:
+        _logger.debug('rejected positioning to console')
+        return
     if filename.endswith('.pyc') or filename.endswith('.pyo'):
         filename = filename[:-1]
     if linenumber > 0:
         linenumber -= 1
-    db.editor.position_to(filename,linenumber)
+    db.position_to(filename,linenumber)
 
 ip.set_hook('editor',edit_glue)
 
 def sync_called(self,filename,linenumber,col):
-    if filename.endswith('.pyc'):
+    if filename.endswith('.pyc') or filename.endswith('.pyo'):
         filename = filename[:-1]
+    #path seems to be relative to getcwd
+    if filename.startswith('<'):
+        return
+    if not filename.startswith('/'):
+        filename = os.path.join(os.getcwd(),filename)
     if linenumber > 0:
         linenumber -= 1
+    if not os.path.isfile(filename): return
+    if not db.trace_outside_child_path:
+        if not filename.startswith(db.child_path):
+            return
     print('synchronize called. file:%s. line:%s. Col:%s'%(filename,linenumber,col))
-    db.editor.position_to(filename,linenumber)
+    db.position_to(filename,linenumber)
     
 ip.set_hook('synchronize_with_editor',sync_called)
 
@@ -240,7 +252,9 @@ log_environment()
 _logger.debug('about to call main.main() with args %r'%sys.argv)
 
 if version and version >= 0.839:
-    from sugar.activity import main
+    #before IPython 0.11 we used the stock version of main, now we disable gtk.main call
+    #from sugar.activity import main
+    import main
     main.main()
 else:
     #main650 is the build 650 sugar-activity file, renamed, placed in  pythonpath

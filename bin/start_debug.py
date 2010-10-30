@@ -24,7 +24,7 @@ _logger = logging.getLogger('PyDebug')
 _logger.setLevel(logging.DEBUG)
 
 #establish a remote procedure call pipe connection with the PyDebug process
-from Rpyc import *
+from Rpyc import SocketConnection
 try:
     c = SocketConnection('localhost')
     db = c.modules.pydebug.pydebug_instance
@@ -45,12 +45,19 @@ from IPython.core.macro import Macro
 # IPython.macro import Macro #0,10
 ip = ipapi.get()
 
-#define 2 macros, one which sets pdb on, the other off
-cmd = 'run -b 242 -d %s\n'% os.path.join(pydebug_path,'bin','continue_debug.py')
+#define  macros, one which sets pdb on, the other off
 if not ip.user_ns.has_key('gb'):
+    cmd = 'run -b 242 -d %s\n'% os.path.join(pydebug_path,'bin','continue_debug.py')
     ip.user_ns['gb'] = Macro(cmd)
-cmd = 'run  %s\n'% os.path.join(pydebug_path,'bin','continue_debug.py')
 if not ip.user_ns.has_key('go'):
+    cmd = 'run  %s\n'% os.path.join(pydebug_path,'bin','continue_debug.py')
     ip.user_ns['go'] = Macro(cmd)
+if not ip.user_ns.has_key('pi'):
+    cmd = 'for k in _margv[0].__dict__.keys(): print "_margv[0]",k,"=",_margv[0].__dict__[k]\n'
+    ip.user_ns['pi'] = Macro(cmd)
+if not ip.user_ns.has_key('ps'):
+    cmd = 'pi self\n'
+    ip.user_ns['ps'] = Macro(cmd)
+
 #change the directory to the child_path
 os.chdir(db.child_path)
