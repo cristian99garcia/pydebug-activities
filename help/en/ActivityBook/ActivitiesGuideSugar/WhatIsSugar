@@ -1,0 +1,311 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+	<head>
+		<title>ActivitiesGuideSugar (en)</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<!--
+		<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="WebRss.html" />
+		-->
+		<link rel="icon" href="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/fl2.ico" type="image/x-icon" /> <link rel="shortcut icon" href="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/fl2.ico" type="image/x-icon" />
+		<link rel=StyleSheet href="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/typography.css" type="text/css" media="screen">
+<style>
+#index {
+	 color:  #ff7f00;
+	 font-family: trebuchet,sans-serif;
+	 font-size: 10px;
+	 line-height:11px;
+}
+#index UL {
+	 width: 159px;
+	 list-style-type: None;
+	 padding-left: 0px;
+	 border: 14px solid #ff7f00;
+	 background-color: #ff7f00;
+	 margin: 0px 0px 0px 0px;
+  }
+#index  LI {
+	 padding-left: 0px;
+	 padding-right: 10px;
+	 padding-top: 4px;
+	 padding-bottom: 4px;
+	 color: #ffffff;
+	 margin: 0px 0px 0px 0px;
+	 background-color: #ff7f00;
+	 border-top: 1px solid #ff7f00;
+  }
+#index LI:hover {
+  background-color: #F99B1C;
+}
+#index  LI.heading {
+	 background-color: #ff7f00;
+	 color: #000000;
+	 border-top:1px solid #FFE5CC;
+	 padding-top: 7px;
+	 font-weight: bold;
+}
+#index  LI.title {
+	 border-bottom: 2px solid #FFE5CC;
+	 background-color: #ff7f00;
+	 color: #FBF4E9;
+	 font-weight: bolder;
+	 font-size:10px;
+	 line-height:18px;
+	 padding-bottom: 40px;
+  }
+#index A {
+	 text-decoration: none;
+	 color:  #FBF4E9;
+	 font-weight: bold;
+}
+#ds-layout .imgcontainer {
+	position:relative;
+	}
+#ds-layout .caption {
+	position:relative;
+	bottom:1;
+	left:0;
+	text-align:center;
+	background:#ffe7cb;
+	width:100%;
+	opacity:.75;
+	filter:alpha(opacity=85);
+	color:#000;
+	font-style: italic;
+	 	font-size: 9px;
+	line-height:11px;
+	}
+</style>
+<script type="text/javascript">
+function addLoadEvent(func) {
+  var oldonload = window.onload;
+  if (typeof window.onload != 'function') {
+	 window.onload = func;
+  } else {
+	 window.onload = function() {
+		oldonload();
+		func();
+	 }
+  }
+}
+
+function insertAfter(newElement,targetElement) {
+  var parent = targetElement.parentNode;
+  if (parent.lastChild == targetElement) {
+	 parent.appendChild(newElement);
+  } else {
+	 parent.insertBefore(newElement,targetElement.nextSibling);
+  }
+}
+
+function captionizeImages() {
+  if (!document.getElementsByTagName) return false;
+  if (!document.createElement) return false;
+  var images = document.getElementsByTagName("img");
+  if (images.length < 1) return false; 
+  for (var i=0; i<images.length; i++) {
+	 if (images[i].className != "non") {
+		var title = images[i].getAttribute("title");
+		var width = images[i].width;
+		var divCaption = document.createElement("div");
+		divCaption.className="caption";
+		divCaption.style.width=width+'px';
+		if (title) divCaption.style.padding='2px 0px 3px 0px';
+		divCaption.style.display='block';
+		var divCaption_text = document.createTextNode(title);
+		divCaption.appendChild(divCaption_text);
+		var divContainer = document.createElement("div");
+		divContainer.className="imgcontainer";
+		if (title) divContainer.style.padding='0px 0px 10px 0px';
+		images[i].parentNode.insertBefore(divContainer,images[i]);
+		divContainer.appendChild(images[i]);
+		insertAfter(divCaption,images[i]);
+	 }
+  }
+}
+//addLoadEvent(captionizeImages);
+
+function next () {
+var onode, otarget;
+onode=document.getElementById("WhatIsSugar");
+if (onode.id=="Credits") die;
+//alert (onode.id);
+onode=onode.nextSibling;
+if (onode.id=="heading") onode=onode.nextSibling;
+while (onode) {
+	 //onode=onode.nextSibling;
+	 if (onode.nodeType==1) {
+	//alert (onode.id);
+		  otarget=onode;
+		  break;
+	 }
+	 onode=onode.nextSibling;
+}
+if (otarget) {
+	 //you actually have found one, and do something here
+	 //alert(otarget.id + "\n" + otarget.tagName);    //just to verify
+	 top.location = "/ActivitiesGuideSugar/" + otarget.id;
+} else {
+	 //you don't find one
+//alert("nada" + otarget.id);
+}
+}
+
+function previous () {
+var onode, otarget;
+onode=document.getElementById("WhatIsSugar");
+if (onode.id=="Introduction") die;
+//alert (onode.id);
+onode=onode.previousSibling;
+if (onode.id=="heading") onode=onode.previousSibling;
+if (onode.id=="title") die;
+while (onode) {
+	 //onode=onode.previousSibling;
+	 if (onode.nodeType==1) {
+	//alert (onode.id);
+		  otarget=onode;
+		  break;
+	 }
+	 onode=onode.previousSibling;
+}
+if (otarget) {
+	 //you actually have found one, and do something here
+	 //alert(otarget.id + "\n" + otarget.tagName);    //just to verify
+	 top.location =  otarget.id;
+} else {
+	 //you don't find one
+//alert("nada" + otarget.id);
+}
+}
+
+</script>
+	</head>
+	<body  background="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/background.gif" style="margin:0;color:#000000;">
+<div id="home" style="position:absolute;left:0px;top:10px;">
+<a href="/"><img src="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/top_read_back.gif" border="0"></a>
+</div>
+<div id="index" style="position:absolute;left:0px;top:150px;">
+<ul>
+<li class="title">MAKING SUGAR ACTIVITIES</li><li id="Introduction"><a href="/ActivitiesGuideSugar/Introduction">INTRODUCTION</a></li><li id="WhatIsSugar"><a href="/ActivitiesGuideSugar/WhatIsSugar">WHAT IS SUGAR?</a></li><li id="WhatisanActivity"><a href="/ActivitiesGuideSugar/WhatisanActivity">WHAT IS A SUGAR ACTIVITY?</a></li><li id="NeedtoKnowWriteSugarActivity"><a href="/ActivitiesGuideSugar/NeedtoKnowWriteSugarActivity">WHAT DO I NEED TO KNOW TO WRITE A SUGAR ACTIVITY?</a></li><li id="SetUpDevEnvironment"><a href="/ActivitiesGuideSugar/SetUpDevEnvironment">SETTING UP A DEVELOPMENT ENVIRONMENT</a></li><li id="CreateFirstActivity"><a href="/ActivitiesGuideSugar/CreateFirstActivity">CREATING YOUR FIRST ACTIVITY</a></li><li id="StandalonePythonReadEtexts"><a href="/ActivitiesGuideSugar/StandalonePythonReadEtexts">MAKING A STANDALONE PYTHON PROGRAM</a></li><li id="InheritFromActivity"><a href="/ActivitiesGuideSugar/InheritFromActivity">INHERIT FROM SUGAR.ACTIVITY.ACTIVITY</a></li><li id="PackageTheActivity"><a href="/ActivitiesGuideSugar/PackageTheActivity">PACKAGE THE ACTIVITY</a></li><li id="AddRefinements"><a href="/ActivitiesGuideSugar/AddRefinements">ADD REFINEMENTS</a></li><li id="UsingVersionControl"><a href="/ActivitiesGuideSugar/UsingVersionControl">ADD YOUR ACTIVITY CODE TO VERSION CONTROL</a></li><li id="Credits"><a href="/ActivitiesGuideSugar/Credits">CREDITS</a></li></ul>
+</div>
+<div id="pdf" style="position:absolute;left:13px;top:190px;">
+<a href="/ActivitiesGuideSugar/FM_06Jan10.pdf"><img class ="non" src="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/makepdf.gif" border=0></a>
+<!-- <a href="/ActivitiesGuideSugar/FM_ActivitiesGuideSugar_06Jan10.pdf"><img class ="non" src="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/makepdf.gif" border=0></a> -->
+<a href="/ActivitiesGuideSugar/print"><img class="non" src="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/viewprint.gif" border=0></a>
+</div>
+		<div style="position:absolute;left:240px;top:11px;">
+		<table id="ds-layout" cellpadding="0" cellspacing="0" sumtop:5px;mary="" style="table-layout:fixed;width:670px;border: 5px solid #666666;padding-right: 0px;padding-left: 0px;padding-bottom: 0px;padding-top: 0px;margin-left : 10px;margin-top:10;background:#FFF7F0;">
+			<tr>
+			<td width=100%>
+<div class="arrow" style="position:relative;left:10px;top:5px;width:50px;float:left;"><a href="#" onClick="previous();"><img src="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/lefttext.png" height=20></a></div>
+<div class="arrow" style="position:relative;left:528px;width:50px;top:5px;float:left;"><a href="#" onClick="next();"><img src="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/righttext.png" height=20></a></div>
+			<div class="ds-contentcontainer">
+			<div style="margin-left:1.2em;float:right">
+			<br>
+			<div class="huh" style='decoration:none;color:black;border:1;position:absolute;top:60px;left:502px;'>
+			<a href='http://www.flossmanuals.net/bin/view/ActivitiesGuideSugar/WhatIsSugar' onClick="alert('You will now be forwarded to the FLOSS Manuals editing interface')"><b><font color=#ff7f00><small>Edit this page</small></font></b></a> :: <a href='http://www.flossmanuals.net/bin/view/ActivitiesGuideSugar/FMComments?skin=floss2'><b><font color=#ff7f00><small>Discussion</small></font></b></a>
+			</div>
+			<h1>What is Sugar?
+</h1>
+<p>Sugar is the user interface designed for the XO laptop. It can now be installed on most PCs, including older models that can't run the latest Windows software. You can also install it on a thumb drive (Sugar on a Stick) and boot your PC from that.
+</p>
+<p>When the XO laptop first came out some people questioned the need for a new user interface. Wouldn't it be better for children to learn something more like what they would use as adults? Why not give them Microsoft Windows instead?
+</p>
+<p>This would be a reasonable question if the goal was to train children to use computers and nothing else. It would be even more reasonable if we could be sure that the software they would use as adults looked and worked like the Microsoft Windows of today.&nbsp; These are of course not reasonable assumptions.
+</p>
+<p>The OLPC project is not just about teaching computer literacy. It is about teaching <em>everything</em>: reading, writing, arithmetic, history, science, arts and crafts, computer programming, music composition, and everything else. Not only do we expect the child to use the computer for his schoolwork, we expect him to take it home and use it for his own explorations into subjects that interest him.&nbsp;
+</p>
+<p>This is a great deal more than anyone has done with computers for education, so it is reasonable to rethink how children should work with computers. Sugar is the result of that rethinking.
+</p>
+<p>Sugar has the following unique features:
+</p>
+<h2>The Journal
+</h2>
+<p>The Journal is where all the student's work goes. Instead of files and folders there is a list of Journal entries. The list is sorted in descending order by the date and time it was last worked on. In a way it's like the "Most Recently Used" document menu in Windows, except instead of containing just the last few items it contains everything and is the normal way to save and resume work on something.
+</p>
+<p>The Journal makes it easy to organize your work.&nbsp; If you've ever downloaded a file using a web browser, then had to look for it afterwards because it went in some directory other than the one you expected, or if you ever had to help your parents when they were in a similar situation, you can understand the value of the Journal.
+  <br />
+</p>
+<p>The Journal has metadata for each item in it. Metadata is information about information. Every Journal entry has a title, a description, a list of keywords, and a screen shot of what it looked like the last time it was used. It has an activity id that links it to the Activity that created it, and it may have a MIME type as well (which is a way of identifying Journal entries so that items not created by an Activity may still be used by an Activity that supports that MIME type).
+</p>
+<p>In addition to these common metadata items a Journal entry may be given custom metadata by an Activity. For instance, the Read Activity uses custom metadata to save the page number you were reading when you quit the Activity. When you resume reading later the Activity will put you on that page again.
+</p>
+<p>In addition to work created by Activities, the Journal can contain Activities themselves. To install an Activity you can use the Browse Activity to visit the website <a href="http://activities.sugarlabs.org/">http://activities.sugarlabs.org</a> and download it. It will automatically be saved to the Journal and be ready for use. If you don't want the Activity anymore, simply delete it from the Journal and it's <em>completely gone</em>. No uninstall programs, no dialog boxes telling you that such and such a .DLL doesn't seem to be needed anymore and do you want to delete it? No odd bits and pieces left behind.
+</p>
+<h2>Collaboration
+</h2>
+<p>The second unique feature Sugar is Collaboration. Collaboration means that Activities can be used by more than one person at the same time. While not every Activity needs collaboration and not every Activity that could use it supports it, a really first rate Activity will provide some way to interact with other Sugar users on the network. For instance, all the e-book reading Activities provide a way of giving a copy of the book you're reading to a friend or to the whole class. The Write Activity lets several students work on the same document together. The Distance Activity lets two students see how far apart from each other they are.
+</p>
+<p>There are five views of the system you can switch to at the push of a button (Function Keys F1-5). They are:
+</p>
+<ul>
+  <li>
+  <p>The Neighborhood View
+  </p> </li>
+  <li>
+  <p>The Friends View
+  </p> </li>
+  <li>
+  <p>The Activity Ring
+  </p> </li>
+  <li>
+  <p>The Journal
+  </p> </li>
+  <li>
+  <p>The Current Activity (you can run more than one Activity at a time and switch between them but one of them will be considered the current Activity and the others will be in the background).
+  </p> </li>
+</ul>
+<p>Of these Views, the first two are used for Collaboration.
+</p>
+<p>The Neighborhood View shows icons for everyone on the network. Every icon looks like a stick figure made by putting an “O” above an “X”. Each icon has a name, chosen by the student when he sets up his computer. Every icon is displayed in two colors, also chosen by the student. In addition to these “XO” icons there will be icons representing mesh networks and others representing WiFi hot spots. Finally there will be icons representing Activities that their owners wish to share.
+</p>
+<p>To understand how this works consider the Chat Activity. The usual way applications do chat is to have all the participants start up a chat client and visit a particular chat room at the same time. With Sugar it's different. One student starts the Chat Activity on his own computer and goes to the Neighborhood View to invite others on the network to participate. They will see a Chat icon in their own Neighborhood View and they can accept. The act of accepting starts up their own Chat Activity and connects them to the other participants.
+</p>
+<p>The Friends View is similar to the Neighborhood View, but only contains icons for people you have designated as Friends. Collaboration can be offered at three levels: with individual persons, with the whole Neighborhood, and with Friends. Note that the student alone decides who his Friends are. There is no need to ask to be someone's Friend.
+</p>
+<h2>Security
+</h2>
+<p>Protecting computers from malicious users is very important, and if the computers belong to students it is doubly important. It is also more difficult, because we can't expect young students to remember passwords and keep them secret. Since Sugar runs on top of Linux viruses aren't much of a problem, but malicious Activities definitely are. If an Activity was allowed unrestricted access to the Journal, for instance, it could wipe it out completely. Somebody could write an Activity that seems to be harmless and amusing, but perhaps after some random number of uses it could wipe out a student's work.
+</p>
+<p>The most common way to prevent a program from doing malicious things is to make it run in a sandbox. A sandbox is a way to limit what a program is allowed to do. With the usual kind of sandbox you either have an untrusted program that can't do much of anything or a trusted program that is not restricted at all. An application becomes trusted when a third party vouches for it by giving it a “signature”. The signature is a mathematical operation done on the program that only remains valid if the program is not modified.
+</p>
+<p>Sugar has a more sophisticated sandbox for Activities than that. No Activity needs to be trusted or is trusted. Every Activity can only work with the Journal in a limited, indirect way. Each Activity has directories specific to it that it can write to, and all other directories and files are limited to read-only access. In this way no Activity can interfere with the workings of any other Activity. In spite of this, an Activity can be made to do what it needs to do.
+</p>
+<p>Sugar's security mechanisms are called Rainbow and BitFrost.
+</p>
+<h2>Summary
+</h2>
+<p>Sugar is an operating environment designed to support the education of children. It organizes a child's work without needing files and folders. It supports collaboration between students. Finally, it provides a robust security model that prevents malicious programs from harming a student's work.
+</p>
+<p>It would not be surprising to see these features someday adopted by other desktop environments.
+</p>
+<p />
+			</p></div>
+			</div>
+<div class="arrow" style="position:relative;left:10px;width:50px;float:left;bottom:5px;"><a href="#" onClick="previous();"><img src="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/lefttext.png" height=20></a></div>
+<div class="arrow" style="position:relative;left:528px;width:50px;float:left;bottom:5px;"><a href="#" onClick="next();"><img src="/floss/publish/ActivitiesGuideSugar/rsrc/TWiki/FlossSkin2/righttext.png" height=20></a></div>
+			<br>
+			<br>
+			<br>
+			<br>
+			</td>
+			</tr>
+		</table>
+		</div>
+<!-- Piwik -->
+<a href="http://piwik.org" title="Web analytics" onclick="window.open(this.href);return(false);">
+<script language="javascript" src="http://adam.engagetv.com/piwik/piwik.js" type="text/javascript"></script>
+<script type="text/javascript">
+<!--
+piwik_action_name = '';
+piwik_idsite = 1;
+piwik_url = 'http://adam.engagetv.com/piwik/piwik.php';
+piwik_log(piwik_action_name, piwik_idsite, piwik_url);
+//-->
+</script>
+<!-- /Piwik --> 
+<script language="Javascript">
+document.getElementById("WhatIsSugar").style.backgroundColor="#F99B1C";
+</script>
+</body>
+</html>

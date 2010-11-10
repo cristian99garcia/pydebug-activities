@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Inheritance</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="oops.html" title="Chapter 11. Object-Oriented Programming" /><link rel="prev" href="class-and-object-vars.html" title="Class and Object Variables" /><link rel="next" href="oops-summary.html" title="Summary" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Inheritance</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="class-and-object-vars.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 11. Object-Oriented Programming</th><td width="20%" align="right"> <a accesskey="n" href="oops-summary.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="inheritance"></a>Inheritance</h2></div></div></div><p>
+		
+		One of the major benefits of object oriented programming is
+		<span class="bold"><strong>reuse</strong></span> of code and one of the ways this is achieved is
+		through the <span class="emphasis"><em>inheritance</em></span> mechanism. Inheritance can be best imagined as
+		implementing a <span class="emphasis"><em>type and subtype</em></span> relationship between classes.
+		
+		</p><p>
+		
+		Suppose you want to write a program which has to keep track of the teachers and students in
+		a college. They have some common characteristics such as name, age and address. They also
+		have specific characteristics such as salary, courses and leaves for teachers and,
+		marks and fees for students.
+		
+		</p><p>
+		
+		You can create two independent classes for each type and process them but adding a new
+		common characteristic would mean adding to both of these independent classes. This quickly
+		becomes unwieldy.
+		
+		</p><p>
+		
+		A better way would be to create a common class called <code class="classname">SchoolMember</code>
+		and then have the teacher and student classes <span class="emphasis"><em>inherit</em></span> from this
+		class i.e. they will become sub-types of this type (class) and then we can add specific
+		characteristics to these sub-types.
+		
+		</p><p>
+		
+		There are many advantages to this approach. If we add/change any functionality in
+		<code class="classname">SchoolMember</code>, this is automatically reflected in the subtypes as
+		well. For example, you can add a new ID card field for both teachers and students by simply
+		adding it to the SchoolMember class. However, changes in the subtypes do not affect other
+		subtypes. Another advantage is that if you can refer to a teacher or student object as a
+		<code class="classname">SchoolMember</code> object which could be useful in some situations such as
+		counting of the number of school members. This is called
+		<span class="bold"><strong>polymorphism</strong></span> where a sub-type can be substituted in any
+		situation where a parent type is expected i.e. the object can be treated as an instance of
+		the parent class.
+		
+		</p><p>
+		
+		Also observe that we <span class="emphasis"><em>reuse</em></span> the code of the parent class and we do not
+		need to repeat it in the different classes as we would have had to in case we had used
+		independent classes.
+		
+		</p><p>
+		
+		The <code class="classname">SchoolMember</code> class in this situation is known as the
+		<span class="emphasis"><em>base class</em></span> or the <span class="emphasis"><em>superclass</em></span>. The
+		<code class="classname">Teacher</code> and <code class="classname">Student</code> classes are called the
+		<span class="emphasis"><em>derived classes</em></span> or <span class="emphasis"><em>subclasses</em></span>.
+		
+		</p><p>
+		
+		We will now see this example as a program.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="using-inheritance"></a>Using Inheritance</h3></div></div></div><div class="example"><a id="id3073177"></a><p class="title"><b>Example 11.5. Using Inheritance</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: inherit.py</span>
+
+<span class="py-statement">class</span> <span class="py-identifier">SchoolMember</span>:
+	<span class="py-string">'''Represents any school member.'''</span>
+	<span class="py-statement">def</span> <span class="py-identifier">__init__</span>(<span class="py-builtin">self</span>, name, age):
+		<span class="py-builtin">self</span>.name = name
+		<span class="py-builtin">self</span>.age = age
+		<span class="py-statement">print</span> <span class="py-string">'(Initialized SchoolMember: %s)'</span> % <span class="py-builtin">self</span>.name
+	
+	<span class="py-statement">def</span> <span class="py-identifier">tell</span>(<span class="py-builtin">self</span>):
+		<span class="py-string">'''Tell my details.'''</span>
+		<span class="py-statement">print</span> <span class="py-string">'Name:"%s" Age:"%s"'</span> % (<span class="py-builtin">self</span>.name, <span class="py-builtin">self</span>.age),
+
+<span class="py-statement">class</span> <span class="py-identifier">Teacher</span>(SchoolMember):
+	<span class="py-string">'''Represents a teacher.'''</span>
+	<span class="py-statement">def</span> <span class="py-identifier">__init__</span>(<span class="py-builtin">self</span>, name, age, salary):
+		SchoolMember.__init__(<span class="py-builtin">self</span>, name, age)
+		<span class="py-builtin">self</span>.salary = salary
+		<span class="py-statement">print</span> <span class="py-string">'(Initialized Teacher: %s)'</span> % <span class="py-builtin">self</span>.name
+
+	<span class="py-statement">def</span> <span class="py-identifier">tell</span>(<span class="py-builtin">self</span>):
+		SchoolMember.tell(<span class="py-builtin">self</span>)
+		<span class="py-statement">print</span> <span class="py-string">'Salary: "%d"'</span> % <span class="py-builtin">self</span>.salary
+
+<span class="py-statement">class</span> <span class="py-identifier">Student</span>(SchoolMember):
+	<span class="py-string">'''Represents a student.'''</span>
+	<span class="py-statement">def</span> <span class="py-identifier">__init__</span>(<span class="py-builtin">self</span>, name, age, marks):
+		SchoolMember.__init__(<span class="py-builtin">self</span>, name, age)
+		<span class="py-builtin">self</span>.marks = marks
+		<span class="py-statement">print</span> <span class="py-string">'(Initialized Student: %s)'</span> % <span class="py-builtin">self</span>.name
+	
+	<span class="py-statement">def</span> <span class="py-identifier">tell</span>(<span class="py-builtin">self</span>):
+		SchoolMember.tell(<span class="py-builtin">self</span>)
+		<span class="py-statement">print</span> <span class="py-string">'Marks: "%d"'</span> % <span class="py-builtin">self</span>.marks
+
+t = Teacher(<span class="py-string">'Mrs. Shrividya'</span>, <span class="py-number">40</span>, <span class="py-number">30000</span>)
+s = Student(<span class="py-string">'Swaroop'</span>, <span class="py-number">22</span>, <span class="py-number">75</span>)
+
+<span class="py-statement">print</span> <span class="py-comment"># prints a blank line</span>
+
+members = [t, s]
+<span class="py-statement">for</span> member <span class="py-statement">in</span> members:
+	member.tell() <span class="py-comment"># works for both Teachers and Students</span>
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3073189"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python inherit.py
+(Initialized SchoolMember: Mrs. Shrividya)
+(Initialized Teacher: Mrs. Shrividya)
+(Initialized SchoolMember: Swaroop)
+(Initialized Student: Swaroop)
+
+Name:"Mrs. Shrividya" Age:"40" Salary: "30000"
+Name:"Swaroop" Age:"22" Marks: "75"
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3073202"></a>How It Works</h4></div></div></div><p>
+				
+				To use inheritance, we specify the base class names in a tuple following
+				the class name in the class definition. Next, we observe that the
+				<code class="methodname">__init__</code> method of the base class is explicitly
+				called using the <code class="varname">self</code> variable so that we can initialize
+				the base class part of the object. This is very important to remember -
+				Python does not automatically call the constructor of the base class, you
+				have to explicitly call it yourself.
+				
+				</p><p>
+				
+				We also observe that we can call methods of the base class by prefixing
+				the class name to the method call and then pass in the
+				<code class="varname">self</code> variable along with any arguments.
+				
+				</p><p>
+				
+				Notice that we can treat instances of <code class="classname">Teacher</code> or
+				<code class="classname">Student</code> as just instances of the
+				<code class="classname">SchoolMember</code> when we use the
+				<code class="methodname">tell</code> method of the <code class="classname">SchoolMember</code>
+				class.
+				
+				</p><p>
+				
+				Also, observe that the <code class="methodname">tell</code> method of the
+				subtype is called and not the <code class="methodname">tell</code> method of the
+				<code class="classname">SchoolMember</code> class. One way to understand this is that
+				Python <span class="emphasis"><em>always</em></span> starts looking for methods in the type, which
+				in this case it does. If it could not find the method, it starts looking at the
+				methods belonging to its base classes one by one in the order they are specified
+				in the tuple in the class definition.
+				
+				</p><p>
+				
+				A note on terminology - if more than one class is listed in the inheritance
+				tuple, then it is called <span class="emphasis"><em>multiple inheritance</em></span>.
+				
+				</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="class-and-object-vars.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="oops.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="oops-summary.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Class and Object Variables </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> Summary</td></tr></table></div></body></html>

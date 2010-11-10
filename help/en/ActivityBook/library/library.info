@@ -1,0 +1,9 @@
+[Library]
+name = ActivityBook
+global_name = ActivityBook
+long_name = ActivityBook
+category = media
+library_version = 1
+host_version = 1
+l10n = false
+locale = en

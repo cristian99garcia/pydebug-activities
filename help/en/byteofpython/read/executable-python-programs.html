@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Executable Python programs</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="first-steps.html" title="Chapter 3. First Steps" /><link rel="prev" href="source-file.html" title="Using a Source File" /><link rel="next" href="getting-help.html" title="Getting Help" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Executable Python programs</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="source-file.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 3. First Steps</th><td width="20%" align="right"> <a accesskey="n" href="getting-help.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="executable-python-programs"></a>Executable Python programs</h2></div></div></div><p>
+		
+		This applies only to Linux/Unix users but Windows users might be curious as well
+		about the first line of the program. First, we have to give the program executable
+		permission using the <span><strong class="command">chmod</strong></span> command then <span class="emphasis"><em>run</em></span>
+		the source program.
+		
+		</p><pre class="screen">
+		
+$ chmod a+x helloworld.py
+$ ./helloworld.py
+Hello World
+		
+		</pre><p>
+		
+		The chmod command is used here to <span class="emphasis"><em>ch</em></span>ange the
+		<span class="emphasis"><em>mod</em></span>e of the file by giving e<span class="emphasis"><em>x</em></span>ecute
+		permission to <span class="emphasis"><em>a</em></span>ll users of the system. Then, we execute the
+		program directly by specifying the location of the source file. We use the
+		<code class="literal">./</code> to indicate that the program is located in the current
+		directory.
+		
+		</p><p>
+		
+		To make things more fun, you can rename the file to just <code class="filename">helloworld</code>
+		and run it as <span><strong class="command">./helloworld</strong></span> and it will still work since the system
+		knows that it has to run the program using the interpreter whose location is specified
+		in the first line in the source file.
+		
+		</p><p>
+		
+		You are now able to run the program as long as you know the exact path of the program
+		- but what if you wanted to be able to run the program from anywhere? You can do this
+		by storing the program in one of the directories listed in the <code class="envar">PATH</code>
+		environment variable. Whenever you run any program, the system looks for that program
+		in each of the directories listed in the <code class="envar">PATH</code> environment variable and
+		then runs that program. We can make this program available everywhere by simply
+		copying this source file to one of the directories listed in <code class="envar">PATH</code>.
+		
+		</p><pre class="screen">
+		
+$ echo $PATH
+/opt/mono/bin:/usr/local/bin:/usr/bin:/bin:/usr/X11R6/bin:/home/swaroop/bin
+$ cp helloworld.py /home/swaroop/bin/helloworld
+$ helloworld
+Hello World
+		
+		</pre><p>
+		
+		We can display the <code class="envar">PATH</code> variable using the <span><strong class="command">echo</strong></span>
+		command and prefixing the variable name by <code class="literal">$</code> to indicate to the
+		shell that we need the value of this variable. We see that
+		<code class="filename">/home/swaroop/bin</code> is one of the directories in the PATH variable
+		where <span class="bold"><strong>swaroop</strong></span> is the username I am using in my
+		system. There will usually be a similar directory for your username on your system.
+		Alternatively, you can add a directory of your choice to the <code class="envar">PATH</code>
+		variable - this can be done by running
+		<span><strong class="command">PATH=$PATH:/home/swaroop/mydir</strong></span> where
+		<code class="literal">'/home/swaroop/mydir'</code> is the directory I want to add to the
+		<code class="envar">PATH</code> variable.
+		
+		</p><p>
+		
+		This method is very useful if you want to write useful scripts that you want to run
+		the program anytime, anywhere. It is like creating your own commands just like
+		<span><strong class="command">cd</strong></span> or any other commands that you use in the Linux terminal or
+		DOS prompt.
+		
+		</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Caution</h3><p>
+			
+			W.r.t. Python, a program or a script or software all mean the same thing.
+			
+			</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="source-file.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="first-steps.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="getting-help.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Using a Source File </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> Getting Help</td></tr></table></div></body></html>

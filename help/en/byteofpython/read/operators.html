@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Operators</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="operators-expressions.html" title="Chapter 5. Operators and Expressions" /><link rel="prev" href="operators-expressions.html" title="Chapter 5. Operators and Expressions" /><link rel="next" href="operator-precedence.html" title="Operator Precedence" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Operators</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="operators-expressions.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 5. Operators and Expressions</th><td width="20%" align="right"> <a accesskey="n" href="operator-precedence.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="operators"></a>Operators</h2></div></div></div><p>
+		
+		We will briefly take a look at the operators and their usage:
+		
+		</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Tip</h3><p>
+			
+			You can evaluate the expressions given in the examples using the interpreter
+			interactively. For example, to test the expression <code class="literal">2 + 3</code>, use
+			the interactive Python interpreter prompt:
+			
+			</p><pre class="screen">
+			
+&gt;&gt;&gt; 2 + 3
+5
+&gt;&gt;&gt; 3 * 5
+15
+&gt;&gt;&gt;
+			
+			</pre></div><div class="table"><a id="id3055069"></a><p class="title"><b>Table 5.1. Operators and their usage</b></p><table summary="Operators and their usage" border="1"><colgroup><col /><col /><col /><col /></colgroup><thead><tr><th>Operator</th><th>Name</th><th>Explanation</th><th>Examples</th></tr></thead><tbody><tr><td>+</td><td>Plus</td><td>
+						
+						Adds the two objects
+						
+						</td><td>
+						
+						<code class="literal">3 + 5</code> gives <code class="literal">8</code>.
+						<code class="literal">'a' + 'b'</code> gives <code class="literal">'ab'</code>.
+						
+						</td></tr><tr><td>-</td><td>Minus</td><td>
+						
+						Either gives a negative number or gives the subtraction of
+						one number from the other
+						
+						</td><td>
+						
+						<code class="literal">-5.2</code> gives a negative number.
+						<code class="literal">50 - 24</code> gives <code class="literal">26</code>.
+						
+						</td></tr><tr><td>*</td><td>Multiply</td><td>
+						
+						Gives the multiplication of the two numbers or returns
+						the string repeated that many times.
+						
+						</td><td>
+						
+						<code class="literal">2 * 3</code> gives <code class="literal">6</code>.
+						<code class="literal">'la' * 3</code> gives <code class="literal">'lalala'</code>.
+						
+						</td></tr><tr><td>**</td><td>Power</td><td>
+						
+						Returns x to the power of y
+						
+						</td><td>
+						
+						<code class="literal">3 ** 4</code> gives <code class="literal">81</code>
+						(i.e. <code class="literal">3 * 3 * 3 * 3</code>)
+						
+						</td></tr><tr><td>/</td><td>Divide</td><td>
+						
+						Divide x by y
+						
+						</td><td>
+						
+						<code class="literal">4/3</code> gives <code class="literal">1</code> (division
+						of integers gives an integer).
+						<code class="literal">4.0/3</code> or <code class="literal">4/3.0</code> gives
+						<code class="literal">1.3333333333333333</code>
+						
+						</td></tr><tr><td>//</td><td>Floor Division</td><td>
+						
+						Returns the floor of the quotient
+						
+						</td><td>
+						
+						<code class="literal">4 // 3.0</code> gives <code class="literal">1.0</code>
+						
+						</td></tr><tr><td>%</td><td>Modulo</td><td>
+						
+						Returns the remainder of the division
+						
+						</td><td>
+						
+						<code class="literal">8%3</code> gives <code class="literal">2</code>.
+						<code class="literal">-25.5%2.25</code> gives <code class="literal">1.5</code> .
+						
+						</td></tr><tr><td>&lt;&lt;</td><td>Left Shift</td><td>
+						
+						Shifts the bits of the number to the left by the number of
+						bits specified. (Each number is represented in memory by
+						bits or binary digits i.e. 0 and 1)
+						
+						</td><td>
+						
+						<code class="literal">2 &lt;&lt; 2</code> gives
+						<code class="literal">8</code>.
+						- <code class="literal">2</code> is represented by
+						<code class="literal">10</code> in bits. Left shifting by 2 bits
+						gives <code class="literal">1000</code> which represents the
+						decimal <code class="literal">8</code>.
+						
+						</td></tr><tr><td>&gt;&gt;</td><td>Right Shift</td><td>
+						
+						Shifts the bits of the number to the right by the number
+						of bits specified.
+						
+						</td><td>
+						
+						<code class="literal">11 &gt;&gt; 1</code> gives
+						<code class="literal">5</code> -
+						<code class="literal">11</code> is represented in bits by
+						<code class="literal">1011</code> which when right shifted by
+						1 bit gives <code class="literal">101</code> which is nothing
+						but decimal <code class="literal">5</code>.
+						
+						</td></tr><tr><td>&amp;</td><td>Bitwise AND</td><td>
+						
+						Bitwise AND of the numbers
+						
+						</td><td>
+						
+						<code class="literal">5 &amp; 3</code> gives
+						<code class="literal">1</code>.
+						
+						</td></tr><tr><td>|</td><td>Bit-wise OR</td><td>
+						
+						Bitwise OR of the numbers
+						
+						</td><td>
+						
+						<code class="literal">5 | 3</code> gives <code class="literal">7</code>
+						
+						</td></tr><tr><td>^</td><td>Bit-wise XOR</td><td>
+						
+						<code class="literal">5 ^ 3</code> gives <code class="literal">6</code>
+						
+						</td><td class="auto-generated"> </td></tr><tr><td>~</td><td>Bit-wise invert</td><td>
+						
+						The bit-wise inversion of x is -(x+1)
+						
+						</td><td>
+						
+						<code class="literal">~5</code> gives <code class="literal">-6</code>.
+						
+						</td></tr><tr><td>&lt;</td><td>Less Than</td><td>
+						
+						Returns whether x is less than y. All comparison operators
+						return 1 for true and 0 for false. This is equivalent to
+						the special variables <code class="literal">True</code> and
+						<code class="literal">False</code> respectively. Note the
+						capitalization of these variables' names.
+						
+						</td><td>
+						
+						<code class="literal">5 &lt; 3</code> gives
+						<code class="literal">0</code> (i.e. <code class="literal">False</code>) and
+						<code class="literal">3 &lt; 5</code> gives
+						<code class="literal">1</code> (i.e. <code class="literal">True</code>).
+						
+						Comparisons can be chained arbitrarily:
+						3 &lt; 5 &lt; 7 gives <code class="literal">True</code>.
+						
+						</td></tr><tr><td>&gt;</td><td>Greater Than</td><td>
+						
+						Returns whether x is greater than y
+						
+						</td><td>
+						
+						<code class="literal">5 &lt; 3</code> returns
+						<code class="literal">True</code>. If both operands are numbers, they
+						are first converted to a common type. Otherwise, it always
+						returns <code class="literal">False</code>.
+						
+						</td></tr><tr><td>&lt;=</td><td>Less Than or Equal To</td><td>
+						
+						Returns whether x is less than or equal to y
+						
+						</td><td>
+						
+						<code class="literal">x = 3; y = 6; x &lt;= y</code>
+						returns <code class="literal">True</code>.
+						
+						</td></tr><tr><td>&gt;=</td><td>Greater Than or Equal To</td><td>
+						
+						Returns whether x is greater than or equal to y
+						
+						</td><td>
+						
+						x = 4; y = 3; x &gt;= 3 returns
+						<code class="literal">True</code>.
+						
+						</td></tr><tr><td>==</td><td>Equal To</td><td>
+						
+						Compares if the objects are equal
+						
+						</td><td>
+						
+						<code class="literal">x = 2; y = 2; x == y</code> returns
+						<code class="literal">True</code>.
+						
+						<code class="literal">x = 'str'; y = 'stR'; x == y</code> returns
+						<code class="literal">False</code>.
+						
+						<code class="literal">x = 'str'; y = 'str'; x == y</code> returns
+						<code class="literal">True</code>.
+						
+						</td></tr><tr><td>!=</td><td>Not Equal To</td><td>
+						
+						Compares if the objects are not equal
+						
+						</td><td>
+						
+						<code class="literal">x = 2; y = 3; x != y</code> returns
+						<code class="literal">True</code>.
+						
+						</td></tr><tr><td>not</td><td>Boolean NOT</td><td>
+						
+						If x is <code class="literal">True</code>, it returns
+						<code class="literal">False</code>. If x is <code class="literal">False</code>,
+						it returns <code class="literal">True</code>.
+						
+						</td><td>
+						
+						<code class="literal">x = True; not y</code> returns
+						<code class="literal">False</code>.
+						
+						</td></tr><tr><td>and</td><td>Boolean AND</td><td>
+						
+						<code class="literal">x and y</code> returns <code class="literal">False</code>
+						if x is <code class="literal">False</code>, else it returns evaluation
+						of y
+						
+						</td><td>
+						
+						<code class="literal">x = False; y = True; x and y</code> returns
+						<code class="literal">False</code> since x is False. In this case,
+						Python will not evaluate y since it knows that the value of
+						the expression will has to be false (since x is False).
+						This is called short-circuit evaluation.
+						
+						</td></tr><tr><td>or</td><td>Boolean OR</td><td>
+						
+						If x is <code class="literal">True</code>, it returns True, else it
+						returns evaluation of y
+						
+						</td><td>
+						
+						<code class="literal">x = True; y = False; x or y</code> returns
+						<code class="literal">True</code>. Short-circuit evaluation applies
+						here as well.
+						
+						</td></tr></tbody></table></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="operators-expressions.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="operators-expressions.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="operator-precedence.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 5. Operators and Expressions </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> Operator Precedence</td></tr></table></div></body></html>

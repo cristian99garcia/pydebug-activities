@@ -1,0 +1,1423 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Classes, Objects, and Ties</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="PLEAC-Python
+"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Packages, Libraries, and Modules"
+HREF="packagesetc.html"><LINK
+REL="NEXT"
+TITLE="Database Access"
+HREF="dbaccess.html"><style type="text/css">    <!--
+      .comment {
+        /* font-lock-comment-face */
+        color: #bebebe;
+      }
+      .comment-delimiter {
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #b2dfee;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #ffa500;
+      }
+      .py-builtins {
+        /* py-builtins-face */
+        color: #ffa500;
+      }
+      .py-pseudo-keyword {
+        /* py-pseudo-keyword-face */
+        color: #ffa500;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #00cd00;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    -->
+    </style></head
+><BODY TEXT="#cecece" BGCOLOR="#4f6f6f" LINK="#f5deb3" VLINK="#d5ae83"
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PLEAC-Python
+</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="packagesetc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="dbaccess.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="CLASSESETC"
+>13. Classes, Objects, and Ties</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN704"
+>Introduction</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Inside a module named 'Data' / file named 'Data.py'
+</span><span class="keyword">class</span> <span class="type">Encoder</span>(object):
+    <span class="keyword">pass</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>obj = [3, 5]
+<span class="keyword">print</span> <span class="py-builtins">type</span>(obj), <span class="py-builtins">id</span>(obj), ob[1]
+
+<span class="comment-delimiter">#</span><span class="comment"># Changing the class of builtin types is not supported
+</span><span class="comment-delimiter">#</span><span class="comment"># in Python.
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>obj.Stomach = <span class="string">"Empty"</span>    <span class="comment-delimiter"># </span><span class="comment">directly accessing an object's contents
+</span>obj.NAME = <span class="string">"Thag"</span>        <span class="comment-delimiter"># </span><span class="comment">uppercase field name to make it stand out
+</span>(optional)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>encoded = object.encode(<span class="string">"data"</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>encoded = Data.Encoder.encode(<span class="string">"data"</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Class</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">pass</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="py-builtins">object</span> = Class()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Class</span>(object):
+    <span class="keyword">def</span> <span class="function-name">class_only_method</span>():
+        <span class="keyword">pass</span> <span class="comment-delimiter"># </span><span class="comment">more code here
+</span>    class_only_method = <span class="py-builtins">staticmethod</span>(class_only_method)
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Class</span>(object):
+    <span class="keyword">def</span> <span class="function-name">instance_only_method</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">pass</span> <span class="comment-delimiter"># </span><span class="comment">more code here
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>lector = Human.Cannibal()
+lector.feed(<span class="string">"Zak"</span>)
+lector.move(<span class="string">"New York"</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">NOTE: it is rare to use these forms except inside of
+</span><span class="comment-delimiter"># </span><span class="comment">methods to call specific methods from a parent class
+</span>lector = Human.Cannibal()
+Human.Cannibal.feed(lector, <span class="string">"Zak"</span>)
+Human.Cannibal.move(lector, <span class="string">"New York"</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>print&gt;&gt;sys.stderr, <span class="string">"stuff here\n"</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN707"
+>Constructing an Object</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Class</span>(object):
+    <span class="keyword">pass</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> time
+<span class="keyword">class</span> <span class="type">Class</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.start = time.time()  <span class="comment-delimiter"># </span><span class="comment">init data fields
+</span>        <span class="py-pseudo-keyword">self</span>.age = 0
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> time
+<span class="keyword">class</span> <span class="type">Class</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, **kwargs):
+        <span class="comment-delimiter"># </span><span class="comment">Sets self.start to the current time, and self.age to 0.  If called
+</span>        <span class="comment-delimiter"># </span><span class="comment">with arguments, interpret them as key+value pairs to
+</span>        <span class="comment-delimiter"># </span><span class="comment">initialize the object with
+</span>        <span class="py-pseudo-keyword">self</span>.age = 0
+        <span class="py-pseudo-keyword">self</span>.__dict__.update(kwargs)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN710"
+>Destroying an Object</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> time
+<span class="keyword">class</span> <span class="type">Class</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__del__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">print</span> <span class="py-pseudo-keyword">self</span>, <span class="string">"dying at"</span>, time.ctime()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment"># Why is the perl code introducing a cycle?  I guess it's an
+</span><span class="comment-delimiter">#</span><span class="comment"># example of how to keep from calling the finalizer
+</span><span class="py-pseudo-keyword">self</span>.WHATEVER = <span class="py-pseudo-keyword">self</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN713"
+>Managing Instance Data</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">It is standard practice to access attributes directly:
+</span><span class="keyword">class</span> <span class="type">MyClass</span>(object)
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.name = <span class="string">"default"</span>
+        <span class="py-pseudo-keyword">self</span>.age = 0
+obj = MyClass()
+obj.name = <span class="string">"bob"</span>
+<span class="keyword">print</span> obj.name
+obj.age += 1
+
+<span class="comment-delimiter"># </span><span class="comment">If you later find that you need to compute an attribute, you can always 
+</span><span class="comment-delimiter"># </span><span class="comment">retrofit a property(), leaving user code untouched:
+</span><span class="keyword">class</span> <span class="type">MyClass</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>._name = <span class="string">"default"</span>
+        <span class="py-pseudo-keyword">self</span>._age = 0
+
+    <span class="keyword">def</span> <span class="function-name">get_name</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>._name
+    <span class="keyword">def</span> <span class="function-name">set_name</span>(<span class="py-pseudo-keyword">self</span>, name):
+        <span class="py-pseudo-keyword">self</span>._name = name.title()
+    name = <span class="py-builtins">property</span>(get_name, set_name)
+
+    <span class="keyword">def</span> <span class="function-name">get_age</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>._age
+    <span class="keyword">def</span> <span class="function-name">set_age</span>(<span class="py-pseudo-keyword">self</span>, val):
+        <span class="keyword">if</span> val &lt; 0:
+            <span class="keyword">raise</span> <span class="py-builtins">ValueError</span>(<span class="string">"Invalid age: %s"</span> % val)
+        <span class="py-pseudo-keyword">self</span>._age = val
+    age = <span class="py-builtins">property</span>(get_age, set_age)
+obj = MyClass()
+obj.name = <span class="string">"bob"</span>
+<span class="keyword">print</span> obj.name
+obj.age += 1
+
+<span class="comment-delimiter"># </span><span class="comment">DON'T DO THIS - explicit getters and setters should not be used:
+</span><span class="keyword">class</span> <span class="type">MyClass</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.name = <span class="string">"default"</span>
+    <span class="keyword">def</span> <span class="function-name">get_name</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.name
+    <span class="keyword">def</span> <span class="function-name">set_name</span>(<span class="py-pseudo-keyword">self</span>, name):
+        <span class="py-pseudo-keyword">self</span>.name = name.title()
+obj = MyClass()
+obj.set_name(<span class="string">"bob"</span>)
+<span class="keyword">print</span> obj.get_name()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment"># DON'T DO THIS (It's complex, ugly, and unnecessary):
+</span><span class="keyword">class</span> <span class="type">MyClass</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.age = 0
+    <span class="keyword">def</span> <span class="function-name">name</span>(<span class="py-pseudo-keyword">self</span>, *args):
+        <span class="keyword">if</span> <span class="py-builtins">len</span>(args) == 0:
+            <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.name
+        <span class="keyword">elif</span> <span class="py-builtins">len</span>(args) == 1:
+            <span class="py-pseudo-keyword">self</span>.name = args[0]
+        <span class="keyword">else:</span>
+            <span class="keyword">raise</span> <span class="py-builtins">TypeError</span>(<span class="string">"name only takes 0 or 1 arguments"</span>)
+    <span class="keyword">def</span> <span class="function-name">age</span>(<span class="py-pseudo-keyword">self</span>, *args):
+        prev = <span class="py-pseudo-keyword">self</span>.age
+        <span class="keyword">if</span> args:
+            <span class="py-pseudo-keyword">self</span>.age = args[0]
+        <span class="keyword">return</span> prev
+
+<span class="comment-delimiter"># </span><span class="comment">sample call of get and set: happy birthday!
+</span>obj.age(1 + obj.age())
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>him = Person()
+him.NAME = <span class="string">"Sylvester"</span>
+him.AGE = 23
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Here's another way to implement the 'obj.method()' is a getter
+</span><span class="comment-delimiter"># </span><span class="comment">and 'obj.method(value)' is a settor.  Again, this is not a
+</span><span class="comment-delimiter"># </span><span class="comment">common Python idiom and should not be used.  See below for a
+</span><span class="comment-delimiter"># </span><span class="comment">more common way to do parameter checking of attribute assignment.
+</span>
+<span class="keyword">import</span> re, sys
+
+<span class="keyword">def</span> <span class="function-name">carp</span>(s):
+    sys.stderr.write(<span class="string">"WARNING: "</span> + s + <span class="string">"\n"</span>)
+
+<span class="keyword">class</span> <span class="type">Class</span>:
+    no_name = []
+
+    <span class="keyword">def</span> <span class="function-name">name</span>(<span class="py-pseudo-keyword">self</span>, value = no_name):
+        <span class="keyword">if</span> value <span class="keyword">is</span> Class.no_name:
+            <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.NAME
+        value = <span class="py-pseudo-keyword">self</span>._enforce_name_value(value)
+        <span class="py-pseudo-keyword">self</span>.NAME = value
+
+    <span class="keyword">def</span> <span class="function-name">_enforce_name_value</span>(<span class="py-pseudo-keyword">self</span>, value):
+        <span class="keyword">if</span> re.search(r<span class="string">"[^\s\w'-]"</span>, value):
+            carp(<span class="string">"funny characters in name"</span>)
+        <span class="keyword">if</span> re.search(r<span class="string">"\d"</span>, value):
+            carp(<span class="string">"numbers in name"</span>)
+        <span class="keyword">if</span> <span class="keyword">not</span> re.search(r<span class="string">"\S+(\s+\S+)+"</span>, value):
+            carp(<span class="string">"prefer multiword name"</span>)
+        <span class="keyword">if</span> <span class="keyword">not</span> re.search(r<span class="string">"\S"</span>, value):
+            carp(<span class="string">"name is blank"</span>)
+        <span class="keyword">return</span> value.upper()   <span class="comment-delimiter"># </span><span class="comment">enforce capitalization
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">A more typical way to enforce restrictions on a value
+</span><span class="comment-delimiter"># </span><span class="comment">to set
+</span><span class="keyword">class</span> <span class="type">Class</span>:
+    <span class="keyword">def</span> <span class="function-name">__setattr__</span>(<span class="py-pseudo-keyword">self</span>, name, value):
+        <span class="keyword">if</span> name == <span class="string">"name"</span>:
+            value = <span class="py-pseudo-keyword">self</span>._enforce_name_value(value)  <span class="comment-delimiter"># </span><span class="comment">Do any conversions
+</span>        <span class="py-pseudo-keyword">self</span>.__dict__[name] = value  <span class="comment-delimiter"># </span><span class="comment">Do the default __setattr__ action
+</span>
+    <span class="keyword">def</span> <span class="function-name">_enforce_name_value</span>(<span class="py-pseudo-keyword">self</span>, value):
+        <span class="keyword">if</span> re.search(r<span class="string">"[^\s\w'-]"</span>, value):
+            carp(<span class="string">"funny characters in name"</span>)
+        <span class="keyword">if</span> re.search(r<span class="string">"\d"</span>, value):
+            carp(<span class="string">"numbers in name"</span>)
+        <span class="keyword">if</span> <span class="keyword">not</span> re.search(r<span class="string">"\S+(\s+\S+)+"</span>, value):
+            carp(<span class="string">"prefer multiword name"</span>)
+        <span class="keyword">if</span> <span class="keyword">not</span> re.search(r<span class="string">"\S"</span>, value):
+            carp(<span class="string">"name is blank"</span>)
+        <span class="keyword">return</span> value.upper()   <span class="comment-delimiter"># </span><span class="comment">enforce capitalization
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Person</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, name = <span class="py-pseudo-keyword">None</span>, age = <span class="py-pseudo-keyword">None</span>, peers = <span class="py-pseudo-keyword">None</span>):
+        <span class="keyword">if</span> peers <span class="keyword">is</span> <span class="py-pseudo-keyword">None</span>: peers = []  <span class="comment-delimiter"># </span><span class="comment">See Python FAQ 6.25
+</span>        <span class="py-pseudo-keyword">self</span>.name = name
+        <span class="py-pseudo-keyword">self</span>.age = age
+        <span class="py-pseudo-keyword">self</span>.peers = peers
+
+    <span class="keyword">def</span> <span class="function-name">exclaim</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="string">"Hi, I'm %s, age %d, working with %s"</span> % \
+            (<span class="py-pseudo-keyword">self</span>.name, <span class="py-pseudo-keyword">self</span>.age, <span class="string">", "</span>.join(<span class="py-pseudo-keyword">self</span>.peers))
+
+    <span class="keyword">def</span> <span class="function-name">happy_birthday</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.age += 1
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.age
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN716"
+>Managing Class Data</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment"># In the module named 'Person' ...
+</span><span class="keyword">def</span> <span class="function-name">population</span>():
+    <span class="keyword">return</span> Person.body_count[0]
+
+<span class="keyword">class</span> <span class="type">Person</span>(object):
+    body_count = [0]        <span class="comment-delimiter"># </span><span class="comment">class variable - shared across all instances
+</span>
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.body_count[0] += 1
+
+    <span class="keyword">def</span> <span class="function-name">__del__</span>(<span class="py-pseudo-keyword">self</span>):      <span class="comment-delimiter"># </span><span class="comment">Beware - may be non-deterministic (Jython)!
+</span>        <span class="py-pseudo-keyword">self</span>.body_count[0] -= 1
+
+<span class="comment-delimiter"># </span><span class="comment">later, the user can say this:
+</span><span class="keyword">import</span> Person
+people = []
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(10):
+    people.append(Person.Person())
+<span class="keyword">print</span> <span class="string">"There are"</span>, Person.population(), <span class="string">"people alive."</span>
+
+<span class="comment-delimiter">#</span><span class="comment">=&gt; There are 10 people alive.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>him = Person()
+him.gender = <span class="string">"male"</span>
+
+her = Person()
+her.gender = <span class="string">"female"</span>
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>FixedArray.max_bounds = 100                <span class="comment-delimiter"># </span><span class="comment">set for whole class
+</span>alpha = FixedArray.FixedArray()
+<span class="keyword">print</span> <span class="string">"Bound on alpha is"</span>, alpha.max_bounds
+<span class="comment-delimiter">#</span><span class="comment">=&gt;100
+</span>
+beta = FixedArray.FixedArray()
+beta.max_bounds = 50                      <span class="comment-delimiter"># </span><span class="comment">still sets for whole class
+</span><span class="keyword">print</span> <span class="string">"Bound on alpha is"</span>, alpha.max_bounds
+<span class="comment-delimiter">#</span><span class="comment">=&gt;50
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">In the module named 'FixedArray'
+</span>
+<span class="keyword">class</span> <span class="type">FixedArray</span>(object):
+    _max_bounds = [7]        <span class="comment-delimiter"># </span><span class="comment">Shared across whole class
+</span>    
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, bounds=<span class="py-pseudo-keyword">None</span>):
+        <span class="keyword">if</span> bounds <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="py-pseudo-keyword">self</span>.max_bounds = bounds
+
+    <span class="keyword">def</span> <span class="function-name">get_max_bounds</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>._max_bounds[0]
+    <span class="keyword">def</span> <span class="function-name">set_max_bounds</span>(<span class="py-pseudo-keyword">self</span>, val):
+        <span class="py-pseudo-keyword">self</span>._max_bounds[0] = val
+    max_bounds = <span class="py-builtins">property</span>(get_max_bounds, set_max_bounds)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN719"
+>Using Classes as Structs</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">There isn't the severe separation between scalar, arrays and hashs
+</span><span class="comment-delimiter"># </span><span class="comment">in Python, so there isn't a direct equivalent to the Perl code.
+</span><span class="keyword">class</span> <span class="type">Person</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, name=<span class="py-pseudo-keyword">None</span>, age=<span class="py-pseudo-keyword">None</span>, peers=<span class="py-pseudo-keyword">None</span>):
+        <span class="keyword">if</span> peers <span class="keyword">is</span> <span class="py-pseudo-keyword">None</span>: 
+            peers = []
+        <span class="py-pseudo-keyword">self</span>.name = name
+        <span class="py-pseudo-keyword">self</span>.age = age
+        <span class="py-pseudo-keyword">self</span>.peers = peers
+
+p = Person(<span class="string">"Jason Smythe"</span>, 13, [<span class="string">"Wilbur"</span>, <span class="string">"Ralph"</span>, <span class="string">"Fred"</span>])
+
+<span class="comment-delimiter"># </span><span class="comment">or this way.  (This is not the prefered style as objects should
+</span><span class="comment-delimiter"># </span><span class="comment">be constructed with all the appropriate data, if possible.)
+</span>
+p = Person()  <span class="comment-delimiter"># </span><span class="comment">allocate an empty Person
+</span>p.name = <span class="string">"Jason Smythe"</span>                         <span class="comment-delimiter"># </span><span class="comment">set its name field
+</span>p.age = 13                                      <span class="comment-delimiter"># </span><span class="comment">set its age field
+</span>p.peers.extend( [<span class="string">"Wilbur"</span>, <span class="string">"Ralph"</span>, <span class="string">"Fred"</span> ] )  <span class="comment-delimiter"># </span><span class="comment">set its peers field
+</span>
+p.peers = [<span class="string">"Wilbur"</span>, <span class="string">"Ralph"</span>, <span class="string">"Fred"</span>]
+
+p.peers[:]= [<span class="string">"Wilbur"</span>, <span class="string">"Ralph"</span>, <span class="string">"Fred"</span>]
+
+<span class="comment-delimiter"># </span><span class="comment">fetch various values, including the zeroth friend
+</span><span class="keyword">print</span> <span class="string">"At age %d, %s's first friend is %s."</span> % \
+    (p.age, p.name, p.peers[0])
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">This isn't very Pythonic - should create objects with the
+</span><span class="comment-delimiter"># </span><span class="comment">needed data, and not depend on defaults and modifing the object.
+</span><span class="keyword">import</span> sys
+<span class="keyword">def</span> <span class="function-name">carp</span>(s):
+    sys.stderr.write(<span class="string">"WARNING: "</span> + s + <span class="string">"\n"</span>)
+
+<span class="keyword">class</span> <span class="type">Person</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, name = <span class="string">""</span>, age = 0):
+        <span class="py-pseudo-keyword">self</span>.name = name
+        <span class="py-pseudo-keyword">self</span>.age = age
+    <span class="keyword">def</span> <span class="function-name">__setattr__</span>(<span class="py-pseudo-keyword">self</span>, name, value):
+        <span class="keyword">if</span> name == <span class="string">"age"</span>:
+            <span class="comment-delimiter"># </span><span class="comment">This is very unpythonic
+</span>            <span class="keyword">if</span> <span class="keyword">not</span> <span class="py-builtins">isinstance</span>(value, <span class="py-builtins">type</span>(0)):
+                carp(<span class="string">"age '%s' isn't numeric"</span> % (value,))
+            <span class="keyword">if</span> value &gt; 150: carp(<span class="string">"age '%s' is unreasonable"</span> % (value,))
+        <span class="py-pseudo-keyword">self</span>.__dict__[name] = value
+
+<span class="keyword">class</span> <span class="type">Family</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, head = <span class="py-pseudo-keyword">None</span>, address = <span class="string">""</span>, members = <span class="py-pseudo-keyword">None</span>):
+        <span class="keyword">if</span> members <span class="keyword">is</span> <span class="py-pseudo-keyword">None</span>: members = []
+        <span class="py-pseudo-keyword">self</span>.head = head <span class="keyword">or</span> Person()
+        <span class="py-pseudo-keyword">self</span>.address = address
+        <span class="py-pseudo-keyword">self</span>.members = members
+
+folks = Family()
+
+dad = folks.head
+dad.name = <span class="string">"John"</span>
+dad.age = 34
+
+<span class="keyword">print</span> <span class="string">"%s's age is %d"</span> % (folks.head.name, folks.head.age)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Card</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, name=<span class="py-pseudo-keyword">None</span>, color=<span class="py-pseudo-keyword">None</span>, cost=<span class="py-pseudo-keyword">None</span>,
+                 type=<span class="py-pseudo-keyword">None</span>, release=<span class="py-pseudo-keyword">None</span>, text=<span class="py-pseudo-keyword">None</span>):
+        <span class="py-pseudo-keyword">self</span>.name = name
+        <span class="py-pseudo-keyword">self</span>.color = color
+        <span class="py-pseudo-keyword">self</span>.cost = cost
+        <span class="py-pseudo-keyword">self</span>.type = <span class="py-builtins">type</span>
+        <span class="py-pseudo-keyword">self</span>.release = release
+        <span class="py-pseudo-keyword">self</span>.type = <span class="py-builtins">type</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">For positional args
+</span><span class="keyword">class</span> <span class="type">Card</span>:
+    _names = (<span class="string">"name"</span>, <span class="string">"color"</span>, <span class="string">"cost"</span>, <span class="string">"type"</span>, <span class="string">"release"</span>, <span class="string">"type"</span>)
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, *args):
+        <span class="keyword">assert</span> <span class="py-builtins">len</span>(args) &lt;= <span class="py-builtins">len</span>(<span class="py-pseudo-keyword">self</span>._names)
+        <span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="py-builtins">zip</span>(<span class="py-pseudo-keyword">self</span>._names, args):
+            <span class="py-builtins">setattr</span>(<span class="py-pseudo-keyword">self</span>, k, <span class="py-pseudo-keyword">None</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">For keyword args
+</span><span class="keyword">class</span> <span class="type">Card</span>:
+    _names = (<span class="string">"name"</span>, <span class="string">"color"</span>, <span class="string">"cost"</span>, <span class="string">"type"</span>, <span class="string">"release"</span>, <span class="string">"type"</span>)
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, **kwargs):
+        <span class="keyword">for</span> k <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>._names:  <span class="comment-delimiter"># </span><span class="comment">Set the defaults
+</span>            <span class="py-builtins">setattr</span>(<span class="py-pseudo-keyword">self</span>, k, <span class="py-pseudo-keyword">None</span>)
+        <span class="keyword">for</span> k, v <span class="keyword">in</span> kwargs.items():  <span class="comment-delimiter"># </span><span class="comment">add in the kwargs
+</span>            <span class="keyword">assert</span> k <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>._names, <span class="string">"Unexpected kwarg: "</span> + k
+            <span class="py-builtins">setattr</span>(<span class="py-pseudo-keyword">self</span>, k, v)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">hostent</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, addr_list = <span class="py-pseudo-keyword">None</span>, length = <span class="py-pseudo-keyword">None</span>,
+                 addrtype = <span class="py-pseudo-keyword">None</span>, aliases = <span class="py-pseudo-keyword">None</span>, name = <span class="py-pseudo-keyword">None</span>):
+        <span class="py-pseudo-keyword">self</span>.addr_list = addr_list <span class="keyword">or</span> []
+        <span class="py-pseudo-keyword">self</span>.length = length <span class="keyword">or</span> 0
+        <span class="py-pseudo-keyword">self</span>.addrtype = addrtype <span class="keyword">or</span> <span class="string">""</span>
+        <span class="py-pseudo-keyword">self</span>.aliases = aliases <span class="keyword">or</span> []
+        <span class="py-pseudo-keyword">self</span>.name = name <span class="keyword">or</span> <span class="string">""</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment"># XXX What do I do with these?
+</span><span class="comment-delimiter">#</span><span class="comment">define h_type h_addrtype
+</span><span class="comment-delimiter">#</span><span class="comment">define h_addr h_addr_list[0]
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">make (hostent object)-&gt;type() same as (hostent object)-&gt;addrtype()
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter"># </span><span class="comment">*hostent::type = \&amp;hostent::addrtype;
+</span><span class="comment-delimiter">#</span><span class="comment">
+</span><span class="comment-delimiter"># </span><span class="comment"># make (hostenv object)-&gt;
+</span><span class="comment-delimiter"># </span><span class="comment">addr()
+</span><span class="comment-delimiter">#  </span><span class="comment">same as (hostenv object)-&gt;addr_list(0)
+</span><span class="comment-delimiter">#</span><span class="comment">sub hostent::addr { shift-&gt;addr_list(0,@_) }
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">No equivalent to Net::hostent (Python uses an unnamed tuple)
+</span><span class="comment-delimiter">#</span><span class="comment">package Extra::hostent;
+</span><span class="comment-delimiter">#</span><span class="comment">use Net::hostent;
+</span><span class="comment-delimiter">#</span><span class="comment">@ISA = qw(hostent);
+</span><span class="comment-delimiter">#</span><span class="comment">sub addr { shift-&gt;addr_list(0,@_) }
+</span><span class="comment-delimiter">#</span><span class="comment">1;
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN722"
+>Cloning Objects</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Class</span>(Parent):
+    <span class="keyword">pass</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment"># Note: this is unusual in Python code
+</span>ob1 = SomeClass()
+<span class="comment-delimiter"># </span><span class="comment">later on
+</span>ob2 = ob1.__class__()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment"># Note: this is unusual in Python code
+</span>ob1 = Widget()
+ob2 = ob1.__class__()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">XXX I do not know the intent of the original Perl code
+</span><span class="comment-delimiter"># </span><span class="comment">Do not use this style of programming in Python.
+</span><span class="keyword">import</span> time
+<span class="keyword">class</span> <span class="type">Person</span>(possible,base,classes):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, *args, **kwargs):
+        <span class="comment-delimiter"># </span><span class="comment">Call the parents' constructors, if there are any
+</span>        <span class="keyword">for</span> baseclass <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>.__class__.__bases__:
+            init = <span class="py-builtins">getattr</span>(baseclass, <span class="string">"__init__"</span>)
+            <span class="keyword">if</span> init <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+                init(<span class="py-pseudo-keyword">self</span>, *args, **kwargs)
+        <span class="py-pseudo-keyword">self</span>.PARENT = parent      <span class="comment-delimiter"># </span><span class="comment">init data fields
+</span>        <span class="py-pseudo-keyword">self</span>.START = time.time()
+        <span class="py-pseudo-keyword">self</span>.AGE = 0
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN725"
+>Calling Methods Indirectly</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>methname = <span class="string">"flicker"</span>
+<span class="py-builtins">getattr</span>(obj, methname)(10)    <span class="comment-delimiter"># </span><span class="comment">calls obj-&gt;flicker(10);
+</span>
+<span class="comment-delimiter"># </span><span class="comment">call three methods on the object, by name
+</span><span class="keyword">for</span> m <span class="keyword">in</span> (<span class="string">"start"</span>, <span class="string">"run"</span>, <span class="string">"stop"</span>):
+    <span class="py-builtins">getattr</span>(obj, m)()
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>methods = (<span class="string">"name"</span>, <span class="string">"rank"</span>, <span class="string">"serno"</span>)
+his_info = {}
+<span class="keyword">for</span> m <span class="keyword">in</span> methods:
+   his_info[m] = <span class="py-builtins">getattr</span>(ob, m)()
+
+<span class="comment-delimiter"># </span><span class="comment">same as this:
+</span>
+his_info = {
+    <span class="string">'name'</span>: ob.name(),
+    <span class="string">'rank'</span>: ob.rank(),
+    <span class="string">'serno'</span>: ob.serno(),
+}
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>fnref = ob.method
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>fnref(10, <span class="string">"fred"</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>obj.method(10, <span class="string">"fred"</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">XXX Not sure if this is the correct translation.
+</span><span class="comment-delimiter"># </span><span class="comment">XXX Is 'can' special?
+</span><span class="keyword">if</span> <span class="py-builtins">isinstance</span>(obj_target, obj.__class__):
+    obj.can(<span class="string">'method_name'</span>)(obj_target, *arguments)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN728"
+>Determining Subclass Membership</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="py-builtins">isinstance</span>(obj, mimetools.Message)
+<span class="py-builtins">issubclass</span>(obj.__class__, mimetools.Message)
+
+<span class="keyword">if</span> <span class="py-builtins">hasattr</span>(obj, <span class="string">"method_name"</span>):  <span class="comment-delimiter"># </span><span class="comment">check method validity
+</span>    <span class="keyword">pass</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment"># Explicit type checking is needed fewer times than you think.
+</span>his_print_method = <span class="py-builtins">getattr</span>(obj, <span class="string">"as_string"</span>, <span class="py-pseudo-keyword">None</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>__version__ = (3, 0)
+Some_Module.__version__
+
+<span class="comment-delimiter"># </span><span class="comment">Almost never used, and doesn't work for builtin types, which don't
+</span><span class="comment-delimiter"># </span><span class="comment">have a __module__.
+</span>
+his_vers = obj.__module__.__version__
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">if</span> Some_Module.__version__ &lt; (3, 0):
+  <span class="keyword">raise</span> <span class="py-builtins">ImportError</span>(<span class="string">"Some_Module version %s is too old, expected (3, 0)"</span> %
+                    (Some_Module.__version__,))
+<span class="comment-delimiter"># </span><span class="comment">or more simply
+</span><span class="keyword">assert</span> Some_Module.__version__ &gt;= (3, 0), <span class="string">"version too old"</span>
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>__VERSION__ = <span class="string">'1.01'</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN731"
+>Writing an Inheritable Class</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Note: This uses the standard Python idiom of accessing the
+</span><span class="comment-delimiter"># </span><span class="comment">attributes directly rather than going through a method call.
+</span><span class="comment-delimiter"># </span><span class="comment">See earlier in this chapter for examples of how this does
+</span><span class="comment-delimiter"># </span><span class="comment">not break encapsulation.
+</span><span class="keyword">class</span> <span class="type">Person</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, name = <span class="string">""</span>, age = 0):
+        <span class="py-pseudo-keyword">self</span>.name = name
+        <span class="py-pseudo-keyword">self</span>.age = age
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Prefered: dude = Person("Jason", 23)
+</span>dude = Person()
+dude.name = <span class="string">"Jason"</span>
+dude.age = 23
+<span class="keyword">print</span> <span class="string">"%s is age %d."</span> % (dude.name, dude.age)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Employee</span>(Person):
+    <span class="keyword">pass</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Prefered: empl = Employee("Jason", 23)
+</span>emp = Employee()
+empl.name = <span class="string">"Jason"</span>
+empl.age = 23
+<span class="keyword">print</span> <span class="string">"%s is age %d."</span> % (empl.name, empl.age)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN734"
+>Accessing Overridden Methods</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">This doesn't need to be done since if 'method' doesn't
+</span><span class="comment-delimiter"># </span><span class="comment">exist in the Class it will be looked for in its BaseClass(es)
+</span><span class="keyword">class</span> <span class="type">Class</span>(BaseClass):
+    <span class="keyword">def</span> <span class="function-name">method</span>(<span class="py-pseudo-keyword">self</span>, *args, **kwargs):
+        BaseClass.method(<span class="py-pseudo-keyword">self</span>, *args, **kwargs)
+
+<span class="comment-delimiter"># </span><span class="comment">This lets you pick the specific method in one of the base classes
+</span><span class="keyword">class</span> <span class="type">Class</span>(BaseClass1, BaseClass2):
+    <span class="keyword">def</span> <span class="function-name">method</span>(<span class="py-pseudo-keyword">self</span>, *args, **kwargs):
+        BaseClass2.method(<span class="py-pseudo-keyword">self</span>, *args, **kwargs)
+
+<span class="comment-delimiter"># </span><span class="comment">This looks for the first method in the base class(es) without
+</span><span class="comment-delimiter"># </span><span class="comment">specifically knowing which base class.  This reimplements
+</span><span class="comment-delimiter"># </span><span class="comment">the default action so isn't really needed.
+</span><span class="keyword">class</span> <span class="type">Class</span>(BaseClass1, BaseClass2, BaseClass3):
+    <span class="keyword">def</span> <span class="function-name">method</span>(<span class="py-pseudo-keyword">self</span>, *args, **kwargs):
+        <span class="keyword">for</span> baseclass <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>.__class__.__bases__:
+            f = <span class="py-builtins">getattr</span>(baseclass, <span class="string">"method"</span>)
+            <span class="keyword">if</span> f <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+                <span class="keyword">return</span> f(*args, **kwargs)
+        <span class="keyword">raise</span> <span class="py-builtins">NotImplementedError</span>(<span class="string">"method"</span>)
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="py-pseudo-keyword">self</span>.meth()   <span class="comment-delimiter"># </span><span class="comment">Call wherever first meth is found
+</span>
+Where.meth(<span class="py-pseudo-keyword">self</span>)  <span class="comment-delimiter"># </span><span class="comment">Call in the base class "Where"
+</span>
+<span class="comment-delimiter"># </span><span class="comment">XXX Does Perl only have single inheritence?  Or does
+</span><span class="comment-delimiter"># </span><span class="comment">it check all base classes?  No directly equivalent way
+</span><span class="comment-delimiter"># </span><span class="comment">to do this in Python, but see above.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> time
+
+<span class="comment-delimiter"># </span><span class="comment">The Perl code calls a private '_init' function, but in
+</span><span class="comment-delimiter"># </span><span class="comment">Python there's need for the complexity of 'new' mechanism
+</span><span class="comment-delimiter"># </span><span class="comment">so it's best just to put the '_init' code in '__init__'.
+</span><span class="keyword">class</span> <span class="type">Class</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, *args):
+        <span class="comment-delimiter"># </span><span class="comment">init data fields
+</span>        <span class="py-pseudo-keyword">self</span>.START = time.time()
+        <span class="py-pseudo-keyword">self</span>.AGE = 0
+        <span class="py-pseudo-keyword">self</span>.EXTRA = args          <span class="comment-delimiter"># </span><span class="comment">anything extra
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>obj = Widget(haircolor = <span class="string">"red"</span>, freckles = 121)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">Class</span>(Base1, Base2, Base3):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, *args, **kwargs):
+        <span class="keyword">for</span> base <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>.__class__.__bases__:
+            f = <span class="py-builtins">getattr</span>(base, <span class="string">"__init__"</span>)
+            <span class="keyword">if</span> f <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+                f(<span class="py-pseudo-keyword">self</span>, *args, **kwargs)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN737"
+>Generating Attribute Methods Using AUTOLOAD</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">NOTE: Python prefers direct attribute lookup rather than
+</span><span class="comment-delimiter"># </span><span class="comment">method calls.  Python 2.2 will introduce a 'get_set' which
+</span><span class="comment-delimiter"># </span><span class="comment">*may* be equivalent, but I don't know enough about it.  So
+</span><span class="comment-delimiter"># </span><span class="comment">instead I'll describe a class that lets you restrict access
+</span><span class="comment-delimiter"># </span><span class="comment">to only specific attributes.
+</span>
+<span class="keyword">class</span> <span class="type">Private</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, names):
+        <span class="py-pseudo-keyword">self</span>.__names = names
+        <span class="py-pseudo-keyword">self</span>.__data = {}
+    <span class="keyword">def</span> <span class="function-name">__getattr__</span>(<span class="py-pseudo-keyword">self</span>, name):
+        <span class="keyword">if</span> name <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>.__names:
+            <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.__data[name]
+        <span class="keyword">raise</span> <span class="py-builtins">AttributeError</span>(name)
+    <span class="keyword">def</span> <span class="function-name">__setattr__</span>(<span class="py-pseudo-keyword">self</span>, name, value):
+        <span class="keyword">if</span> name.startswith(<span class="string">"_Private"</span>):
+            <span class="py-pseudo-keyword">self</span>.__dict__[name] = value
+            <span class="keyword">return</span>
+        <span class="keyword">if</span> name <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>.__names:
+            <span class="py-pseudo-keyword">self</span>.__data[name] = value
+            <span class="keyword">return</span>
+        <span class="keyword">raise</span> <span class="py-builtins">TypeError</span>(<span class="string">"cannot set the attribute %r"</span> % (name,))
+
+<span class="keyword">class</span> <span class="type">Person</span>(Private):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, parent = <span class="py-pseudo-keyword">None</span>):
+        Private.__init__(<span class="py-pseudo-keyword">self</span>, [<span class="string">"name"</span>, <span class="string">"age"</span>, <span class="string">"peers"</span>, <span class="string">"parent"</span>])
+        <span class="py-pseudo-keyword">self</span>.parent = parent
+    <span class="keyword">def</span> <span class="function-name">new_child</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> Person(<span class="py-pseudo-keyword">self</span>)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>dad = Person()
+dad.name = <span class="string">"Jason"</span>
+dad.age = 23
+kid = dad.new_child()
+kid.name = <span class="string">"Rachel"</span>
+kid.age = 2
+<span class="keyword">print</span> <span class="string">"Kid's parent is"</span>, kid.parent.name
+<span class="comment-delimiter">#</span><span class="comment">=&gt;Kid's parent is Jason
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN740"
+>Solving the Data Inheritance Problem</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment"># XXX No clue on what this does.  For that matter, what's
+</span><span class="comment-delimiter">#</span><span class="comment"># "The Data Inheritance Problem"?
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN743"
+>Coping with Circular Data Structures</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span>node.NEXT = node
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">This is not a faithful copy of the Perl code, but it does
+</span><span class="comment-delimiter"># </span><span class="comment">show how to have the container's __del__ remove cycles in
+</span><span class="comment-delimiter"># </span><span class="comment">its contents.  Note that Python 2.0 includes a garbage
+</span><span class="comment-delimiter"># </span><span class="comment">collector that is able to remove these sorts of cycles, but
+</span><span class="comment-delimiter"># </span><span class="comment">it's still best to prevent cycles in your code.
+</span><span class="keyword">class</span> <span class="type">Node</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, value = <span class="py-pseudo-keyword">None</span>):
+        <span class="py-pseudo-keyword">self</span>.next = <span class="py-pseudo-keyword">self</span>
+        <span class="py-pseudo-keyword">self</span>.prev = <span class="py-pseudo-keyword">self</span>
+        <span class="py-pseudo-keyword">self</span>.value = value
+
+<span class="keyword">class</span> <span class="type">Ring</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="py-pseudo-keyword">self</span>.ring = <span class="py-pseudo-keyword">None</span>
+        <span class="py-pseudo-keyword">self</span>.count = 0
+
+    <span class="keyword">def</span> <span class="function-name">__str__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="comment-delimiter"># </span><span class="comment">Helpful when debugging, to print the contents of the ring
+</span>        s = <span class="string">"#%d: "</span> % <span class="py-pseudo-keyword">self</span>.count
+        x = <span class="py-pseudo-keyword">self</span>.ring
+        <span class="keyword">if</span> x <span class="keyword">is</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="keyword">return</span> s
+        values = []
+        <span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+            values.append(x.value)
+            x = x.next
+            <span class="keyword">if</span> x <span class="keyword">is</span> <span class="py-pseudo-keyword">self</span>.ring:
+                <span class="keyword">break</span>
+        <span class="keyword">return</span> s + <span class="string">" -&gt; "</span>.join(<span class="py-builtins">map</span>(str, values)) + <span class="string">" -&gt;"</span>
+
+    <span class="keyword">def</span> <span class="function-name">search</span>(<span class="py-pseudo-keyword">self</span>, value):
+        node = <span class="py-pseudo-keyword">self</span>.ring
+        <span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+            <span class="keyword">if</span> node.value == value:
+                <span class="keyword">return</span> node
+            node = node.next
+            <span class="keyword">if</span> node <span class="keyword">is</span> <span class="py-pseudo-keyword">self</span>.ring:
+                <span class="keyword">break</span>
+
+    <span class="keyword">def</span> <span class="function-name">insert_value</span>(<span class="py-pseudo-keyword">self</span>, value):
+        node = Node(value)
+        <span class="keyword">if</span> <span class="py-pseudo-keyword">self</span>.ring <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+            node.prev, node.next = <span class="py-pseudo-keyword">self</span>.ring.prev, <span class="py-pseudo-keyword">self</span>.ring
+            <span class="py-pseudo-keyword">self</span>.ring.prev.next = <span class="py-pseudo-keyword">self</span>.ring.prev = node
+        <span class="py-pseudo-keyword">self</span>.ring = node
+        <span class="py-pseudo-keyword">self</span>.count += 1
+
+    <span class="keyword">def</span> <span class="function-name">delete_value</span>(<span class="py-pseudo-keyword">self</span>, value):
+        node = <span class="py-pseudo-keyword">self</span>.search(value)
+        <span class="keyword">if</span> node <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="py-pseudo-keyword">self</span>.delete_node(node)
+
+    <span class="keyword">def</span> <span class="function-name">delete_node</span>(<span class="py-pseudo-keyword">self</span>, node):
+        <span class="keyword">if</span> node <span class="keyword">is</span> node.next:
+            node.next = node.prev = <span class="py-pseudo-keyword">None</span>
+            <span class="py-pseudo-keyword">self</span>.ring = <span class="py-pseudo-keyword">None</span>
+        <span class="keyword">else:</span>
+            node.prev.next, node.next.prev = node.next, node.prev
+            <span class="keyword">if</span> node <span class="keyword">is</span> <span class="py-pseudo-keyword">self</span>.ring:
+                <span class="py-pseudo-keyword">self</span>.ring = node.next
+        <span class="py-pseudo-keyword">self</span>.count -= 1
+
+    <span class="keyword">def</span> <span class="function-name">__del__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">while</span> <span class="py-pseudo-keyword">self</span>.ring <span class="keyword">is</span> <span class="keyword">not</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="py-pseudo-keyword">self</span>.delete_node(<span class="py-pseudo-keyword">self</span>.ring)
+
+COUNT = 1000
+<span class="keyword">for</span> rep <span class="keyword">in</span> <span class="py-builtins">range</span>(20):
+    r = Ring()
+    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(COUNT):
+        r.insert_value(i)
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN746"
+>Overloading Operators</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> UserString
+<span class="keyword">class</span> <span class="type">MyString</span>(UserString.UserString):
+    <span class="keyword">def</span> <span class="function-name">__cmp__</span>(<span class="py-pseudo-keyword">self</span>, other):
+        <span class="keyword">return</span> <span class="py-builtins">cmp</span>(<span class="py-pseudo-keyword">self</span>.data.upper(), other.upper())
+
+<span class="keyword">class</span> <span class="type">Person</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, name, idnum):
+        <span class="py-pseudo-keyword">self</span>.name = name
+        <span class="py-pseudo-keyword">self</span>.idnum = idnum
+    <span class="keyword">def</span> <span class="function-name">__str__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="string">"%s (%05d)"</span> % (<span class="py-pseudo-keyword">self</span>.name.lower().capitalize(), <span class="py-pseudo-keyword">self</span>.idnum)
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">class</span> <span class="type">TimeNumber</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, hours, minutes, seconds):
+        <span class="keyword">assert</span> minutes &lt; 60 <span class="keyword">and</span> seconds &lt; 60
+        <span class="py-pseudo-keyword">self</span>.hours = hours
+        <span class="py-pseudo-keyword">self</span>.minutes = minutes
+        <span class="py-pseudo-keyword">self</span>.seconds = seconds
+    <span class="keyword">def</span> <span class="function-name">__str__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="string">"%d:%02d:%02d"</span> % (<span class="py-pseudo-keyword">self</span>.hours, <span class="py-pseudo-keyword">self</span>.minutes, <span class="py-pseudo-keyword">self</span>.seconds)
+    <span class="keyword">def</span> <span class="function-name">__add__</span>(<span class="py-pseudo-keyword">self</span>, other):
+        seconds = <span class="py-pseudo-keyword">self</span>.seconds + other.seconds
+        minutes = <span class="py-pseudo-keyword">self</span>.minutes + other.minutes
+        hours = <span class="py-pseudo-keyword">self</span>.hours + other.hours
+        <span class="keyword">if</span> seconds &gt;= 60:
+            seconds %= 60
+            minutes += 1
+        <span class="keyword">if</span> minutes &gt;= 60:
+            minutes %= 60
+            hours += 1
+        <span class="keyword">return</span> TimeNumber(hours, minutes, seconds)
+
+    <span class="keyword">def</span> <span class="function-name">__sub__</span>(<span class="py-pseudo-keyword">self</span>, other):
+        <span class="keyword">raise</span> <span class="py-builtins">NotImplementedError</span>
+
+    <span class="keyword">def</span> <span class="function-name">__mul__</span>(<span class="py-pseudo-keyword">self</span>, other):
+        <span class="keyword">raise</span> <span class="py-builtins">NotImplementedError</span>
+
+    <span class="keyword">def</span> <span class="function-name">__div__</span>(<span class="py-pseudo-keyword">self</span>, other):
+        <span class="keyword">raise</span> <span class="py-builtins">NotImplementedError</span>
+
+t1 = TimeNumber(0, 58, 59)
+sec = TimeNumber(0, 0, 1)
+<span class="py-builtins">min</span> = TimeNumber(0, 1, 0)
+<span class="keyword">print</span> t1 + sec + <span class="py-builtins">min</span> + <span class="py-builtins">min</span>
+<span class="comment-delimiter"># </span><span class="comment">1:01:00
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">For demo purposes only - the StrNum class is superfluous in this
+</span><span class="comment-delimiter"># </span><span class="comment">case as plain strings would give the same result.
+</span><span class="keyword">class</span> <span class="type">StrNum</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, value):
+        <span class="py-pseudo-keyword">self</span>.value = value
+
+    <span class="keyword">def</span> <span class="function-name">__cmp__</span>(<span class="py-pseudo-keyword">self</span>, other):  <span class="comment-delimiter"># </span><span class="comment">both &lt;=&gt; and cmp
+</span>        <span class="comment-delimiter"># </span><span class="comment">providing &lt;=&gt; gives us &lt;, ==, etc. for free.
+</span>        <span class="comment-delimiter"># </span><span class="comment">__lt__, __eq__, and __gt__ can also be individually specified
+</span>        <span class="keyword">return</span> <span class="py-builtins">cmp</span>(<span class="py-pseudo-keyword">self</span>.value, other.value)
+
+    <span class="keyword">def</span> <span class="function-name">__str__</span>(<span class="py-pseudo-keyword">self</span>):  <span class="comment-delimiter"># </span><span class="comment">""
+</span>        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.value
+
+    <span class="keyword">def</span> <span class="function-name">__nonzero__</span>(<span class="py-pseudo-keyword">self</span>, other):   <span class="comment-delimiter"># </span><span class="comment">bool
+</span>        <span class="keyword">return</span> <span class="py-builtins">bool</span>(<span class="py-pseudo-keyword">self</span>.value)
+
+    <span class="keyword">def</span> <span class="function-name">__int__</span>(<span class="py-pseudo-keyword">self</span>, other):   <span class="comment-delimiter"># </span><span class="comment">0+
+</span>        <span class="keyword">return</span> <span class="py-builtins">int</span>(<span class="py-pseudo-keyword">self</span>.value)
+
+    <span class="keyword">def</span> <span class="function-name">__add__</span>(<span class="py-pseudo-keyword">self</span>, other):   <span class="comment-delimiter"># </span><span class="comment">+
+</span>        <span class="keyword">return</span> StrNum(<span class="py-pseudo-keyword">self</span>.value + other.value)
+
+    <span class="keyword">def</span> <span class="function-name">__radd__</span>(<span class="py-pseudo-keyword">self</span>, other):   <span class="comment-delimiter"># </span><span class="comment">+, inverted
+</span>        <span class="keyword">return</span> StrNum(other.value + <span class="py-pseudo-keyword">self</span>.value)
+
+    <span class="keyword">def</span> <span class="function-name">__mul__</span>(<span class="py-pseudo-keyword">self</span>, other):   <span class="comment-delimiter"># </span><span class="comment">*
+</span>        <span class="keyword">return</span> StrNum(<span class="py-pseudo-keyword">self</span>.value * other)
+
+    <span class="keyword">def</span> <span class="function-name">__rmul__</span>(<span class="py-pseudo-keyword">self</span>, other):   <span class="comment-delimiter"># </span><span class="comment">*, inverted
+</span>        <span class="keyword">return</span> StrNum(<span class="py-pseudo-keyword">self</span>.value * other)
+
+
+<span class="keyword">def</span> <span class="function-name">demo</span>():
+    <span class="comment-delimiter"># </span><span class="comment">show_strnum - demo operator overloading
+</span>    x = StrNum(<span class="string">"Red"</span>)
+    y = StrNum(<span class="string">"Black"</span>)
+    z = x + y
+    r = z * 3
+    <span class="keyword">print</span> <span class="string">"values are %s, %s, %s, and %s"</span> % (x, y, z, r)
+    <span class="keyword">if</span> x &lt; y:
+        s = <span class="string">"LT"</span>
+    <span class="keyword">else:</span>
+        s = <span class="string">"GE"</span>
+    <span class="keyword">print</span> x, <span class="string">"is"</span>, s, y
+
+<span class="keyword">if</span> <span class="py-builtins">__name__</span> == <span class="string">"__main__"</span>:
+    demo()
+<span class="comment-delimiter"># </span><span class="comment">values are Red, Black, RedBlack, and RedBlackRedBlackRedBlack
+</span><span class="comment-delimiter"># </span><span class="comment">Red is GE Black
+</span>
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/env python
+</span><span class="comment-delimiter"># </span><span class="comment">demo_fixnum - show operator overloading
+</span>
+<span class="comment-delimiter"># </span><span class="comment">sum of STRFixNum: 40 and STRFixNum: 12 is STRFixNum: 52
+</span><span class="comment-delimiter"># </span><span class="comment">product of STRFixNum: 40 and STRFixNum: 12 is STRFixNum: 480
+</span><span class="comment-delimiter"># </span><span class="comment">STRFixNum: 3 has 0 places
+</span><span class="comment-delimiter"># </span><span class="comment">div of STRFixNum: 40 by STRFixNum: 12 is STRFixNum: 3.33
+</span><span class="comment-delimiter"># </span><span class="comment">square of that is  STRFixNum: 11.11
+</span>
+<span class="comment-delimiter"># </span><span class="comment">This isn't excatly the same as the original Perl code since
+</span><span class="comment-delimiter"># </span><span class="comment">I couldn't figure out why the PLACES variable was used.
+</span><span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="keyword">import</span> re
+_places_re = re.compile(r<span class="string">"\.(\d+)"</span>)
+
+default_places = 0
+
+<span class="keyword">class</span> <span class="type">FixNum</span>:
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, value, places = <span class="py-pseudo-keyword">None</span>):
+        <span class="py-pseudo-keyword">self</span>.value = value
+        <span class="keyword">if</span> places <span class="keyword">is</span> <span class="py-pseudo-keyword">None</span>:
+            <span class="comment-delimiter"># </span><span class="comment">get from the value
+</span>            m = _places_re.search(<span class="py-builtins">str</span>(value))
+            <span class="keyword">if</span> m:
+                places = <span class="py-builtins">int</span>(m.group(1))
+            <span class="keyword">else:</span>
+                places = default_places
+        <span class="py-pseudo-keyword">self</span>.places = places
+
+    <span class="keyword">def</span> <span class="function-name">__add__</span>(<span class="py-pseudo-keyword">self</span>, other):
+        <span class="keyword">return</span> FixNum(<span class="py-pseudo-keyword">self</span>.value + other.value,
+                      <span class="py-builtins">max</span>(<span class="py-pseudo-keyword">self</span>.places, other.places))
+
+    <span class="keyword">def</span> <span class="function-name">__mul__</span>(<span class="py-pseudo-keyword">self</span>, other):
+        <span class="keyword">return</span> FixNum(<span class="py-pseudo-keyword">self</span>.value * other.value,
+                      <span class="py-builtins">max</span>(<span class="py-pseudo-keyword">self</span>.places, other.places))
+
+    <span class="keyword">def</span> <span class="function-name">__div__</span>(<span class="py-pseudo-keyword">self</span>, other):
+        <span class="comment-delimiter"># </span><span class="comment">Force to use floating point, since 2/3 in Python is 0
+</span>        <span class="comment-delimiter"># </span><span class="comment">Don't use float() since that will convert strings
+</span>        <span class="keyword">return</span> FixNum((<span class="py-pseudo-keyword">self</span>.value+0.0) / other.value,
+                      <span class="py-builtins">max</span>(<span class="py-pseudo-keyword">self</span>.places, other.places))
+
+    <span class="keyword">def</span> <span class="function-name">__str__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="string">"STR%s: %.*f"</span> % (<span class="py-pseudo-keyword">self</span>.__class__.__name__,
+                                <span class="py-pseudo-keyword">self</span>.places, <span class="py-pseudo-keyword">self</span>.value)
+    <span class="keyword">def</span> <span class="function-name">__int__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="py-builtins">int</span>(<span class="py-pseudo-keyword">self</span>.value)
+
+    <span class="keyword">def</span> <span class="function-name">__float__</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.value
+
+<span class="keyword">def</span> <span class="function-name">demo</span>():
+    x = FixNum(40)
+    y = FixNum(12, 0)
+
+    <span class="keyword">print</span> <span class="string">"sum of"</span>, x, <span class="string">"and"</span>, y, <span class="string">"is"</span>, x+y
+    <span class="keyword">print</span> <span class="string">"product of"</span>, x, <span class="string">"and"</span>, y, <span class="string">"is"</span>, x*y
+
+    z = x/y
+    <span class="keyword">print</span> <span class="string">"%s has %d places"</span> % (z, z.places)
+    <span class="keyword">if</span> <span class="keyword">not</span> z.places:
+        z.places = 2
+
+    <span class="keyword">print</span> <span class="string">"div of"</span>, x, <span class="string">"by"</span>, y, <span class="string">"is"</span>, z
+    <span class="keyword">print</span> <span class="string">"square of that is "</span>, z*z
+
+<span class="keyword">if</span> <span class="py-builtins">__name__</span> == <span class="string">"__main__"</span>:
+    demo()</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN749"
+>Creating Magic Variables with tie</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">You can't tie a variable, but you can use properties.  
+</span><span class="keyword">import</span> itertools
+<span class="keyword">class</span> <span class="type">ValueRing</span>(object):
+    <span class="keyword">def</span> <span class="function-name">__init__</span>(<span class="py-pseudo-keyword">self</span>, colours):
+        <span class="py-pseudo-keyword">self</span>.colourcycle = itertools.cycle(colours)
+
+    <span class="keyword">def</span> <span class="function-name">next_colour</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="keyword">return</span> <span class="py-pseudo-keyword">self</span>.colourcycle.next()
+    colour = <span class="py-builtins">property</span>(next_colour)
+vr = ValueRing([<span class="string">"red"</span>, <span class="string">"blue"</span>])
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="py-builtins">range</span>(6):
+    <span class="keyword">print</span> vr.colour,
+<span class="keyword">print</span>
+
+<span class="comment-delimiter"># </span><span class="comment">Note that you MUST refer directly to the property
+</span>x = vr.colour
+<span class="keyword">print</span> x, x, x
+<span class="comment-delimiter">#</span><span class="comment">-------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Ties are generally unnecessary in Python because of its strong OO support -
+</span><span class="comment-delimiter"># </span><span class="comment">The resulting code is MUCH shorter:
+</span><span class="keyword">class</span> <span class="type">AppendDict</span>(dict):
+    <span class="keyword">def</span> <span class="function-name">__setitem__</span>(<span class="py-pseudo-keyword">self</span>, key, val):
+        <span class="keyword">if</span> key <span class="keyword">in</span> <span class="py-pseudo-keyword">self</span>:
+            <span class="py-pseudo-keyword">self</span>[key].append(val)
+        <span class="keyword">else:</span>
+            <span class="py-builtins">super</span>(AppendDict, <span class="py-pseudo-keyword">self</span>).__setitem__(key, [val])
+tab = AppendDict()
+tab[<span class="string">"beer"</span>] = <span class="string">"guinness"</span>
+tab[<span class="string">"food"</span>] = <span class="string">"potatoes"</span>
+tab[<span class="string">"food"</span>] = <span class="string">"peas"</span>
+
+<span class="keyword">for</span> key, val <span class="keyword">in</span> tab.items():
+    <span class="keyword">print</span> key, <span class="string">"=&gt;"</span>, val
+<span class="comment-delimiter">#</span><span class="comment">-------------------------------------
+</span><span class="keyword">class</span> <span class="type">CaselessDict</span>(dict):
+    <span class="keyword">def</span> <span class="function-name">__setitem__</span>(<span class="py-pseudo-keyword">self</span>, key, val):
+        <span class="py-builtins">super</span>(CaselessDict, <span class="py-pseudo-keyword">self</span>).__setitem__(key.lower(), val)
+    <span class="keyword">def</span> <span class="function-name">__getitem__</span>(<span class="py-pseudo-keyword">self</span>, key):
+        <span class="keyword">return</span> <span class="py-builtins">super</span>(CaselessDict, <span class="py-pseudo-keyword">self</span>).__getitem__(key.lower())
+
+tab = CaselessDict()
+tab[<span class="string">"VILLAIN"</span>] = <span class="string">"big "</span>
+tab[<span class="string">"herOine"</span>] = <span class="string">"red riding hood"</span>
+tab[<span class="string">"villain"</span>] = <span class="string">"bad wolf"</span>
+
+<span class="keyword">for</span> key, val <span class="keyword">in</span> tab.items():
+    <span class="keyword">print</span> key, <span class="string">"is"</span>, val
+<span class="comment-delimiter">#</span><span class="comment">=&gt;villain is bad wolf
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;heroine is red riding hood
+</span><span class="comment-delimiter">#</span><span class="comment">-------------------------------------
+</span><span class="keyword">class</span> <span class="type">RevDict</span>(dict):
+    <span class="keyword">def</span> <span class="function-name">__setitem__</span>(<span class="py-pseudo-keyword">self</span>, key, val):
+        <span class="py-builtins">super</span>(RevDict, <span class="py-pseudo-keyword">self</span>).__setitem__(key, val)
+        <span class="py-builtins">super</span>(RevDict, <span class="py-pseudo-keyword">self</span>).__setitem__(val, key)
+
+tab = RevDict()
+tab[<span class="string">"red"</span>] = <span class="string">"rojo"</span>
+tab[<span class="string">"blue"</span>] = <span class="string">"azul"</span>
+tab[<span class="string">"green"</span>] = <span class="string">"verde"</span>
+tab[<span class="string">"evil"</span>] = (<span class="string">"No Way!"</span>, <span class="string">"Way!"</span>)
+
+<span class="keyword">for</span> key, val <span class="keyword">in</span> tab.items():
+    <span class="keyword">print</span> key, <span class="string">"is"</span>, val
+<span class="comment-delimiter">#</span><span class="comment">=&gt;blue is azul
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;('No Way!', 'Way!') is evil
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;rojo is red
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;evil is ('No Way!', 'Way!')
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;azul is blue
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;verde is green
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;green is verde
+</span><span class="comment-delimiter">#</span><span class="comment">=&gt;red is rojo
+</span><span class="comment-delimiter">#</span><span class="comment">-------------------------------------
+</span><span class="keyword">import</span> itertools
+<span class="keyword">for</span> elem <span class="keyword">in</span> itertools.count():
+    <span class="keyword">print</span> <span class="string">"Got"</span>, elem
+<span class="comment-delimiter">#</span><span class="comment">-------------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">You could use FileDispatcher from section 7.18
+</span>tee = FileDispatcher(sys.stderr, sys.stdout)
+<span class="comment-delimiter">#</span><span class="comment">-------------------------------------</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="packagesetc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="dbaccess.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Packages, Libraries, and Modules</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Database Access</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

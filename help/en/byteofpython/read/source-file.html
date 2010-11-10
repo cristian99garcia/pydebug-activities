@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Using a Source File</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="first-steps.html" title="Chapter 3. First Steps" /><link rel="prev" href="choosing-an-editor.html" title="Choosing an Editor" /><link rel="next" href="executable-python-programs.html" title="Executable Python programs" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Using a Source File</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="choosing-an-editor.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 3. First Steps</th><td width="20%" align="right"> <a accesskey="n" href="executable-python-programs.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="source-file"></a>Using a Source File</h2></div></div></div><p>
+		
+		Now let's get back to programming. There is a tradition that whenever you learn a new
+		programming language, the first program that you write and run is the 'Hello World'
+		program - all it does is just say 'Hello World' when you run it. As Simon Cozens
+		<sup>[<a id="id3050402" href="#ftn.id3050402">1</a>]</sup>
+		puts it, it is the 'traditional incantation to the programming gods to help you learn
+		the language better' :) .
+		
+		</p><p>
+		
+		Start your choice of editor, enter the following program and save it as
+		<code class="filename">helloworld.py</code>
+		
+		</p><div class="example"><a id="id3050424"></a><p class="title"><b>Example 3.2. Using a Source File</b></p><pre class="programlisting">
+			
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename : helloworld.py</span>
+<span class="py-statement">print</span> <span class="py-string">'Hello World'</span>
+			
+			</pre><p>
+				(Source file: <a href="code/helloworld.py" target="_top">code/helloworld.py</a>)
+			</p></div><p>
+		
+		Run this program by opening a shell (Linux terminal or DOS prompt) and entering the
+		command <span><strong class="command">python <em class="replaceable"><code>helloworld.py</code></em></strong></span>. If you
+		are using IDLE, use the menu <span class="guimenu">Edit</span> -&gt;
+		<span class="guimenuitem">Run Script</span> or the keyboard shortcut
+		<span><strong class="keycap">Ctrl</strong></span>-<span><strong class="keycap">F5</strong></span>. The output is as shown
+		below.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id3050490"></a>Output</h3></div></div></div><pre class="screen">
+			
+$ python helloworld.py
+Hello World
+			
+			</pre></div><p>
+		
+		If you got the output as shown above, congratulations! - you have successfully run your
+		first Python program.
+		
+		</p><p>
+		
+		In case you got an error, please type the above program <span class="emphasis"><em>exactly</em></span> as
+		shown and above and run the program again. Note that Python is case-sensitive i.e.
+		<code class="literal">print</code> is not the same as <code class="literal">Print</code> - note the
+		lowercase <code class="literal">p</code> in the former and the uppercase <code class="literal">P</code> in
+		the latter. Also, ensure there are no spaces or tabs before the first character in each
+		line - we will see why this is important later.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id3050545"></a>How It Works</h3></div></div></div><p>
+			
+			Let us consider the first two lines of the program. These are called
+			<span class="emphasis"><em>comments</em></span> - anything to the right of the <code class="literal">#</code>
+			symbol is a comment and is mainly useful as notes for the reader of the program.
+			
+			</p><p>
+			
+			Python does not use comments except for the special case of the first line here.
+			It is called the <span class="emphasis"><em>shebang line</em></span> - whenever the first two
+			characters of the source file are <code class="literal">#!</code> followed by the location
+			of a program, this tells your Linux/Unix system that this program should be run
+			with this interpreter when you <span class="emphasis"><em>execute</em></span> the program. This is
+			explained in detail in the <a href="executable-python-programs.html" title="Executable Python programs">next section</a>. Note that you can always run the program on any platform by
+			specifying the interpreter directly on the command line such as the command
+			<span><strong class="command">python <em class="replaceable"><code>helloworld.py</code></em></strong></span> .
+			
+			</p><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Important</h3><p>
+				
+				Use comments sensibly in your program to explain some important details
+				of your program - this is useful for readers of your program so that they
+				can easily understand what the program is doing. Remember, that person
+				can be yourself after six months!
+				
+				</p></div><p>
+			
+			The comments are followed by a Python <span class="emphasis"><em>statement</em></span> - this just
+			prints the text <code class="literal">'Hello World'</code>. The <code class="literal">print</code>
+			is actually an operator and <code class="literal">'Hello World'</code> is referred to as a
+			string - don't worry, we will explore these terminologies in detail later.
+			
+			</p></div><div class="footnotes"><br /><hr width="100" align="left" /><div class="footnote"><p><sup>[<a id="ftn.id3050402" href="#id3050402">1</a>] </sup>
+			one of the leading Perl6/Parrot hackers and the author of the amazing
+			'Beginning Perl' book
+			</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="choosing-an-editor.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="first-steps.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="executable-python-programs.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Choosing an Editor </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> Executable Python programs</td></tr></table></div></body></html>

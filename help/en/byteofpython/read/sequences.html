@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Sequences</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="data-structures.html" title="Chapter 9. Data Structures" /><link rel="prev" href="dictionary.html" title="Dictionary" /><link rel="next" href="references.html" title="References" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Sequences</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="dictionary.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 9. Data Structures</th><td width="20%" align="right"> <a accesskey="n" href="references.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="sequences"></a>Sequences</h2></div></div></div><p>
+		
+		Lists, tuples and strings are examples of sequences, but what are sequences and what is
+		so special about them? Two of the main features of a sequence is the
+		<span class="bold"><strong>indexing</strong></span> operation which allows us to fetch a particular
+		item in the sequence directly and the <span class="bold"><strong>slicing</strong></span> operation
+		which allows us to retrieve a slice of the sequence i.e. a part of the sequence.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="using-sequences"></a>Using Sequences</h3></div></div></div><div class="example"><a id="id3067126"></a><p class="title"><b>Example 9.5. Using Sequences</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: seq.py</span>
+
+shoplist = [<span class="py-string">'apple'</span>, <span class="py-string">'mango'</span>, <span class="py-string">'carrot'</span>, <span class="py-string">'banana'</span>]
+
+<span class="py-comment"># Indexing or 'Subscription' operation</span>
+<span class="py-statement">print</span> <span class="py-string">'Item 0 is'</span>, shoplist[<span class="py-number">0</span>]
+<span class="py-statement">print</span> <span class="py-string">'Item 1 is'</span>, shoplist[<span class="py-number">1</span>]
+<span class="py-statement">print</span> <span class="py-string">'Item 2 is'</span>, shoplist[<span class="py-number">2</span>]
+<span class="py-statement">print</span> <span class="py-string">'Item 3 is'</span>, shoplist[<span class="py-number">3</span>]
+<span class="py-statement">print</span> <span class="py-string">'Item -1 is'</span>, shoplist[-<span class="py-number">1</span>]
+<span class="py-statement">print</span> <span class="py-string">'Item -2 is'</span>, shoplist[-<span class="py-number">2</span>]
+
+<span class="py-comment"># Slicing on a list</span>
+<span class="py-statement">print</span> <span class="py-string">'Item 1 to 3 is'</span>, shoplist[<span class="py-number">1</span>:<span class="py-number">3</span>]
+<span class="py-statement">print</span> <span class="py-string">'Item 2 to end is'</span>, shoplist[<span class="py-number">2</span>:]
+<span class="py-statement">print</span> <span class="py-string">'Item 1 to -1 is'</span>, shoplist[<span class="py-number">1</span>:-<span class="py-number">1</span>]
+<span class="py-statement">print</span> <span class="py-string">'Item start to end is'</span>, shoplist[:]
+
+<span class="py-comment"># Slicing on a string</span>
+name = <span class="py-string">'swaroop'</span>
+<span class="py-statement">print</span> <span class="py-string">'characters 1 to 3 is'</span>, name[<span class="py-number">1</span>:<span class="py-number">3</span>]
+<span class="py-statement">print</span> <span class="py-string">'characters 2 to end is'</span>, name[<span class="py-number">2</span>:]
+<span class="py-statement">print</span> <span class="py-string">'characters 1 to -1 is'</span>, name[<span class="py-number">1</span>:-<span class="py-number">1</span>]
+<span class="py-statement">print</span> <span class="py-string">'characters start to end is'</span>, name[:]
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3067138"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python seq.py
+Item 0 is apple
+Item 1 is mango
+Item 2 is carrot
+Item 3 is banana
+Item -1 is banana
+Item -2 is carrot
+Item 1 to 3 is ['mango', 'carrot']
+Item 2 to end is ['carrot', 'banana']
+Item 1 to -1 is ['mango', 'carrot']
+Item start to end is ['apple', 'mango', 'carrot', 'banana']
+characters 1 to 3 is wa
+characters 2 to end is aroop
+characters 1 to -1 is waroo
+characters start to end is swaroop
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3067175"></a>How It Works</h4></div></div></div><p>
+				
+				First, we see how to use indexes to get individual items of a sequence.
+				This is also referred to as the subscription operation. Whenever you
+				specify a number to a sequence within square brackets as shown above,
+				Python will fetch you the item corresponding to that position in the
+				sequence. Remember that Python starts counting numbers from 0. Hence,
+				<code class="literal">shoplist[0]</code> fetches the first item and
+				<code class="literal">shoplist[3]</code> fetches the fourth item in the
+				<code class="varname">shoplist</code> sequence.
+				
+				</p><p>
+				
+				The index can also be a negative number, in which case, the position is
+				calculated from the end of the sequence. Therefore, 
+				<code class="literal">shoplist[-1]</code> refers to the last item in the sequence and
+				<code class="literal">shoplist[-2]</code> fetches the second last item in the
+				sequence.
+				
+				</p><p>
+				
+				The slicing operation is used by specifying the name of the sequence followed
+				by an optional pair of numbers separated by a colon within square brackets.
+				Note that this is very very similar to the indexing operation you have been
+				using til lnow. Remember the numbers are optional but the colon isn't.
+				
+				</p><p>
+				
+				The first number (before the colon) in the slicing operation refers to the
+				position from where the slice starts and the second number (after the colon)
+				indicates where the slice will stop at. If the first number is not specified,
+				Python will start at the beginning of the sequence. If the second number is
+				left out, Python will stop at the end of the sequence. Note that the slice
+				returned <span class="emphasis"><em>starts</em></span> at the start position and will end
+				just before the <span class="emphasis"><em>end</em></span> position i.e. the start position is
+				included but the end position is excluded from the sequence slice.
+				
+				</p><p>
+				
+				Thus, <code class="literal">shoplist[1:3]</code> returns a slice of the sequence
+				starting at position 1, includes position 2 but stops at position 3 and
+				therefore a <span class="emphasis"><em>slice</em></span> of two items is returned.
+				Similarly, <code class="literal">shoplist[:]</code> returns a copy of the whole
+				sequence.
+				
+				</p><p>
+				
+				You can also do slicing with negative positions. Negative numbers are used
+				for positions from the end of the sequence. For example,
+				<code class="literal">shoplist[:-1]</code> will return a slice of the sequence which
+				excludes the last item of the sequence but contains everything else.
+				
+				</p><p>
+				
+				Try various combinations of such slice specifications using the Python
+				interpreter interactively i.e. the prompt so that you can see the results
+				immediately. The great thing about sequences is that you can access
+				tuples, lists and strings all in the same way!
+				
+				</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="dictionary.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="data-structures.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="references.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Dictionary </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> References</td></tr></table></div></body></html>

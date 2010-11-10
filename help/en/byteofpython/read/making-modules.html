@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Making your own Modules</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="modules.html" title="Chapter 8. Modules" /><link rel="prev" href="module-name.html" title="A module's __name__" /><link rel="next" href="dir.html" title="The dir() function" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Making your own Modules</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="module-name.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 8. Modules</th><td width="20%" align="right"> <a accesskey="n" href="dir.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="making-modules"></a>Making your own Modules</h2></div></div></div><p>
+		
+		Creating your own modules is easy, you've been doing it all along! Every Python program
+		is also a module. You just have to make sure it has a <code class="filename">.py</code> extension.
+		The following example should make it clear.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="creating-modules"></a>Creating your own Modules</h3></div></div></div><div class="example"><a id="id3064587"></a><p class="title"><b>Example 8.3. How to create your own module</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: mymodule.py</span>
+
+<span class="py-statement">def</span> <span class="py-identifier">sayhi</span>():
+	<span class="py-statement">print</span> <span class="py-string">'Hi, this is mymodule speaking.'</span>
+
+version = <span class="py-string">'0.1'</span>
+
+<span class="py-comment"># End of mymodule.py</span>
+				
+				</pre></div><p>
+			
+			The above was a sample <span class="emphasis"><em>module</em></span>. As you can see, there is nothing
+			particularly special about compared to our usual Python program. We will next see
+			how to use this module in our other Python programs.
+			
+			</p><p>
+			
+			Remember that the module should be placed in the same directory as the program that
+			we import it in, or the module should be in one of the directories listed in
+			<code class="varname">sys.path</code> .
+			
+			</p><pre class="programlisting">
+			
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: mymodule_demo.py</span>
+
+<span class="py-statement">import</span> mymodule
+
+mymodule.sayhi()
+<span class="py-statement">print</span> <span class="py-string">'Version'</span>, mymodule.version
+			
+			</pre><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3064630"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python mymodule_demo.py
+Hi, this is mymodule speaking.
+Version 0.1
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3064650"></a>How It Works</h4></div></div></div><p>
+				
+				Notice that we use the same dotted notation to access members of the
+				module. Python makes good reuse of the same notation to give the
+				distinctive 'Pythonic' feel to it so that we don't have to keep
+				learning new ways to do things.
+				
+				</p></div></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="using-from-import"></a>from..import</h3></div></div></div><p>
+			
+			Here is a version utilising the <code class="literal">from..import</code> syntax.
+			
+			</p><pre class="programlisting">
+			
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: mymodule_demo2.py</span>
+
+<span class="py-statement">from</span> mymodule <span class="py-statement">import</span> sayhi, version
+<span class="py-comment"># Alternative:</span>
+<span class="py-comment"># from mymodule import *</span>
+
+sayhi()
+<span class="py-statement">print</span> <span class="py-string">'Version'</span>, version
+			
+			</pre><p>
+			
+			The output of <code class="filename">mymodule_demo2.py</code> is same as the output of
+			<code class="filename">mymodule_demo.py</code>.
+			
+			</p></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="module-name.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="modules.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="dir.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">A module's __name__ </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> The dir() function</td></tr></table></div></body></html>

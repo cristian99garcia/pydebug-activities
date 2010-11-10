@@ -1,0 +1,9 @@
+[Library]
+name = Pygtk2Tutorial
+global_name = Pygtk2Tutorial
+long_name = Pygtk2Tutorial
+category = media
+library_version = 1
+host_version = 1
+l10n = false
+locale = en

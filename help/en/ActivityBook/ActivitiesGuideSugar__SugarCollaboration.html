@@ -1,0 +1,2004 @@
+<head><title></title>
+<META NAME="AUTHOR" CONTENT="Main.JamesSimmons"/><META NAME="COPYRIGHT" CONTENT=""/><META NAME="DOCNUMBER" CONTENT="r1.30 - 06 Mar 2010"/><META NAME="GENERATOR" CONTENT="TWiki TWiki-4.2.0, Tue, 22 Jan 2008, build 16278"/><META NAME="KEYWORDS" CONTENT=""/><META NAME="SUBJECT" CONTENT=""/></head>
+<body><a name="SugarCollaboration"> </a><html>
+	<head>
+		<title>ActivitiesGuideSugar</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link rel="icon" href="TWiki/FlossSkin2/fl2.ico" type="image/x-icon" /> <link rel="shortcut icon" href="TWiki/FlossSkin2/fl2.ico" type="image/x-icon" />
+		<link  rel="StyleSheet" href="style.css" type="text/css" media="screen"//>
+		<style id="mystyle" class="mystyle"></style>
+	</head>
+<body >
+<p />
+	<div id="index">
+	<div class="topics">
+	<ul><li><a href="ActivitiesGuideSugar__Introduction.html">INTRODUCTION</a></li><li><a href="ActivitiesGuideSugar__WhatIsSugar.html">WHAT IS SUGAR?</a></li><li><a href="ActivitiesGuideSugar__WhatisanActivity.html">WHAT IS A SUGAR ACTIVITY?</a></li><li><a href="ActivitiesGuideSugar__NeedtoKnowWriteSugarActivity.html">WHAT DO I NEED TO KNOW TO WRITE A SUGAR ACTIVITY?</a></li><li><a href="ActivitiesGuideSugar__SetUpDevEnvironment.html">SETTING UP A DEVELOPMENT ENVIRONMENT</a></li><li><a href="ActivitiesGuideSugar__CreateFirstActivity.html">CREATING YOUR FIRST ACTIVITY</a></li><li><a href="ActivitiesGuideSugar__StandalonePythonReadEtexts.html">A STANDALONE PYTHON PROGRAM FOR READING ETEXTS</a></li><li><a href="ActivitiesGuideSugar__InheritFromActivity.html">INHERIT FROM SUGAR.ACTIVITY.ACTIVITY</a></li><li><a href="ActivitiesGuideSugar__PackageTheActivity.html">PACKAGE THE ACTIVITY</a></li><li><a href="ActivitiesGuideSugar__AddRefinements.html">ADD REFINEMENTS</a></li><li><a href="ActivitiesGuideSugar__UsingVersionControl.html">ADD YOUR ACTIVITY CODE TO VERSION CONTROL</a></li><li><a href="ActivitiesGuideSugar__GoingInternationalWithPootle.html">GOING INTERNATIONAL WITH POOTLE</a></li><li><a href="ActivitiesGuideSugar__DistributeYourActivity.html">DISTRIBUTE YOUR ACTIVITY</a></li><li><a href="ActivitiesGuideSugar__SugarDebugging.html">DEBUGGING SUGAR ACTIVITIES</a></li><li><a href="ActivitiesGuideSugar__SugarCollaboration.html">MAKING SHARED ACTIVITIES</a></li><li><a href="ActivitiesGuideSugar__TextToSpeech.html">ADDING TEXT TO SPEECH</a></li><li><a href="ActivitiesGuideSugar__ActivitiesUsingPyGame.html">MAKING ACTIVITIES USING PYGAME</a></li><li><a href="ActivitiesGuideSugar__NewStyleToolbars.html">MAKING NEW STYLE TOOLBARS</a></li><li><a href="ActivitiesGuideSugar__MoreReading.html">WHERE TO GO FROM HERE?</a></li><li><a href="ActivitiesGuideSugar__AboutTheAuthors.html">ABOUT THE AUTHORS</a></li><li><a href="ActivitiesGuideSugar__Credits.html">CREDITS</a></li><li><a href="Main__Credits.html">CREDITS</a></li></ul>
+	</div>
+</div>	
+	<div id="content">
+			
+<h1>Making Shared Activities
+</h1>
+<h2>Introduction
+</h2>
+<p>One of the distinctive features of Sugar is how many Activities support being used by more than one person at a time.&nbsp; More and more computers are being used as a communications medium.&nbsp; The latest computer games don't just pit the player against the computer; they create a world where players compete against each other.&nbsp; Websites like <em>Facebook</em> are increasingly popular because they allow people to interact with each other and even play games.&nbsp; It is only natural that educational software should support these kinds of interactions.
+</p>
+<p> I have a niece that is an enthusiastic member of the <em>Club Penguin</em> website created by Disney.&nbsp; When I gave her Sugar on a Stick Blueberry as an extra Christmas gift I demonstrated the Neighborhood view and told her that Sugar would make her whole computer like <em>Club Penguin</em>.&nbsp; She thought that was a pretty cool idea.&nbsp; I felt pretty cool saying it.
+  <br />
+</p>
+<h2>Running Sugar As More Than One User
+  <br />
+</h2>
+<p>Before you write any piece of software you need to give some thought to how you will test it.&nbsp; In the case of a shared Activity you might think you'd need more than one computer available to do testing, but those who designed Sugar did give some thought to testing shared Activities and gave us ways to test them using only one computer.&nbsp; These methods have been evolving so there are slight variations in how you test depending on the version of Sugar you're using.&nbsp; The first thing you have to know is how to run multiple copies of Sugar as different users.
+  <br />
+</p>
+<h3>Fedora 10 (Sugar .82)
+</h3>
+<p>In Sugar .82 there is a handy way to run multiple copies of sugar-emulator and have each copy be a different user, without having to be logged into your Linux box as more than one user.&nbsp; On the command line for each additional user you want add a SUGAR_PROFILE environment variable like this:
+</p>
+<pre>SUGAR_PROFILE=austen sugar-emulator</pre>
+<p>When you do this sugar-emulator will create a directory named austen under ~/.sugar to store profile information, etc.&nbsp; You will be prompted to enter a name and select colors for your icon.&nbsp; Every time you launch using the SUGAR_PROFILE of austen you will be this user.&nbsp; If you launch with no SUGAR_PROFILE you will be the regular user you set up before.
+  <br />
+</p>
+<h3>Fedora 11 (Sugar .84)
+</h3>
+<p>As handy as using SUGAR_PROFILE is the developers of Sugar decided it had limitations so with version .84 and later it no longer works.&nbsp; With .84 and later you need to create a second Linux user and run your sugar-emulators as two separate Linux users.&nbsp; In the GNOME environment there is an option <strong>Users and Groups</strong> in the <strong>Administration</strong> submenu of the <strong>System</strong> menu which will enable you to set up a second user.&nbsp; Before it comes up it will prompt you for the administrative password you created when you first set up Linux.
+</p>
+<p>Creating the second user is simple enough, but how do you go about being logged in as two different users at the same time?&nbsp; It's actually pretty simple.&nbsp; You need to open a terminal window and type this:
+</p>
+<pre>ssh -XY <em>jausten</em>@localhost</pre>
+<p>where "jausten" is the userid of the second user.&nbsp; You will be asked to verify that the computer at "localhost" should be trusted.&nbsp; Since "localhost" just means that you are using the network to connect to another account on the same computer it is safe to answer "yes".&nbsp; Then you will be prompted to enter her password, and from then on everything you do in that terminal window will be done as her.&nbsp; You can launch sugar-emulator from that terminal and the first time you do it will prompt you for a name and icon colors.
+  <br />
+</p>
+<h3>sugar-jhbuild
+</h3>
+<p>With sugar-jhbuild (the latest version of Sugar) things are a bit different again.&nbsp; You will use the method of logging in as multiple Linux users like you did in .84, but you won't get prompted for a name.&nbsp; Instead the name associated with the userid you're running under will be the name you'll use in Sugar.&nbsp; You won't be able to change it, but you will be able to choose your icon colors as before.
+</p>
+<p>You will need a separate install of sugar-jhbuild for each user.&nbsp; These additional installs will go quickly because you installed all the dependencies the first time.
+  <br />
+</p>
+<h2>Connecting To Other Users
+</h2>
+<p>Sugar uses software called <strong>Telepathy </strong>that implements an instant messaging protocol called <strong>XMPP</strong> (<em>Extended Messaging and Presence Protocol</em>).&nbsp; This protocol used to be called <strong>Jabber</strong>.&nbsp; In essence Telepathy lets you put an instant messaging client in your Activity.&nbsp; You can use this to send messages from user to user, execute methods remotely, and do file transfers.
+  <br />
+</p>
+<p>There are actually two ways that Sugar users can join together in a network:
+</p>
+<h3>Salut
+</h3>
+<p>If two computer users are connected to the same segment of a network they should be able to find each other and share Activities.&nbsp; If you have a home network where everyone uses the same router you can share with others on that network.&nbsp; This is sometimes called <em>Link-Local XMPP</em>. &nbsp; The Telepathy software that makes this possible is called <strong>Salut</strong>.
+</p>
+<p>The XO laptop has special hardware and software to support <em>Mesh Networking</em>, where XO laptops that are near each other can automatically start networking with each other without needing a router.&nbsp; As far as Sugar is concerned, it doesn't matter what kind of network you have.&nbsp; Wired or wireless, Mesh or not, they all work.
+  <br />
+</p>
+<h3>Jabber Server
+</h3>
+<p>The other way to connect to other users is by going through a Jabber Server.&nbsp; The advantage of using a Jabber server is you can contact and share Activities with people outside your own network.&nbsp; These people might even be on the other side of the world.&nbsp; Jabber allows Activities in different networks to connect when both networks are protected by firewalls.&nbsp; The part of Telepathy that works with a Jabber server is called <strong>Gabble</strong>.
+  <br />
+</p>
+<p>Generally you should use Salut for testing if at all possible. This simplifies testing and doesn't use up resources on a Jabber server.
+  <br />
+</p>
+<p>It does not matter if your Activity connects to others using Gabble or Salut.&nbsp; In fact, the Activity has no idea which it is using.&nbsp; Those details are hidden from the Activity by Telepathy.&nbsp; Any Activity that works with Salut will work with Gabble and vice versa.
+</p>
+<p>To set up sugar-emulator to use Salut go to the Sugar control panel:
+  <br />
+</p>
+<p> <img alt="collab1_1.jpg" src="ActivitiesGuideSugar/collab1_1.jpg" height="569" width="584" />
+</p>
+<p>In Sugar .82 this menu option is <strong>Control Panel</strong>.&nbsp; In later versions it is <strong>My Settings</strong>.
+</p>
+<p><img alt="collab2_1.jpg" src="ActivitiesGuideSugar/collab2_1.jpg" height="505" width="600" />
+</p>
+<p>Click on the <strong>Network</strong> icon.
+</p>
+<p><img alt="collab3_1.jpg" src="ActivitiesGuideSugar/collab3_1.jpg" height="517" width="538" />
+</p>
+<p>The <strong>Server</strong> field in this screen should be empty to use Salut.&nbsp; You can use the backspace key to remove any entry there.
+</p>
+<p>You will need to follow these steps for every Sugar user that will take part in your test.
+</p>
+<p>If for some reason you wish to test your Activity using a Jabber server the OLPC Wiki maintains a list of publicly available servers at <a href="http://wiki.laptop.org/go/Community_Jabber_Servers">http://wiki.laptop.org/go/Community_Jabber_Servers</a>.
+</p>
+<p> Once you have either Salut or a Jabber server set up in both instances of Sugar that you are running you should look at the Neighborhood view of both to see if they can detect each other, and perhaps try out the <strong>Chat</strong> Activity between the two.&nbsp; If you have that working you're ready to try programming a shared Activity.
+</p>
+<h2>The MiniChat Activity
+</h2>
+<p>Just as we took the <strong>Read Etexts</strong> Activity and stripped it down to the basics we're going to do the same to the <strong>Chat</strong> Activity to create a new Activity called <strong>MiniChat</strong>.&nbsp; The real Chat Activity has a number of features that we don't need to demonstrate shared Activity messaging:
+</p>
+<ul>
+  <li>It has the ability to load its source code into <strong>Pippy</strong> for viewing.&nbsp; This was a feature that all Activities on the XO were supposed to have, but Chat is one of the few that implemented it.&nbsp; Personally, if I want to see an Activity's code I prefer to go to <a href="http://git.sugarlabs.org">git.sugarlabs.org</a>&nbsp; where I can see old versions of the code as well as the latest.</li>
+  <li>Chat can connect one to one with a conventional <strong>XMPP</strong> client.&nbsp; This may be useful for Chat but would not be needed or desirable for most shared Activities.</li>
+  <li>If you include a URL in a Chat message the user interface enables you to click on the URL and open it with the <strong>Browse</strong> Activity.&nbsp; Pretty cool, but not needed to demonstrate how to make a shared Activity.</li>
+  <li>The chat session is stored in the Journal.&nbsp; When you resume a Chat entry from the Journal it restores the messages from your previous chat session into the user interface.&nbsp; We already know how to save things to the Journal and restore things from the Journal, so MiniChat won't do this.</li>
+</ul>
+<p>The resulting code is about half as long as the original.&nbsp; I made a few other changes too:
+</p>
+<ul>
+  <li>The text entry field is above the chat messages, instead of below.&nbsp; This makes it easier to do partial screenshots of the Activity in action.</li>
+  <li>I removed the new style toolbar and added an old style toolbar, so I could test it in Fedora 10 and 11 which don't support the new toolbars.
+  <br /></li>
+  <li>I took the class <span class="TypeName"><strong>TextChannelWrapper</strong> and put it in its own file.&nbsp; I did this because the class looked like it might be useful for other projects.</span></li>
+</ul>
+<p><span class="TypeName"></span>The code and all supporting files for <strong>MiniChat</strong> are in the <strong>MiniChat</strong> directory of the Git repository.&nbsp; You'll need to run
+</p>
+<pre>./setup.py dev</pre>
+<p><span class="TypeName">on the project to make it ready to test.&nbsp; The <strong>activity.info</strong> looks like this:</span>
+</p>
+<pre>[Activity]
+name = Mini Chat
+service_name = net.flossmanuals.MiniChat
+icon = chat
+exec = sugar-activity minichat.MiniChat
+show_launcher = yes
+activity_version = 1
+license = GPLv2+
+</pre>
+<p>Here is the code for <strong>textchannel.py</strong>:
+</p>
+<pre>import logging
+
+from telepathy.client import Connection, Channel
+from telepathy.interfaces import (
+    CHANNEL_INTERFACE, CHANNEL_INTERFACE_GROUP, CHANNEL_TYPE_TEXT,
+    CONN_INTERFACE_ALIASING)
+from telepathy.constants import (
+    CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES,
+    CHANNEL_TEXT_MESSAGE_TYPE_NORMAL)
+
+class TextChannelWrapper(object):
+    """Wrap a telepathy Text Channel to make usage simpler."""
+    def __init__(self, text_chan, conn):
+        """Connect to the text channel"""
+        self._activity_cb = None
+        self._activity_close_cb = None
+        self._text_chan = text_chan
+        self._conn = conn
+        self._logger = logging.getLogger(
+            'minichat-activity.TextChannelWrapper')
+        self._signal_matches = []
+        m = self._text_chan[CHANNEL_INTERFACE].connect_to_signal(
+            'Closed', self._closed_cb)
+        self._signal_matches.append(m)
+
+    def send(self, text):
+        """Send text over the Telepathy text channel."""
+        # XXX Implement CHANNEL_TEXT_MESSAGE_TYPE_ACTION
+        if self._text_chan is not None:
+            self._text_chan[CHANNEL_TYPE_TEXT].Send(
+                CHANNEL_TEXT_MESSAGE_TYPE_NORMAL, text)
+
+    def close(self):
+        """Close the text channel."""
+        self._logger.debug('Closing text channel')
+        try:
+            self._text_chan[CHANNEL_INTERFACE].Close()
+        except:
+            self._logger.debug('Channel disappeared!')
+            self._closed_cb()
+
+    def _closed_cb(self):
+        """Clean up text channel."""
+        self._logger.debug('Text channel closed.')
+        for match in self._signal_matches:
+            match.remove()
+        self._signal_matches = []
+        self._text_chan = None
+        if self._activity_close_cb is not None:
+            self._activity_close_cb()
+
+    def set_received_callback(self, callback):
+        """Connect the function callback to the signal.
+
+        callback -- callback function taking buddy and text args
+        """
+        if self._text_chan is None:
+            return
+        self._activity_cb = callback
+        m = self._text_chan[CHANNEL_TYPE_TEXT].connect_to_signal('Received',
+            self._received_cb)
+        self._signal_matches.append(m)
+
+    def handle_pending_messages(self):
+        """Get pending messages and show them as received."""
+        for id, timestamp, sender, type, flags, text in \
+            self._text_chan[
+                CHANNEL_TYPE_TEXT].ListPendingMessages(False):
+            self._received_cb(id, timestamp, sender, type, flags, text)
+
+    def _received_cb(self, id, timestamp, sender, type, flags, text):
+        """Handle received text from the text channel.
+
+        Converts sender to a Buddy.
+        Calls self._activity_cb which is a callback to the activity.
+        """
+        if self._activity_cb:
+            buddy = self._get_buddy(sender)
+            self._activity_cb(buddy, text)
+            self._text_chan[
+                CHANNEL_TYPE_TEXT].AcknowledgePendingMessages([id])
+        else:
+            self._logger.debug('Throwing received message on the floor'
+                ' since there is no callback connected. See '
+                'set_received_callback')
+
+    def set_closed_callback(self, callback):
+        """Connect a callback for when the text channel is closed.
+
+        callback -- callback function taking no args
+
+        """
+        self._activity_close_cb = callback
+
+    def _get_buddy(self, cs_handle):
+        """Get a Buddy from a (possibly channel-specific) handle."""
+        # XXX This will be made redundant once Presence Service
+        # provides buddy resolution
+        from sugar.presence import presenceservice
+        # Get the Presence Service
+        pservice = presenceservice.get_instance()
+        # Get the Telepathy Connection
+        tp_name, tp_path = pservice.get_preferred_connection()
+        conn = Connection(tp_name, tp_path)
+        group = self._text_chan[CHANNEL_INTERFACE_GROUP]
+        my_csh = group.GetSelfHandle()
+        if my_csh == cs_handle:
+            handle = conn.GetSelfHandle()
+        elif group.GetGroupFlags() &amp; \
+            CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
+            handle = group.GetHandleOwners([cs_handle])[0]
+        else:
+            handle = cs_handle
+
+            # XXX: deal with failure to get the handle owner
+            assert handle != 0
+
+        return pservice.get_buddy_by_telepathy_handle(
+            tp_name, tp_path, handle)
+</pre>
+<p>Here is the code for <strong>minichat.py</strong>:
+</p>
+<pre>from gettext import gettext as _
+import hippo
+import gtk
+import pango
+import logging
+from sugar.activity.activity import Activity, ActivityToolbox, SCOPE_PRIVATE
+from sugar.graphics.alert import NotifyAlert
+from sugar.graphics.style import (Color, COLOR_BLACK, COLOR_WHITE,
+    COLOR_BUTTON_GREY, FONT_BOLD, FONT_NORMAL)
+from sugar.graphics.roundbox import CanvasRoundBox
+from sugar.graphics.xocolor import XoColor
+from sugar.graphics.palette import Palette, CanvasInvoker
+
+from textchannel import TextChannelWrapper
+
+logger = logging.getLogger('minichat-activity')
+
+class MiniChat(Activity):
+    def __init__(self, handle):
+        Activity.__init__(self, handle)
+
+        root = self.make_root()
+        self.set_canvas(root)
+        root.show_all()
+        self.entry.grab_focus()
+
+        toolbox = ActivityToolbox(self)
+        activity_toolbar = toolbox.get_activity_toolbar()
+        activity_toolbar.keep.props.visible = False
+        self.set_toolbox(toolbox)
+        toolbox.show()
+
+        self.owner = self._pservice.get_owner()
+        # Auto vs manual scrolling:
+        self._scroll_auto = True
+        self._scroll_value = 0.0
+        # Track last message, to combine several messages:
+        self._last_msg = None
+        self._last_msg_sender = None
+        self.text_channel = None
+
+        if self._shared_activity:
+            # we are joining the activity
+            self.connect('joined', self._joined_cb)
+            if self.get_shared():
+                # we have already joined
+                self._joined_cb()
+        else:
+            # we are creating the activity
+            if not self.metadata or self.metadata.get('share-scope',
+                    SCOPE_PRIVATE) == SCOPE_PRIVATE:
+                # if we are in private session
+                self._alert(_('Off-line'), _('Share, or invite someone.'))
+            self.connect('shared', self._shared_cb)
+
+    def _shared_cb(self, activity):
+        logger.debug('Chat was shared')
+        self._setup()
+
+    def _setup(self):
+        self.text_channel = TextChannelWrapper(
+            self._shared_activity.telepathy_text_chan,
+            self._shared_activity.telepathy_conn)
+        self.text_channel.set_received_callback(self._received_cb)
+        self._alert(_('On-line'), _('Connected'))
+        self._shared_activity.connect('buddy-joined', self._buddy_joined_cb)
+        self._shared_activity.connect('buddy-left', self._buddy_left_cb)
+        self.entry.set_sensitive(True)
+        self.entry.grab_focus()
+
+    def _joined_cb(self, activity):
+        """Joined a shared activity."""
+        if not self._shared_activity:
+            return
+        logger.debug('Joined a shared chat')
+        for buddy in self._shared_activity.get_joined_buddies():
+            self._buddy_already_exists(buddy)
+        self._setup()
+
+    def _received_cb(self, buddy, text):
+        """Show message that was received."""
+        if buddy:
+                nick = buddy.props.nick
+        else:
+            nick = '???'
+        logger.debug('Received message from %s: %s', nick, text)
+        self.add_text(buddy, text)
+
+    def _alert(self, title, text=None):
+        alert = NotifyAlert(timeout=5)
+        alert.props.title = title
+        alert.props.msg = text
+        self.add_alert(alert)
+        alert.connect('response', self._alert_cancel_cb)
+        alert.show()
+
+    def _alert_cancel_cb(self, alert, response_id):
+        self.remove_alert(alert)
+
+    def _buddy_joined_cb (self, activity, buddy):
+        """Show a buddy who joined"""
+        if buddy == self.owner:
+            return
+        if buddy:
+            nick = buddy.props.nick
+        else:
+            nick = '???'
+        self.add_text(buddy, buddy.props.nick+' '+_('joined the chat'),
+            status_message=True)
+
+    def _buddy_left_cb (self, activity, buddy):
+        """Show a buddy who joined"""
+        if buddy == self.owner:
+            return
+        if buddy:
+            nick = buddy.props.nick
+        else:
+            nick = '???'
+        self.add_text(buddy, buddy.props.nick+' '+_('left the chat'),
+            status_message=True)
+
+    def _buddy_already_exists(self, buddy):
+        """Show a buddy already in the chat."""
+        if buddy == self.owner:
+            return
+        if buddy:
+            nick = buddy.props.nick
+        else:
+            nick = '???'
+        self.add_text(buddy, buddy.props.nick+' '+_('is here'),
+            status_message=True)
+
+    def make_root(self):
+        conversation = hippo.CanvasBox(
+            spacing=0,
+            background_color=COLOR_WHITE.get_int())
+        self.conversation = conversation
+
+        entry = gtk.Entry()
+        entry.modify_bg(gtk.STATE_INSENSITIVE,
+                        COLOR_WHITE.get_gdk_color())
+        entry.modify_base(gtk.STATE_INSENSITIVE,
+                          COLOR_WHITE.get_gdk_color())
+        entry.set_sensitive(False)
+        entry.connect('activate', self.entry_activate_cb)
+        self.entry = entry
+
+        hbox = gtk.HBox()
+        hbox.add(entry)
+
+        sw = hippo.CanvasScrollbars()
+        sw.set_policy(hippo.ORIENTATION_HORIZONTAL, hippo.SCROLLBAR_NEVER)
+        sw.set_root(conversation)
+        self.scrolled_window = sw
+
+        vadj = self.scrolled_window.props.widget.get_vadjustment()
+        vadj.connect('changed', self.rescroll)
+        vadj.connect('value-changed', self.scroll_value_changed_cb)
+
+        canvas = hippo.Canvas()
+        canvas.set_root(sw)
+
+        box = gtk.VBox(homogeneous=False)
+        box.pack_start(hbox, expand=False)
+        box.pack_start(canvas)
+
+        return box
+
+    def rescroll(self, adj, scroll=None):
+        """Scroll the chat window to the bottom"""
+        if self._scroll_auto:
+            adj.set_value(adj.upper-adj.page_size)
+            self._scroll_value = adj.get_value()
+
+    def scroll_value_changed_cb(self, adj, scroll=None):
+        """Turn auto scrolling on or off.
+
+        If the user scrolled up, turn it off.
+        If the user scrolled to the bottom, turn it back on.
+        """
+        if adj.get_value() &lt; self._scroll_value:
+            self._scroll_auto = False
+        elif adj.get_value() == adj.upper-adj.page_size:
+            self._scroll_auto = True
+
+    def add_text(self, buddy, text, status_message=False):
+        """Display text on screen, with name and colors.
+
+        buddy -- buddy object
+        text -- string, what the buddy said
+        status_message -- boolean
+            False: show what buddy said
+            True: show what buddy did
+
+        hippo layout:
+        .------------- rb ---------------.
+        | +name_vbox+ +----msg_vbox----+ |
+        | |         | |                | |
+        | | nick:   | | +--msg_hbox--+ | |
+        | |         | | | text       | | |
+        | +---------+ | +------------+ | |
+        |             |                | |
+        |             | +--msg_hbox--+ | |
+        |             | | text       | | |
+        |             | +------------+ | |
+        |             +----------------+ |
+        `--------------------------------'
+        """
+        if buddy:
+            nick = buddy.props.nick
+            color = buddy.props.color
+            try:
+                color_stroke_html, color_fill_html = color.split(',')
+            except ValueError:
+                color_stroke_html, color_fill_html = ('#000000', '#888888')
+            # Select text color based on fill color:
+            color_fill_rgba = Color(color_fill_html).get_rgba()
+            color_fill_gray = (color_fill_rgba[0] + color_fill_rgba[1] +
+                               color_fill_rgba[2])/3
+            color_stroke = Color(color_stroke_html).get_int()
+            color_fill = Color(color_fill_html).get_int()
+            if color_fill_gray &lt; 0.5:
+                text_color = COLOR_WHITE.get_int()
+            else:
+                text_color = COLOR_BLACK.get_int()
+        else:
+            nick = '???'  # XXX: should be '' but leave for debugging
+            color_stroke = COLOR_BLACK.get_int()
+            color_fill = COLOR_WHITE.get_int()
+            text_color = COLOR_BLACK.get_int()
+            color = '#000000,#FFFFFF'
+
+        # Check for Right-To-Left languages:
+        if pango.find_base_dir(nick, -1) == pango.DIRECTION_RTL:
+            lang_rtl = True
+        else:
+            lang_rtl = False
+
+        # Check if new message box or add text to previous:
+        new_msg = True
+        if self._last_msg_sender:
+            if not status_message:
+                if buddy == self._last_msg_sender:
+                    # Add text to previous message
+                    new_msg = False
+
+        if not new_msg:
+            rb = self._last_msg
+            msg_vbox = rb.get_children()[1]
+            msg_hbox = hippo.CanvasBox(
+                orientation=hippo.ORIENTATION_HORIZONTAL)
+            msg_vbox.append(msg_hbox)
+        else:
+            rb = CanvasRoundBox(background_color=color_fill,
+                                border_color=color_stroke,
+                                padding=4)
+            rb.props.border_color = color_stroke  # Bug #3742
+            self._last_msg = rb
+            self._last_msg_sender = buddy
+            if not status_message:
+                name = hippo.CanvasText(text=nick+':   ',
+                    color=text_color,
+                    font_desc=FONT_BOLD.get_pango_desc())
+                name_vbox = hippo.CanvasBox(
+                    orientation=hippo.ORIENTATION_VERTICAL)
+                name_vbox.append(name)
+                rb.append(name_vbox)
+            msg_vbox = hippo.CanvasBox(
+                orientation=hippo.ORIENTATION_VERTICAL)
+            rb.append(msg_vbox)
+            msg_hbox = hippo.CanvasBox(
+                orientation=hippo.ORIENTATION_HORIZONTAL)
+            msg_vbox.append(msg_hbox)
+
+        if status_message:
+            self._last_msg_sender = None
+
+        if text:
+            message = hippo.CanvasText(
+                text=text,
+                size_mode=hippo.CANVAS_SIZE_WRAP_WORD,
+                color=text_color,
+                font_desc=FONT_NORMAL.get_pango_desc(),
+                xalign=hippo.ALIGNMENT_START)
+            msg_hbox.append(message)
+
+        # Order of boxes for RTL languages:
+        if lang_rtl:
+            msg_hbox.reverse()
+            if new_msg:
+                rb.reverse()
+
+        if new_msg:
+            box = hippo.CanvasBox(padding=2)
+            box.append(rb)
+            self.conversation.append(box)
+
+    def entry_activate_cb(self, entry):
+        text = entry.props.text
+        logger.debug('Entry: %s' % text)
+        if text:
+            self.add_text(self.owner, text)
+            entry.props.text = ''
+            if self.text_channel:
+                self.text_channel.send(text)
+            else:
+                logger.debug('Tried to send message but text channel '
+                    'not connected.')
+</pre>
+<p>And this is what the Activity looks like in action:
+</p>
+<p> <img alt="MiniChat in action" src="ActivitiesGuideSugar/collab4.jpg" height="373" width="600" />
+</p>
+<p>Try launching more than one copy of sugar-emulator, with this Activity installed in each.&nbsp; If you're using Fedora 10 and SUGAR_PROFILE the Activity does not need to be installed more than once, but if you're using a later version of Sugar that requires separate Linux userids for each instance you'll need to maintain separate copies of the code for each user.&nbsp; In your own projects using a central Git repository at <a href="http://git.sugarlabs.org">git.sugarlabs.org</a>&nbsp; will make this easy.&nbsp; You just do a git push to copy your changes to the central repository and a git pull to copy them to your second userid.&nbsp; The second userid can use the public URL.&nbsp; There's no need to set up SSH for any user other than the primary one.
+</p>
+<p>You may have read somewhere that you can install an Activity on one machine and share that Activity with another that does not have the activity installed.&nbsp; In such a case the second machine would get a copy of the Activity from the first machine and install it automatically.&nbsp; You may have also read that if two users of a shared Activity have different versions of that Activity then the one who has the newer version will automatically update the older.&nbsp; Neither statement is true now or is likely to be true in the near future.&nbsp; These ideas are discussed on the mailing lists from time to time but there are practical difficulties to overcome before anything like that could work, mostly having to do with security.&nbsp; For now both users of a shared Activity must have the Activity installed.&nbsp; On the other hand, depending on how the Activity is written two different versions of an Activity may be able to communicate with one another.&nbsp; If the messages they exchange are in the same format there should be no problem.
+  <br />
+</p>
+<p>Once you have both instances of sugar-emulator going you can launch MiniChat on one and invite the second user to Join the Chat session.&nbsp; You can do both with the Neighborhood panes of each instance.&nbsp; Making the invitation looks like this:
+</p>
+<p><img alt="Making the invitation" src="ActivitiesGuideSugar/collab5.jpg" height="246" width="391" />
+</p>
+<p>Accepting it looks like this:
+</p>
+<p><img alt="collab6.jpg" src="ActivitiesGuideSugar/collab6.jpg" height="215" width="390" />
+</p>
+<p>After you've played with <strong>MiniChat</strong> for awhile come back and we'll discuss the secrets of using Telepathy to create a shared Activity.
+</p>
+<h2>Know who Your Buddies Are
+  <br />
+</h2>
+<p> XMPP, as we said before, is the <strong>Extended Messaging and Presence Protocol</strong>.&nbsp; <strong>Presence</strong> is just what it sounds like; it handles letting you know who is available to share your Activity, as well as what other Activities are available to share.&nbsp; There are two ways to share your Activity.&nbsp; The first one is when you change the <strong>Share with:</strong> pulldown on the standard toolbar so it reads <strong>My Neighborhood</strong> instead of <strong>Private</strong>.&nbsp; That means anyone on the network can share your Activity.&nbsp; The other way to share is to go to the Neighborhood view and invite someone specific to share.&nbsp; The person getting the invitation has no idea of the invitation was specifically for him or broadcast to the Neighborhood.&nbsp; The technical term for persons sharing your Activity is <strong>Buddies</strong>.&nbsp; The place where Buddies meet and collaborate is called an <strong>MUC</strong> or <strong>Multi User Chatroom</strong>.
+  <br />
+</p>
+<p>The code used by our Activity for inviting Buddies and joining the Activity as a Buddy is in the <em>__init__() </em>method:
+</p>
+<pre>        <strong>if self._shared_activity:</strong>
+            # we are joining the activity
+            self.connect('joined', self._joined_cb)
+            if self.get_shared():
+                # we have already joined
+                self._joined_cb()
+        else:
+            # we are creating the activity
+            if not self.metadata or self.metadata.get('share-scope',
+                    SCOPE_PRIVATE) == SCOPE_PRIVATE:
+                # if we are in private session
+                self._alert(_('Off-line'), _('Share, or invite someone.'))
+            self.connect('shared', self._shared_cb)
+
+    def _shared_cb(self, activity):
+        logger.debug('Chat was shared')
+        self._setup()
+
+    def _joined_cb(self, activity):
+        """Joined a shared activity."""
+        if not self._shared_activity:
+            return
+        logger.debug('Joined a shared chat')
+        for buddy in self._shared_activity.get_joined_buddies():
+            self._buddy_already_exists(buddy)
+        self._setup()
+
+    def _setup(self):
+        self.text_channel = TextChannelWrapper(
+            self._shared_activity.telepathy_text_chan,
+            self._shared_activity.telepathy_conn)
+        self.text_channel.set_received_callback(self._received_cb)
+        self._alert(_('On-line'), _('Connected'))
+        self._shared_activity.connect('buddy-joined', self._buddy_joined_cb)
+        self._shared_activity.connect('buddy-left', self._buddy_left_cb)
+        self.entry.set_sensitive(True)
+        self.entry.grab_focus()
+</pre>
+<p>There are two ways to launch an Activity: as the first user of an Activity or by joining an existing Activity.&nbsp; The first line above in <strong>bold</strong> determines whether we are joining or are the first user of the Activity.&nbsp; If so we ask for the <em>_joined_cb()</em> method to be run when the 'joined' event occurs. This method gets a buddy list from the <em>_shared_activity</em> object and creates messages in the user interface informing the user that these buddies are already in the chat room.&nbsp; Then it runs the <em>_setup()</em> method.
+  <br />
+</p>
+<p>If we are not joining an existing Activity then we check to see if we are currently sharing the Activity with anyone.&nbsp; If we aren't we pop up a message telling the user to invite someone to chat.&nbsp; We also request that when the 'shared' even happens the <em>_shared_cb()</em> method should run.&nbsp; This method just runs the <em>_setup()</em> method.
+</p>
+<p>The <em>_setup()</em> method creates a <strong>TextChannelWrapper</strong> object using the code in <strong>textchannel.py</strong>.&nbsp; It also tells the _shared_activity object that it wants some callback methods run when new buddies join the Activity and when existing buddies leave the Activity.&nbsp; Everything you need to know about your buddies can be found in the code above, except how to send messages to them.&nbsp; For that we use the <strong>Text Channel</strong>.&nbsp; There is no need to learn about the Text Channel in great detail because the TextChannelWrapper class does everything you'll ever need to do with the TextChannel and hides the details from you.
+</p>
+<pre>    def entry_activate_cb(self, entry):
+        text = entry.props.text
+        logger.debug('Entry: %s' % text)
+        if text:
+            self.add_text(self.owner, text)
+            entry.props.text = ''
+            if self.text_channel:
+                self.text_channel.send(text)
+            else:
+                logger.debug('Tried to send message but text channel '
+                    'not connected.')
+</pre>
+<p>The <em>add_text()</em> method is of interest.&nbsp; It takes the owner of the message and figures out what colors belong to that owner and displays the message in those colors.&nbsp; In the case of messages sent by the Activity it gets the owner like this in the <em>__init__()</em> method:
+</p>
+<p>
+</p>
+<pre>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; self.owner = self._pservice.get_owner()</pre>
+<p>In the case of received messages it gets the buddy the message came from:
+</p>
+<pre>    def _received_cb(self, buddy, text):
+        """Show message that was received."""
+        if buddy:
+                nick = buddy.props.nick
+        else:
+            nick = '???'
+        logger.debug('Received message from %s: %s', nick, text)
+        self.add_text(buddy, text)
+</pre>
+<p>But what if we want to do more than just send text messages back and forth?&nbsp; What do we use for that?
+  <br />
+</p>
+<h2>It's A Series Of Tubes!
+</h2>
+<p> No, not the Internet.&nbsp; Telepathy has a concept called <strong>Tubes</strong> which describes the way instances of an Activity can communicate together.&nbsp; What Telepathy does is take the Text Channel and build Tubes on top of it.&nbsp; There are two kinds of Tubes:
+</p>
+<ul>
+  <li>DBus Tubes</li>
+  <li>Stream Tubes</li>
+</ul>
+<p>A <strong>DBus Tube</strong> is used to enable one instance of an Activity to call methods in the Buddy instances of the Activity.&nbsp; A <strong>Stream Tube</strong> is used for sending data over <strong>Sockets</strong>, for instance for copying a file from one instance of an Activity to another.&nbsp; A Socket is a way of communicating over a network using Internet Protocols.&nbsp; For instance the HTTP protocol used by the World Wide Web is implemented with Sockets.&nbsp; In the next example we'll use HTTP to transfer books from one instance of <strong>Read Etexts III</strong> to another.
+</p>
+<h2>Read Etexts III, Now with Book Sharing!
+  <br />
+</h2>
+<p> The Git repository with the code samples for this book has a file named <strong>ReadEtextsActivity3.py</strong> in the <strong>Making_Shared_Activities</strong> directory which looks like this:
+</p>
+<pre>import sys
+import os
+import logging
+import tempfile
+import time
+import zipfile
+import pygtk
+import gtk
+import pango
+import dbus
+import gobject
+import telepathy
+from sugar.activity import activity
+from sugar.graphics import style
+from sugar import network
+from sugar.datastore import datastore
+from sugar.graphics.alert import NotifyAlert
+from toolbar import ReadToolbar, ViewToolbar
+from gettext import gettext as _
+
+page=0
+PAGE_SIZE = 45
+TOOLBAR_READ = 2
+
+logger = logging.getLogger('read-etexts2-activity')
+
+class ReadHTTPRequestHandler(network.ChunkedGlibHTTPRequestHandler):
+    """HTTP Request Handler for transferring document while collaborating.
+
+    RequestHandler class that integrates with Glib mainloop. It writes
+    the specified file to the client in chunks, returning control to the
+    mainloop between chunks.
+
+    """
+    def translate_path(self, path):
+        """Return the filepath to the shared document."""
+        return self.server.filepath
+
+
+class ReadHTTPServer(network.GlibTCPServer):
+    """HTTP Server for transferring document while collaborating."""
+    def __init__(self, server_address, filepath):
+        """Set up the GlibTCPServer with the ReadHTTPRequestHandler.
+
+        filepath -- path to shared document to be served.
+        """
+        self.filepath = filepath
+        network.GlibTCPServer.__init__(self, server_address,
+                                       ReadHTTPRequestHandler)
+
+
+class ReadURLDownloader(network.GlibURLDownloader):
+    """URLDownloader that provides content-length and content-type."""
+
+    def get_content_length(self):
+        """Return the content-length of the download."""
+        if self._info is not None:
+            return int(self._info.headers.get('Content-Length'))
+
+    def get_content_type(self):
+        """Return the content-type of the download."""
+        if self._info is not None:
+            return self._info.headers.get('Content-type')
+        return None
+
+READ_STREAM_SERVICE = 'read-etexts-activity-http'
+
+class ReadEtextsActivity(activity.Activity):
+    def __init__(self, handle):
+        "The entry point to the Activity"
+        global page
+        activity.Activity.__init__(self, handle)
+
+        self.fileserver = None
+        self.object_id = handle.object_id
+
+        toolbox = activity.ActivityToolbox(self)
+        activity_toolbar = toolbox.get_activity_toolbar()
+        activity_toolbar.keep.props.visible = False
+
+        self.edit_toolbar = activity.EditToolbar()
+        self.edit_toolbar.undo.props.visible = False
+        self.edit_toolbar.redo.props.visible = False
+        self.edit_toolbar.separator.props.visible = False
+        self.edit_toolbar.copy.set_sensitive(False)
+        self.edit_toolbar.copy.connect('clicked', self.edit_toolbar_copy_cb)
+        self.edit_toolbar.paste.props.visible = False
+        toolbox.add_toolbar(_('Edit'), self.edit_toolbar)
+        self.edit_toolbar.show()
+
+        self.read_toolbar = ReadToolbar()
+        toolbox.add_toolbar(_('Read'), self.read_toolbar)
+        self.read_toolbar.back.connect('clicked', self.go_back_cb)
+        self.read_toolbar.forward.connect('clicked', self.go_forward_cb)
+        self.read_toolbar.num_page_entry.connect('activate',
+                                     self.num_page_entry_activate_cb)
+        self.read_toolbar.show()
+
+        self.view_toolbar = ViewToolbar()
+        toolbox.add_toolbar(_('View'), self.view_toolbar)
+        self.view_toolbar.connect('go-fullscreen',
+                self.view_toolbar_go_fullscreen_cb)
+        self.view_toolbar.zoom_in.connect('clicked', self.zoom_in_cb)
+        self.view_toolbar.zoom_out.connect('clicked', self.zoom_out_cb)
+        self.view_toolbar.show()
+
+        self.set_toolbox(toolbox)
+        toolbox.show()
+        self.scrolled_window = gtk.ScrolledWindow()
+        self.scrolled_window.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.scrolled_window.props.shadow_type = gtk.SHADOW_NONE
+
+        self.textview = gtk.TextView()
+        self.textview.set_editable(False)
+        self.textview.set_cursor_visible(False)
+        self.textview.set_left_margin(50)
+        self.textview.connect("key_press_event", self.keypress_cb)
+
+        self.progressbar = gtk.ProgressBar()
+        self.progressbar.set_orientation(gtk.PROGRESS_LEFT_TO_RIGHT)
+        self.progressbar.set_fraction(0.0)
+
+        self.scrolled_window.add(self.textview)
+        self.textview.show()
+        self.scrolled_window.show()
+
+        vbox = gtk.VBox()
+        vbox.pack_start(self.progressbar,  False,  False,  10)
+        vbox.pack_start(self.scrolled_window)
+        self.set_canvas(vbox)
+        vbox.show()
+
+        page = 0
+        self.clipboard = gtk.Clipboard(display=gtk.gdk.display_get_default(), \
+                                       selection="CLIPBOARD")
+        self.textview.grab_focus()
+        self.font_desc = pango.FontDescription("sans %d" % style.zoom(10))
+        self.textview.modify_font(self.font_desc)
+
+        buffer = self.textview.get_buffer()
+        self.markset_id = buffer.connect("mark-set", self.mark_set_cb)
+
+        self.toolbox.set_current_toolbar(TOOLBAR_READ)
+        self.unused_download_tubes = set()
+        self.want_document = True
+        self.download_content_length = 0
+        self.download_content_type = None
+        # Status of temp file used for write_file:
+        self.tempfile = None
+        self.close_requested = False
+        self.connect("shared", self.shared_cb)
+
+        self.is_received_document = False
+
+        if self._shared_activity and handle.object_id == None:
+            # We're joining, and we don't already have the document.
+            if self.get_shared():
+                # Already joined for some reason, just get the document
+                self.joined_cb(self)
+            else:
+                # Wait for a successful join before trying to get the document
+                self.connect("joined", self.joined_cb)
+
+    def keypress_cb(self, widget, event):
+        "Respond when the user presses one of the arrow keys"
+        keyname = gtk.gdk.keyval_name(event.keyval)
+        print keyname
+        if keyname == 'plus':
+            self.font_increase()
+            return True
+        if keyname == 'minus':
+            self.font_decrease()
+            return True
+        if keyname == 'Page_Up' :
+            self.page_previous()
+            return True
+        if keyname == 'Page_Down':
+            self.page_next()
+            return True
+        if keyname == 'Up' or keyname == 'KP_Up' \
+                or keyname == 'KP_Left':
+            self.scroll_up()
+            return True
+        if keyname == 'Down' or keyname == 'KP_Down' \
+                or keyname == 'KP_Right':
+            self.scroll_down()
+            return True
+        return False
+
+    def num_page_entry_activate_cb(self, entry):
+        global page
+        if entry.props.text:
+            new_page = int(entry.props.text) - 1
+        else:
+            new_page = 0
+
+        if new_page &gt;= self.read_toolbar.total_pages:
+            new_page = self.read_toolbar.total_pages - 1
+        elif new_page &lt; 0:
+            new_page = 0
+
+        self.read_toolbar.current_page = new_page
+        self.read_toolbar.set_current_page(new_page)
+        self.show_page(new_page)
+        entry.props.text = str(new_page + 1)
+        self.read_toolbar.update_nav_buttons()
+        page = new_page
+
+    def go_back_cb(self, button):
+        self.page_previous()
+
+    def go_forward_cb(self, button):
+        self.page_next()
+
+    def page_previous(self):
+        global page
+        page=page-1
+        if page &lt; 0: page=0
+        self.read_toolbar.set_current_page(page)
+        self.show_page(page)
+        v_adjustment = self.scrolled_window.get_vadjustment()
+        v_adjustment.value = v_adjustment.upper - v_adjustment.page_size
+
+    def page_next(self):
+        global page
+        page=page+1
+        if page &gt;= len(self.page_index): page=0
+        self.read_toolbar.set_current_page(page)
+        self.show_page(page)
+        v_adjustment = self.scrolled_window.get_vadjustment()
+        v_adjustment.value = v_adjustment.lower
+
+    def zoom_in_cb(self,  button):
+        self.font_increase()
+
+    def zoom_out_cb(self,  button):
+        self.font_decrease()
+
+    def font_decrease(self):
+        font_size = self.font_desc.get_size() / 1024
+        font_size = font_size - 1
+        if font_size &lt; 1:
+            font_size = 1
+        self.font_desc.set_size(font_size * 1024)
+        self.textview.modify_font(self.font_desc)
+
+    def font_increase(self):
+        font_size = self.font_desc.get_size() / 1024
+        font_size = font_size + 1
+        self.font_desc.set_size(font_size * 1024)
+        self.textview.modify_font(self.font_desc)
+
+    def mark_set_cb(self, textbuffer, iter, textmark):
+
+        if textbuffer.get_has_selection():
+            begin, end = textbuffer.get_selection_bounds()
+            self.edit_toolbar.copy.set_sensitive(True)
+        else:
+            self.edit_toolbar.copy.set_sensitive(False)
+
+    def edit_toolbar_copy_cb(self, button):
+        textbuffer = self.textview.get_buffer()
+        begin, end = textbuffer.get_selection_bounds()
+        copy_text = textbuffer.get_text(begin, end)
+        self.clipboard.set_text(copy_text)
+
+    def view_toolbar_go_fullscreen_cb(self, view_toolbar):
+        self.fullscreen()
+
+    def scroll_down(self):
+        v_adjustment = self.scrolled_window.get_vadjustment()
+        if v_adjustment.value == v_adjustment.upper - \
+                v_adjustment.page_size:
+            self.page_next()
+            return
+        if v_adjustment.value &lt; v_adjustment.upper - \
+                v_adjustment.page_size:
+            new_value = v_adjustment.value + v_adjustment.step_increment
+            if new_value &gt; v_adjustment.upper - v_adjustment.page_size:
+                new_value = v_adjustment.upper - v_adjustment.page_size
+            v_adjustment.value = new_value
+
+    def scroll_up(self):
+        v_adjustment = self.scrolled_window.get_vadjustment()
+        if v_adjustment.value == v_adjustment.lower:
+            self.page_previous()
+            return
+        if v_adjustment.value &gt; v_adjustment.lower:
+            new_value = v_adjustment.value - \
+                v_adjustment.step_increment
+            if new_value &lt; v_adjustment.lower:
+                new_value = v_adjustment.lower
+            v_adjustment.value = new_value
+
+    def show_page(self, page_number):
+        global PAGE_SIZE, current_word
+        position = self.page_index[page_number]
+        self.etext_file.seek(position)
+        linecount = 0
+        label_text = '\n\n\n'
+        textbuffer = self.textview.get_buffer()
+        while linecount &lt; PAGE_SIZE:
+            line = self.etext_file.readline()
+            label_text = label_text + unicode(line, 'iso-8859-1')
+            linecount = linecount + 1
+        label_text = label_text + '\n\n\n'
+        textbuffer.set_text(label_text)
+        self.textview.set_buffer(textbuffer)
+
+    def save_extracted_file(self, zipfile, filename):
+        "Extract the file to a temp directory for viewing"
+        filebytes = zipfile.read(filename)
+        outfn = self.make_new_filename(filename)
+        if (outfn == ''):
+            return False
+        f = open(os.path.join(self.get_activity_root(), 'tmp',  outfn),  'w')
+        try:
+            f.write(filebytes)
+        finally:
+            f.close()
+
+    def get_saved_page_number(self):
+        global page
+        title = self.metadata.get('title', '')
+        if title == ''  or not title[len(title)- 1].isdigit():
+            page = 0
+        else:
+            i = len(title) - 1
+            newPage = ''
+            while (title[i].isdigit() and i &gt; 0):
+                newPage = title[i] + newPage
+                i = i - 1
+            if title[i] == 'P':
+                page = int(newPage) - 1
+            else:
+                # not a page number; maybe a volume number.
+                page = 0
+
+    def save_page_number(self):
+        global page
+        title = self.metadata.get('title', '')
+        if title == ''  or not title[len(title)- 1].isdigit():
+            title = title + ' P' +  str(page + 1)
+        else:
+            i = len(title) - 1
+            while (title[i].isdigit() and i &gt; 0):
+                i = i - 1
+            if title[i] == 'P':
+                title = title[0:i] + 'P' + str(page + 1)
+            else:
+                title = title + ' P' + str(page + 1)
+        self.metadata['title'] = title
+
+    def read_file(self, filename):
+        "Read the Etext file"
+        global PAGE_SIZE,  page
+
+        tempfile = os.path.join(self.get_activity_root(),  'instance', \
+                'tmp%i' % time.time())
+        os.link(filename,  tempfile)
+        self.tempfile = tempfile
+
+        if zipfile.is_zipfile(filename):
+            self.zf = zipfile.ZipFile(filename, 'r')
+            self.book_files = self.zf.namelist()
+            self.save_extracted_file(self.zf, self.book_files[0])
+            currentFileName = os.path.join(self.get_activity_root(), \
+                    'tmp',  self.book_files[0])
+        else:
+            currentFileName = filename
+
+        self.etext_file = open(currentFileName,"r")
+        self.page_index = [ 0 ]
+        pagecount = 0
+        linecount = 0
+        while self.etext_file:
+            line = self.etext_file.readline()
+            if not line:
+                break
+            linecount = linecount + 1
+            if linecount &gt;= PAGE_SIZE:
+                position = self.etext_file.tell()
+                self.page_index.append(position)
+                linecount = 0
+                pagecount = pagecount + 1
+        if filename.endswith(".zip"):
+            os.remove(currentFileName)
+        self.get_saved_page_number()
+        self.show_page(page)
+        self.read_toolbar.set_total_pages(pagecount + 1)
+        self.read_toolbar.set_current_page(page)
+
+        # We've got the document, so if we're a shared activity, offer it
+        if self.get_shared():
+            self.watch_for_tubes()
+            self.share_document()
+
+    def make_new_filename(self, filename):
+        partition_tuple = filename.rpartition('/')
+        return partition_tuple[2]
+
+    def write_file(self, filename):
+        "Save meta data for the file."
+        if self.is_received_document:
+            # This document was given to us by someone, so we have
+            # to save it to the Journal.
+            self.etext_file.seek(0)
+            filebytes = self.etext_file.read()
+            f = open(filename, 'wb')
+            try:
+                f.write(filebytes)
+            finally:
+                f.close()
+        elif self.tempfile:
+            if self.close_requested:
+                os.link(self.tempfile,  filename)
+                logger.debug("Removing temp file %s because we will close", \
+                             self.tempfile)
+                os.unlink(self.tempfile)
+                self.tempfile = None
+        else:
+            # skip saving empty file
+            raise NotImplementedError
+
+        self.metadata['activity'] = self.get_bundle_id()
+        self.save_page_number()
+
+    def can_close(self):
+        self.close_requested = True
+        return True
+
+    def joined_cb(self, also_self):
+        """Callback for when a shared activity is joined.
+
+        Get the shared document from another participant.
+        """
+        self.watch_for_tubes()
+        gobject.idle_add(self.get_document)
+
+    def get_document(self):
+        if not self.want_document:
+            return False
+
+        # Assign a file path to download if one doesn't exist yet
+        if not self._jobject.file_path:
+            path = os.path.join(self.get_activity_root(), 'instance',
+                                'tmp%i' % time.time())
+        else:
+            path = self._jobject.file_path
+
+        # Pick an arbitrary tube we can try to download the document from
+        try:
+            tube_id = self.unused_download_tubes.pop()
+        except (ValueError, KeyError), e:
+            logger.debug('No tubes to get the document from right now: %s',
+                          e)
+            return False
+
+        # Avoid trying to download the document multiple times at once
+        self.want_document = False
+        gobject.idle_add(self.download_document, tube_id, path)
+        return False
+
+    def download_document(self, tube_id, path):
+        chan = self._shared_activity.telepathy_tubes_chan
+        iface = chan[telepathy.CHANNEL_TYPE_TUBES]
+        addr = iface.AcceptStreamTube(tube_id,
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                utf8_strings=True)
+        logger.debug('Accepted stream tube: listening address is %r', \
+                     addr)
+        assert isinstance(addr, dbus.Struct)
+        assert len(addr) == 2
+        assert isinstance(addr[0], str)
+        assert isinstance(addr[1], (int, long))
+        assert addr[1] &gt; 0 and addr[1] &lt; 65536
+        port = int(addr[1])
+
+        self.progressbar.show()
+        getter = ReadURLDownloader("http://%s:%d/document"
+                                           % (addr[0], port))
+        getter.connect("finished", self.download_result_cb, tube_id)
+        getter.connect("progress", self.download_progress_cb, tube_id)
+        getter.connect("error", self.download_error_cb, tube_id)
+        logger.debug("Starting download to %s...", path)
+        getter.start(path)
+        self.download_content_length = getter.get_content_length()
+        self.download_content_type = getter.get_content_type()
+        return False
+
+    def download_progress_cb(self, getter, bytes_downloaded, tube_id):
+        if self.download_content_length &gt; 0:
+            logger.debug("Downloaded %u of %u bytes from tube %u...",
+                          bytes_downloaded, self.download_content_length,
+                          tube_id)
+        else:
+            logger.debug("Downloaded %u bytes from tube %u...",
+                          bytes_downloaded, tube_id)
+        total = self.download_content_length
+        self.set_downloaded_bytes(bytes_downloaded,  total)
+        gtk.gdk.threads_enter()
+        while gtk.events_pending():
+            gtk.main_iteration()
+        gtk.gdk.threads_leave()
+
+    def set_downloaded_bytes(self, bytes,  total):
+        fraction = float(bytes) / float(total)
+        self.progressbar.set_fraction(fraction)
+        logger.debug("Downloaded percent",  fraction)
+
+    def clear_downloaded_bytes(self):
+        self.progressbar.set_fraction(0.0)
+        logger.debug("Cleared download bytes")
+
+    def download_error_cb(self, getter, err, tube_id):
+        self.progressbar.hide()
+        logger.debug("Error getting document from tube %u: %s",
+                      tube_id, err)
+        self.alert(_('Failure'), _('Error getting document from tube'))
+        self.want_document = True
+        self.download_content_length = 0
+        self.download_content_type = None
+        gobject.idle_add(self.get_document)
+
+    def download_result_cb(self, getter, tempfile, suggested_name, tube_id):
+        if self.download_content_type.startswith('text/html'):
+            # got an error page instead
+            self.download_error_cb(getter, 'HTTP Error', tube_id)
+            return
+
+        del self.unused_download_tubes
+
+        self.tempfile = tempfile
+        file_path = os.path.join(self.get_activity_root(), 'instance',
+                                    '%i' % time.time())
+        logger.debug("Saving file %s to datastore...", file_path)
+        os.link(tempfile, file_path)
+        self._jobject.file_path = file_path
+        datastore.write(self._jobject, transfer_ownership=True)
+
+        logger.debug("Got document %s (%s) from tube %u",
+                      tempfile, suggested_name, tube_id)
+        self.is_received_document = True
+        self.read_file(tempfile)
+        self.save()
+        self.progressbar.hide()
+
+    def shared_cb(self, activityid):
+        """Callback when activity shared.
+
+        Set up to share the document.
+
+        """
+        # We initiated this activity and have now shared it, so by
+        # definition we have the file.
+        logger.debug('Activity became shared')
+        self.watch_for_tubes()
+        self.share_document()
+
+    def share_document(self):
+        """Share the document."""
+        h = hash(self._activity_id)
+        port = 1024 + (h % 64511)
+        logger.debug('Starting HTTP server on port %d', port)
+        self.fileserver = ReadHTTPServer(("", port),
+            self.tempfile)
+
+        # Make a tube for it
+        chan = self._shared_activity.telepathy_tubes_chan
+        iface = chan[telepathy.CHANNEL_TYPE_TUBES]
+        self.fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
+                {},
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                ('127.0.0.1', dbus.UInt16(port)),
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+
+    def watch_for_tubes(self):
+        """Watch for new tubes."""
+        tubes_chan = self._shared_activity.telepathy_tubes_chan
+
+        tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
+            self.new_tube_cb)
+        tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
+            reply_handler=self.list_tubes_reply_cb,
+            error_handler=self.list_tubes_error_cb)
+
+    def new_tube_cb(self, tube_id, initiator, tube_type, service, params,
+                     state):
+        """Callback when a new tube becomes available."""
+        logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
+                      'params=%r state=%d', tube_id, initiator, tube_type,
+                      service, params, state)
+        if service == READ_STREAM_SERVICE:
+            logger.debug('I could download from that tube')
+            self.unused_download_tubes.add(tube_id)
+            # if no download is in progress, let's fetch the document
+            if self.want_document:
+                gobject.idle_add(self.get_document)
+
+    def list_tubes_reply_cb(self, tubes):
+        """Callback when new tubes are available."""
+        for tube_info in tubes:
+            self.new_tube_cb(*tube_info)
+
+    def list_tubes_error_cb(self, e):
+        """Handle ListTubes error by logging."""
+        logger.error('ListTubes() failed: %s', e)
+
+    def alert(self, title, text=None):
+        alert = NotifyAlert(timeout=20)
+        alert.props.title = title
+        alert.props.msg = text
+        self.add_alert(alert)
+        alert.connect('response', self.alert_cancel_cb)
+        alert.show()
+
+    def alert_cancel_cb(self, alert, response_id):
+        self.remove_alert(alert)
+        self.textview.grab_focus()
+</pre>
+<p>The contents of <strong>activity.info</strong> are these lines:
+</p>
+<pre>[Activity]
+name = Read Etexts II
+service_name = net.flossmanuals.ReadEtextsActivity
+icon = read-etexts
+exec = sugar-activity ReadEtextsActivity3.ReadEtextsActivity
+show_launcher = no
+activity_version = 1
+mime_types = text/plain;application/zip
+license = GPLv2+
+</pre>
+<p>To try it out, download a <em>Project Gutenberg</em> book to the Journal, open it with this latest <strong>Read Etexts III</strong>, then share it with a second user who has the program installed but not running.&nbsp; She should accept the invitation to join that appears in her Neighborhood view.&nbsp; When she does Read Etexts II will start up and copy the book from the first user over the network and load it.&nbsp; The Activity will first show a blank screen, but then a progress bar will appear just under the toolbar and indicate the progress of the copying.&nbsp; When it is finished the first page of the book will appear.
+</p>
+<p>So how does it work?&nbsp; Let's look at the code.&nbsp; The first points of interest are the class definitions that appear at the beginning: <strong>ReadHTTPRequestHandler</strong>, <strong>ReadHTTPServer</strong>, and <strong>ReadURLDownloader</strong>.&nbsp; These three classes extend (that is to say, inherit code from) classes provided by the <strong>sugar.network</strong> package.&nbsp; These classes provide an <strong>HTTP client</strong> for receiving the book and an <strong>HTTP Server</strong> for sending the book.
+</p>
+<p>This is the code used to send a book:
+</p>
+<pre>    def shared_cb(self, activityid):
+        """Callback when activity shared.
+
+        Set up to share the document.
+
+        """
+        # We initiated this activity and have now shared it, so by
+        # definition we have the file.
+        logger.debug('Activity became shared')
+        self.watch_for_tubes()
+        self.share_document()
+
+    def share_document(self):
+        """Share the document."""
+        h = hash(self._activity_id)
+        port = 1024 + (h % 64511)
+        logger.debug('Starting HTTP server on port %d', port)
+        self.fileserver = ReadHTTPServer(("", port),
+            self.tempfile)
+
+        # Make a tube for it
+        chan = self._shared_activity.telepathy_tubes_chan
+        iface = chan[telepathy.CHANNEL_TYPE_TUBES]
+        self.fileserver_tube_id = iface.OfferStreamTube(READ_STREAM_SERVICE,
+                {},
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                ('127.0.0.1', dbus.UInt16(port)),
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0)
+</pre>
+<p>You will notice that a hash of the <em>_activity_id</em> is used to get a port number.&nbsp; That port is used for the HTTP server and is passed to Telepathy, which offers it as a <strong>Stream Tube</strong>.&nbsp; On the receiving side we have this code:
+</p>
+<pre>    def joined_cb(self, also_self):
+        """Callback for when a shared activity is joined.
+
+        Get the shared document from another participant.
+        """
+        self.watch_for_tubes()
+        gobject.idle_add(self.get_document)
+
+    def get_document(self):
+        if not self.want_document:
+            return False
+
+        # Assign a file path to download if one doesn't exist yet
+        if not self._jobject.file_path:
+            path = os.path.join(self.get_activity_root(), 'instance',
+                                'tmp%i' % time.time())
+        else:
+            path = self._jobject.file_path
+
+        # Pick an arbitrary tube we can try to download the document from
+        try:
+            tube_id = self.unused_download_tubes.pop()
+        except (ValueError, KeyError), e:
+            logger.debug('No tubes to get the document from right now: %s',
+                          e)
+            return False
+
+        # Avoid trying to download the document multiple times at once
+        self.want_document = False
+        gobject.idle_add(self.download_document, tube_id, path)
+        return False
+
+    def download_document(self, tube_id, path):
+        chan = self._shared_activity.telepathy_tubes_chan
+        iface = chan[telepathy.CHANNEL_TYPE_TUBES]
+        addr = iface.AcceptStreamTube(tube_id,
+                telepathy.SOCKET_ADDRESS_TYPE_IPV4,
+                telepathy.SOCKET_ACCESS_CONTROL_LOCALHOST, 0,
+                utf8_strings=True)
+        logger.debug('Accepted stream tube: listening address is %r', \
+                     addr)
+        assert isinstance(addr, dbus.Struct)
+        assert len(addr) == 2
+        assert isinstance(addr[0], str)
+        assert isinstance(addr[1], (int, long))
+        assert addr[1] &gt; 0 and addr[1] &lt; 65536
+        port = int(addr[1])
+
+        self.progressbar.show()
+        getter = ReadURLDownloader("http://%s:%d/document"
+                                           % (addr[0], port))
+        getter.connect("finished", self.download_result_cb, tube_id)
+        getter.connect("progress", self.download_progress_cb, tube_id)
+        getter.connect("error", self.download_error_cb, tube_id)
+        logger.debug("Starting download to %s...", path)
+        getter.start(path)
+        self.download_content_length = getter.get_content_length()
+        self.download_content_type = getter.get_content_type()
+        return False
+
+    def download_progress_cb(self, getter, bytes_downloaded, tube_id):
+        if self.download_content_length &gt; 0:
+            logger.debug("Downloaded %u of %u bytes from tube %u...",
+                          bytes_downloaded, self.download_content_length,
+                          tube_id)
+        else:
+            logger.debug("Downloaded %u bytes from tube %u...",
+                          bytes_downloaded, tube_id)
+        total = self.download_content_length
+        self.set_downloaded_bytes(bytes_downloaded,  total)
+        gtk.gdk.threads_enter()
+        while gtk.events_pending():
+            gtk.main_iteration()
+        gtk.gdk.threads_leave()
+
+    def download_error_cb(self, getter, err, tube_id):
+        self.progressbar.hide()
+        logger.debug("Error getting document from tube %u: %s",
+                      tube_id, err)
+        self.alert(_('Failure'), _('Error getting document from tube'))
+        self.want_document = True
+        self.download_content_length = 0
+        self.download_content_type = None
+        gobject.idle_add(self.get_document)
+
+    def download_result_cb(self, getter, tempfile, suggested_name, tube_id):
+        if self.download_content_type.startswith('text/html'):
+            # got an error page instead
+            self.download_error_cb(getter, 'HTTP Error', tube_id)
+            return
+
+        del self.unused_download_tubes
+
+        self.tempfile = tempfile
+        file_path = os.path.join(self.get_activity_root(), 'instance',
+                                    '%i' % time.time())
+        logger.debug("Saving file %s to datastore...", file_path)
+        os.link(tempfile, file_path)
+        self._jobject.file_path = file_path
+        datastore.write(self._jobject, transfer_ownership=True)
+
+        logger.debug("Got document %s (%s) from tube %u",
+                      tempfile, suggested_name, tube_id)
+        self.is_received_document = True
+        self.read_file(tempfile)
+        self.save()
+        self.progressbar.hide()
+</pre>
+<p>Telepathy gives us the address and port number associated with a Stream Tube and we set up the HTTP Client to read from it.&nbsp; The client reads the file in chunks and calls <em>download_progress_cb()</em> after every chunk so we can update a progress bar to show the user how the download is progressing.&nbsp; There are also callback methods for when there is a download error and for when the download is finished,&nbsp;
+</p>
+<p>The <strong>ReadURLDownloader</strong> class is not only useful for transferring files over Stream Tubes, it can also be used to interact with websites and web services.&nbsp; My Activity <strong>Get Internet Archive Books</strong> uses this class for that purpose.
+</p>
+<p>The one remaining piece is the code which handles getting Stream Tubes to download the book from.&nbsp; In this code, adapted from the <strong>Read</strong> Activity, as soon as an instance of an Activity receives a book it turns around and offers to share it, thus the Activity may have several possible Tubes it could get the book from:
+</p>
+<pre>READ_STREAM_SERVICE = 'read-etexts-activity-http'
+
+    <em>...</em>
+
+    def watch_for_tubes(self):
+        """Watch for new tubes."""
+        tubes_chan = self._shared_activity.telepathy_tubes_chan
+
+        tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal('NewTube',
+            self.new_tube_cb)
+        tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
+            reply_handler=self.list_tubes_reply_cb,
+            error_handler=self.list_tubes_error_cb)
+
+    def new_tube_cb(self, tube_id, initiator, tube_type, service, params,
+                     state):
+        """Callback when a new tube becomes available."""
+        logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
+                      'params=%r state=%d', tube_id, initiator, tube_type,
+                      service, params, state)
+        if service == READ_STREAM_SERVICE:
+            logger.debug('I could download from that tube')
+            self.unused_download_tubes.add(tube_id)
+            # if no download is in progress, let's fetch the document
+            if self.want_document:
+                gobject.idle_add(self.get_document)
+
+    def list_tubes_reply_cb(self, tubes):
+        """Callback when new tubes are available."""
+        for tube_info in tubes:
+            self.new_tube_cb(*tube_info)
+
+    def list_tubes_error_cb(self, e):
+        """Handle ListTubes error by logging."""
+        logger.error('ListTubes() failed: %s', e)</pre>
+<p>The <strong>READ_STREAM_SERVICE</strong> constant is defined near the top of the source file.
+</p>
+<h2>Using DBus Tubes
+</h2>
+<p> <strong>DBus</strong> is a method of supporting <strong>IPC</strong>, or <strong>Inter-Process Communication</strong>, that was created for the GNOME desktop environment.&nbsp; The idea of IPC is to allow two running programs to communicate with each other and execute each other's code.&nbsp; GNOME uses DBus to provide communication between the desktop environment and the programs running in it, and also between GNOME and the operating system.&nbsp; A <strong>DBus Tube</strong> is how Telepathy makes it possible for an instance of an Activity running on one computer to execute methods in another instance of the same Activity running on a different computer.&nbsp; Instead of just sending simple text messages back and forth or doing file transfers, your Activities can be truly shared.&nbsp; That is, your Activity can allow many people to work on the same task together.
+</p>
+<p>I have never written an Activity that uses DBus Tubes myself, but many others have.&nbsp; We're going to take a look at code from two of them: <strong>Scribble</strong> by Sayamindu Dasgupta and <strong>Batalla Naval</strong>, by Gerard J. Cerchio and Andrés Ambrois, which was written for the Ceibal Jam.
+</p>
+<p><strong>Scribble</strong> is a drawing program that allows many people to work on the same drawing at the same time.&nbsp; Instead of allowing you to choose what colors you will draw with, it uses the background and foreground colors of your Buddy icon (the XO stick figure) to draw with.&nbsp; That way, with many people drawing shapes it's easy to know who drew what.&nbsp; If you join the Activity in progress Scribble will update your screen so your drawing matches everyone else's screen.&nbsp; Scribble in action looks like this:
+</p>
+<p><img alt="Scribble in action" src="ActivitiesGuideSugar/scribble.jpg" height="440" width="600" />
+  <br />
+</p>
+<p><strong>Batalla Naval</strong> is a version of the classic game <em>Battleship</em>.&nbsp; Each player has two grids: one for placing his own ships (actually the computer places the ships for you) and another blank grid representing the area where your opponent's ships are.&nbsp; You can't see his ships and he can't see yours.&nbsp; You click on the opponent's grid (on the right) to indicate where you want to aim an artillery shell.&nbsp; When you do the corresponding square will light up in both your grid and your opponent's own ship grid.&nbsp; If the square you picked corresponds to a square where your opponent has placed a ship that square will show up in a different color.&nbsp; The object is to find the squares containing your opponent's ships before he finds yours.&nbsp; The game in action looks like this:
+</p>
+<p><img alt="Batalla Naval in action!" src="ActivitiesGuideSugar/batallanaval.jpg" height="440" width="600" />
+</p>
+<p>I suggest that you download the latest code for these two Activities from Gitorious using these commands:
+</p>
+<pre>mkdir scribble
+cd scribble
+<code>git clone git://git.sugarlabs.org/scribble/mainline.git</code>
+<code></code>cd ..
+mkdir batallanaval
+cd batallanaval
+<code>git clone git://git.sugarlabs.org/batalla-naval/mainline.git</code></pre>
+<p>You'll need to do some setup work to get these running in sugar-emulator. Scribble requires the <strong>goocanvas</strong> GTK component and the Python bindings that go with it. These were not installed by default in Fedora 10 but I was able to install them using <strong>Add/Remove Programs</strong> from the <strong>System</strong> menu in GNOME. Batalla Naval is missing <strong>setup.py</strong>, but that's easily fixed since every setup.py is identical.&nbsp; Copy the one from the book examples into the <strong>mainline/BatallaNaval.activity</strong> directory and run <strong>./setup.py dev</strong> on both Activities.
+</p>
+<p> These Activities use different strategies for collaboration.&nbsp; Scribble creates lines of Python code which it passes to all Buddies and the Buddies use <strong>exec</strong> to run the commands.&nbsp; This is the code used for drawing a circle:
+</p>
+<pre>    def process_item_finalize(self, x, y):
+        if self.tool == 'circle':
+            self.cmd = "goocanvas.Ellipse(parent=self._root, center_x=%d, \
+                center_y=%d, radius_x = %d, radius_y = %d, \
+                fill_color_rgba = %d, stroke_color_rgba = %d, \
+                title = '%s')" % (self.item.props.center_x, \
+                self.item.props.center_y, self.item.props.radius_x, \
+                self.item.props.radius_y, self._fill_color, \
+                self._stroke_color, self.item_id)
+...
+
+    def process_cmd(self, cmd):
+        #print 'Processing cmd :' + cmd
+        exec(cmd) #FIXME: Ugly hack, but I'm too lazy to do this nicely
+
+        if len(self.cmd_list) &gt; 0:
+            self.cmd_list += (';' + cmd)
+        else:
+            self.cmd_list = cmd</pre>
+<p> The <strong>cmd_list</strong> variable is used to create a long string containing all of the commands executed so far.&nbsp; When a new Buddy joins the Activity she is sent this variable to execute so that her drawing area has the same contents as the other Buddies have.
+</p>
+<p>This is an interesting approach but you could do the same thing with the TextChannel so it isn't the best use of DBus Tubes.&nbsp; Batalla Naval's use of DBus is more typical.
+</p>
+<h2>How DBus Works, More Or Less
+  <br />
+</h2>
+<p>DBus enables you to have two running programs execute each other's code.&nbsp; The programs do not have to be running on the same computer.&nbsp; Think for a minute about how you might make a program on one computer run code in a running program on a different computer.&nbsp; You'd have to use the network, of course.&nbsp; Everyone is familiar with sending data over a network, but in this case you would have to send program code over the network.&nbsp; You would need to be able to tell the running program on the second computer what code you wanted it to run.&nbsp; You would have to send it a method call and all the parameters you needed to pass into the method, and you'd need a way to get a return value back.
+</p>
+<p>Isn't that kind of like what <strong>Scribble</strong> is doing in the code we just looked at?&nbsp; Maybe we could make our code do something like that?
+</p>
+<p>Of course if you did that then every program you wanted to run code in remotely would have to be written to deal with that.&nbsp; If you had a bunch of programs you wanted to do that with you'd have to have some way of letting the programs know which requests were meant for it.&nbsp; It would be nice if there was a program running on each machine that dealt with making the network connections, converting method calls to data that could be sent over the network and then converting the data back into method calls and running them, plus sending any return values back.&nbsp; This program should be able to know which program you wanted to run code in and see that the method call is run there.&nbsp; The program should run all the time, and it would be really good if it made running a method on a remote program as simple as running a method in my own program.
+</p>
+<p>As you might guess, what I've just described is more or less what DBus is.&nbsp; There are articles explaining how it works in detail but it is not necessary to know how it works to use it.&nbsp; You do need to know about a few things, though.&nbsp; First, you need to know how to use DBus to make objects in your Activity available for use by other instances of that Activity running elsewhere.
+</p>
+<p>You would not want a program to be able to run just any code in any other program, even if there was a way to do it.&nbsp; Instead we want to make specific methods in specific programs available for this use.&nbsp; All Activities that use DBus Tubes have constants like this:
+</p>
+<pre>SERVICE = "org.randomink.sayamindu.Scribble"
+IFACE = SERVICE
+PATH = "/org/randomink/sayamindu/Scribble"
+</pre>
+<p>These are the constants used for the <strong>Scribble</strong> Activity.&nbsp; The first constant, named SERVICE, represents the <strong>bus name</strong> of the Activity.&nbsp; This is also called a <strong>well-known name</strong> because it uses a <strong>reversed domain name</strong> as part of the name.&nbsp; In this case Sayamindu Dasgupta has a website at <a href="http://sayamindu.randomink.org">http://sayamindu.randomink.org</a>&nbsp; so he reverses the dot-separated words of that URL to create the first part of his bus name.&nbsp; It is not necessary to own a domain name before you can create a bus name.&nbsp; You can use org.sugarlabs.ActivityName if you like.&nbsp; The point is that the bus name must be unique, and by convention this is made easier by starting with a reversed domain name.
+</p>
+<p>The PATH constant represents the <strong>object path</strong>.&nbsp; It looks like the bus name with slashes separating the words rather than periods.&nbsp; For most Activities that is exactly what it should be, but it is possible for an application to expose more than one object to DBus and in that case each object exposed would have its own unique name, by convention words separated by slashes.
+</p>
+<p>The third constant is IFACE, which is the <strong>interface name</strong>.&nbsp; An interface is a collection of related methods and <strong>signals</strong>, identified by a name that uses the same convention used by the bus name.&nbsp; In the example above, and probably in most Activities using a DBus Tube, the interface name and the bus name are identical.
+</p>
+<p>So what is a signal?&nbsp; A signal is like a method but instead of one running program calling a method in one other running program, a signal is <strong>broadcast</strong>.&nbsp; In other words, instead of executing a method in just one program it executes the same method in many running programs, in fact in every running program that has that method that it is connected to through the DBus.&nbsp; A signal can pass data into a method call but it can't receive anything back as a return value.&nbsp; It's like a radio station that broadcasts music to anyone that is tuned in.&nbsp; The flow of information is one way only.
+</p>
+<p>Of course a radio station often receives phone calls from its listeners.&nbsp; A disc jockey might play a new song and invite listeners to call the station and say what they thought about it.&nbsp; The phone call is two way communication between the disc jockey and the listener, but it was initiated by a request that was broadcast to all listeners.&nbsp; In the same way your Activity might use a signal to invite all listeners (Buddies) to use a method to call it back, and that method can both supply and receive information.
+</p>
+<p>In DBus methods and signals have <strong>signatures</strong>.&nbsp; A signature is a description of the parameters passed into a method or signal including its <strong>data types</strong>.&nbsp; Python is not a <strong>strongly typed</strong> language.&nbsp; In a strongly typed language every variable has a data type that limits what it can do.&nbsp; Data types include such things as <strong>strings</strong>, <strong>integers</strong>, <strong>long integers</strong>, <strong>floating point numbers</strong>, <strong>booleans</strong>, etc.&nbsp; Each one can be used for a specific purpose only.&nbsp; For instance a boolean can only hold the values <strong>True</strong> and <strong>False</strong>, nothing else.&nbsp; A string can be used to hold strings of characters, but even if those characters represent a number you cannot use a string for calculations.&nbsp; Instead you need to convert the string into one of the numeric data types.&nbsp; An integer can hold integers up to a certain size, and a long integer can hold much larger integers,&nbsp; A floating point number is a number with a decimal point in scientific notation.&nbsp; It is almost useless for business arithmetic, which requires rounded results.
+</p>
+<p>In Python you can put anything into any variable and the language itself will figure out how to deal with it.&nbsp; To make Python work with DBus, which requires strongly typed variables that Python doesn't have, you need a way to tell DBus what types the variables you pass into a method should have.&nbsp; You do this by using a signature string as an argument to the method or signal.&nbsp; Methods have two strings: an <strong>in_signature</strong> and an <strong>out_signature</strong>.&nbsp; Signals just have a <strong>signature</strong> parameter.&nbsp; Some examples of signature strings:
+</p>
+<p>
+  <table border="1" cellpadding="1" cellspacing="1"><tbody>
+    <tr>
+      <td>ii</td>
+      <td>Two parameters, both integers</td>
+    </tr>
+    <tr>
+      <td>sss</td>
+      <td>Three parameters, all strings</td>
+    </tr>
+    <tr>
+      <td>ixd</td>
+      <td>Three parameters, an integer, a long integer, and a double precision floating point number.</td>
+    </tr>
+    <tr>
+      <td>a(ssiii)</td>
+      <td>An array where each element of the array is a tuple containing two strings and three integers.</td>
+    </tr></tbody>
+  </table>
+</p>
+<p>There is more information on signature strings in the dbus-python tutorial at <a href="http://dbus.freedesktop.org/doc/dbus-python/doc/tutorial.html">http://dbus.freedesktop.org/doc/dbus-python/doc/tutorial.html</a>.
+  <br />
+</p>
+<h2>Introducing Hello Mesh And Friends
+  <br />
+</h2>
+<p>If you study the source code of a few shared Activities you'll conclude that many of them contain nearly identical methods, as if they were all copied from the same source.&nbsp; In fact, more likely than not they were.&nbsp; The Activity <strong>Hello Mesh</strong> was created to be an example of how to use DBus Tubes in a shared Activity.&nbsp; It is traditional in programming textbooks to have the first example program be something that just prints the words "Hello World" to the console or displays the same words in a window.&nbsp; In that tradition <strong>Hello Mesh</strong> is a program that doesn't do all that much.&nbsp; You can find the code in Gitorious at <a href="http://git.sugarlabs.org/projects/hello-mesh">http://git.sugarlabs.org/projects/hello-mesh</a>.
+</p>
+<p><strong>Hello Mesh</strong> is widely copied because it demonstrates how to do things that all shared Activities need to do.&nbsp; When you have a shared Activity you need to be able to do two things:
+</p>
+<ul>
+  <li>Send information or commands to other instances of your Activity.</li>
+  <li>Give Buddies joining your Activity a copy of the current state of the Activity.</li>
+</ul>
+<p>It does this using two signals and one method:
+</p>
+<ul>
+  <li>A signal called <em>Hello()</em> that someone joining the Activity sends to all participants.&nbsp; The <em>Hello()</em> method takes no parameters.</li>
+  <li>A method called <em>World()</em> which instances of the Activity receiving <em>Hello()</em> send back to the sender.&nbsp; This method takes a text string as an argument, which is meant to represent the current state of the Activity.</li>
+  <li>Another signal called <em>SendText()</em> which sends a text string to all participants.&nbsp; This represents updating the state of the shared Activity.&nbsp; In the case of <strong>Scribble</strong> this would be informing the others that this instance has just drawn a new shape.</li>
+</ul>
+<p>Rather than study <strong>Hello Mesh</strong> itself I'd like to look at the code derived from it used in <strong>Batalla Naval</strong>.&nbsp; I have taken the liberty of running the comments, originally in Spanish, through <em>Google Translate</em> to make everything in English.&nbsp; I have also removed some commented-out lines of code.
+  <br />
+</p>
+<p>This Activity does something clever to make it possible to run it either as a Sugar Activity or as a standalone Python program.&nbsp; The standalone program does not support sharing at all, and it runs in a Window.&nbsp; The class <strong>Activity</strong> is a subclass of <strong>Window</strong>, so when the code is run standalone the <em>init()</em> function in <strong>BatallaNaval.py</strong> gets a Window, and when the same code is run as an Activity the instance of class <strong>BatallaNavalActivity</strong> is passed to <em>init()</em>:
+  <br />
+</p>
+<pre>from sugar.activity.activity import Activity, ActivityToolbox
+import BatallaNaval
+from Collaboration import CollaborationWrapper
+
+class BatallaNavalActivity(Activity):
+    ''' The Sugar class called when you run this program as an Activity.
+        The name of this class file is marked in the activity/activity.info file.'''
+
+    def __init__(self, handle):
+        Activity.__init__(self, handle)
+
+        self.gamename = 'BatallaNaval'
+
+        # Create the basic Sugar toolbar
+        toolbox = ActivityToolbox(self)
+        self.set_toolbox(toolbox)
+        toolbox.show()
+
+        # Create an instance of the CollaborationWrapper so you can share the activity.
+        self.colaboracion = CollaborationWrapper(self)
+
+        # The activity is a subclass of Window, so it passses itself to the init function
+        BatallaNaval.init(False, self)
+</pre>
+<p> The other clever thing going on here is that all the collaboration code is placed in its own <strong>CollaborationWrapper</strong> class which takes the instance of the <strong>BatallNavalActivity</strong> class in its constructor.&nbsp; This separates the collaboration code from the rest of the program.&nbsp; Here is the code in <strong>CollaborationWrapper.py</strong>:
+  <br />
+</p>
+<pre>import logging
+
+from sugar.presence import presenceservice
+import telepathy
+from dbus.service import method, signal
+# In build 656 Sugar lacks sugartubeconn
+try:
+  from sugar.presence.sugartubeconn import SugarTubeConnection
+except:
+  from sugar.presence.tubeconn import TubeConnection as SugarTubeConnection
+from dbus.gobject_service import ExportedGObject
+
+''' In all collaborative Activities in Sugar we are made aware when a player
+    enters or leaves. So that everyone knows the state of the Activity we
+    use the methods Hello and World. When a participant enters Hello
+    sends a signal that reaches all participants and the participants
+    respond directly using the method "World", which retrieves
+    the current state of the Activity.
+    After the updates are given then the signal Play is used by each
+    participant to make his move.
+    In short this module encapsulates the logic of "collaboration" with the
+    following effect:
+        - When someone enters the collaboration the Hello signal is sent.
+        - Whoever receives the Hello signal responds with World
+        - Every time someone makes a move he uses the method Play
+        giving a signal which communicates to each participant
+        what his move was.
+'''
+
+SERVICE = "org.ceibaljam.BatallaNaval"
+IFACE = SERVICE
+PATH = "/org/ceibaljam/BatallaNaval"
+
+logger = logging.getLogger('BatallaNaval')
+logger.setLevel(logging.DEBUG)
+
+class CollaborationWrapper(ExportedGObject):
+    ''' A wrapper for the collaboration methods.
+        Get the activity and the necessary callbacks.
+ '''
+
+    def __init__(self, activity):
+        self.activity = activity
+        self.presence_service = presenceservice.get_instance()
+        self.owner = self.presence_service.get_owner()
+
+    def set_up(self, buddy_joined_cb, buddy_left_cb, World_cb, Play_cb, my_boats):
+        self.activity.connect('shared', self._shared_cb)
+        if self.activity._shared_activity:
+            # We are joining the activity
+            self.activity.connect('joined', self._joined_cb)
+            if self.activity.get_shared():
+                # We've already joined
+                self._joined_cb()
+
+        self.buddy_joined = buddy_joined_cb
+        self.buddy_left = buddy_left_cb
+        self.World_cb = World_cb        # Called when someone passes the board state.
+        self.Play_cb = Play_cb          # Called when someone makes a move.
+
+        # Submitted by making World on a new partner
+        self.my_boats = [(b.nombre, b.orientacion, b.largo, \
+            b.pos[0], b.pos[1]) for b in my_boats]
+        self.world = False
+        self.entered = False
+
+    def _shared_cb(self, activity):
+        self._sharing_setup()
+        self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].OfferDBusTube(
+            SERVICE, {})
+        self.is_initiator = True
+
+    def _joined_cb(self, activity):
+        self._sharing_setup()
+        self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
+            reply_handler=self._list_tubes_reply_cb,
+            error_handler=self._list_tubes_error_cb)
+        self.is_initiator = False
+
+    def _sharing_setup(self):
+        if self.activity._shared_activity is None:
+            logger.error('Failed to share or join activity')
+            return
+
+        self.conn = self.activity._shared_activity.telepathy_conn
+        self.tubes_chan = self.activity._shared_activity.telepathy_tubes_chan
+        self.text_chan = self.activity._shared_activity.telepathy_text_chan
+
+        self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal(
+            'NewTube', self._new_tube_cb)
+
+        self.activity._shared_activity.connect('buddy-joined',\
+            self._buddy_joined_cb)
+        self.activity._shared_activity.connect('buddy-left', self._buddy_left_cb)
+
+        # Optional - included for example:
+        # Find out who's already in the shared activity:
+        for buddy in self.activity._shared_activity.get_joined_buddies():
+            logger.debug('Buddy %s is already in the activity',
+                               buddy.props.nick)
+
+    def participant_change_cb(self, added, removed):
+        logger.debug('Tube: Added participants: %r', added)
+        logger.debug('Tube: Removed participants: %r', removed)
+        for handle, bus_name in added:
+            buddy = self._get_buddy(handle)
+            if buddy is not None:
+                logger.debug('Tube: Handle %u (Buddy %s) was added',
+                                   handle, buddy.props.nick)
+        for handle in removed:
+            buddy = self._get_buddy(handle)
+            if buddy is not None:
+                logger.debug('Buddy %s was removed' % buddy.props.nick)
+        if not self.entered:
+            if self.is_initiator:
+                logger.debug("I'm initiating the tube, will watch for hellos.")
+                self.add_hello_handler()
+            else:
+                logger.debug('Hello, everyone! What did I miss?')
+                self.Hello()
+        self.entered = True
+
+
+    # This is sent to all participants whenever we join an activity
+    @signal(dbus_interface=IFACE, signature='')
+    def Hello(self):
+        """Say Hello to whoever else is in the tube."""
+        logger.debug('I said Hello.')
+
+    # This is called by whoever receives our Hello signal
+    # This method receives the current game state and puts us in sync
+    # with the rest of the participants.
+    # The current game state is represented by the game object
+    @method(dbus_interface=IFACE, in_signature='a(ssiii)', out_signature='a(ssiii)')
+    def World(self, boats):
+        """To be called on the incoming XO after they Hello."""
+        if not self.world:
+            logger.debug('Somebody called World on me')
+            self.world = True   # Instead of loading the world,
+                                # I am receiving play by play.
+            self.World_cb(boats)
+            # now I can World others
+            self.add_hello_handler()
+        else:
+            self.world = True
+            logger.debug("I've already been welcomed, doing nothing")
+        return self.my_boats
+
+    @signal(dbus_interface=IFACE, signature='ii')
+    def Play(self, x, y):
+        """Say Hello to whoever else is in the tube."""
+        logger.debug('Running remote play:%s x %s.', x, y)
+
+    def add_hello_handler(self):
+        logger.debug('Adding hello handler.')
+        self.tube.add_signal_receiver(self.hello_signal_cb, 'Hello', IFACE,
+            path=PATH, sender_keyword='sender')
+        self.tube.add_signal_receiver(self.play_signal_cb, 'Play', IFACE,
+            path=PATH, sender_keyword='sender')
+
+    def hello_signal_cb(self, sender=None):
+        """Somebody Helloed me. World them."""
+        if sender == self.tube.get_unique_name():
+            # sender is my bus name, so ignore my own signal
+            return
+        logger.debug('Newcomer %s has joined', sender)
+        logger.debug('Welcoming newcomer and sending them the game state')
+
+        self.other = sender
+
+        # I send my ships and I get theirs in return
+        enemy_boats = self.tube.get_object(self.other, PATH).World(\
+            self.my_boats, dbus_interface=IFACE)
+
+        # I call the callback World, to load the enemy ships
+        self.World_cb(enemy_boats)
+
+    def play_signal_cb(self, x, y, sender=None):
+        """Somebody placed a stone. """
+        if sender == self.tube.get_unique_name():
+            return  # sender is my bus name, so ignore my own signal
+        logger.debug('Buddy %s placed a stone at %s x %s', sender, x, y)
+        # Call our Play callback
+        self.Play_cb(x, y)  # In theory, no matter who sent him
+
+    def _list_tubes_error_cb(self, e):
+        logger.error('ListTubes() failed: %s', e)
+
+    def _list_tubes_reply_cb(self, tubes):
+        for tube_info in tubes:
+            self._new_tube_cb(*tube_info)
+
+    def _new_tube_cb(self, id, initiator, type, service, params, state):
+        logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
+                     'params=%r state=%d', id, initiator, type, service,
+                     params, state)
+        if (type == telepathy.TUBE_TYPE_DBUS and
+            service == SERVICE):
+            if state == telepathy.TUBE_STATE_LOCAL_PENDING:
+                self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].AcceptDBusTube(id)
+            self.tube = SugarTubeConnection(self.conn,
+                self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES],
+                id, group_iface=self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP])
+            super(CollaborationWrapper, self).__init__(self.tube, PATH)
+            self.tube.watch_participants(self.participant_change_cb)
+
+    def _buddy_joined_cb (self, activity, buddy):
+        """Called when a buddy joins the shared activity. """
+        logger.debug('Buddy %s joined', buddy.props.nick)
+        if self.buddy_joined:
+            self.buddy_joined(buddy)
+
+    def _buddy_left_cb (self, activity, buddy):
+        """Called when a buddy leaves the shared activity. """
+        if self.buddy_left:
+            self.buddy_left(buddy)
+
+    def _get_buddy(self, cs_handle):
+        """Get a Buddy from a channel specific handle."""
+        logger.debug('Trying to find owner of handle %u...', cs_handle)
+        group = self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP]
+        my_csh = group.GetSelfHandle()
+        logger.debug('My handle in that group is %u', my_csh)
+        if my_csh == cs_handle:
+            handle = self.conn.GetSelfHandle()
+            logger.debug('CS handle %u belongs to me, %u', cs_handle, handle)
+        elif group.GetGroupFlags() &amp; \
+            telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
+            handle = group.GetHandleOwners([cs_handle])[0]
+            logger.debug('CS handle %u belongs to %u', cs_handle, handle)
+        else:
+            handle = cs_handle
+            logger.debug('non-CS handle %u belongs to itself', handle)
+            # XXX: deal with failure to get the handle owner
+            assert handle != 0
+        return self.presence_service.get_buddy_by_telepathy_handle(
+            self.conn.service_name, self.conn.object_path, handle)
+</pre>
+<p> Most of the code above is similar to what we've seen in the other examples, and most of it can be used as is in any Activity that needs to make DBus calls.&nbsp; For this reason we'll focus on the code that is specific to using DBus.&nbsp; The logical place to start is the <em>Hello()</em> method.&nbsp; There is of course nothing magic about the name "Hello".&nbsp; <strong>Hello Mesh</strong> is meant to be a "Hello World" program for using DBus Tubes, so by convention the words "Hello" and "World" had to be used for <em>something</em>.&nbsp; The <em>Hello()</em> method is broadcast to all instances of the Activity to inform them that a new instance is ready to receive information about the current state of the shared Activity.&nbsp; Your own Activity will probably need something similar, but you should feel free to name it something else, and if you're writing the code for a school assignment you should definitely name it something else:
+</p>
+<pre>    # This is sent to all participants whenever we join an activity
+    @signal(dbus_interface=IFACE, signature='')
+    def Hello(self):
+        """Say Hello to whoever else is in the tube."""
+        logger.debug('I said Hello.')
+
+    def add_hello_handler(self):
+        logger.debug('Adding hello handler.')
+        self.tube.add_signal_receiver(self.hello_signal_cb, 'Hello', IFACE,
+            path=PATH, sender_keyword='sender')
+...
+
+    def hello_signal_cb(self, sender=None):
+        """Somebody Helloed me. World them."""
+        if sender == self.tube.get_unique_name():
+            # sender is my bus name, so ignore my own signal
+            return
+        logger.debug('Newcomer %s has joined', sender)
+        logger.debug('Welcoming newcomer and sending them the game state')
+
+        self.other = sender
+
+        # I send my ships and I returned theirs
+        enemy_boats = self.tube.get_object(self.other, PATH).World(self.my_boats, dbus_interface=IFACE)
+
+        # I call the callback World, to load the enemy ships
+        self.World_cb(enemy_boats)
+</pre>
+<p>&nbsp;The most interesting thing about this code is this line, which Python calls a <strong>Decorator</strong>:
+</p>
+<pre>    @signal(dbus_interface=IFACE, signature='')
+</pre>
+<p> When you put <strong>@signal</strong> in front of a method name it has the effect of adding the two parameters shown to the method call whenever it is invoked, in effect changing it from a normal method call to a DBus call for a signal.&nbsp; The <strong>signature</strong> parameter is an empty string, indicating that the method call has no parameters.&nbsp; The <em>Hello()</em> method does nothing at all locally but when it is received by the other instances of the Activity it causes them to execute the <em>World()</em> method, which sends back the location of their boats and gets the new participants boats in return.
+</p>
+<p><strong>Batalla Naval</strong> is apparently meant to be a demonstration program.&nbsp; <em>Battleship</em> is a game for two players, but there is nothing in the code to prevent more players from joining and no way to handle it if they do.&nbsp; Ideally you would want code to make only the first joiner an actual player and make the rest only spectators.
+</p>
+<p>Next we'll look at the <em>World()</em> method:
+</p>
+<pre>    # This is called by whoever receives our Hello signal
+    # This method receives the current game state and puts us in sync
+    # with the rest of the participants.
+    # The current game state is represented by the game object
+    @method(dbus_interface=IFACE, in_signature='a(ssiii)', out_signature='a(ssiii)')
+    def World(self, boats):
+        """To be called on the incoming XO after they Hello."""
+        if not self.world:
+            logger.debug('Somebody called World on me')
+            self.world = True   # Instead of loading the world, I am receiving play by play.
+            self.World_cb(boats)
+            # now I can World others
+            self.add_hello_handler()
+        else:
+            self.world = True
+            logger.debug("I've already been welcomed, doing nothing")
+        return self.my_boats
+</pre>
+<p>There is another decorator here, this one converting the <em>World()</em> method to a DBus call for a method.&nbsp; The signature is more interesting than <em>Hello()</em> had.&nbsp; It means an array of tuples where each tuple contains two strings and three integers.&nbsp; Each element in the array represents one ship and its attributes.&nbsp; <em>World_cb</em> is set to point to a method in <strong>BatallaNaval.py</strong>, (and so is <em>Play_cb</em>).&nbsp; If you study the <em>init()</em> code in <strong>BatallaNaval.py</strong> you'll see how this happens.&nbsp; <em>World()</em> is called in the <em>hello_signal_cb()</em> method we just looked at.&nbsp; It is sent to the joiner who sent <em>Hello()</em> to us.
+  <br />
+</p>
+<p>Finally we'll look at the <em>Play()</em> signal:
+</p>
+<pre>    @signal(dbus_interface=IFACE, signature='ii')
+    def Play(self, x, y):
+        """Say Hello to whoever else is in the tube."""
+        logger.debug('Running remote play:%s x %s.', x, y)
+
+    def add_hello_handler(self):
+...
+        self.tube.add_signal_receiver(self.play_signal_cb, 'Play', IFACE,
+            path=PATH, sender_keyword='sender')
+...
+    def play_signal_cb(self, x, y, sender=None):
+        """Somebody placed a stone. """
+        if sender == self.tube.get_unique_name():
+            return  # sender is my bus name, so ignore my own signal
+        logger.debug('Buddy %s placed a stone at %s x %s', sender, x, y)
+        # Call our Play callback
+        self.Play_cb(x, y)
+</pre>
+<p>This is a signal so there is only one signature string, this one indicating that the input parameters are two integers.
+</p>
+<p>There are several ways you could improve this Activity.&nbsp; When playing against the computer in non-sharing mode the game just makes random moves.&nbsp; The game does not limit the players to two and make the rest of the joiners spectators.&nbsp; It does not make the players take turns.&nbsp; When a player succeeds in sinking all the other players ships nothing happens to mark the event.&nbsp; Finally, <em>gettext()</em> is not used for the text strings displayed by the Activity so it cannot be translated into languages other than Spanish.
+</p>
+<p>In the tradition of textbooks everywhere I will leave making these improvements as an exercise for the student.
+</p>
+<p>
+  <br />
+</p>
+<p />
+
+
+<p />
+			<p>
+Author : <i>SugarCollaboration</i> <br/>&copy; James  Simmons 2010<br/>Modifications:<br/>TWikiGuest 2010<br/><hr/><br>License : General Public License
+</p>
+<p>Produced in FLOSS Manuals (<a href='http://www.flossmanuals.net'>http://www.flossmanuals.net</a>)
+</p>
+</div>
+</body>
+</html></body>

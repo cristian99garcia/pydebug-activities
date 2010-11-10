@@ -1,0 +1,9 @@
+[Library]
+name = PythonExamples
+global_name = PythonExamples
+long_name = PythonExamples
+category = media
+library_version = 1
+host_version = 1
+l10n = false
+locale = en

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Try..Except</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="exceptions.html" title="Chapter 13. Exceptions" /><link rel="prev" href="exceptions.html" title="Chapter 13. Exceptions" /><link rel="next" href="raising-exceptions.html" title="Raising Exceptions" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Try..Except</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="exceptions.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 13. Exceptions</th><td width="20%" align="right"> <a accesskey="n" href="raising-exceptions.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="try-except"></a>Try..Except</h2></div></div></div><p>
+		
+		We will <span class="bold"><strong>try</strong></span> to read input from the user. Press
+		<span><strong class="keycap">Ctrl</strong></span>-<span><strong class="keycap">d</strong></span> and see what happens.
+		
+		</p><pre class="screen">
+		
+&gt;&gt;&gt; s = raw_input('Enter something --&gt; ')
+Enter something --&gt; Traceback (most recent call last):
+  File "&lt;stdin&gt;", line 1, in ?
+EOFError
+		
+		</pre><p>
+		
+		Python raises an error called <code class="classname">EOFError</code> which basically means
+		it found an <span class="emphasis"><em>end of file</em></span> when it did not expect to (which is
+		represented by <span><strong class="keycap">Ctrl</strong></span>-<span><strong class="keycap">d</strong></span>)
+		
+		</p><p>
+		
+		Next, we will see how to handle such errors.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="handling-exceptions"></a>Handling Exceptions</h3></div></div></div><p>
+			
+			We can handle exceptions using the <code class="literal">try..except</code> statement.
+			We basically put our usual statements within the try-block and put all our
+			error handlers in the except-block.
+			
+			</p><div class="example"><a id="id3075967"></a><p class="title"><b>Example 13.1. Handling Exceptions</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: try_except.py</span>
+
+<span class="py-statement">import</span> <span class="py-builtin">sys</span>
+
+<span class="py-statement">try</span>:
+	s = <span class="py-builtin">raw_input</span>(<span class="py-string">'Enter something --&gt; '</span>)
+<span class="py-statement">except</span> EOFError:
+	<span class="py-statement">print</span> <span class="py-string">'\nWhy did you do an EOF on me?'</span>
+	<span class="py-builtin">sys</span>.exit() <span class="py-comment"># exit the program</span>
+<span class="py-statement">except</span>:
+	<span class="py-statement">print</span> <span class="py-string">'\nSome error/exception occurred.'</span>
+	<span class="py-comment"># here, we are not exiting the program</span>
+
+<span class="py-statement">print</span> <span class="py-string">'Done'</span>
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3075979"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python try_except.py
+Enter something --&gt;
+Why did you do an EOF on me?
+
+$ python try_except.py
+Enter something --&gt; Python is exceptional!
+Done
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3076002"></a>How It Works</h4></div></div></div><p>
+				
+				We put all the statements that might raise an error in the
+				<code class="literal">try</code> block and then handle all the errors and exceptions
+				in the <code class="literal">except</code> clause/block. The <code class="literal">except</code>
+				clause can handle a single specified error or exception, or a parenthesized
+				list of errors/exceptions. If no names of errors or exceptions are
+				supplied, it will handle <span class="emphasis"><em>all</em></span> errors and exceptions.
+				There has to be at least one <code class="literal">except</code> clause associated
+				with every <code class="literal">try</code> clause.
+				
+				</p><p>
+				
+				If any error or exception is not handled, then the default Python handler
+				is called which just stops the execution of the program and prints a
+				message. We have already seen this in action.
+				
+				</p><p>
+				
+				You can also have an <code class="literal">else</code> clause associated with a
+				<code class="literal">try..catch</code> block. The <code class="literal">else</code> clause
+				is executed if no exception occurs.
+				
+				</p><p>
+				
+				We can also get the exception object so that we can retrieve additional
+				information about the exception which has occurred. This is demonstrated
+				in the next example.
+				
+				</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="exceptions.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="exceptions.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="raising-exceptions.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 13. Exceptions </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> Raising Exceptions</td></tr></table></div></body></html>

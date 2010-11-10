@@ -1,0 +1,917 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<HTML
+><HEAD
+><TITLE
+>Sockets</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet Version 1.79"><LINK
+REL="HOME"
+TITLE="PLEAC-Python
+"
+HREF="index.html"><LINK
+REL="PREVIOUS"
+TITLE="Process Management and Communication"
+HREF="processmanagementetc.html"><LINK
+REL="NEXT"
+TITLE="Internet Services"
+HREF="internetservices.html"><style type="text/css">    <!--
+      .comment {
+        /* font-lock-comment-face */
+        color: #bebebe;
+      }
+      .comment-delimiter {
+      }
+      .function-name {
+        /* font-lock-function-name-face */
+        color: #b2dfee;
+      }
+      .keyword {
+        /* font-lock-keyword-face */
+        color: #ffa500;
+      }
+      .py-builtins {
+        /* py-builtins-face */
+        color: #ffa500;
+      }
+      .py-pseudo-keyword {
+        /* py-pseudo-keyword-face */
+        color: #ffa500;
+      }
+      .string {
+        /* font-lock-string-face */
+        color: #00cd00;
+      }
+      .type {
+        /* font-lock-type-face */
+        color: #98fb98;
+      }
+    -->
+    </style></head
+><BODY TEXT="#cecece" BGCOLOR="#4f6f6f" LINK="#f5deb3" VLINK="#d5ae83"
+CLASS="SECT1"
+BGCOLOR="#FFFFFF"
+TEXT="#000000"
+LINK="#0000FF"
+VLINK="#840084"
+ALINK="#0000FF"
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+SUMMARY="Header navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>PLEAC-Python
+</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="processmanagementetc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="internetservices.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SOCKETS"
+>17. Sockets</A
+></H1
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN919"
+>Introduction</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"># Socket Programming (tcp/ip and udp/ip)
+
+import socket
+
+# Convert human readable form to 32 bit value
+packed_ip = socket.inet_aton("208.146.240.1")
+packed_ip = socket.inet_aton("www.oreilly.com")
+
+# Convert 32 bit value to ip adress
+ip_adress = socket.inet_ntoa(packed_ip)
+
+# Create socket object
+socketobj = socket(family, type) # Example socket.AF_INT, socket.SOCK_STREAM
+       
+# Get socketname
+socketobj.getsockname() # Example, get port adress of client</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN922"
+>Writing a TCP Client</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1">
+# Example: Connect to a server (tcp)
+# Connect to a smtp server at localhost and send an email.
+# For real applications you should use smtplib.
+
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect(("localhost", 25)) # SMTP
+print s.recv(1024)
+s.send("mail from: &lt;<a href="mailto:pleac&#64;localhost">pleac&#64;localhost</a>&gt;\n")
+print s.recv(1024)
+s.send("rcpt to: &lt;<a href="mailto:guettli&#64;localhost">guettli&#64;localhost</a>&gt;\n")
+print s.recv(1024)
+s.send("data\n")
+print s.recv(1024)
+s.send("From: Python Lover\nSubject: Python is better then perl\n\nYES!\n.\n")
+print s.recv(1024)
+s.close()</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN925"
+>Writing a TCP Server</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1">
+# Create a Server, calling handler for every client
+# You can test it with "telnet localhost 1029"
+
+from SocketServer import TCPServer
+from SocketServer import BaseRequestHandler
+
+class MyHandler(BaseRequestHandler):
+    def handle(self):
+        print "I got an request"
+        
+server = TCPServer(("127.0.0.1", 1029), MyHandler)
+server.serve_forever()</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN928"
+>Communicating over TCP</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"># This is the continuation of 17.2
+
+import time
+from SocketServer import TCPServer
+from SocketServer import BaseRequestHandler
+
+class MyHandler(BaseRequestHandler):
+    def handle(self):
+        # self.request is the socket object
+        print "%s I got an request from ip=%s port=%s" % (
+            time.strftime("%Y-%m-%d %H:%M:%S"),
+            self.client_address[0],
+            self.client_address[1]
+            )
+        self.request.send("What is your name?\n")
+        bufsize=1024
+        response=self.request.recv(bufsize).strip() # or recv(bufsize, flags)
+        data_to_send="Welcome %s!\n" % response
+        self.request.send(data_to_send) # or send(data, flags)
+        print "%s connection finnished" % self.client_address[0]
+        
+server = TCPServer(("127.0.0.1", 1028), MyHandler)
+server.serve_forever()
+
+# -----------------
+# Using select
+
+import select
+import socket
+
+in_list = []
+in_list.append(mysocket)
+in_list.append(myfile)
+# ...
+
+out_list = []
+out_list.append(...)
+
+except_list = []
+except_list.append(...)
+
+(in_, out_, exc_) = select.select(in_list, out_list, except_list, timeout)
+
+for fd in in_:
+    print "Can read", fd
+for fd in out_:
+    print "Can write", fd
+for fd in exc_:
+    print "Exception on", fd
+
+# Missing: setting TCP_NODELAY</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN931"
+>Setting Up a UDP Client</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1">
+import socket
+# Set up a UDP socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+# send 
+MSG = '</span>Hello<span class="string">'
+HOSTNAME = '</span>127.0.0.1<span class="string">'
+PORTNO = 10000
+s.connect((HOSTNAME, PORTNO))
+if len(MSG) != s.send(MSG):
+    # where to get error message "$!".
+    print "cannot send to %s(%d):" % (HOSTNAME,PORTNO)
+    raise SystemExit(1)
+MAXLEN = 1024
+(data,addr) = s.recvfrom(MAXLEN)
+s.close()
+print '</span>%s(%d) said <span class="string">"%s"' % (addr[0],addr[1], data)
+
+# <font size="-1"><a href="http://pleac.sourceforge.net/include/python/ch17/clockdrift">download the following standalone program</a></font>
+#!/usr/bin/python
+# clockdrift - compare another system'</span>s clock with this one
+
+<span class="keyword">import</span> socket
+<span class="keyword">import</span> struct
+<span class="keyword">import</span> sys
+<span class="keyword">import</span> time
+
+<span class="keyword">if</span> <span class="py-builtins">len</span>(sys.argv)&gt;1:
+    him = sys.argv[1]
+<span class="keyword">else:</span>
+    him = <span class="string">'127.1'</span>
+
+SECS_of_70_YEARS = 2208988800
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect((him,socket.getservbyname(<span class="string">'time'</span>,<span class="string">'udp'</span>)))
+s.send(<span class="string">''</span>)
+(ptime, src) = s.recvfrom(4)
+host = socket.gethostbyaddr(src[0])
+delta = struct.unpack(<span class="string">"!L"</span>, ptime)[0] - SECS_of_70_YEARS - time.time()
+<span class="keyword">print</span> <span class="string">"Clock on %s is %d seconds ahead of this one."</span> % (host[0], delta)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN934"
+>Setting Up a UDP Server</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="keyword">import</span> socket
+<span class="keyword">import</span> sys
+
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+<span class="keyword">try:</span>
+    s.bind((<span class="string">''</span>, server_port))
+<span class="keyword">except</span> socket.error, err:
+    <span class="keyword">print</span> <span class="string">"Couldn't be a udp server on port %d : %s"</span> % (
+            server_port, err)
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span>
+
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+    datagram = s.recv(MAX_TO_READ)
+    <span class="keyword">if</span> <span class="keyword">not</span> datagram:
+        <span class="keyword">break</span>
+    <span class="comment-delimiter"># </span><span class="comment">do something
+</span>s.close()
+
+<span class="comment-delimiter"># </span><span class="comment">or 
+</span><span class="keyword">import</span> SocketServer
+
+<span class="keyword">class</span> <span class="type">handler</span>(SocketServer.DatagramRequestHandler):
+    <span class="keyword">def</span> <span class="function-name">handle</span>(<span class="py-pseudo-keyword">self</span>):
+        <span class="comment-delimiter"># </span><span class="comment">do something (with self.request[0])
+</span>
+s = SocketServer.UDPServer((<span class="string">''</span>,10000), handler)
+s.serve_forever()
+
+<span class="comment-delimiter"># </span><span class="comment"><font size="-1"><a href="http://pleac.sourceforge.net/include/python/ch17/udpqotd">download the following standalone program</a></font>
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/python
+</span><span class="comment-delimiter"># </span><span class="comment">udpqotd - UDP message server
+</span>
+<span class="keyword">import</span> SocketServer
+
+PORTNO = 5151
+
+<span class="keyword">class</span> <span class="type">handler</span>(SocketServer.DatagramRequestHandler):
+    <span class="keyword">def</span> <span class="function-name">handle</span>(<span class="py-pseudo-keyword">self</span>):
+        newmsg = <span class="py-pseudo-keyword">self</span>.rfile.readline().rstrip()
+        <span class="keyword">print</span> <span class="string">"Client %s said ``%s''"</span> % (<span class="py-pseudo-keyword">self</span>.client_address[0], newmsg)
+        <span class="py-pseudo-keyword">self</span>.wfile.write(<span class="py-pseudo-keyword">self</span>.server.oldmsg)
+        <span class="py-pseudo-keyword">self</span>.server.oldmsg = newmsg
+
+s = SocketServer.UDPServer((<span class="string">''</span>,PORTNO), handler)
+<span class="keyword">print</span> <span class="string">"Awaiting UDP messages on port %d"</span> % PORTNO
+s.oldmsg = <span class="string">"This is the starting message."</span>
+s.serve_forever()
+
+
+<span class="comment-delimiter"># </span><span class="comment"><font size="-1"><a href="http://pleac.sourceforge.net/include/python/ch17/udpmsg">download the following standalone program</a></font>
+</span><span class="comment-delimiter">#</span><span class="comment">!/usr/bin/python
+</span><span class="comment-delimiter"># </span><span class="comment">udpmsg - send a message to the udpquotd server
+</span>
+<span class="keyword">import</span> socket
+<span class="keyword">import</span> sys
+
+MAXLEN = 1024
+PORTNO = 5151
+TIMEOUT = 5
+
+server_host = sys.argv[1]
+msg = <span class="string">" "</span>.join(sys.argv[2:])
+
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.settimeout(TIMEOUT)
+sock.connect((server_host, PORTNO))
+sock.send(msg)
+<span class="keyword">try:</span>
+    msg = sock.recv(MAXLEN)
+    ipaddr, port = sock.getpeername()
+    hishost = socket.gethostbyaddr(ipaddr)
+    <span class="keyword">print</span> <span class="string">"Server %s responded ``%s''"</span> % ( hishost[0], msg)
+<span class="keyword">except:</span>
+    <span class="keyword">print</span> <span class="string">"recv from %s failed (timeout or no server running)."</span> % (
+            server_host )
+sock.close()</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN937"
+>Using UNIX Domain Sockets</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="keyword">import</span> socket
+<span class="keyword">import</span> os, os.path
+
+<span class="keyword">if</span> os.path.exists(<span class="string">"/tmp/mysock"</span>):
+    os.remove(<span class="string">"/tmp/mysock"</span>)
+        
+server = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+server.bind(<span class="string">"/tmp/mysock"</span>)
+
+client = socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM)
+client.connect(<span class="string">"/tmp/mysock"</span>)
+        </PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN940"
+>Identifying the Other End of a Socket</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+ipaddr, port = s.getpeername()
+hostname, aliaslist, ipaddrlist = socket.gethostbyaddr(ipaddr)
+ipaddr = socket.gethostbyname(<span class="string">'www.python.org'</span>)
+<span class="comment-delimiter"># </span><span class="comment">'194.109.137.226'
+</span>hostname, aliaslist, ipaddrlist = socket.gethostbyname_ex(<span class="string">'www.python.org'</span>)
+<span class="comment-delimiter"># </span><span class="comment">('fang.python.org', ['www.python.org'], ['194.109.137.226'])
+</span>socket.gethostbyname_ex(<span class="string">'www.google.org'</span>)
+<span class="comment-delimiter"># </span><span class="comment">('www.l.google.com', ['www.google.org', 'www.google.com'], 
+</span><span class="comment-delimiter">#  </span><span class="comment">['64.233.161.147','64.233.161.104', '64.233.161.99'])
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN943"
+>Finding Your Own Name and Address</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="keyword">import</span> os
+
+kernel, hostname, release, version, hardware = os.uname()
+
+<span class="keyword">import</span> socket
+
+address = socket.gethostbyname(hostname)
+hostname = socket.gethostbyaddr(address)
+hostname, aliaslist, ipaddrlist = socket.gethostbyname_ex(hostname)
+<span class="comment-delimiter"># </span><span class="comment">e.g. ('lx3.local', ['lx3', 'b70'], ['192.168.0.13', '192.168.0.70'])
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN946"
+>Closing a Socket After Forking</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+socket.shutdown(0)   <span class="comment-delimiter"># </span><span class="comment">Further receives are disallowed
+</span>socket.shutdown(1)   <span class="comment-delimiter"># </span><span class="comment">Further sends are disallowed.
+</span>socket.shutdown(2)   <span class="comment-delimiter"># </span><span class="comment">Further sends and receives are disallowed.
+</span>
+<span class="comment-delimiter">#</span><span class="comment">
+</span>
+server.send(<span class="string">"my request\n"</span>)  <span class="comment-delimiter"># </span><span class="comment">send some data
+</span>server.shutdown(1)           <span class="comment-delimiter"># </span><span class="comment">send eof; no more writing
+</span>answer = server.recv(1000)   <span class="comment-delimiter"># </span><span class="comment">but you can still read
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN949"
+>Writing Bidirectional Clients</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN952"
+>Forking Servers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN955"
+>Pre-Forking Servers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN958"
+>Non-Forking Servers</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN961"
+>Writing a Multi-Homed Server</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN964"
+>Making a Daemon Server</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN967"
+>Restarting a Server on Demand</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter">#</span><span class="comment">------------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Restart programm on signal SIGHUP
+</span><span class="comment-delimiter"># </span><span class="comment">Script must be executable: chmod a+x foo.py
+</span>
+<span class="comment-delimiter">#</span><span class="comment">!/usr/bin/env python
+</span><span class="keyword">import</span> os
+<span class="keyword">import</span> sys
+<span class="keyword">import</span> time
+<span class="keyword">import</span> signal
+
+<span class="keyword">def</span> <span class="function-name">phoenix</span>(signum, frame):
+    <span class="keyword">print</span> <span class="string">"Restarting myself: %s %s"</span> % (<span class="py-pseudo-keyword">self</span>, args)
+    os.execv(<span class="py-pseudo-keyword">self</span>, args)
+
+<span class="py-pseudo-keyword">self</span> = os.path.abspath(sys.argv[0])
+args = sys.argv[:]
+signal.signal(signal.SIGHUP, phoenix)
+
+<span class="keyword">while</span> <span class="py-pseudo-keyword">True</span>:
+    <span class="keyword">print</span> <span class="string">"work"</span>
+    time.sleep(1)
+
+<span class="comment-delimiter">#</span><span class="comment">--------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Read config file on SIGHUP
+</span><span class="keyword">import</span> signal
+
+config_file = <span class="string">"/usr/local/etc/myprog/server_conf.py"</span>
+
+<span class="keyword">def</span> <span class="function-name">read_config</span>():
+    <span class="py-builtins">execfile</span>(config_file)
+
+signal.signal(signal.SIGHUP, read_config)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN970"
+>Program: backsniff</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span>
+<span class="comment-delimiter"># </span><span class="comment">chroot
+</span>
+<span class="keyword">import</span> os
+
+<span class="keyword">try:</span>
+    os.chroot(<span class="string">"/var/daemon"</span>)
+<span class="keyword">except</span> <span class="py-builtins">Exception</span>:
+    <span class="keyword">print</span> <span class="string">"Could not chroot"</span>
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span>(1)
+
+<span class="comment-delimiter">#</span><span class="comment">-----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">fork (Unix): Create a new process
+</span><span class="comment-delimiter"># </span><span class="comment">if pid == 0 --&gt; parent process
+</span><span class="comment-delimiter"># </span><span class="comment">else child process
+</span>
+<span class="keyword">import</span> os
+
+pid = os.fork()
+<span class="keyword">if</span> pid:
+    <span class="keyword">print</span> <span class="string">"I am the new child %s"</span> % pid
+    <span class="keyword">raise</span> <span class="py-builtins">SystemExit</span>
+<span class="keyword">else:</span>
+    <span class="keyword">print</span> <span class="string">"I am still the parent"</span>
+    
+
+<span class="comment-delimiter"># </span><span class="comment">----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">setsid (Unix): Create a new session
+</span><span class="keyword">import</span> os
+id=os.setsid()
+
+<span class="comment-delimiter"># </span><span class="comment">----------------------------
+</span><span class="comment-delimiter"># </span><span class="comment">Work until INT TERM or HUP signal is received
+</span><span class="keyword">import</span> time
+<span class="keyword">import</span> signal
+
+time_to_die = 0
+
+<span class="keyword">def</span> <span class="function-name">sighandler</span>(signum, frame):
+    <span class="keyword">print</span> <span class="string">"time to die"</span>
+    <span class="keyword">global</span> time_to_die
+    time_to_die = 1
+
+signal.signal(signal.SIGINT, sighandler)
+signal.signal(signal.SIGTERM, sighandler)
+signal.signal(signal.SIGHUP, sighandler)
+
+<span class="keyword">while</span> <span class="keyword">not</span> time_to_die:
+    <span class="keyword">print</span> <span class="string">"work"</span>
+    time.sleep(1)</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN973"
+>Program: fwdport</A
+></H2
+><TABLE
+BORDER="0"
+BGCOLOR="#2F4F4F"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><font color="#f5deb3" size="+1"><span class="comment-delimiter"></span><span class="comment"></span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span><span class="comment-delimiter"># </span><span class="comment">@@INCOMPLETE@@
+</span></PRE
+></TD
+></TR
+></TABLE
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+SUMMARY="Footer navigation table"
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="processmanagementetc.html"
+ACCESSKEY="P"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="index.html"
+ACCESSKEY="H"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="internetservices.html"
+ACCESSKEY="N"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Process Management and Communication</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Internet Services</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
