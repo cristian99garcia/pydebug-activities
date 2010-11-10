@@ -14,7 +14,7 @@ executed.
 #  the file COPYING, distributed as part of this software.
 #*****************************************************************************
 
-
+# TODO: deprecated
 def prefilter_shell(self,line,continuation):
     """Alternate prefilter, modified for shell-like functionality.
 
@@ -50,7 +50,7 @@ del InteractiveShell,prefilter_shell
 
 # Provide pysh and further shell-oriented services
 import os,sys,shutil
-from IPython.utils.process import system,shell,getoutput,getoutputerror
+from IPython.utils.genutils import system,shell,getoutput,getoutputerror
 
 # Short aliases for getting shell output as a string and a list
 sout = getoutput

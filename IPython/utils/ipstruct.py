@@ -19,7 +19,9 @@ Authors:
 # Imports
 #-----------------------------------------------------------------------------
 
-from IPython.utils.data import list2dict2
+import pprint
+
+from IPython.utils.genutils import list2dict2
 
 __all__ = ['Struct']
 

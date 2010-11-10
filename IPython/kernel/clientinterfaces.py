@@ -15,7 +15,7 @@ __docformat__ = "restructuredtext en"
 # Imports
 #-------------------------------------------------------------------------------
 
-from zope.interface import Interface
+from zope.interface import Interface, implements
 
 class IFCClientInterfaceProvider(Interface):
 

@@ -1,19 +1,22 @@
-"""Simple script to be run *twice*, to check reference counting bugs.
-
-See test_run for details."""
+"""Simple script to instantiate a class for testing %run"""
 
 import sys
 
-# We want to ensure that while objects remain available for immediate access,
-# objects from *previous* runs of the same script get collected, to avoid
-# accumulating massive amounts of old references.
+# An external test will check that calls to f() work after %run
+class foo: pass
+
+def f():
+    return foo()
+
+# We also want to ensure that while objects remain available for immediate
+# access, objects from *previous* runs of the same script get collected, to
+# avoid accumulating massive amounts of old references.
 class C(object):
     def __init__(self,name):
         self.name = name
         
     def __del__(self):
         print 'tclass.py: deleting object:',self.name
-        sys.stdout.flush()
 
 try:
     name = sys.argv[1]
@@ -22,10 +25,3 @@ except IndexError:
 else:
     if name.startswith('C'):
         c = C(name)
-
-#print >> sys.stderr, "ARGV:", sys.argv  # dbg
-
-# This next print statement is NOT debugging, we're making the check on a
-# completely separate process so we verify by capturing stdout:
-print 'ARGV 1-:', sys.argv[1:]
-sys.stdout.flush()

@@ -13,7 +13,7 @@ c = get_config()
 
 # Set this to determine the detail of what is logged at startup.
 # The default is 30 and possible values are 0,10,20,30,40,50.
-# c.Global.log_level = 20
+c.Global.log_level = 20
 
 # This should be a list of importable Python modules that have an
 # load_in_ipython(ip) method.  This method gets called when the extension
@@ -35,7 +35,7 @@ c = get_config()
 # These files are run in IPython in the user's namespace.  Files with a .py
 # extension need to be pure Python.  Files with a .ipy extension can have
 # custom IPython syntax (like magics, etc.).  
-# These files need to be in the cwd, the ipython_dir or be absolute paths.
+# These files need to be in the cwd, the ipythondir or be absolute paths.
 # c.Global.exec_files = [
 #     'mycode.py',
 #     'fancy.ipy'
@@ -47,15 +47,15 @@ c = get_config()
 
 # c.InteractiveShell.autocall = 1
 
-# c.TerminalInteractiveShell.autoedit_syntax = False
+# c.InteractiveShell.autoedit_syntax = False
 
 # c.InteractiveShell.autoindent = True
 
 # c.InteractiveShell.automagic = False
 
-# c.TerminalTerminalInteractiveShell.banner1 = 'This if for overriding the default IPython banner'
+# c.InteractiveShell.banner1 = 'This if for overriding the default IPython banner'
  
-# c.TerminalTerminalInteractiveShell.banner2 = "This is for extra banner text"
+# c.InteractiveShell.banner2 = "This is for extra banner text"
 
 # c.InteractiveShell.cache_size = 1000
 
@@ -63,21 +63,21 @@ c = get_config()
 
 # c.InteractiveShell.color_info = True
 
-# c.TerminalInteractiveShell.confirm_exit = True
+# c.InteractiveShell.confirm_exit = True
 
 # c.InteractiveShell.deep_reload = False
 
-# c.TerminalInteractiveShell.editor = 'nano'
+# c.InteractiveShell.editor = 'nano'
 
 # c.InteractiveShell.logstart = True
 
-# c.InteractiveShell.logfile = u'ipython_log.py'
+# c.InteractiveShell.logfile = 'ipython_log.py'
 
-# c.InteractiveShell.logappend = u'mylog.py'
+# c.InteractiveShell.logappend = 'mylog.py'
 
 # c.InteractiveShell.object_info_string_level = 0
 
-# c.TerminalInteractiveShell.pager = 'less'
+# c.InteractiveShell.pager = 'less'
 
 # c.InteractiveShell.pdb = False
 
@@ -112,15 +112,19 @@ c = get_config()
 # ]
 # c.InteractiveShell.readline_remove_delims = '-/~'
 # c.InteractiveShell.readline_merge_completions = True
-# c.InteractiveShell.readline_omit__names = 0
+# c.InteractiveShell.readline_omit_names = 0
 
-# c.TerminalInteractiveShell.screen_length = 0
+# c.InteractiveShell.screen_length = 0
 
 # c.InteractiveShell.separate_in = '\n'
 # c.InteractiveShell.separate_out = ''
 # c.InteractiveShell.separate_out2 = ''
 
-# c.TerminalInteractiveShell.term_title = False
+# c.InteractiveShell.system_header = "IPython system call: "
+
+# c.InteractiveShell.system_verbose = True
+
+# c.InteractiveShell.term_title = False
 
 # c.InteractiveShell.wildcards_case_sensitive = True
 

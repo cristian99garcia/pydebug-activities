@@ -1,4 +1,6 @@
-"""Descriptor utilities.
+#!/usr/bin/env python
+# encoding: utf-8
+"""Descriptor support for NIPY.
 
 Utilities to support special Python descriptors [1,2], in particular the use of
 a useful pattern for properties we call 'one time properties'.  These are
@@ -22,10 +24,6 @@ Notes
 -----
 This module is taken from the NiPy project 
 (http://neuroimaging.scipy.org/site/index.html), and is BSD licensed.
-
-Authors
--------
-- Fernando Perez.
 """
 
 #-----------------------------------------------------------------------------

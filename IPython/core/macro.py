@@ -7,7 +7,7 @@
 #  the file COPYING, distributed as part of this software.
 #*****************************************************************************
 
-import IPython.utils.io
+from IPython.utils.genutils import Term
 from IPython.core.autocall import IPyAutocall
 
 class Macro(IPyAutocall):
@@ -20,7 +20,9 @@ class Macro(IPyAutocall):
     """
 
     def __init__(self,data):
-        """store the macro value, as a single string which can be executed"""
+
+        # store the macro value, as a single string which can be evaluated by
+        # runlines()
         self.value = ''.join(data).rstrip()+'\n'
         
     def __str__(self):
@@ -30,9 +32,9 @@ class Macro(IPyAutocall):
         return 'IPython.macro.Macro(%s)' % repr(self.value)
     
     def __call__(self,*args):
-        IPython.utils.io.Term.cout.flush()
+        Term.cout.flush()
         self._ip.user_ns['_margv'] = args
-        self._ip.run_cell(self.value)
+        self._ip.runlines(self.value)
     
     def __getstate__(self):
         """ needed for safe pickling via %store """

@@ -19,12 +19,7 @@ __docformat__ = "restructuredtext en"
 #-------------------------------------------------------------------------------
 
 from zope.interface import Interface, implements
-from twisted.python import components
-
-try:
-    from foolscap.api import DeadReferenceError
-except ImportError:
-    from foolscap import DeadReferenceError
+from twisted.python import components, log
 
 from IPython.kernel.twistedutil import blockingCallFromThread
 from IPython.kernel import task, error
@@ -63,20 +58,7 @@ class BlockingTaskClient(object):
     def __init__(self, task_controller):
         self.task_controller = task_controller
         self.block = True
-
-    def _bcft(self, *args, **kwargs):
-        try:
-            result = blockingCallFromThread(*args, **kwargs)
-        except DeadReferenceError:
-            raise error.ConnectionError(
-                """A connection error has occurred in trying to connect to the
-                controller. This is usually caused by the controller dying or 
-                being restarted. To resolve this issue try recreating the 
-                task client."""
-            )
-        else:
-            return result
-
+        
     def run(self, task, block=False):
         """Run a task on the `TaskController`.
         
@@ -89,7 +71,7 @@ class BlockingTaskClient(object):
         :Returns: The int taskid of the submitted task.  Pass this to 
             `get_task_result` to get the `TaskResult` object.
         """
-        tid = self._bcft(self.task_controller.run, task)
+        tid = blockingCallFromThread(self.task_controller.run, task)
         if block:
             return self.get_task_result(tid, block=True)
         else:
@@ -107,7 +89,7 @@ class BlockingTaskClient(object):
         
         :Returns: A `TaskResult` object that encapsulates the task result.
         """
-        return self._bcft(self.task_controller.get_task_result,
+        return blockingCallFromThread(self.task_controller.get_task_result,
             taskid, block)
     
     def abort(self, taskid):
@@ -118,7 +100,7 @@ class BlockingTaskClient(object):
             taskid : int
                 The taskid of the task to be aborted.
         """
-        return self._bcft(self.task_controller.abort, taskid)
+        return blockingCallFromThread(self.task_controller.abort, taskid)
     
     def barrier(self, taskids):
         """Block until a set of tasks are completed.
@@ -127,7 +109,7 @@ class BlockingTaskClient(object):
             taskids : list, tuple
                 A sequence of taskids to block on.
         """
-        return self._bcft(self.task_controller.barrier, taskids)
+        return blockingCallFromThread(self.task_controller.barrier, taskids)
     
     def spin(self):
         """
@@ -136,7 +118,7 @@ class BlockingTaskClient(object):
         This method only needs to be called in unusual situations where the
         scheduler is idle for some reason. 
         """
-        return self._bcft(self.task_controller.spin)
+        return blockingCallFromThread(self.task_controller.spin)
     
     def queue_status(self, verbose=False):
         """
@@ -150,7 +132,7 @@ class BlockingTaskClient(object):
         :Returns:
             A dict with the queue status.
         """
-        return self._bcft(self.task_controller.queue_status, verbose)
+        return blockingCallFromThread(self.task_controller.queue_status, verbose)
     
     def clear(self):
         """
@@ -161,7 +143,7 @@ class BlockingTaskClient(object):
         tasks.  Users should call this periodically to clean out these
         cached task results.
         """
-        return self._bcft(self.task_controller.clear)
+        return blockingCallFromThread(self.task_controller.clear)
     
     def map(self, func, *sequences):
         """

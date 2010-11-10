@@ -46,7 +46,7 @@ class EditorGui(GtkSourceview2Editor):
         self.find_window = None
         
         self.editbar = gtk.Toolbar()
-        self.last_filename = None        
+        self.last_folder = None        
         editopen = ToolButton()
         editopen.set_stock_id('gtk-new')
         editopen.set_icon_widget(None)
@@ -202,12 +202,12 @@ class EditorGui(GtkSourceview2Editor):
                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                                         gtk.STOCK_OPEN, gtk.RESPONSE_OK))
         dialog.set_default_response(gtk.RESPONSE_OK)
-        if self.last_filename == None:
-            self.last_filename = self._activity.child_path
-        if not self.last_filename:  
-            self.last_filename = self.activity_playpen                 
-        if self.last_filename:       
-            dialog.set_current_folder(os.path.dirname(self.last_filename))       
+        if self.last_folder == None:
+            self.last_folder = self._activity.child_path
+        if not self.last_folder:  
+            self.last_folder = self.activity_playpen                 
+        if self.last_folder:       
+            dialog.set_current_folder(self.last_folder)      
         
         filter = gtk.FileFilter()
         filter.set_name("All files")
@@ -228,7 +228,7 @@ class EditorGui(GtkSourceview2Editor):
         if response == gtk.RESPONSE_OK:
             _logger.debug(dialog.get_filename(), 'selected')
             fname = dialog.get_filename()
-            self.last_filename = fname
+            self.last_folder = os.path.dirname(fname)
             self.load_object(fname,os.path.basename(fname))
             line = self.get_remembered_line_number(fname)
             if line:

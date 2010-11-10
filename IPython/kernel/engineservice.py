@@ -23,8 +23,7 @@ method that automatically added methods to engines.
 
 __docformat__ = "restructuredtext en"
 
-# Tell nose to skip this module.  I don't think we need this as nose
-# shouldn't ever be run on this!
+# Tell nose to skip this module
 __test__ = {}
 
 #-------------------------------------------------------------------------------
@@ -387,10 +386,10 @@ class EngineService(object, service.Service):
             # tb=traceback object
             et,ev,tb = sys.exc_info()
             # This call adds attributes to the exception value
-            et,ev,tb = self.shell.format_traceback(et,ev,tb,msg)
+            et,ev,tb = self.shell.formatTraceback(et,ev,tb,msg)
             # Add another attribute
             ev._ipython_engine_info = msg
-            f = failure.Failure(ev,et,tb)
+            f = failure.Failure(ev,et,None)
             d.errback(f)
         else:
             d.callback(result)
@@ -444,7 +443,7 @@ class EngineService(object, service.Service):
         msg = {'engineid':self.id,
                'method':'get_result',
                'args':[repr(i)]}
-        d = self.executeAndRaise(msg, self.shell.get_command, i)
+        d = self.executeAndRaise(msg, self.shell.getCommand, i)
         d.addCallback(self.addIDToResult)
         return d
     
@@ -877,7 +876,7 @@ class ThreadedEngineService(EngineService):
             # tb=traceback object
             et,ev,tb = sys.exc_info()
             # This call adds attributes to the exception value
-            et,ev,tb = self.shell.format_traceback(et,ev,tb,msg)
+            et,ev,tb = self.shell.formatTraceback(et,ev,tb,msg)
             # Add another attribute
             
             # Create a new exception with the new attributes

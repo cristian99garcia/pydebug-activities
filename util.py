@@ -26,6 +26,8 @@ from gettext import gettext as _
 import gtk
 import hashlib
 import time
+from jarabe.model import shell
+home_model = shell.get_model()
 
 #sugar stuff
 from sugar.graphics.alert import *
@@ -38,6 +40,7 @@ __pdb = None
 class Utilities():
     def __init__(self,activity):
         self._activity = __pdb = activity
+        self.home_model = None
         
     #####################            ALERT ROUTINES   ##################################
     
@@ -86,10 +89,12 @@ class Utilities():
         return hash.hexdigest()
 
     def md5sum(self, filename, hash = None):
+        """return hexdigest of single file"""
         h = self._md5sum(filename,hash)
         return h.hexdigest()
        
     def _md5sum(self, filename, hash = None):
+        """return hash of single file"""
         if hash == None:
             hash = hashlib.md5()
         try:
@@ -105,6 +110,7 @@ class Utilities():
         return hash
     
     def md5sum_tree(self, root):
+        """return hexdigest of file tree under root"""
         if not os.path.isdir(root):
             return None
         h = hashlib.md5()
@@ -130,7 +136,7 @@ class Utilities():
                 os.chmod(abs_path,new_perms)
     
     def sugar_version(self):
-        """return list with three elements (error=0) (major,minor,micro)"""
+        """return list with four elements (error=0) (major,minor,micro,release)"""
         cmd = 'rpm -q sugar'
         reply,err = self.command_line(cmd)
         if reply and reply.find('sugar') > -1:
@@ -140,7 +146,7 @@ class Utilities():
             release = release_holder.split('.')[0]
             return (int(version_chunks[0]),int(version_chunks[1]),\
                     int(version_chunks[2]),int(release),)
-        return ()
+        return (0, 0, 0, 0)
 
     def command_line(self, cmd, alert_error=True):
         """send cmd line to shell, rtn (text,error code)"""
@@ -170,4 +176,106 @@ class Utilities():
         _logger.debug('non conflicting:%s'%os.path.join(root, word + adder +  ext))
         return os.path.join(root, word + adder + ext)
     
+    def get_home_model(self):
+        """Use shell model to return home_model
+           --the home_model code changed between .82 and .84 sugar
+           --so do the lookup differently depending on sugar version
+        """
+        global home_model
+        (major, minor, micro, release) = self.sugar_version() 
+        _logger.debug('sugar version %s'%minor)
+        """
+        if minor and minor >= 84:
+            _logger.debug('using jarabe')
+            from jarabe.model import shell
+            home_model = shell.get_model()
+        else:
+            if not '/usr/share/sugar/shell/' in sys.path:
+                sys.path.append('/usr/share/sugar/shell/')
+            import view.Shell
+            instance = view.Shell.get_instance()
+            home_model = instance.get_model().get_home()
+        if home_model:
+            return home_model
+        else:
+            _logger.error('failed to retrieve home model')
+            return None
+        """
+        return home_model
+        
+    def get_activity_from_activity_id(self, activity_id):
+        if not self.home_model:
+            self.home_model = self.get_home_model()
+        if self.home_model:
+            return self.home_model._get_activity_by_id(activity_id)
+        return None
+    
+    def get_wnck_window_from_activity_id(self, activity_id):
+        """use sugar home_model to get X11 window specified by activity_id"""
+        _logger.debug('entered get_wnck_window_from_activity_id. id:%s'%activity_id)
+        activity = self.get_activity_from_activity_id()
+        if activity:
+            return activity.get_window()
+        else:
+            _logger.debug('wnck_window was none')
+            return None
+        
+    def get_wnck_window_from_bundle_id(self, bundle_id):
+        """get the window associated with bundle_id or None"""
+        if not self.home_model:
+            self.home_model = self.get_home_model()
+        if self.home_model:
+            activity_list = self.home_model._get_activities_with_window()
+            _logger.debug('length of activity_list:%s'%(len(activity_list,)))
+            if activity_list:
+                for activity in activity_list:
+                    if activity.get_type == bundle_id:
+                        return activity.get_window()
+            _logger.debug("failed to find %s"%(bundle_id,))
+            return None
+        
+    def get_wnck_window_from_xid(self, xid):
+        """select shell activity, get window, via xid"""
+        if not self.home_model:
+            self.home_model = self.get_home_model()
+        if self.home_model:
+            return self.home_model._get_activity_by_xid(xid).get_window()
+        else:
+            _logger.debug('failed to get window associated with xid:%s'%(xid,))
+            return None
+        
+    def get_xid(self):
+        """return the X11 window id of the main window"""
+        screen = gtk.gdk.screen_get_default()
+        root = screen.get_root_window()
+        if root:
+            return root.xid
+        else:
+            _logger.debug('failed to get xid')
+            return None
+        
+    def activate_xid(self,xid):
+        """ use the shell model to look up the window from xid, activat window"""
+        window = self.get_wnck_window_from_xid(xid)
+        if window:
+            window.activate(gtk.get_current_event_time())
+        else:
+            _logger.debug('failed to get window from xid:%s'%(xid,))
+            
+    def activate_bundle_id(self, bundle_id):
+        """get shell activity, look up window, and activate"""
+        window = self.get_wnck_window_from_bundle_id(bundle_id)
+        if window:
+            window.activate(gtk.get_current_event_time())
+        
+        
+    def get_current_activity(self):
+        """returns the shell activity object for current window"""
+        if not self.home_model:
+            self.home_model = self.get_home_model()
+        if self.home_model:
+            return self.home_model.get_activity_by_xid(self.get_xid())
+        else:
+            return None
+                
    

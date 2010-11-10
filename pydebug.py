@@ -51,9 +51,9 @@ from help import Help
 import pytoolbar
 
 #public api for ipython
-from IPython.core import ipapi #0.11 requires this
+#from IPython.core import ipapi #0.11 requires this
 #changes to debugger.py line 508, magic.py:1567
-#import IPython.ipapi
+import IPython.ipapi
 
 #following taken from Rpyc module
 #import Rpyc 
@@ -63,7 +63,7 @@ from Rpyc.Stream import *
 import select
 
 #from pytoolbar import ActivityToolBox
-from IPython.frontend.terminal.embed import InteractiveShellEmbed
+#from IPython.frontend.terminal.embed import InteractiveShellEmbed
 
 #import logging
 from  pydebug_logging import _logger, log_environment, log_dict
@@ -165,7 +165,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         self.help_x11 = None
         self.dirty = False
         self.sock = None
-        self.last_filename = None
+        #self.last_filename = None
         self.debug_dict = {}
         self.activity_dict = {}
         self.manifest_treeview = None  #set up to recognize an re-display of playpen
@@ -230,6 +230,10 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         self.help = Help(self)
         self.util = Utilities(self)            
         #########################################################################################
+        
+        #if first time run on this machine, set up home directory
+        if not os.path.isfile(os.path.join(self.debugger_home,'.bashrc')):
+            self.setup_home_directory()
         
         # setup the search options
         self.s_opts = SearchOptions(where = S_WHERE.file,
@@ -339,8 +343,6 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         self.debugger_home = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'data')
         self.child_path = None
         os.environ["HOME"]=self.debugger_home
-        if not os.path.isfile(os.path.join(self.debugger_home,'.bashrc')):
-            self.setup_home_directory()
         path_list = os.environ['PATH'].split(':')
         new_path = os.path.join(self.pydebug_path,'bin:')
         if not new_path in path_list:
@@ -362,27 +364,44 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         try:
             shutil.copy(src,self.debugger_home)
         except Exception,e:
-            _logger.debug('copy .bashrc exception %r'%e)
+            _logger.exception('copy .bashrc exception %r'%e)
+            
+        src = os.path.join(self.pydebug_path, 'ipythonrc')
+        try:
+            shutil.copy(src,self.debugger_home)
+        except Exception,e:
+            _logger.exception('copy ipthonrc exception %r'%e)
+            
+        """
         try:
             shutil.rmtree(os.path.join(self.debugger_home,'.ipython'))
         except Exception,e:
             pass
             #_logger.debug('rmtree exception %r trying to setup .ipython '%e)
+        """
         try:
-            shutil.copytree(os.path.join(self.pydebug_path,'bin','.ipython'),self.debugger_home)
+            """ definitions for ipythin 0.11
+            src = os.path.join(self.pydebug_path,'ipython_config_embeded.py')
+            dest = os.path.join(self.debugger_home,'ipython_config.py')
+            """
+            src = os.path.join(self.pydebug_path,'ipy_user_conf.py')
+            dest = os.path.join(self.debugger_home,'ipy_user_conf.py')
+            _logger.debug('copying %s to %s'%(src,dest,))
+            shutil.copy(src,dest)
         except Exception,e:
-            _logger.debug('copytree exception %r trying to copy .ipython directory'%e)
+            _logger.exception('copy exception %r trying to copy ipython_config.py'%e)
+            
         #for build 802 (sugar 0.82) we need a config file underneath home -- which pydebug moves
         # we will place the config file at ~/.sugar/default/
         try:
             shutil.rmtree(os.path.join(self.debugger_home,'.sugar'))
         except Exception,e:
             pass
-            #_logger.debug('rmtree exception %r trying to setup .ipython '%e)
+            _logger.debug('rmtree exception %r trying to setup .ipython '%e)
         try:
             shutil.copytree(os.path.join(self.pydebug_path,'bin','.sugar'),self.debugger_home)
         except Exception,e:
-            _logger.debug('copytree exception %r trying to copy .sugar directory'%e)
+            _logger.exception('copytree exception %r trying to copy .sugar directory'%e)
         #make sure we will have write permission when rainbow changes our identity
         self.util.set_permissions(self.debugger_home)
         

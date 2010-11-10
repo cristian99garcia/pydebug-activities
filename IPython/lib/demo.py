@@ -176,9 +176,7 @@ import shlex
 import sys
 
 from IPython.utils.PyColorize import Parser
-from IPython.utils.io import file_read, file_readlines
-import IPython.utils.io
-from IPython.utils.text import marquee
+from IPython.utils.genutils import marquee, file_read, file_readlines, Term
 
 __all__ = ['Demo','IPythonDemo','LineDemo','IPythonLineDemo','DemoError']
 
@@ -223,6 +221,7 @@ class Demo(object):
           """
         if hasattr(src, "read"):
              # It seems to be a file or a file-like object
+            self.fobj = src
             self.fname = "from a file-like object"
             if title == '':
                 self.title = "from a file-like object"
@@ -230,6 +229,7 @@ class Demo(object):
                 self.title = title
         else:
              # Assume it's a string or something that can be converted to one
+            self.fobj = open(src)
             self.fname = src
             if title == '':
                 (filepath, filename) = os.path.split(src)
@@ -238,38 +238,23 @@ class Demo(object):
                 self.title = title
         self.sys_argv = [src] + shlex.split(arg_str)
         self.auto_all = auto_all
-        self.src = src
         
         # get a few things from ipython.  While it's a bit ugly design-wise,
         # it ensures that things like color scheme and the like are always in
         # sync with the ipython mode being used.  This class is only meant to
         # be used inside ipython anyways,  so it's OK.
-        ip = get_ipython()  # this is in builtins whenever IPython is running
-        self.ip_ns       = ip.user_ns
-        self.ip_colorize = ip.pycolorize
-        self.ip_showtb   = ip.showtraceback
-        self.ip_run_cell = ip.run_cell
-        self.shell       = ip
+        self.ip_ns       = __IPYTHON__.user_ns
+        self.ip_colorize = __IPYTHON__.pycolorize
+        self.ip_showtb   = __IPYTHON__.showtraceback
+        self.ip_runlines = __IPYTHON__.runlines
+        self.shell       = __IPYTHON__
 
         # load user data and initialize data structures
         self.reload()
 
-    def fload(self):
-        """Load file object."""
-        # read data and parse into blocks
-        if hasattr(self, 'fobj') and self.fobj is not None:
-           self.fobj.close()
-        if hasattr(self.src, "read"):
-             # It seems to be a file or a file-like object
-            self.fobj = self.src
-        else:
-             # Assume it's a string or something that can be converted to one
-            self.fobj = open(self.fname)
-
     def reload(self):
         """Reload source from disk and initialize state."""
-        self.fload()
-        
+        # read data and parse into blocks
         self.src     = self.fobj.read()
         src_b        = [b.strip() for b in self.re_stop.split(self.src) if b]
         self._silent = [bool(self.re_silent.findall(b)) for b in src_b]
@@ -319,7 +304,7 @@ class Demo(object):
         
         if index is None:
             if self.finished:
-                print >>IPython.utils.io.Term.cout, 'Demo finished.  Use <demo_name>.reset() if you want to rerun it.'
+                print >>Term.cout, 'Demo finished.  Use <demo_name>.reset() if you want to rerun it.'
                 return None
             index = self.block_index
         else:
@@ -388,9 +373,9 @@ class Demo(object):
         if index is None:
             return
 
-        print >>IPython.utils.io.Term.cout, self.marquee('<%s> block # %s (%s remaining)' %
+        print >>Term.cout, self.marquee('<%s> block # %s (%s remaining)' %
                            (self.title,index,self.nblocks-index-1))
-        print >>IPython.utils.io.Term.cout,(self.src_blocks_colored[index])
+        print >>Term.cout,(self.src_blocks_colored[index])
         sys.stdout.flush()
 
     def show_all(self):
@@ -403,15 +388,15 @@ class Demo(object):
         marquee = self.marquee
         for index,block in enumerate(self.src_blocks_colored):
             if silent[index]:
-                print >>IPython.utils.io.Term.cout, marquee('<%s> SILENT block # %s (%s remaining)' %
+                print >>Term.cout, marquee('<%s> SILENT block # %s (%s remaining)' %
                               (title,index,nblocks-index-1))
             else:
-                print >>IPython.utils.io.Term.cout, marquee('<%s> block # %s (%s remaining)' %
+                print >>Term.cout, marquee('<%s> block # %s (%s remaining)' %
                               (title,index,nblocks-index-1))
-            print >>IPython.utils.io.Term.cout, block,
+            print >>Term.cout, block,
         sys.stdout.flush()
 
-    def run_cell(self,source):
+    def runlines(self,source):
         """Execute a string with one or more lines of code"""
 
         exec source in self.user_ns
@@ -433,23 +418,23 @@ class Demo(object):
             next_block = self.src_blocks[index]
             self.block_index += 1
             if self._silent[index]:
-                print >>IPython.utils.io.Term.cout, marquee('Executing silent block # %s (%s remaining)' %
+                print >>Term.cout, marquee('Executing silent block # %s (%s remaining)' %
                               (index,self.nblocks-index-1))
             else:
                 self.pre_cmd()
                 self.show(index)
                 if self.auto_all or self._auto[index]:
-                    print >>IPython.utils.io.Term.cout, marquee('output:')
+                    print >>Term.cout, marquee('output:')
                 else:
-                    print >>IPython.utils.io.Term.cout, marquee('Press <q> to quit, <Enter> to execute...'),
+                    print >>Term.cout, marquee('Press <q> to quit, <Enter> to execute...'),
                     ans = raw_input().strip()
                     if ans:
-                        print >>IPython.utils.io.Term.cout, marquee('Block NOT executed')
+                        print >>Term.cout, marquee('Block NOT executed')
                         return
             try:
                 save_argv = sys.argv
                 sys.argv = self.sys_argv
-                self.run_cell(next_block)
+                self.runlines(next_block)
                 self.post_cmd()
             finally:
                 sys.argv = save_argv
@@ -462,10 +447,10 @@ class Demo(object):
         if self.block_index == self.nblocks:
             mq1 = self.marquee('END OF DEMO')
             if mq1:
-                # avoid spurious print >>IPython.utils.io.Term.cout,s if empty marquees are used
-                print >>IPython.utils.io.Term.cout
-                print >>IPython.utils.io.Term.cout, mq1
-                print >>IPython.utils.io.Term.cout, self.marquee('Use <demo_name>.reset() if you want to rerun it.')
+                # avoid spurious print >>Term.cout,s if empty marquees are used
+                print >>Term.cout
+                print >>Term.cout, mq1
+                print >>Term.cout, self.marquee('Use <demo_name>.reset() if you want to rerun it.')
             self.finished = True
 
     # These methods are meant to be overridden by subclasses who may wish to
@@ -496,10 +481,10 @@ class IPythonDemo(Demo):
     class requires the input to be valid, pure Python code.
     """
 
-    def run_cell(self,source):
+    def runlines(self,source):
         """Execute a string with one or more lines of code"""
 
-        self.shell.run_cell(source)
+        self.shell.runlines(source)
         
 class LineDemo(Demo):
     """Demo where each line is executed as a separate block.
@@ -509,20 +494,14 @@ class LineDemo(Demo):
     This class doesn't require any markup at all, and it's meant for simple
     scripts (with no nesting or any kind of indentation) which consist of
     multiple lines of input to be executed, one at a time, as if they had been
-    typed in the interactive prompt.
-
-    Note: the input can not have *any* indentation, which means that only
-    single-lines of input are accepted, not even function definitions are
-    valid."""
+    typed in the interactive prompt."""
     
     def reload(self):
         """Reload source from disk and initialize state."""
         # read data and parse into blocks
-        self.fload()
-        lines           = self.fobj.readlines()
-        src_b           = [l for l in lines if l.strip()]
+        src_b           = [l for l in self.fobj.readline() if l.strip()]
         nblocks         = len(src_b)
-        self.src        = ''.join(lines)
+        self.src        = os.linesep.join(self.fobj.readlines())
         self._silent    = [False]*nblocks
         self._auto      = [True]*nblocks
         self.auto_all   = True
@@ -564,7 +543,7 @@ class ClearMixin(object):
         """Method called before executing each block.
         
         This one simply clears the screen."""
-        from IPython.utils.terminal import term_clear
+        from IPython.utils.platutils import term_clear
         term_clear()
 
 class ClearDemo(ClearMixin,Demo):

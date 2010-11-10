@@ -37,9 +37,9 @@ by doing::
 
 from IPython.core.error import TryNext
 from IPython.external import pretty
-from IPython.core.plugin import Plugin
-from IPython.utils.traitlets import Bool, List, Instance
-import IPython.utils.io
+from IPython.core.component import Component
+from IPython.utils.traitlets import Bool, List
+from IPython.utils.genutils import Term
 from IPython.utils.autoattr import auto_attr
 from IPython.utils.importstring import import_item
 
@@ -51,11 +51,10 @@ from IPython.utils.importstring import import_item
 _loaded = False
 
 
-class PrettyResultDisplay(Plugin):
+class PrettyResultDisplay(Component):
     """A component for pretty printing on steroids."""
 
     verbose = Bool(False, config=True)
-    shell = Instance('IPython.core.interactiveshell.InteractiveShellABC')
 
     # A list of (type, func_name), like
     # [(dict, 'my_dict_printer')]
@@ -67,8 +66,8 @@ class PrettyResultDisplay(Plugin):
     # The final argument can also be a callable
     defaults_for_type_by_name = List(default_value=[], config=True)
 
-    def __init__(self, shell=None, config=None):
-        super(PrettyResultDisplay, self).__init__(shell=shell, config=config)
+    def __init__(self, parent, name=None, config=None):
+        super(PrettyResultDisplay, self).__init__(parent, name=name, config=config)
         self._setup_defaults()
 
     def _setup_defaults(self):
@@ -88,6 +87,16 @@ class PrettyResultDisplay(Plugin):
         else:
             raise TypeError('func_name must be a str or callable, got: %r' % func_name)
 
+    # Access other components like this rather than by a regular attribute.
+    # This won't lookup the InteractiveShell object until it is used and
+    # then it is cached.  This is both efficient and couples this class 
+    # more loosely to InteractiveShell.
+    @auto_attr
+    def shell(self):
+        return Component.get_instances(
+            root=self.root,
+            klass='IPython.core.iplib.InteractiveShell')[0]
+
     def __call__(self, otherself, arg):
         """Uber-pretty-printing display hook.
 
@@ -100,8 +109,8 @@ class PrettyResultDisplay(Plugin):
                 # So that multi-line strings line up with the left column of
                 # the screen, instead of having the output prompt mess up
                 # their first line.                
-                IPython.utils.io.Term.cout.write('\n')
-            print >>IPython.utils.io.Term.cout, out
+                Term.cout.write('\n')
+            print >>Term.cout, out
         else:
             raise TryNext
 
@@ -123,10 +132,9 @@ def load_ipython_extension(ip):
     """Load the extension in IPython as a hook."""
     global _loaded
     if not _loaded:
-        plugin = PrettyResultDisplay(shell=ip, config=ip.config)
-        ip.set_hook('result_display', plugin, priority=99)
+        prd = PrettyResultDisplay(ip, name='pretty_result_display')
+        ip.set_hook('result_display', prd, priority=99)
         _loaded = True
-        ip.plugin_manager.register_plugin('pretty_result_display', plugin)
 
 def unload_ipython_extension(ip):
     """Unload the extension."""
@@ -155,3 +163,60 @@ def dtype_pprinter(obj, p, cycle):
                     p.breakable()
                 p.pretty(field)
             p.end_group(7, '])')
+
+
+#-----------------------------------------------------------------------------
+# Tests
+#-----------------------------------------------------------------------------
+
+
+def test_pretty():
+    """
+    In [1]: from IPython.extensions import ipy_pretty
+
+    In [2]: ipy_pretty.activate()
+
+    In [3]: class A(object):
+       ...:     def __repr__(self):
+       ...:         return 'A()'
+       ...:     
+       ...:     
+
+    In [4]: a = A()
+
+    In [5]: a
+    Out[5]: A()
+
+    In [6]: def a_pretty_printer(obj, p, cycle):
+       ...:     p.text('<A>')
+       ...:     
+       ...:     
+
+    In [7]: ipy_pretty.for_type(A, a_pretty_printer)
+
+    In [8]: a
+    Out[8]: <A>
+
+    In [9]: class B(object):
+       ...:     def __repr__(self):
+       ...:         return 'B()'
+       ...:     
+       ...:     
+
+    In [10]: B.__module__, B.__name__
+    Out[10]: ('__main__', 'B')
+
+    In [11]: def b_pretty_printer(obj, p, cycle):
+       ....:     p.text('<B>')
+       ....:     
+       ....:     
+
+    In [12]: ipy_pretty.for_type_by_name('__main__', 'B', b_pretty_printer)
+
+    In [13]: b = B()
+
+    In [14]: b
+    Out[14]: <B>
+    """
+    assert False, "This should only be doctested, not run."
+

@@ -18,13 +18,18 @@ has been made into a component, this module will be sent to deathrow.
 # Imports
 #-----------------------------------------------------------------------------
 
+from IPython.core.error import TryNext, UsageError
+
 #-----------------------------------------------------------------------------
 # Classes and functions
 #-----------------------------------------------------------------------------
 
-
 def get():
-    """Get the global InteractiveShell instance."""
-    from IPython.core.interactiveshell import InteractiveShell
-    return InteractiveShell.instance()
-
+    """Get the most recently created InteractiveShell instance."""
+    from IPython.core.iplib import InteractiveShell
+    insts = InteractiveShell.get_instances()
+    most_recent = insts[0]
+    for inst in insts[1:]:
+        if inst.created > most_recent.created:
+            most_recent = inst
+    return most_recent

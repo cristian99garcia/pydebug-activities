@@ -30,19 +30,22 @@ try:
     db = c.modules.pydebug.pydebug_instance
 except AttributeError:
     _logger.error('cannot connect to localhost')
-except e:
-    print(e[1])
+except Exception, e:
+    print 'Rpyc connection failed'
+    print(str(e))
     assert False
 pydebug_path = db.pydebug_path
 print('./bin/start_debug.py established connectioon. pydebug path: %s'%pydebug_path)
 
 #these alternative definitions are required for ipython v0.11 and greater
 #define interface with the command line ipython instance
-from IPython.core import ipapi
-from IPython.core.macro import Macro
+#from IPython.core import ipapi
+#from IPython.core.macro import Macro
 
-#from IPython import ipapi
-# IPython.macro import Macro #0,10
+#following definitions work with ipython 0.10
+from IPython import ipapi
+from IPython.macro import Macro 
+
 ip = ipapi.get()
 
 #define  macros, one which sets pdb on, the other off

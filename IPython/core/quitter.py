@@ -1,10 +1,10 @@
-# coding: utf-8
+#!/usr/bin/env python
+# encoding: utf-8
 """
 A simple class for quitting IPython.
 
-Authors
--------
-* Fernando Perez
+Authors:
+
 * Brian Granger
 """
 
@@ -20,11 +20,6 @@ Authors
 #-----------------------------------------------------------------------------
 
 
-#-----------------------------------------------------------------------------
-# Code
-#-----------------------------------------------------------------------------
-
-
 class Quitter(object):
     """Simple class to handle exit, similar to Python 2.5's.
 
@@ -35,13 +30,9 @@ class Quitter(object):
         self.shell = shell
         self.name = name
         
-    def __str__(self):
+    def __repr__(self):
         return 'Type %s() to exit.' % self.name
+    __str__ = __repr__
 
     def __call__(self):
-        self.shell.ask_exit()
-
-    # Repr MUST return a string, else display like pprint hooks get confused
-    def __repr__(self):
-        self.shell.ask_exit()
-        return ''
+        self.shell.exit()

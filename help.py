@@ -33,19 +33,10 @@ from sugar import wm, env
 #from IPython.Debugger import Tracer
 from pdb import *
 from sugar.graphics.toolbutton import ToolButton
-
 import hulahop
-#hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
 
-"""#from hulahop.webview import WebView
-from browser import Browser
-import xpcom
-from xpcom.components import interfaces
-"""
 gobject.threads_init()
 
-HOME = os.path.join(activity.get_bundle_path(), _('help/PyDebug.htm'))
-#HOME = "http://website.com/something.html"
 HELP_PANE = 3
 
 # Initialize logging.
@@ -56,7 +47,6 @@ class Help(Window):
     def __init__(self, parent):
         self.pydebug = parent
         hulahop.startup(os.path.join(parent.debugger_home, 'gecko'))
-        #from hulahop.webview import WebView
         from browser import Browser
         import xpcom
         from xpcom.components import interfaces
@@ -66,10 +56,12 @@ class Help(Window):
         Window.__init__(self)
         self.connect('realize',self.realize_cb)
 
-        #self.props.max_participants = 1
-
         self._web_view = Browser()
-
+        
+        #determine which language we are going to be using
+        help_root = self.get_help_root()
+        self.HOME = os.path.join(help_root, 'PyDebug.htm')
+    
         self.toolbox = Toolbox()
         self.toolbox.connect('current_toolbar_changed',self.goto_cb)
         self.set_toolbox(self.toolbox)
@@ -80,15 +72,13 @@ class Help(Window):
         
         editbar = gtk.Toolbar()
         self.toolbox.add_toolbar(_('Edit'), editbar)
-        #editbar.connect('current_toolbar_changed', self.goto_cb,1)
         editbar.show_all()
         
         projectbar = gtk.Toolbar()
         self.toolbox.add_toolbar(_('Project'), projectbar)
-        #projectbar.connect('current_toolbar_changed', self.goto_cb,2)
         projectbar.show_all()
         
-        self.help_toolbar = Toolbar(self._web_view)
+        self.help_toolbar = Toolbar(self, self._web_view)
         self.help_toolbar.show()
         self.toolbox.add_toolbar(_('Help'), self.help_toolbar)
         self.toolbox._notebook.set_current_page(HELP_PANE)
@@ -98,7 +88,7 @@ class Help(Window):
 
         self.toolbox.set_current_toolbar(HELP_PANE)
 
-        self._web_view.load_uri(HOME)
+        self._web_view.load_uri(self.HOME)
         self.pid = Popen(['/usr/bin/pydoc','-p','23432'])
 
     def get_help_toolbar(self):
@@ -162,11 +152,30 @@ class Help(Window):
         else:
             _logger.debug('wnck_window was none')
             return None
-                
+        
+    def get_help_root(self):
+        lang = os.environ.get('LANGUAGE')
+        if not lang:
+            lang = os.environ.get('LANG')
+        if not lang:
+            lang = 'en_US'
+        if len(lang) > 1:
+            two_char = lang[:2]
+        root = os.path.join(os.environ['SUGAR_BUNDLE_PATH'],'help',two_char)
+        if os.path.isdir(root):
+            return root
+        root = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'help',two_char)
+        if os.path.isdir(root):
+            return root
+        #default to a non localized root
+        root = os.path.join(os.environ['SUGAR_BUNDLE_PATH'],'help')
+        return root
+    
 class Toolbar(gtk.Toolbar):
-    def __init__(self, web_view):
+    def __init__(self, parent, web_view):
         gobject.GObject.__init__(self)
-
+        
+        self._activity = parent
         self._web_view = web_view
 
         self._back = ToolButton('go-previous-paired')
@@ -214,7 +223,7 @@ class Toolbar(gtk.Toolbar):
         self._web_view.web_navigation.goForward()
 
     def _go_home_cb(self, button):
-        self._web_view.load_uri(HOME)
+        self._web_view.load_uri(self._activity.HOME)
 
 def command_line(cmd):
     _logger.debug('command_line cmd:%s'%cmd)

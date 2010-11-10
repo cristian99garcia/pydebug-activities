@@ -43,17 +43,21 @@ somewhere in your configuration files or ipython command line.
 
 import os, bisect
 import sys
+from IPython.utils.genutils import Term, shell
+from pprint import PrettyPrinter
 
 from IPython.core.error import TryNext
-import IPython.utils.io
 
 # List here all the default hooks.  For now it's just the editor functions
 # but over time we'll move here all the public API for user-accessible things.
 
-__all__ = ['editor', 'fix_error_editor', 'synchronize_with_editor',
+__all__ = ['editor', 'fix_error_editor', 'synchronize_with_editor', 'result_display',
            'input_prefilter', 'shutdown_hook', 'late_startup_hook',
-           'generate_prompt', 'show_in_pager','pre_prompt_hook',
-           'pre_run_code_hook', 'clipboard_get']
+           'generate_prompt', 'generate_output_prompt','shell_hook',
+           'show_in_pager','pre_prompt_hook', 'pre_runcode_hook',
+           'clipboard_get']
+
+pformat = PrettyPrinter().pformat
 
 def editor(self,filename, linenum=None):
     """Open the default editor at the given filename and linenumber.
@@ -133,7 +137,8 @@ class CommandChainDispatcher:
         for prio,cmd in self.chain:
             #print "prio",prio,"cmd",cmd #dbg
             try:
-                return cmd(*args, **kw)
+                ret = cmd(*args, **kw)
+                return ret
             except TryNext, exc:
                 if exc.args or exc.kwargs:
                     args = exc.args
@@ -163,22 +168,18 @@ def result_display(self,arg):
     """
     
     if self.pprint:
-        try:
-            out = pformat(arg)
-        except:
-            # Work around possible bugs in pformat
-            out = repr(arg)
+        out = pformat(arg)
         if '\n' in out:
             # So that multi-line strings line up with the left column of
             # the screen, instead of having the output prompt mess up
             # their first line.                
-            IPython.utils.io.Term.cout.write('\n')
-        print >>IPython.utils.io.Term.cout, out
+            Term.cout.write('\n')
+        print >>Term.cout, out
     else:
         # By default, the interactive prompt uses repr() to display results,
         # so we should honor this.  Users who'd rather use a different
         # mechanism can easily override this hook.
-        print >>IPython.utils.io.Term.cout, repr(arg)
+        print >>Term.cout, repr(arg)
     # the default display hook doesn't manipulate the value to put in history
     return None 
 
@@ -218,8 +219,18 @@ def late_startup_hook(self):
 def generate_prompt(self, is_continuation):
     """ calculate and return a string with the prompt to display """
     if is_continuation:
-        return str(self.displayhook.prompt2)
-    return str(self.displayhook.prompt1)
+        return str(self.outputcache.prompt2)
+    return str(self.outputcache.prompt1)
+
+
+def generate_output_prompt(self):
+    return str(self.outputcache.prompt_out)
+
+
+def shell_hook(self,cmd):
+    """ Run system/shell command a'la os.system() """
+
+    shell(cmd, header=self.system_header, verbose=self.system_verbose)
 
 
 def show_in_pager(self,s):
@@ -238,7 +249,7 @@ def pre_prompt_hook(self):
     return None
 
 
-def pre_run_code_hook(self):
+def pre_runcode_hook(self):
     """ Executed before running the (prefiltered) code in IPython """
     return None
 

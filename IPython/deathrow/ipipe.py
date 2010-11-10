@@ -133,10 +133,10 @@ from IPython.external import simplegeneric
 from IPython.external import path
 
 try:
-    import IPython.utils.io
+    from IPython.utils import genutils
     from IPython.utils import generics
 except ImportError:
-    Term = None
+    genutils = None
     generics = None
 
 from IPython.core import ipapi
@@ -2168,7 +2168,7 @@ class idump(Display):
         self.datasepchar = "|"
 
     def display(self):
-        stream = Term.cout
+        stream = genutils.Term.cout
         allattrs = []
         attrset = set()
         colwidths = {}

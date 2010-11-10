@@ -16,6 +16,7 @@ __docformat__ = "restructuredtext en"
 #-------------------------------------------------------------------------------
 
 from types import FunctionType
+from twisted.python import log
 
 class CannedObject(object):
     pass

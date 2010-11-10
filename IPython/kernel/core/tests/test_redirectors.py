@@ -18,7 +18,6 @@ __test__ = {}
 
 from cStringIO import StringIO
 import os
-import sys
 
 from twisted.trial import unittest
 
@@ -27,6 +26,7 @@ from IPython.testing import decorators_trial as dec
 #-----------------------------------------------------------------------------
 # Tests
 #-----------------------------------------------------------------------------
+
 
 class TestRedirector(unittest.TestCase):
 
@@ -59,8 +59,7 @@ class TestRedirector(unittest.TestCase):
         trap the output, but also that it does it in a gready way, that
         is by calling the callback ASAP.
         """
-        from IPython.kernel.core.redirector_output_trap import \
-            RedirectorOutputTrap
+        from IPython.kernel.core.redirector_output_trap import RedirectorOutputTrap
         out = StringIO()
         trap = RedirectorOutputTrap(out.write, out.write)
         try:

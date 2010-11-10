@@ -19,6 +19,7 @@ import cPickle as pickle
 
 from twisted.python.failure import Failure
 from twisted.python import failure
+import threading, sys
 
 from IPython.kernel import pbconfig
 from IPython.kernel.error import PBMessageSizeError, UnpickleableException
@@ -57,7 +58,7 @@ def unpackageFailure(r):
                 result = pickle.loads(r[8:])
             except pickle.PickleError:
                 return failure.Failure( \
-                    UnpickleableException("Could not unpickle failure."))
+                    FailureUnpickleable("Could not unpickle failure."))
             else:
                 return result
     return r

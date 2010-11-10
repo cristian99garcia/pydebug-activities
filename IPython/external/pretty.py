@@ -101,8 +101,7 @@
                 Portions (c) 2009 by Robert Kern.
     :license: BSD License.
 """
-from __future__ import with_statement
-from contextlib import contextmanager
+import __future__
 import sys
 import types
 import re
@@ -139,6 +138,12 @@ def pprint(obj, verbose=False, max_width=79, newline='\n'):
     sys.stdout.write(newline)
     sys.stdout.flush()
 
+
+# add python2.5 context managers if we have the with statement feature
+if hasattr(__future__, 'with_statement'): exec '''
+from __future__ import with_statement
+from contextlib import contextmanager
+
 class _PrettyPrinterBase(object):
 
     @contextmanager
@@ -159,6 +164,16 @@ class _PrettyPrinterBase(object):
                 yield
         finally:
             self.end_group(indent, close)
+'''
+else:
+    class _PrettyPrinterBase(object):
+
+        def _unsupported(self, *a, **kw):
+            """unsupported operation"""
+            raise RuntimeError('not available in this python version')
+        group = indent = _unsupported
+        del _unsupported
+
 
 class PrettyPrinter(_PrettyPrinterBase):
     """

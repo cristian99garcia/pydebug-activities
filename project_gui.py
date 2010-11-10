@@ -630,6 +630,10 @@ class ProjectGui(ProjectFunctions):
         #set the current working directory for debugging in the child context
         cwd_cmd = 'cd %s\n'%(self._activity.child_path,)
         self._activity.feed_virtual_terminal(0,cwd_cmd)
+        self._activity.feed_virtual_terminal(1,cwd_cmd)
+        alias_cmd = 'alias pp="cd %s"\n'%(self._activity.child_path,)
+        self._activity.feed_virtual_terminal(1,alias_cmd)
+        self._activity.feed_virtual_terminal(0,alias_cmd)
 
         #add the bin directory to path
         if self._activity.child_path not in os.environ['PATH'].split(':'):
@@ -640,7 +644,8 @@ class ProjectGui(ProjectFunctions):
         
         #if this is a resumption, open previous python files and position to previous location
         if self._activity.debug_dict.get(os.path.basename(self._activity.child_path)):
-            for filenm, line in self._activity.debug_dict.get(os.path.basename(self._activity.child_path)):
+            for file_id, line in self._activity.debug_dict.get(os.path.basename(self._activity.child_path)):
+                filenm = os.path.join(self._activity.activity_playpen,file_id)
                 if os.path.isfile(filenm):
                     self.get_editor().load_object(filenm,os.path.basename(filenm)) 
                     self.get_editor().position_to(filenm,line)

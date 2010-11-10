@@ -44,18 +44,17 @@ Notes
 =====
 
   - This requires Python 2.4 to work (I use sets).  I don't think anyone is
-    using traits with 2.3 anyway, so that's OK.
-
-  - Imports from enthought.traits are deferred until an object with a class that
-    looks like it subclasses from HasTraits comes along. This test is done by
-    looking at the name of the class and its superclasses.
+  using traits with 2.3 anyway, so that's OK.
 """
 
 #############################################################################
+# External imports
+from enthought.traits import api as T
+
 # IPython imports
 from IPython.core.error import TryNext
 from IPython.core.ipapi import get as ipget
-from IPython.utils.dir2 import dir2
+from IPython.utils.genutils import dir2
 try:
     set
 except:
@@ -72,36 +71,10 @@ COMPLETE_THRESHOLD = 3
 
 # Set of names that Traits automatically adds to ANY traits-inheriting object.
 # These are the names we'll filter out.
-TRAIT_NAMES = None
-def get_trait_names():
-    global TRAIT_NAMES
-    from enthought.traits.api import HasTraits
-    if TRAIT_NAMES is None:
-        TRAIT_NAMES = set( dir2(HasTraits()) ) - set( dir2(object()) )
-    else:
-        return TRAIT_NAMES
+TRAIT_NAMES = set( dir2(T.HasTraits()) ) - set( dir2(object()) )
 
 #############################################################################
 # Code begins
-
-def looks_like_isinstance(obj, classname):
-    """ Return True if the object has a class or superclass with the given class
-    name.
-
-    Ignores old-style classes.
-    """
-    from types import InstanceType
-
-    t = type(obj)
-    if t is InstanceType:
-        # Old-style classes.
-        return False
-    elif t.__name__ == classname:
-        return True
-    for klass in t.__mro__:
-        if klass.__name__ == classname:
-            return True
-    return False
 
 def trait_completer(self,event):
     """A custom IPython tab-completer that is traits-aware.
@@ -121,13 +94,7 @@ def trait_completer(self,event):
 
     obj = oinfo['obj']
     # OK, we got the object.  See if it's traits, else punt
-    if not looks_like_isinstance(obj, 'HasTraits'):
-        raise TryNext
-
-    # Defer import until here so as not to require Traits until we get something
-    # that looks like it might be a HasTraits instance.
-    from enthought.traits.api import HasTraits
-    if not isinstance(obj, HasTraits):
+    if not isinstance(obj,T.HasTraits):
         raise TryNext
 
     # it's a traits object, don't show the tr* attributes unless the completion
@@ -148,7 +115,7 @@ def trait_completer(self,event):
     #print '\nastart:<%r>' % attr_start  # dbg
 
     if len(attr_start)<COMPLETE_THRESHOLD:
-        attrs = list(set(attrs) - get_trait_names())
+        attrs = list(set(attrs) - TRAIT_NAMES)
         
     # The base of the completion, so we can form the final results list
     bdot = base+'.'
@@ -183,14 +150,13 @@ def activate(complete_threshold = COMPLETE_THRESHOLD):
 #############################################################################
 if __name__ == '__main__':
     # Testing/debugging
-    from enthought.traits.api import HasTraits
 
     # A sorted list of the names we'll filter out
-    TNL = list(get_trait_names())
+    TNL = list(TRAIT_NAMES)
     TNL.sort()
 
     # Make a few objects for testing
-    class TClean(HasTraits): pass
+    class TClean(T.HasTraits): pass
     class Bunch(object): pass
     # A clean traits object
     t = TClean()

@@ -30,15 +30,15 @@ rid of that dependency, we could move it there.
 import os
 import re
 import sys
-import tempfile
 
 from IPython.core import ipapi
 from IPython.core.error import TryNext
-from IPython.utils.cursesimport import use_curses
-from IPython.utils.data import chop
-import IPython.utils.io
-from IPython.utils.process import system
-from IPython.utils.terminal import get_terminal_size
+from IPython.utils.genutils import (
+    chop, Term, USE_CURSES
+)
+
+if os.name == "nt":
+    from IPython.utils.winconsole import get_console_size
 
 
 #-----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ from IPython.utils.terminal import get_terminal_size
 
 esc_re = re.compile(r"(\x1b[^m]+m)")
 
-def page_dumb(strng, start=0, screen_lines=25):
+def page_dumb(strng,start=0,screen_lines=25):
     """Very dumb 'pager' in Python, for when nothing else works.
 
     Only moves forward, same interface as page(), except for pager_cmd and
@@ -56,21 +56,21 @@ def page_dumb(strng, start=0, screen_lines=25):
     out_ln  = strng.splitlines()[start:]
     screens = chop(out_ln,screen_lines-1)
     if len(screens) == 1:
-        print >>IPython.utils.io.Term.cout, os.linesep.join(screens[0])
+        print >>Term.cout, os.linesep.join(screens[0])
     else:
         last_escape = ""
         for scr in screens[0:-1]:
             hunk = os.linesep.join(scr)
-            print >>IPython.utils.io.Term.cout, last_escape + hunk
+            print >>Term.cout, last_escape + hunk
             if not page_more():
                 return
             esc_list = esc_re.findall(hunk)
             if len(esc_list) > 0:
                 last_escape = esc_list[-1]
-        print >>IPython.utils.io.Term.cout, last_escape + os.linesep.join(screens[-1])
+        print >>Term.cout, last_escape + os.linesep.join(screens[-1])
 
-
-def page(strng, start=0, screen_lines=0, pager_cmd=None):
+#----------------------------------------------------------------------------
+def page(strng,start=0,screen_lines=0,pager_cmd = None):
     """Print a string, piping through a pager after a certain length.
 
     The screen_lines parameter specifies the number of *usable* lines of your
@@ -93,7 +93,7 @@ def page(strng, start=0, screen_lines=0, pager_cmd=None):
 
     # Some routines may auto-compute start offsets incorrectly and pass a
     # negative value.  Offset to 0 for robustness.
-    start = max(0, start)
+    start = max(0,start)
 
     # first, try the hook
     ip = ipapi.get()
@@ -120,17 +120,19 @@ def page(strng, start=0, screen_lines=0, pager_cmd=None):
     # terminals. If someone later feels like refining it, it's not hard.
     numlines = max(num_newlines,int(len_str/80)+1)
 
-    screen_lines_def = get_terminal_size()[1]
+    if os.name == "nt":
+        screen_lines_def = get_console_size(defaulty=25)[1]
+    else:
+        screen_lines_def = 25 # default value if we can't auto-determine
 
     # auto-determine screen size
     if screen_lines <= 0:
-        if (TERM=='xterm' or TERM=='xterm-color') and sys.platform != 'sunos5':
-            local_use_curses = use_curses
+        if TERM=='xterm' or TERM=='xterm-color':
+            use_curses = USE_CURSES
         else:
-            # curses causes problems on many terminals other than xterm, and
-            # some termios calls lock up on Sun OS5.
-            local_use_curses = False
-        if local_use_curses:
+            # curses causes problems on many terminals other than xterm.
+            use_curses = False
+        if use_curses:
             import termios
             import curses
             # There is a bug in curses, where *sometimes* it fails to properly
@@ -156,7 +158,7 @@ def page(strng, start=0, screen_lines=0, pager_cmd=None):
     #print 'numlines',numlines,'screenlines',screen_lines  # dbg
     if numlines <= screen_lines :
         #print '*** normal print'  # dbg
-        print >>IPython.utils.io.Term.cout, str_toprint
+        print >>Term.cout, str_toprint
     else:
         # Try to open pager and default to internal one if that fails.
         # All failure modes are tagged as 'retval=1', to match the return
@@ -199,8 +201,8 @@ def page(strng, start=0, screen_lines=0, pager_cmd=None):
         if retval is not None:
             page_dumb(strng,screen_lines=screen_lines)
 
-
-def page_file(fname, start=0, pager_cmd=None):
+#----------------------------------------------------------------------------
+def page_file(fname,start = 0, pager_cmd = None):
     """Page a file, using an optional pager command and starting line.
     """
 
@@ -210,7 +212,7 @@ def page_file(fname, start=0, pager_cmd=None):
     try:
         if os.environ['TERM'] in ['emacs','dumb']:
             raise EnvironmentError
-        system(pager_cmd + ' ' + fname)
+        xsys(pager_cmd + ' ' + fname)
     except:
         try:
             if start > 0:
@@ -219,12 +221,12 @@ def page_file(fname, start=0, pager_cmd=None):
         except:
             print 'Unable to show file',`fname`
 
-
-def get_pager_cmd(pager_cmd=None):
+#----------------------------------------------------------------------------
+def get_pager_cmd(pager_cmd = None):
     """Return a pager command.
 
-    Makes some attempts at finding an OS-correct one.
-    """
+    Makes some attempts at finding an OS-correct one."""
+
     if os.name == 'posix':
         default_pager_cmd = 'less -r'  # -r for color control sequences
     elif os.name in ['nt','dos']:
@@ -237,8 +239,8 @@ def get_pager_cmd(pager_cmd=None):
             pager_cmd = default_pager_cmd
     return pager_cmd
 
-
-def get_pager_start(pager, start):
+#-----------------------------------------------------------------------------
+def get_pager_start(pager,start):
     """Return the string for paging files with an offset.
 
     This is the '+N' argument which less and more (under Unix) accept.
@@ -253,8 +255,8 @@ def get_pager_start(pager, start):
         start_string = ''
     return start_string
 
-
-# (X)emacs on win32 doesn't like to be bypassed with msvcrt.getch()
+#----------------------------------------------------------------------------
+# (X)emacs on W32 doesn't like to be bypassed with msvcrt.getch()
 if os.name == 'nt' and os.environ.get('TERM','dumb') != 'emacs':
     import msvcrt
     def page_more():
@@ -262,13 +264,13 @@ if os.name == 'nt' and os.environ.get('TERM','dumb') != 'emacs':
 
         @return:    True if need print more lines, False if quit
         """
-        IPython.utils.io.Term.cout.write('---Return to continue, q to quit--- ')
+        Term.cout.write('---Return to continue, q to quit--- ')
         ans = msvcrt.getch()
         if ans in ("q", "Q"):
             result = False
         else:
             result = True
-        IPython.utils.io.Term.cout.write("\b"*37 + " "*37 + "\b"*37)
+        Term.cout.write("\b"*37 + " "*37 + "\b"*37)
         return result
 else:
     def page_more():
@@ -278,7 +280,7 @@ else:
         else:
             return True
 
-
+#----------------------------------------------------------------------------
 def snip_print(str,width = 75,print_full = 0,header = ''):
     """Print a string snipping the midsection to fit in width.
 
@@ -304,4 +306,3 @@ def snip_print(str,width = 75,print_full = 0,header = ''):
         if raw_input(header+' Snipped. View (y/n)? [N]').lower() == 'y':
             page(str)
     return snip
-

@@ -68,8 +68,12 @@ except Exception,e:
     assert False
 
 #define interface with the command line ipython instance
-from IPython.core import ipapi
-#from IPython import ipapi
+#definitions for ipython 0.11
+#from IPython.core import ipapi
+
+#definition for ipython 0.10
+from IPython import ipapi
+
 ip = ipapi.get()
 global __IPYTHON__
 try:
@@ -102,8 +106,8 @@ def sync_called(self,filename,linenumber,col):
     if linenumber > 0:
         linenumber -= 1
     if not os.path.isfile(filename): return
-    if not db.trace_outside_child_path:
-        if not filename.startswith(db.child_path):
+    if not trace_outside_child_path:
+        if not filename.startswith(child_path):
             return
     print('synchronize called. file:%s. line:%s. Col:%s'%(filename,linenumber,col))
     db.position_to(filename,linenumber)
@@ -112,6 +116,11 @@ ip.set_hook('synchronize_with_editor',sync_called)
 
 #get the information about the Activity we are about to debug
 child_path = db.child_path
+trace_outside_child_path = db.trace_outside_child_path
+xmode = db.debug_dict.get('traceback','context')
+debugee_module = db.pdbmodule
+pydebug_home = db.debugger_home
+
 _logger.debug('child path: %s'%child_path)
 if not child_path:
     print _('\n\nThere is no program loaded into the Work Area. \nPlease use the "Project" tab so set up the debug session\n\n')
@@ -119,12 +128,12 @@ if not child_path:
     
 #set the traceback level of detail
 #ip.options.xmode = db.debug_dict['traceback']
-__IPYTHON__.magic_xmode(db.debug_dict['traceback'])
-_logger.debug('xmode set to %s'%db.debug_dict['traceback'])
+__IPYTHON__.magic_xmode(xmode)
+_logger.debug('xmode set to %s'%xmode)
 
 #put module in top level namespace so it can be dreload()-ed
-exec 'import ' + db.pdbmodule
-exec 'reload(%s)'%db.pdbmodule
+exec 'import ' + debugee_module
+exec 'reload(%s)'%debugee_module
 
 """ if this were to work properly we should set go equal to object Macro
 go_cmd = 'run -d -b %s %s'%(os.path.join(db.pydebug_path,'bin','start_debug.py'),child_path)
@@ -132,20 +141,19 @@ _logger.debug('defining go: %s'%go_cmd)
 ip.user_ns['go'] = go_cmd
 """
 _logger.debug('pydebug home: %s'%db.debugger_home)
-path = child_path
-pydebug_home = db.debugger_home
+
 os.environ['PYDEBUG_HOME'] = pydebug_home
-os.chdir(path)
-os.environ['SUGAR_BUNDLE_PATH'] = path
-_logger.debug('sugar_bundle_path set to %s'%path)
+os.chdir(child_path)
+os.environ['SUGAR_BUNDLE_PATH'] = child_path
+_logger.debug('sugar_bundle_path set to %s'%child_path)
 
 #set up python module search path
-sys.path.insert(0,path)
-bundle_info = ActivityBundle(path)
+sys.path.insert(0,child_path)
+bundle_info = ActivityBundle(child_path)
 bundle_id = bundle_info.get_bundle_id()
 
 #following two statements eliminate differences between sugar 0.82 and 0.84
-bundle_info.path = path
+bundle_info.path = child_path
 bundle_info.bundle_id = bundle_id
 
 bundle_name = bundle_info.get_name()
@@ -252,9 +260,11 @@ log_environment()
 _logger.debug('about to call main.main() with args %r'%sys.argv)
 
 if version and version >= 0.839:
-    #before IPython 0.11 we used the stock version of main, now we disable gtk.main call
-    #from sugar.activity import main
-    import main
+    #for IPython 0.10 we use the stock version of main
+    from sugar.activity import main
+    
+    #for 0.11 we we disable gtk.main call
+    #import main
     main.main()
 else:
     #main650 is the build 650 sugar-activity file, renamed, placed in  pythonpath

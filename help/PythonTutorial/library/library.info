@@ -1,9 +1,0 @@
-[Library]
-name = PythonTutorial
-global_name = PythonTutorial
-long_name = PythonTutorial
-category = media
-library_version = 1
-host_version = 1
-l10n = false
-locale = en

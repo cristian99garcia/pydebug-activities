@@ -29,7 +29,7 @@ import sys
 import traceback
 
 # Local imports.
-from IPython.core import ultratb
+from IPython import ultraTB
 from IPython.kernel.core.display_trap import DisplayTrap
 from IPython.kernel.core.macro import Macro
 from IPython.kernel.core.prompts import CachedOutput
@@ -167,9 +167,9 @@ class Interpreter(object):
             formatters=self.traceback_formatters)
 
         # This is used temporarily for reformating exceptions in certain
-        # cases.  It will go away once the ultratb stuff is ported
+        # cases.  It will go away once the ultraTB stuff is ported
         # to ipython1
-        self.tbHandler = ultratb.FormattedTB(color_scheme='NoColor',
+        self.tbHandler = ultraTB.FormattedTB(color_scheme='NoColor',
                                                  mode='Context',
                                                  tb_offset=2)
 
@@ -211,7 +211,7 @@ class Interpreter(object):
 
     #### Public 'Interpreter' interface ########################################
 
-    def format_traceback(self, et, ev, tb, message=''):
+    def formatTraceback(self, et, ev, tb, message=''):
         """Put a formatted version of the traceback into value and reraise.
         
         When exceptions have to be sent over the network, the traceback 
@@ -375,6 +375,7 @@ class Interpreter(object):
             exec code in self.user_ns
             outflag = 0
         except SystemExit:
+            self.resetbuffer()
             self.traceback_trap.args = sys.exc_info()
         except:
             self.traceback_trap.args = sys.exc_info()
@@ -394,7 +395,7 @@ class Interpreter(object):
             python = self.translator(python)
         self.execute_python(python)
 
-    def get_command(self, i=None):
+    def getCommand(self, i=None):
         """Gets the ith message in the message_cache.
         
         This is implemented here for compatibility with the old ipython1 shell
@@ -491,7 +492,7 @@ class Interpreter(object):
             # somehow.  In the meantime, we'll just stop if there are two lines
             # of pure whitespace at the end.
             last_two = source.rsplit('\n',2)[-2:]
-            #print 'last two:',last_two  # dbg
+            print 'last two:',last_two  # dbg
             if len(last_two)==2 and all(s.isspace() for s in last_two):
                 return COMPLETE_INPUT,False
             else:

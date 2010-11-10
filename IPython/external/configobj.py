@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # configobj.py
 # A config file reader/writer that supports nested sections in config files.
 # Copyright (C) 2005-2008 Michael Foord, Nicola Larosa
@@ -33,7 +32,22 @@ except ImportError:
     pass
 from types import StringTypes
 from warnings import warn
-from codecs import BOM_UTF8, BOM_UTF16, BOM_UTF16_BE, BOM_UTF16_LE
+try:
+    from codecs import BOM_UTF8, BOM_UTF16, BOM_UTF16_BE, BOM_UTF16_LE
+except ImportError:
+    # Python 2.2 does not have these
+    # UTF-8
+    BOM_UTF8 = '\xef\xbb\xbf'
+    # UTF-16, little endian
+    BOM_UTF16_LE = '\xff\xfe'
+    # UTF-16, big endian
+    BOM_UTF16_BE = '\xfe\xff'
+    if sys.byteorder == 'little':
+        # UTF-16, native endianness
+        BOM_UTF16 = BOM_UTF16_LE
+    else:
+        # UTF-16, native endianness
+        BOM_UTF16 = BOM_UTF16_BE
 
 # A dictionary mapping BOM to
 # the encoding to decode with, and what to set the
@@ -86,6 +100,21 @@ noquot = "%s"
 wspace_plus = ' \r\t\n\v\t\'"'
 tsquot = '"""%s"""'
 tdquot = "'''%s'''"
+
+try:
+    enumerate
+except NameError:
+    def enumerate(obj):
+        """enumerate for Python 2.2."""
+        i = -1
+        for item in obj:
+            i += 1
+            yield i, item
+
+try:
+    True, False
+except NameError:
+    True, False = 1, 0
 
 
 __version__ = '4.5.2'
@@ -785,7 +814,7 @@ class Section(dict):
         >>> c2
         {'section1': {'option1': 'False', 'subsection': {'more_options': 'False'}}}
         """
-        for key, val in indict.iteritems():
+        for key, val in indict.items():
             if (key in self and isinstance(self[key], dict) and
                                 isinstance(val, dict)):
                 self[key].merge(val)
@@ -1409,7 +1438,7 @@ class ConfigObj(Section):
             enc = BOM_LIST[self.encoding.lower()]
             if enc == 'utf_16':
                 # For UTF16 we try big endian and little endian
-                for BOM, (encoding, final_encoding) in BOMS.iteritems():
+                for BOM, (encoding, final_encoding) in BOMS.items():
                     if not final_encoding:
                         # skip UTF8
                         continue
@@ -1439,7 +1468,7 @@ class ConfigObj(Section):
             return self._decode(infile, self.encoding)
         
         # No encoding specified - so we need to check for UTF8/UTF16
-        for BOM, (encoding, final_encoding) in BOMS.iteritems():
+        for BOM, (encoding, final_encoding) in BOMS.items():
             if not line.startswith(BOM):
                 continue
             else:
@@ -2452,7 +2481,7 @@ def flatten_errors(cfg, res, levels=None, results=None):
         if levels:
             levels.pop()
         return results
-    for (key, val) in res.iteritems():
+    for (key, val) in res.items():
         if val == True:
             continue
         if isinstance(cfg.get(key), dict):

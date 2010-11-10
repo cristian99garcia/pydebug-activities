@@ -8,7 +8,7 @@ NOSE=nosetests -vvs --with-ipdoctest --doctest-tests --doctest-extension=txt \
 SRC=ipdoctest.py setup.py ../decorators.py
 
 # Default target for clean 'make'
-default: interactiveshell
+default: iplib
 
 # The actual plugin installation
 plugin: IPython_doctest_plugin.egg-info
@@ -34,16 +34,16 @@ deco:
 	$(NOSE0) IPython.testing.decorators
 
 magic: plugin
-	$(NOSE) IPython.core.magic
+	$(NOSE) IPython.Magic
 
 excolors: plugin
-	$(NOSE) IPython.core.excolors
+	$(NOSE) IPython.excolors
 
-interactiveshell: plugin
-	$(NOSE)  IPython.core.interactiveshell
+iplib: plugin
+	$(NOSE)  IPython.iplib
 
 strd: plugin
-	$(NOSE) IPython.core.strdispatch
+	$(NOSE) IPython.strdispatch
 
 engine: plugin
 	$(NOSE) IPython.kernel
@@ -61,7 +61,7 @@ sr: rtest strd
 
 base: dtest rtest test strd deco
 
-quick: base interactiveshell ipipe
+quick: base iplib ipipe
 
 all: base ipython
 

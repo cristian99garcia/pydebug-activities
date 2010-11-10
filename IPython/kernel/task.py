@@ -19,18 +19,19 @@ __docformat__ = "restructuredtext en"
 # Tell nose to skip the testing of this module
 __test__ = {}
 
-import time
+import copy, time
 from types import FunctionType
 
-import zope.interface as zi
+import zope.interface as zi, string
 from twisted.internet import defer, reactor
 from twisted.python import components, log, failure
 
+from IPython.kernel.util import printer
 from IPython.kernel import engineservice as es, error
 from IPython.kernel import controllerservice as cs
-from IPython.kernel.twistedutil import DeferredList
+from IPython.kernel.twistedutil import gatherBoth, DeferredList
 
-from IPython.kernel.pickleutil import can, uncan
+from IPython.kernel.pickleutil import can, uncan, CannedFunction
 
 #-----------------------------------------------------------------------------
 # Definition of the Task objects
