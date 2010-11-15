@@ -55,6 +55,7 @@ class ProgressListener(gobject.GObject):
     
     def onLocationChange(self, webProgress, request, location):
         self.emit('location-changed', location)
+        print('on location change call back executed')
         
     def onProgressChange(self, webProgress, request, curSelfProgress,
                          maxSelfProgress, curTotalProgress, maxTotalProgress):

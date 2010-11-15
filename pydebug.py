@@ -179,6 +179,10 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         #get the persistent data across all debug sessions and start using it
         self.get_config ()
         
+        #give the server a chance to get started so terminal can connect to it
+        self.non_blocking_server()
+        #glib.idle_add(self.non_blocking_server)
+
         if self.request_new_jobject and self.debug_dict.get('jobject_id','') != '':
             self.request_new_jobject = False
             
@@ -279,9 +283,6 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         self.set_visible_canvas(self.panes['PROJECT'])
         self.set_toolbar(self.panes['PROJECT'])
         
-        self.non_blocking_server()
-        #glib.idle_add(self.non_blocking_server)
-
         _logger.debug('about to setup_project_page. Elapsed time: %f'%(time.clock()-start_clock))
         self.setup_project_page()
         _logger.debug('about Returned from setup_project_page. Elapsed time: %f'%(time.clock()-start_clock))
@@ -312,8 +313,11 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
     def realize_cb(self):
         _logger.debug('about total time to realize event: %f'%(time.clock()-start_clock))
         
+    def py_stop(self):
+        self.__stop_clicked_cb(None)
+        
     def __stop_clicked_cb(self,button):
-        _logger('caught stop clicked call back')
+        _logger.debug('caught stop clicked call back')
         self.close(skip_save = True)
         
       
@@ -567,6 +571,8 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
             
     def init_activity_dict(self):
         self.activity_dict['version'] = '1'
+        #try to disable the annoying save panel asking for new title
+        self.activity_dict['title_set_by_user'] = '1'
         self.activity_dict['name'] = 'untitled'
         self.activity_dict['bundle_id'] = ''
         self.activity_dict['command'] = ''

@@ -34,6 +34,13 @@ from sugar import wm, env
 from pdb import *
 from sugar.graphics.toolbutton import ToolButton
 import hulahop
+hulahop.startup(os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'], 'data/gecko'))
+import xpcom
+from xpcom.nsError import *
+#from xpcom import components
+#from xpcom.components import interfaces
+from browser import Browser
+from xpcom.components import interfaces
 
 gobject.threads_init()
 
@@ -46,10 +53,12 @@ _logger = logging.getLogger('PyDebug')
 class Help(Window):
     def __init__(self, parent):
         self.pydebug = parent
-        hulahop.startup(os.path.join(parent.debugger_home, 'gecko'))
-        from browser import Browser
-        import xpcom
-        from xpcom.components import interfaces
+        
+        if version < 0.838: 
+            from hulahop.webview import WebView as Browser
+        else:
+            from browser import Browser
+        
         self.help_id = None
         self.handle = ActivityHandle()
         self.handle.activity_id = util.unique_id()
@@ -114,9 +123,9 @@ class Help(Window):
     def activate_help(self):
         _logger.debug('activate_help called')
         self.help_window.show()
+        self.toolbox._notebook.set_current_page(HELP_PANE)
         if version < 0.838: return
         window = self.get_wnck_window_from_activity_id(self.help_id)
-        self.toolbox._notebook.set_current_page(HELP_PANE)
         if window:
             window.activate(gtk.get_current_event_time())
         else:
@@ -175,7 +184,7 @@ class Toolbar(gtk.Toolbar):
     def __init__(self, parent, web_view):
         gobject.GObject.__init__(self)
         
-        self._activity = parent
+        self._help = parent
         self._web_view = web_view
 
         self._back = ToolButton('go-previous-paired')
@@ -198,13 +207,42 @@ class Toolbar(gtk.Toolbar):
         self.insert(home, -1)
         home.show()
 
-        progress_listener = self._web_view.progress
-        progress_listener.connect('location-changed',
-                                  self._location_changed_cb)
-        progress_listener.connect('loading-stop', self._loading_stop_cb)
+        separator = gtk.SeparatorToolItem()
+        separator.set_draw(False)
+        separator.set_expand(True)
+        self.insert(separator, -1)
+        separator.show()
 
+        stop_button = ToolButton('activity-stop')
+        stop_button.set_tooltip(_('Stop'))
+        #stop_button.props.accelerator = '<Ctrl>Q'
+        stop_button.connect('clicked', self.__stop_clicked_cb)
+        self.insert(stop_button, -1)
+        stop_button.show()
+        
+        if version < 0.838:
+            self._listener = xpcom.server.WrapObject(EarlyListener(self),
+                                                     interfaces.nsIWebProgressListener)
+            weak_ref = xpcom.client.WeakReference(self._listener)
+    
+            mask = interfaces.nsIWebProgress.NOTIFY_STATE_NETWORK | \
+                   interfaces.nsIWebProgress.NOTIFY_LOCATION
+            self._web_view.web_progress.addProgressListener(self._listener, mask)
+        else:
+        
+            progress_listener = self._web_view.progress
+            progress_listener.connect('location-changed',
+                                      self._location_changed_cb)
+            progress_listener.connect('loading-stop', self._loading_stop_cb)
+
+        
+
+    def __stop_clicked_cb(self, button):
+        self._help.pydebug.py_stop()
+        
     def _location_changed_cb(self, progress_listener, uri):
         self.update_navigation_buttons()
+        _logger.debug('location change cb')
 
     def _loading_stop_cb(self, progress_listener):
         self.update_navigation_buttons()
@@ -223,8 +261,33 @@ class Toolbar(gtk.Toolbar):
         self._web_view.web_navigation.goForward()
 
     def _go_home_cb(self, button):
-        self._web_view.load_uri(self._activity.HOME)
+        self._web_view.load_uri(self._help.HOME)
 
+class EarlyListener(object):
+    #from xpcom.components import interfaces
+
+    _com_interfaces_ = interfaces.nsIWebProgressListener
+
+    def __init__(self, toolbar):
+        self._toolbar = toolbar
+    
+    def onLocationChange(self, webProgress, request, location):
+        self._toolbar.update_navigation_buttons()
+        
+    def onProgressChange(self, webProgress, request, curSelfProgress,
+                         maxSelfProgress, curTotalProgress, maxTotalProgress):
+        pass
+    
+    def onSecurityChange(self, webProgress, request, state):
+        pass
+        
+    def onStateChange(self, webProgress, request, stateFlags, status):
+        if stateFlags & interfaces.nsIWebProgressListener.STATE_IS_NETWORK:
+            self._toolbar.update_navigation_buttons()
+
+    def onStatusChange(self, webProgress, request, status, message):
+        pass
+  
 def command_line(cmd):
     _logger.debug('command_line cmd:%s'%cmd)
     p1 = Popen(cmd,stdout=PIPE, shell=True)

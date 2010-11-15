@@ -25,7 +25,7 @@ import gtk.glade
 #import pydebug
 #from pydebug import pydebug_instance
         
-class FileTree():
+class FileTree:
     column_names = [_('Name'), _('Size'), _('Last Changed')]
     
     def __init__(self,parent,widget=None,wTree=None):
@@ -55,8 +55,32 @@ class FileTree():
             self.treeview = gtk.TreeView()
         self.treeview.set_model(self.ft_model)
         self.treeview.show()
-        #self.treeview.set_tooltip_column(4)
+        #the following line was probably disabled for compatibility with earlier sugar
+        #search for TOOLTIP to find problem areas
+        if self.parent.sugar_minor >= 82:
+            self.treeview.set_tooltip_column(4)
+        else:
+            # assign the tooltip
+            tips = gtk.Tooltips()
+            tips.set_tip(self.treeview, "")
+            self.treeview.connect("motion-notify-event",self.show_tooltip, tips, 4) # <---
+            self.treeview.set_events( gtk.gdk.POINTER_MOTION_MASK )
         self.show_hidden = False
+    
+    def show_tooltip(self, widget, event, tooltips, cell, emptytext='no information'):
+        """ 
+        If emptyText is None, the cursor has to enter widget from a side
+        that contains an item, otherwise no tooltip will be displayed. """
+    
+        try:
+            (path,col,x,y) = widget.get_path_at_pos( int(event.x), int(event.y) ) 
+            it = widget.get_model().get_iter(path)
+            value = widget.get_model().get_value(it,cell)
+            tooltips.set_tip(widget, value)
+            tooltips.enable()
+        except:
+            _logger.exception('show_tooltip exception')
+            tooltips.set_tip(widget, emptytext)
 
     def init_columns(self):
         col = gtk.TreeViewColumn()

@@ -596,10 +596,11 @@ class GtkSourceview2Page(SearchablePage):
         return current_line
     
     def left_button_click_on_code_line(self, start_iter, line_end):
-        current_line_marks_list = self.get_marks_in_region_in_category(start_iter, line_end, BREAKPOINT_CAT)
+        start = start_iter.copy()
+        current_line_marks_list = self.get_marks_in_region_in_category(start, line_end, BREAKPOINT_CAT)
         self._activity.breakpoints_changed = True
         for m in current_line_marks_list:
-            if self._activity.sugar_minor < 84:
+            if self._activity.sugar_minor < 82:
                 self.text_buffer.delete_marker(m)                
             else:
                     self.text_buffer.delete_mark(m)
@@ -609,15 +610,18 @@ class GtkSourceview2Page(SearchablePage):
         self.text_buffer.apply_tag_by_name(BREAKPOINT_CAT, start_iter, line_end)
         mark = self.create_mark_universal(BREAKPOINT_CAT, start_iter)
         self.breakpoints[self.clicked_line_num] = ''
-        _logger.debug('set breakpoint')
+        if mark:
+            _logger.debug('set breakpoint')
+        else:
+            _logger.debug('failed to create mark and set breakpoint')
         
     def create_mark_universal(self, category, start_iter):
-        """early sourcview2 has both mark and marker (early)"""
-        _logger.debug('created mark at line: %s in category: %s'%(start_iter.get_line() + 1,category,))
-        if self._activity.sugar_minor < 84:
-            mark = self.text_buffer.create_marker(self.create_category(category), category, start_iter)            
+        """early sourcview2 has both mark and marker, very confusing!"""
+        name = self.create_category(category)
+        if self._activity.sugar_minor < 82:
+            mark = self.text_buffer.create_marker(name, category, start_iter)            
         else:
-            mark = self.text_buffer.create_mark(None, category, start_iter)
+            mark = self.text_buffer.create_source_mark(name, category, start_iter)
         return mark
             
         
@@ -630,13 +634,12 @@ class GtkSourceview2Page(SearchablePage):
         #_logger.debug('mark name:%s'%(mark_str,))
         return mark_str
                             
-    def get_marks_in_region_in_category(self, start_iter, end_iter, category = None):
-        """ return marks_list regardless of which version of sugar we have"""
+    def get_marks_in_region_in_category(self, start, end_iter, category = None):
+        """ return marks_list regardless of which version of sugar we have. """
         mark_list = []
-        if self._activity.sugar_minor < 84:
+        start_iter = start.copy()
+        if self._activity.sugar_minor < 82:
             mark_list = self.text_buffer.get_markers_in_region(start_iter, end_iter)
-            _logger.debug('len of marks list: %s start line:%s end:%s'%(len(mark_list),\
-                            start_iter.get_line(),end_iter.get_line()))
             if not category:
                 return mark_list
             new_list = []
@@ -646,9 +649,13 @@ class GtkSourceview2Page(SearchablePage):
                     new_list.append(m)
             mark_list = new_list
         else:
+            mark_list += self.text_buffer.get_source_marks_at_iter(start_iter, category)
             while self.text_buffer.forward_iter_to_source_mark(start_iter, category):
-                marks = self.text_buffer.get_marks_at_iter(start_iter, category)
+                if start_iter.get_offset() > end_iter.get_offset():
+                    break
+                marks = self.text_buffer.get_source_marks_at_iter(start_iter, category)
                 mark_list += marks
+            _logger.debug('number of marks found in buffer in region:%s'%(len(mark_list),))
         return mark_list
         
 
@@ -665,7 +672,7 @@ class GtkSourceview2Page(SearchablePage):
                     current_state = SHELL_CAT
                     self.text_buffer.remove_tag_by_name(SHELL_CAT, line_start,line_end)
                 #delete the marker
-                if self._activity.sugar_minor < 84 and current_state:
+                if self._activity.sugar_minor < 82 and current_state:
                     self.text_buffer.delete_marker(m)
                 else:
                     self.text_buffer.delete_mark(m)
@@ -703,7 +710,7 @@ class GtkSourceview2Page(SearchablePage):
             self.text_buffer.remove_tag_by_name(current_state, line_start, line_end)
             marker_list = self.get_marks_in_region_in_category(line_start, line_end)
             for m in marker_list:
-                if self._activity.sugar_minor < 84:
+                if self._activity.sugar_minor < 82:
                     self.text_buffer.delete_marker(m)
                 else:
                     self.text_buffer.delete_mark(m)

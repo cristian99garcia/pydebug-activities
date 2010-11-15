@@ -41,7 +41,7 @@ MASKED_ENVIRONMENT = [
 ]
 
 
-class Terminal():
+class Terminal:
     
     def __init__(self,activity):
         self.terminal_notebook = gtk.Notebook()
@@ -50,11 +50,12 @@ class Terminal():
         
         #start the debugger user interface
         #alias_cmd = 'alias go="%s/bin/ipython.py -gthread"\n'%(self.sugar_bundle_path,)
-        alias_cmd = 'alias go="%s/bin/ipython.py "\n'%(self.sugar_bundle_path,)
+        go_cmd = _('go')
+        alias_cmd = 'alias %s="%s/bin/ipython.py "\n'%(go_cmd,self.sugar_bundle_path,)
         self.feed_virtual_terminal(0,alias_cmd)
 
         #self.feed_virtual_terminal(0,'%s/bin/ipython.py  -gthread\n'%self.sugar_bundle_path)
-        self.feed_virtual_terminal(0,'%s/bin/ipython.py  \n'%self.sugar_bundle_path)
+        self.feed_virtual_terminal(0,'clear\n%s/bin/ipython.py  \n'%self.sugar_bundle_path)
         
         #the following become obsolete when start_debug starts automatically via ipython_config.py
         #cmd = 'run ' + os.path.join(self.sugar_bundle_path,'bin','start_debug.py') + '\n'

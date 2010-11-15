@@ -133,7 +133,7 @@ _logger.debug('xmode set to %s'%xmode)
 
 #put module in top level namespace so it can be dreload()-ed
 exec 'import ' + debugee_module
-exec 'reload(%s)'%debugee_module
+#exec 'reload(%s)'%debugee_module
 
 """ if this were to work properly we should set go equal to object Macro
 go_cmd = 'run -d -b %s %s'%(os.path.join(db.pydebug_path,'bin','start_debug.py'),child_path)

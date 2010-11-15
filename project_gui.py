@@ -72,13 +72,22 @@ class ProjectGui(ProjectFunctions):
         separator.set_expand(True)
         separator.show()
 
+        stop_button = ToolButton('activity-stop')
+        stop_button.set_tooltip(_('Stop'))
+        #stop_button.props.accelerator = '<Ctrl>Q'
+        stop_button.connect('clicked', self.__stop_clicked_cb)
+        stop_button.show()
+
         projectbar = gtk.Toolbar()
         projectbar.show_all()
         projectbar.insert(project_run, -1)
         projectbar.insert(separator, -1)
-        #projectbar.insert(self.keep,-1)
+        projectbar.insert(stop_button, -1)
         
         self.projectbar = projectbar
+        
+    def __stop_clicked_cb(self, button):
+        self._activity.py_stop()
         
         #########################################################################################
         
@@ -778,10 +787,33 @@ class DataStoreTree():
             self.treeview = gtk.TreeView()
         self.treeview.set_model(self.journal_model)
         self.treeview.show()
-        #self.treeview.has_tooltip = True
-        #self.treeview.set_tooltip_column(10)
+        #the following 3 lines were probably disabled because earlier sugar complained
+        #search for TOOLTIP to find problem areas
         #self.treeview.connect('query-tooltip',self.display_tooltip)
+        if self._activity.sugar_minor >= 82:
+            self.treeview.set_tooltip_column(10)
+            self.treeview.has_tooltip = True
+        else:
+            tips = gtk.Tooltips()
+            tips.set_tip(self.treeview, "")
+            self.treeview.connect("motion-notify-event",self.show_tooltip, tips, 10) # <---
+            self.treeview.set_events( gtk.gdk.POINTER_MOTION_MASK )
         self.show_hidden = False
+
+    def show_tooltip(self, widget, event, tooltips, cell, emptytext='no information'):
+        """ 
+        If emptyText is None, the cursor has to enter widget from a side
+        that contains an item, otherwise no tooltip will be displayed. """
+    
+        try:
+            (path,col,x,y) = widget.get_path_at_pos( int(event.x), int(event.y) ) 
+            it = widget.get_model().get_iter(path)
+            value = widget.get_model().get_value(it,cell)
+            tooltips.set_tip(widget, value)
+            tooltips.enable()
+        except:
+            _logger.exception('show_tooltip exception')
+            tooltips.set_tip(widget, emptytext)
 
     def init_columns(self):
         col = gtk.TreeViewColumn()

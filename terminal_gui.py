@@ -135,6 +135,7 @@ class TerminalGui(Terminal):
         ip.user_ns['go'] = arg_str
         _logger.debug('about to use "%s" to start ipython debugger\n'%(arg_str))
         """
-        self.feed_virtual_terminal(0,'go\n')
+        go_cmd = _('go')
+        self.feed_virtual_terminal(0,'%s\n'%(go_cmd,))
         pass
     

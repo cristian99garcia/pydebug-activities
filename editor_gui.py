@@ -151,12 +151,12 @@ class EditorGui(GtkSourceview2Editor):
         #editpaste.props.accelerator = '<Ctrl>V'
         editpaste.show()
         self.editbar.insert(editpaste, -1)
-
+        """
         separator = gtk.SeparatorToolItem()
         separator.set_draw(True)
         separator.show()
         self.editbar.insert(separator, -1)
-        
+        """
         editfind = ToolButton('viewmag1')
         editfind.set_tooltip(_('Find and Replace'))
         editfind.connect('clicked', self.show_find)
@@ -164,12 +164,12 @@ class EditorGui(GtkSourceview2Editor):
         #editfind.props.accelerator = '<Ctrl>F'
         editfind.show()
         self.editbar.insert(editfind, -1)
-
+        """
         separator = gtk.SeparatorToolItem()
         separator.set_draw(True)
         separator.show()
         self.editbar.insert(separator, -1)
-        
+        """
         self.zoomout = ToolButton('zoom-out')
         self.zoomout.set_tooltip(_('Zoom out'))
         self.zoomout.connect('clicked', self.__zoomout_clicked_cb)
@@ -182,7 +182,17 @@ class EditorGui(GtkSourceview2Editor):
         self.editbar.insert(self.zoomin, -1)
         self.zoomin.show()
 
+        stop_button = ToolButton('activity-stop')
+        stop_button.set_tooltip(_('Stop'))
+        #stop_button.props.accelerator = '<Ctrl>Q'
+        stop_button.connect('clicked', self.__stop_clicked_cb)
+        self.editbar.insert(stop_button, -1)
+        stop_button.show()
+
         self.editbar.show_all()
+        
+    def __stop_clicked_cb(self, button):
+        self._activity.py_stop()
         
         
     def get_editbar(self):
