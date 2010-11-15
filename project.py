@@ -26,12 +26,15 @@ import gtk
 import time
 import datetime
 import gobject
+from fnmatch import fnmatch
 
 #sugar stuff
 import sugar.env
 from sugar.datastore import datastore
 from sugar.graphics.alert import *
 import sugar.activity.bundlebuilder as bundlebuilder
+#build 650 doesn't include fix_manifest
+#import bundlebuilder
 from sugar.bundle.activitybundle import ActivityBundle
 
 #following only works in sugar 0.82
@@ -42,7 +45,7 @@ from sugar import profile
 #import logging
 from  pydebug_logging import _logger, log_environment, log_dict
 
-class ProjectFunctions():
+class ProjectFunctions:
     
     def __init__(self,activity):
         self._activity = activity
@@ -72,26 +75,36 @@ class ProjectFunctions():
         self.get_editor().clear_embeds()
         
         #create the manifest for the bundle
-        config = self.write_manifest()
+        manifest_ok = self.write_manifest()
         do_tgz = True
-        mime = 'application/binary'
+        mime = self._activity.MIME_ZIP
         activity = 'org.laptop.PyDebug'
         #if manifest was successful, write the xo bundle to the instance directory
-        if config:
+        if manifest_ok:
             do_tgz = False
             try:                
                 #actually write the xo file
-                packager = bundlebuilder.XOPackager(bundlebuilder.Builder(config))
-                packager.package()
-                source = os.path.join(self._activity.child_path,'dist',\
-                                      str(config.xo_name))
-                dest = os.path.join(self._activity.get_activity_root(),\
-                                    'instance',str(config.xo_name))
+                if self._activity.sugar_minor >= 84:
+                    config = bundlebuilder.Config(self._activity.child_path)
+                    packager = bundlebuilder.XOPackager(bundlebuilder.Builder(config))
+                    packager.package()
+                    xo_name = config.xo_name
+                    source = os.path.join('dist', xo_name)
+                else:
+                    #how to create the zipped xo file on build 650
+                    name = self._activity.activity_dict.get('name','')
+                    xo_name = bundlebuilder._get_package_name(name)
+                    _logger.debug('zipped xo name:%s current dir: %s'%(xo_name, os.getcwd(),))
+                    bundlebuilder.cmd_dist(name, 'MANIFEST')
+                    source = xo_name
+                    
+                dest = os.path.join(self._activity.get_activity_root(),
+                                    'instance', xo_name)
                 _logger.debug('writing to the journal from %s to %s.'%(source,dest))
                 if os.path.isfile(dest):
                     os.unlink(dest)
                 try:
-                    package = str(config.xo_name)
+                    package = xo_name
                     shutil.copy(source,dest)
                     mime = self._activity.MIME_TYPE
                     activity = self._activity.activity_dict.get('activity','')
@@ -99,9 +112,9 @@ class ProjectFunctions():
                 except IOError:
                     _logger.debug('shutil.copy error %d: %s. ',IOError[0],IOError[1])
                     do_tgz = True
-                    mime = 'application/zip'
+                    mime = self._activity.MIME_ZIP
             except Exception, e:
-                _logger.debug('outer exception %r'%e)
+                _logger.exception('outer exception %r'%e)
                 do_tgz = True
         else:
             _logger.debug('unable to create manifest')
@@ -189,20 +202,58 @@ class ProjectFunctions():
     
     def write_manifest(self):
         """ use sugar routines to build a new MANIFEST file """
+        IGNORE_DIRS = ['dist', '.git']
+        IGNORE_FILES = ['.gitignore', 'MANIFEST', '*.pyc', '*~', '*.bak', 'pseudo.po']
         try:
             os.remove(os.path.join(self._activity.child_path,'MANIFEST'))
         except:
             pass
         dest = self._activity.child_path
+        manifest = self.list_files(dest, IGNORE_DIRS, IGNORE_FILES)
         _logger.debug('Writing manifest to %s.'%(dest))
         try:
+            """
             config = bundlebuilder.Config(dest)
             b = bundlebuilder.Builder(config)
             b.fix_manifest()
-        except:
-            _logger.debug('fix manifest error: ',sys.exc_type,sys.exc_info()[0],sys.exc_info()[1])
-            return None
-        return config
+            """
+            f = open(os.path.join(self._activity.child_path, "MANIFEST"), "wb")
+            for line in manifest:
+                f.write(line + "\n")
+            f.close()
+        except Exception, e:
+            _logger.debug('fix manifest error: %s'%(e,))
+            return False
+        return True
+
+    #following two functions lifted (slight mods) from bundlebuilder build 852
+    def fix_manifest(self):
+
+        
+        f = open(os.path.join(self._activity.child_path, "MANIFEST"), "wb")
+        for line in manifest:
+            f.write(line + "\n")
+
+    def list_files(self, base_dir, ignore_dirs=None, ignore_files=None):
+        result = []
+    
+        base_dir = os.path.abspath(base_dir)
+    
+        for root, dirs, files in os.walk(base_dir):
+            if ignore_files:
+                for pattern in ignore_files:
+                    files = [f for f in files if not fnmatch(f, pattern)]
+                    
+            rel_path = root[len(base_dir) + 1:]
+            for f in files:
+                result.append(os.path.join(rel_path, f))
+    
+            if ignore_dirs and root == base_dir:
+                for ignore in ignore_dirs:
+                    if ignore in dirs:
+                        dirs.remove(ignore)
+    
+        return result
 
     def just_do_tar_gz(self):
         """

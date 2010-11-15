@@ -43,7 +43,8 @@ from sugar import profile
 from terminal_gui import TerminalGui
 from editor import  S_WHERE
 from editor import GtkSourceview2Page
-from editor_gui import EditorGui 
+from editor_gui import EditorGui
+from page import SearchOptions, S_WHERE
 from project_gui import ProjectGui
 from project import ProjectFunctions
 from util import Utilities
@@ -113,22 +114,11 @@ pydebug_instance = None
 
 start_clock = 0
 
-#following options taken from Develop_App
-class Options:
-    def __init__(self, template = None, **kw):
-        if template:
-            self.__dict__ = template.__dict__.copy()
-        else:
-            self.__dict__ = {}
-        self.__dict__.update(kw)
-
-class SearchOptions(Options):
-    pass
-    
 class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
     #ipshell = IPShellEmbed()
     MIME_TYPE = 'application/vnd.olpc-sugar'
     DEPRECATED_MIME_TYPE = 'application/vnd.olpc-x-sugar'
+    MIME_ZIP = 'application/zip'
     _zipped_extension = '.xo'
     _unzipped_extension = '.activity'
     dirty = False
@@ -249,6 +239,13 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
                                     stay = False
                                     )
         self.safe_to_replace = False
+        
+        #get the sugar version
+        (major,minor,micro,release) = self._activity.util.sugar_version()
+        _logger.debug('sugar version major:%s minor:%s micro:%s release:%s'%(major,minor,micro,release))
+        if not minor:
+            minor = 70
+        self.sugar_minor = minor
         
         #########################################################################################
             
@@ -473,6 +470,8 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
             self.manifest_class.set_file_sys_root(self.child_path)
         if self.icon_window:
             self.icon_window.destroy()
+        if not index == self.panes['EDITOR'] and self.find_window:
+            self.find_window.hide()
         self.current_pd_page = index
         gobject.idle_add(self.grab_notebook_focus)
         

@@ -27,7 +27,7 @@ from exceptions import *
 from gettext import gettext as _
 import shutil
 
-from page import GtkSourceview2Page, BREAKPOINT_CAT
+from page import GtkSourceview2Page, BREAKPOINT_CAT, SearchOptions, S_WHERE
 
 # Initialize logging.
 from  pydebug_logging import _logger, log_environment, log_dict
@@ -45,10 +45,7 @@ SHELL_INSERT = 'from IPython.Shell import IPShellEmbed; pdbshell = IPShellEmbed(
 #insertion = 'from IPython.Debugger import Tracer; debug = Tracer(); debug() #PyDebugTemp\n'
 """
 
-class S_WHERE:
-    selection, file, multifile = range(3) #an enum
-    
-class GtkSourceview2Editor():
+class GtkSourceview2Editor:
     __gsignals__ = {
         'changed': (gobject.SIGNAL_RUN_FIRST, None, [])
     }
@@ -67,6 +64,9 @@ class GtkSourceview2Editor():
         self.load_breakpoints = False
         self.font_size = 8
         self.interactive_close = False
+        
+    def set_current_page(self,page):
+        self.edit_notebook.set_current_page(page)
         
     def _remove_this_page_cb(self,widget):
         self.interactive_close = True
@@ -261,8 +261,10 @@ class GtkSourceview2Editor():
         for i in range(self.edit_notebook.get_n_pages()):
             page = self.edit_notebook.get_nth_page(i)
             if isinstance(page,GtkSourceview2Page):
-                iter = page.text_buffer.get_iter_at_line_offset(0,0)
-                while page.text_buffer.forward_iter_to_source_mark(iter,BREAKPOINT_CAT):
+                start, end = page.text_buffer.get_bounds()
+                mark_list = page.get_marks_in_region_in_category(start, end, BREAKPOINT_CAT)
+                for m in mark_list:
+                    iter = page.text_buffer.get_iter_at_mark(m)
                     break_list.append('%s:%s'%(page.fullPath,iter.get_line()+1,))
         return break_list
 

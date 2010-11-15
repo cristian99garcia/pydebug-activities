@@ -26,8 +26,9 @@ from gettext import gettext as _
 import gtk
 import hashlib
 import time
-from jarabe.model import shell
-home_model = shell.get_model()
+
+#from jarabe.model import shell
+#home_model = shell.get_model()
 
 #sugar stuff
 from sugar.graphics.alert import *
@@ -184,7 +185,7 @@ class Utilities():
         global home_model
         (major, minor, micro, release) = self.sugar_version() 
         _logger.debug('sugar version %s'%minor)
-        """
+        
         if minor and minor >= 84:
             _logger.debug('using jarabe')
             from jarabe.model import shell
@@ -200,7 +201,7 @@ class Utilities():
         else:
             _logger.error('failed to retrieve home model')
             return None
-        """
+        
         return home_model
         
     def get_activity_from_activity_id(self, activity_id):

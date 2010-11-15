@@ -29,8 +29,9 @@ import sugar.graphics.toolbutton
 
 #application stuff
 from terminal import Terminal
-from editor import GtkSourceview2Editor, S_WHERE
+from editor import GtkSourceview2Editor
 import pydebug
+from page import SearchOptions, S_WHERE
 
 #import logging
 from  pydebug_logging import _logger, log_environment
@@ -309,12 +310,11 @@ class EditorGui(GtkSourceview2Editor):
             self._findprev.set_sensitive(True)
             self._findnext.set_sensitive(True)
             if not self.s_opts.use_regex: #do not do partial searches for regex
+                _logger.debug('finding:%s'%(text,))
                 if self.find_next(text, 
                             SearchOptions(self.s_opts, 
                             stay=True, 
-                            where=(self.s_opts.where if 
-                            self.s_opts.where != S_WHERE.multifile
-                            else S_WHERE.file))):
+                            where = self.s_opts.where if self.s_opts.where != S_WHERE.multifile else S_WHERE.file)):
                     #no multifile, or focus gets grabbed
                     self._replace_button.set_sensitive(True)
                     
@@ -325,9 +325,7 @@ class EditorGui(GtkSourceview2Editor):
     def _findprev_cb(self, button=None):
         ftext = self._search_entry.props.text
         if ftext:
-            if self.find_next(ftext, 
-                                               SearchOptions(self.s_opts,
-                                                             forward=False)):
+            if self.find_next(ftext, SearchOptions(self.s_opts, forward=False)):
                 self._replace_button.set_sensitive(True)
                         
     def _findnext_cb(self, button=None):
@@ -354,6 +352,7 @@ class EditorGui(GtkSourceview2Editor):
             self.find_window.set_resizable(False)
             self.find_window.set_modal(False)
             self.find_window.connect('size_request',self._size_request_cb)
+            self.find_window.set_transient_for(self._activity.window.get_toplevel())
         #if there is any selected text, put it in the find entry field, and grab focus
         selected = self.get_selected()
         _logger.debug('selected text is %s'%selected)

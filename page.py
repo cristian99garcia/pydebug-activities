@@ -22,6 +22,7 @@ import os.path
 import sys
 import re
 import mimetypes
+from time import time
 from exceptions import *
 #import hashlib
 from gettext import gettext as _
@@ -39,10 +40,26 @@ EMBEDED_SHELL_COLOR = '#DDFFDD'
 EMBEDED_BREAKPOINT_COLOR = '#DDDDFF'
 TRACE_INSERT = 'from IPython.Debugger import Tracer; debug = Tracer(); debug() #PyDebugTemp\n'
 SHELL_INSERT = 'from IPython.Shell import IPShellEmbed; pdbshell = IPShellEmbed([],banner="%s"); pdbshell() #PyDebugTemp\n'
+EMBED_TOKEN = 'IPShellEmbed'
 #following is for 0.11 ipython
 #insertion = 'from IPython.frontend.terminal.embed import embed; embed() #PyDebugTemp\n'
 #insertion = 'from IPython.Debugger import Tracer; debug = Tracer(); debug() #PyDebugTemp\n'
 
+#following options taken from Develop_App
+class Options:
+    def __init__(self, template = None, **kw):
+        if template:
+            self.__dict__ = template.__dict__.copy()
+        else:
+            self.__dict__ = {}
+        self.__dict__.update(kw)
+
+class SearchOptions(Options):
+    pass
+    
+class S_WHERE:
+    selection, file, multifile = range(3) #an enum
+    
 class SearchablePage(gtk.ScrolledWindow):
     def get_selected(self):
         try:
@@ -195,7 +212,8 @@ class SearchablePage(gtk.ScrolledWindow):
         self.thismark = thismark = self.text_buffer.create_mark('mymark',_iter)
         self.text_view.scroll_to_mark(thismark,0.0,True)
         mark_iter = self.text_buffer.get_iter_at_mark(thismark)
-        _logger.debug('scroll to line:%s mark is at line %s'%(line,mark_iter.get_line(),))
+        #_logger.debug('scroll to line:%s mark is at line %s'%(line,mark_iter.get_line(),))
+        #experimentation shows that the following delay is required for newly loading files
         gobject.idle_add(self.scroll_cb)
         
     def scroll_cb(self):
@@ -258,14 +276,7 @@ class GtkSourceview2Page(SearchablePage):
         _logger.debug('search path for gtksourceview is %r'%mgr.get_search_path())
         """
         #build 650 doesn't seem to have the same means of specifying the search directory
-        info = self._activity.util.sugar_version()
-        if len(info)>0:
-            (major,minor,micro,release) = info
-            _logger.debug('sugar version major:%s minor:%s micro:%s release:%s'%info)
-        else:
-            _logger.debug('sugar version failure')
-            minor = 70
-        if minor > 80:
+        if self._activity.sugar_minor > 80:
             mgr = gtksourceview2.StyleSchemeManager()
         else:
             mgr = gtksourceview2.StyleManager()
@@ -345,8 +356,7 @@ class GtkSourceview2Page(SearchablePage):
             line_end = line_start.copy()
             line_end.forward_line()
             self.text_buffer.apply_tag_by_name(BREAKPOINT_CAT,line_start,line_end)
-            mark = self.text_buffer.create_source_mark(None,BREAKPOINT_CAT,line_start)
-            #breakpoints simulates a sparse array of marks stored in a dictionary by keyed by line number
+            mark = self.create_mark_universal(BREAKPOINT_CAT, line_start)
             _logger.debug('set breakpoint on line:%s'%line)
                 
     def save_hash(self):   
@@ -439,8 +449,15 @@ class GtkSourceview2Page(SearchablePage):
         """breakpoints saved in debug_dict {<activity folder> - <filename> : [<numeric list>]}"""
         break_list = ''
         file_nickname = self._activity.glean_file_id_from_fullpath(self.fullPath)
-        iter = self.text_buffer.get_iter_at_line_offset(0,0)
-        while self.text_buffer.forward_iter_to_source_mark(iter,BREAKPOINT_CAT):
+        
+        #build 650 does not have gtksourceview.forward_iter_to_source_mark
+        #iter = self.text_buffer.get_iter_at_line_offset(0,0)
+        #while self.text_buffer.forward_iter_to_source_mark(iter,BREAKPOINT_CAT):
+        
+        (start,end) = self.text_buffer.get_bounds()
+        marks_list = self.get_marks_in_region_in_category(start, end, BREAKPOINT_CAT)
+        for m in marks_list:
+            iter = self.text_buffer.get_iter_at_mark(m)
             break_list += str(iter.get_line()+1) + ','
         if len(break_list) > 0:
             #trim off last ','
@@ -564,6 +581,7 @@ class GtkSourceview2Page(SearchablePage):
                 current_state = self.delete_current_insertion(line_start, line_end)
 
             #previously inserted lines, marks are deleted, now do next_state
+            _logger.debug('ready for insertion, current state:%s'%(current_state,))
             self.make_insertion(current_state, line_start, line_end)
         return False        
 
@@ -578,34 +596,79 @@ class GtkSourceview2Page(SearchablePage):
         return current_line
     
     def left_button_click_on_code_line(self, start_iter, line_end):
-        current_line_marks_list = self.text_buffer.get_source_marks_at_line(self.clicked_line_num, None)
+        current_line_marks_list = self.get_marks_in_region_in_category(start_iter, line_end, BREAKPOINT_CAT)
         self._activity.breakpoints_changed = True
         for m in current_line_marks_list:
-            if m.get_category() == BREAKPOINT_CAT:
-                self.text_buffer.delete_mark(m)
-                self.text_buffer.remove_tag_by_name(BREAKPOINT_CAT, start_iter, line_end)
-                _logger.debug('clear breakpoint')
-                return
+            if self._activity.sugar_minor < 84:
+                self.text_buffer.delete_marker(m)                
+            else:
+                    self.text_buffer.delete_mark(m)
+            self.text_buffer.remove_tag_by_name(BREAKPOINT_CAT, start_iter, line_end)
+            _logger.debug('clear breakpoint')
+            return
         self.text_buffer.apply_tag_by_name(BREAKPOINT_CAT, start_iter, line_end)
-        mark = self.text_buffer.create_source_mark(None, BREAKPOINT_CAT, start_iter)
+        mark = self.create_mark_universal(BREAKPOINT_CAT, start_iter)
         self.breakpoints[self.clicked_line_num] = ''
         _logger.debug('set breakpoint')
+        
+    def create_mark_universal(self, category, start_iter):
+        """early sourcview2 has both mark and marker (early)"""
+        _logger.debug('created mark at line: %s in category: %s'%(start_iter.get_line() + 1,category,))
+        if self._activity.sugar_minor < 84:
+            mark = self.text_buffer.create_marker(self.create_category(category), category, start_iter)            
+        else:
+            mark = self.text_buffer.create_mark(None, category, start_iter)
+        return mark
+            
+        
+    def create_category(self,prefix):
+        """early sugar does not have categories, and permits no marks with identical
+        names.  So to mimic the later gtksourceview2, we apend a time_string to the
+        category name and use startswith as a test of category
+        """
+        mark_str = prefix + str(time())
+        #_logger.debug('mark name:%s'%(mark_str,))
+        return mark_str
+                            
+    def get_marks_in_region_in_category(self, start_iter, end_iter, category = None):
+        """ return marks_list regardless of which version of sugar we have"""
+        mark_list = []
+        if self._activity.sugar_minor < 84:
+            mark_list = self.text_buffer.get_markers_in_region(start_iter, end_iter)
+            _logger.debug('len of marks list: %s start line:%s end:%s'%(len(mark_list),\
+                            start_iter.get_line(),end_iter.get_line()))
+            if not category:
+                return mark_list
+            new_list = []
+            for m in mark_list:
+                _logger.debug('marker name:%s'%(m.get_name(),))
+                if m.get_name().startswith(category):
+                    new_list.append(m)
+            mark_list = new_list
+        else:
+            while self.text_buffer.forward_iter_to_source_mark(start_iter, category):
+                marks = self.text_buffer.get_marks_at_iter(start_iter, category)
+                mark_list += marks
+        return mark_list
+        
 
     def right_button_click_on_code_line(self, line_start, line_end):
         #if we specify None for marks_category, we get all of them
-        current_line_marks_list = self.text_buffer.get_source_marks_at_line(self.clicked_line_num, None)
+        current_line_marks_list = self.get_marks_in_region_in_category(line_start, line_end, None)
         current_state = None
         if len(current_line_marks_list) > 0:
             for m in current_line_marks_list:
-                if m.get_category() == TRACE_CAT:
+                if m.get_name().startswith(TRACE_CAT):
                     current_state = TRACE_CAT
                     self.text_buffer.remove_tag_by_name(TRACE_CAT, line_start,line_end)
-                    self.text_buffer.delete_mark(m)
-                if m.get_category() == SHELL_CAT:
+                if m.get_name().startswith(SHELL_CAT):
                     current_state = SHELL_CAT
                     self.text_buffer.remove_tag_by_name(SHELL_CAT, line_start,line_end)
+                #delete the marker
+                if self._activity.sugar_minor < 84 and current_state:
+                    self.text_buffer.delete_marker(m)
+                else:
                     self.text_buffer.delete_mark(m)
-                _logger.debug('mark category:%s'%(m.get_category(),))
             #now delete the embed code in the line preceedng the marker line
             debug_start = line_start.copy()
             debug_start.backward_line()
@@ -629,7 +692,7 @@ class GtkSourceview2Page(SearchablePage):
         self.text_buffer.delete(line_start, line_end)
         if self.current_line.find(TRACE_INSERT) > -1:
             current_state = TRACE_CAT
-        elif self.current_line.find(SHELL_INSERT) > -1:
+        elif self.current_line.find(EMBED_TOKEN) > -1:
             current_state = SHELL_CAT
         else:
             current_state = None            
@@ -638,7 +701,12 @@ class GtkSourceview2Page(SearchablePage):
             line_end = line_start.copy()
             line_end.forward_line()
             self.text_buffer.remove_tag_by_name(current_state, line_start, line_end)
-            self.text_buffer.remove_source_marks(line_start, line_end, None)
+            marker_list = self.get_marks_in_region_in_category(line_start, line_end)
+            for m in marker_list:
+                if self._activity.sugar_minor < 84:
+                    self.text_buffer.delete_marker(m)
+                else:
+                    self.text_buffer.delete_mark(m)
         else:
             _logger.debug('failed to find mark %s during click on inserted line'%(current_cat,))
         return current_state
@@ -656,7 +724,7 @@ class GtkSourceview2Page(SearchablePage):
         elif current_state == SHELL_CAT:
             #previous insertion is deleted, no insertion to do
             return
-        mark = self.text_buffer.create_source_mark(None, tag_name, line_start)
+        mark = self.create_mark_universal(tag_name, line_start)
         line_no = line_start.get_line()
         self.embeds[line_no] = ''
         padding = self.get_indent(self.current_line)

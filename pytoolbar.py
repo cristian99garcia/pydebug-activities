@@ -163,11 +163,11 @@ class ActivityToolbar(gtk.Toolbar):
         self._activity.metadata['title'] = title
         self._activity.metadata['title_set_by_user'] = '1'
         self._activity.save()
-
+        """
         shared_activity = self._activity.get_shared_activity()
         if shared_activity:
             shared_activity.props.name = title
-
+        """
         self._update_title_sid = None
         return False
 

@@ -166,7 +166,7 @@ if version and version >= 0.839:
 else:
     from sugar.activity.registry import get_registry
     registry = get_registry()
-    registry.add_bundle(path)
+    registry.add_bundle(child_path)
     activity_list = registry.find_activity(bundle_id)
     if len(activity_list) == 0:
         _logger.error('Activity %s not found'%bundle_id)

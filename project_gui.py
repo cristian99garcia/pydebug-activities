@@ -808,7 +808,7 @@ class DataStoreTree():
         self.journal_model.clear()
         ds_list = []
         num_found = 0
-        mime_list = [self._activity.MIME_TYPE,'application/zip']
+        mime_list = [self._activity.MIME_TYPE,self._activity.MIME_ZIP]
         
         #build 650 doesn't seem to understand correctly the dictionary with a list right hand side
         info = self._activity.util.sugar_version()
@@ -825,14 +825,19 @@ class DataStoreTree():
                 (results,count) = datastore.find({'mime_type': self._activity.MIME_TYPE})
                 ds_list.extend(results)
                 num_found += count            
-                (results,count) = datastore.find({'mime_type': 'application/zip'})
+                (results,count) = datastore.find({'mime_type': self._activity.MIME_ZIP})
                 ds_list.extend(results)
+                num_found += count            
         except Exception,e:
-            _logger.error('datastore error %s'%e)
-            return []
+            _logger.exception('datastore error %s'%e)
+            return
+        
+        #sort the list around mtime
+        ds_list = sorted(ds_list, key=lambda entry: entry.get_metadata().get('mtime'), reverse=True)
         if num_found < self.limit:
             self.journal_max = self.journal_page_num * self.journal_page_size + num_found
         _logger.debug( 'datastoretree-get_datastore_list: count= %s'%num_found)
+        
         keys = ('title','size','timestamp','activity','package','mime_type','file_path')
         for jobject in ds_list:
             itemlist = [None,]
