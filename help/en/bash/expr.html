@@ -1,0 +1,198 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>expr MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> expr</h1> 
+<p>Evaluate expressions, evaluates an expression and writes the result 
+on standard output.</p>
+<pre>Syntax
+      expr <em>expression</em>...
+
+Description:
+Each token of the expression must be a separate argument.
+
+Operands are either numbers or strings.  `expr' coerces anything
+appearing in an operand position to an integer or a string depending on
+the operation being applied to it.
+
+Strings are not quoted for `expr' itself, though you may need to
+quote them to protect characters with special meaning to the shell,
+e.g., spaces.
+
+Operators may given as infix symbols or prefix keywords.  Parentheses
+may be used for grouping in the usual manner (you must quote parentheses
+to avoid the shell evaluating them, however).
+
+String expressions
+------------------
+
+   `expr' supports pattern matching and other string operators.  These
+have lower precedence than both the numeric and relational operators (in
+the next sections).
+
+`STRING : REGEX'
+     Perform pattern matching.  The arguments are coerced to strings
+     and the second is considered to be a (basic, a la GNU `grep')
+     regular expression, with a `^' implicitly prepended.  The first
+     argument is then matched against this regular expression.
+
+     If the match succeeds and REGEX uses `\(' and `\)', the `:'
+     expression returns the part of STRING that matched the
+     subexpression; otherwise, it returns the number of characters
+     matched.
+
+     If the match fails, the `:' operator returns the null string if
+     `\(' and `\)' are used in REGEX, otherwise 0.
+
+     Only the first `\( ... \)' pair is relevant to the return value;
+     additional pairs are meaningful only for grouping the regular
+     expression operators.
+
+     In the regular expression, `\+', `\?', and `\|' are operators
+     which respectively match one or more, zero or one, or separate
+     alternatives.  SunOS and other `expr''s treat these as regular
+     characters.  (POSIX allows either behavior.)
+
+`match STRING REGEX'
+     An alternative way to do pattern matching.  This is the same as
+     `STRING : REGEX'.
+
+`substr STRING POSITION LENGTH'
+     Returns the substring of STRING beginning at POSITION with length
+     at most LENGTH.  If either POSITION or LENGTH is negative, zero,
+     or non-numeric, returns the null string.
+
+`index STRING CHARSET'
+     Returns the first position in STRING where the first character in
+     CHARSET was found.  If no character in CHARSET is found in STRING,
+     return 0.
+
+`length STRING'
+     Returns the length of STRING.
+
+`quote TOKEN'
+     Interpret TOKEN as a string, even if it is a keyword like MATCH or
+     an operator like `/'.  This makes it possible to test `expr length
+     quote "$x"' or `expr quote "$x" : '.*/\(.\)'' and have it do the
+     right thing even if the value of $X happens to be (for example)
+     `/' or `index'.  This operator is a GNU extension.  It is disabled
+     when the environment variable `POSIXLY_CORRECT' is set.
+
+To make `expr' interpret keywords as strings, you must use the
+`quote' operator.
+
+Numeric expressions
+-------------------
+
+   `expr' supports the usual numeric operators, in order of increasing
+precedence.  The string operators (previous section) have lower
+precedence, the connectives (next section) have higher.
+
+`+ -'
+     Addition and subtraction.  Both arguments are coerced to numbers;
+     an error occurs if this cannot be done.
+
+`* / %'
+     Multiplication, division, remainder.  Both arguments are coerced to
+     numbers; an error occurs if this cannot be done.
+
+Relations for `expr'
+--------------------
+
+`expr' supports the usual logical connectives and relations.  These
+are higher precedence than either the string or numeric operators
+(previous sections).  Here is the list, lowest-precedence operator
+first.
+
+`|'  Returns its first argument if that is neither null nor 0,
+     otherwise its second argument.
+
+`&'  Return its first argument if neither argument is null or 0,
+     otherwise 0.
+
+`< <= = == != >= >'
+     Compare the arguments and return 1 if the relation is true, 0
+     otherwise.  `==' is a synonym for `='.  `expr' first tries to
+     coerce both arguments to numbers and do a numeric comparison; if
+     either coercion fails, it does a lexicographic comparison.
+
+Exit status:
+------------
+
+     0 if the expression is neither null nor 0,
+     1 if the expression is null or 0,
+     2 for invalid expressions.
+
+<strong>Examples</strong>
+
+   Here are a few examples, including quoting for shell metacharacters.
+
+   To add 1 to the shell variable `foo', in Bourne-compatible shells:
+     foo=`expr $foo + 1`
+
+   To print the non-directory part of the file name stored in `$fname',
+   which need not contain a `/'.
+     expr $fname : '.*/\(^.*\)' '^|' $fname
+
+   An example showing that `\+' is an operator:
+     expr aaa : 'a\+'
+     => 3
+
+     expr abc : 'a\(.\)c'
+     => b
+     expr index abcdef cz
+     => 3
+     expr index index a
+     error--> expr: syntax error
+     expr index quote index a
+     => 0</pre>
+<p><em>&quot;Art is man's expression of his joy in labor&quot; - William Morris</em></p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="eval.html">eval</a> - Evaluate several commands/arguments<br>
+  <a href="for.html">for</a> - Expand <var>words</var>, and execute <var>commands</var> 
+  <br>
+  <a href="function.html">function</a> - Define Function Macros <br>
+  <a href="awk.html">gawk</a> - Find and Replace text within file(s) <br>
+  <a href="test.html">test</a> - Evaluate a conditional expression <br>
+Equivalent Windows commands: 
+  <a href="../term_tools/nt/set.html">SET</a> /A - environment variable arithmetic </p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+<title>SS64 RSS Feed</title>
+<link>http://ss64.com</link>
+<description>Command Line Reference</description>
+<language>en-gb</language>
+<pubDate>Fri, 08 Aug 2008 17:00:00 GMT</pubDate>
+<lastBuildDate>Fri, 12 Jun 2009 14:27:34 GMT</lastBuildDate>
+<atom:link href="http://ss64.com/rss.xml" rel="self" type="application/rss+xml" />
+<docs>http://ss64.com/rssinfo.html</docs>
+	<item>
+	<title>Oracle commands</title> 
+	<link>http://ss64.com/ora/</link>
+	<description>Including PL/SQL and Data dictionary views</description> 
+	<pubDate>Fri, 13 Jan 2006 00:00:01 GMT</pubDate> 
+	</item>
+	<item>
+	<title>SQL Server commands</title> 
+	<link>http://ss64.com/sql/</link>
+	<description>SQL Server command reference</description> 
+	<pubDate>Sun, 16 Jul 2006 00:00:01 GMT</pubDate> 
+	</item>
+	
+	<item>
+	<title>Windows XP commands</title> 
+	<link>http://ss64.com/nt/</link>
+	<description>Including Resource Kits</description> 
+	<pubDate>Thu, 12 Jan 2006 10:31:51 GMT</pubDate> 
+	</item>
+	<item>
+	<title>PowerShell commands</title> 
+	<link>http://ss64.com/ps/</link>
+	<description>Including functions and sample scripts</description> 
+	<pubDate>Fri, 08 Aug 2008 17:00:00 GMT</pubDate> 
+	</item>
+	<item>
+	<title>Linux BASH commands</title> 
+	<link>http://ss64.com/bash/</link>
+	<description>Built-in and Shell tools</description> 
+	<pubDate>Thu, 12 Jan 2006 00:00:52 GMT</pubDate> 
+	</item>
+	<item>
+	<title>Apple OS X commands</title> 
+	<link>http://ss64.com/osx/</link>
+	<description>Built-in and Shell tools</description> 
+	<pubDate>Fri, 12 Jun 2009 14:27:34 GMT</pubDate> 
+	</item>
+	</channel>
+	</rss>

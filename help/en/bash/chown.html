@@ -1,0 +1,131 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>chown MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> chown</h1> 
+<p>Change  owner, change the user and/or group ownership of each given File to a new Owner.<br>
+Chown can also change the ownership of a file to match the user/group of an existing reference file.</p>
+<pre>SYNTAX
+      chown [<em>Options</em>]... <em>NewOwner File</em>...
+
+      chown [<em>Options</em>]... :Group <em>File</em>...
+
+      chown [<em>Options</em>]... --reference=RFILE <em>File</em>...
+
+   If used, NewOwner specifies the new owner and/or group as follows
+   (with no embedded white space):
+
+     [OWNER] [ [:.] [GROUP] ]
+
+   Some examples of how the owner/group can be specified:
+
+     OWNER
+     If only an OWNER (a user name or numeric user id) is given, that
+     user is made the owner of each given file, and the files' group is
+     not changed.
+
+     OWNER.GROUP
+     OWNER:GROUP
+     If the OWNER is followed by a colon or dot and a GROUP (a group
+     name or numeric group id), with no spaces between them, the group
+     ownership of the files is changed as well (to GROUP).
+
+     OWNER.
+     OWNER:
+     If a colon or dot but no group name follows OWNER, that user is
+     made the owner of the files and the group of the files is changed
+     to OWNER's login group.
+
+     .GROUP
+     :GROUP
+     If the colon or dot and following GROUP are given, but the owner
+     is omitted, only the group of the files is changed; in this case,
+     `chown' performs the same function as `<a href="chgrp.html">chgrp</a>'.
+
+OPTIONS:
+
+-c
+--changes
+     Verbosely describe the action for each FILE whose ownership
+     actually changes.
+
+--dereference
+     Do not act on symbolic links themselves but rather on what they
+     point to.
+
+-f
+--silent
+--quiet
+     Do not print error messages about files whose ownership cannot be
+     changed.
+
+-h
+--no-dereference
+     Act on symbolic links themselves instead of what they point to.
+     This is the default.  This mode relies on the `lchown' system call.
+     On systems that do not provide the `lchown' system call, `chown'
+     fails when a file specified on the command line is a symbolic link.
+     By default, no diagnostic is issued for symbolic links encountered
+     during a recursive traversal, but see `--verbose'.
+
+--reference=<em>FILE</em>
+     Use the user and group of the reference <em>FILE</em> instead of an explicit
+     <em>NewOwner</em> value.
+
+-R
+--recursive
+     Recursively change ownership of directories and their contents. 
+
+-v
+--verbose
+     Verbosely describe the action (or non-action) taken for every FILE.
+     If a symbolic link is encountered during a recursive traversal on
+     a system without the `lchown' system call, and `--no-dereference'
+     is in effect, then issue a diagnostic saying neither the symbolic
+     link nor its referent is being changed.</pre>
+<p><i>&ldquo;It is in men as in soils where sometimes there is a vein of gold which the owner knows not&rdquo; - Jonathan Swift </i></p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="chgrp.html">chgrp</a> - Change group ownership<br>
+  <a href="chmod.html">chmod</a> - Change access permissions <br>
+<a href="../term_tools/bash/syntax-permissions.html">bash syntax - Permissions</a><br>
+Equivalent Windows command:<a href="../term_tools/nt/xcacls.html"> XCACLS</a> - Change file permissions </p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

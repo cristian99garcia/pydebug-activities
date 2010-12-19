@@ -1,0 +1,196 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>tail MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> tail</h1> 
+<p>Output the last part of files, print the last part (10 lines by 
+  default) of each FILE; <br>
+  tail reads from standard input if no files are given or when given a FILE of 
+`-'.</p>
+<pre>Syntax
+      tail [<em>options</em>]... [<em>file</em>]...
+
+      tail -<em>Number</em> [<em>options</em>]... [<em>file</em>]...
+
+      tail +<em>Number</em> [<em>options</em>]... [<em>file</em>]...
+
+Options
+
+-<em>COUNT</em>
++<em>COUNT</em>
+     This option is only recognized if it is specified first.  COUNT is
+     a decimal number optionally followed by a size letter (`b', `k',
+     `m') as in `-c', or `l' to mean count by lines, or other option
+     letters (`cfqv').
+
+-c <em>BYTES</em>
+--bytes=<em>BYTES</em>
+     Output the last BYTES bytes, instead of final lines.  Appending
+     `b' multiplies BYTES by 512, `k' by 1024, and `m' by 1048576.
+
+-f
+--follow[=<em>HOW</em>]
+     Loop forever trying to read more characters at the end of the file,
+     presumably because the file is growing.  This option is ignored
+     when reading from a pipe.  If more than one file is given, `tail'
+     prints a header whenever it gets output from a different file, to
+     indicate which file that output is from.
+
+     There are two ways to specify how you'd like to track files with
+     this option, but that difference is noticeable only when a
+     followed file is removed or renamed.  If you'd like to continue to
+     track the end of a growing file even after it has been unlinked,
+     use `--follow=descriptor'.  This is the default behavior, but it
+     is not useful if you're tracking a log file that may be rotated
+     (removed or renamed, then reopened).  In that case, use
+     `--follow=name' to track the named file by reopening it
+     periodically to see if it has been removed and recreated by some
+     other program.
+
+     No matter which method you use, if the tracked file is determined
+     to have shrunk, `tail' prints a message saying the file has been
+     truncated and resumes tracking the end of the file from the
+     newly-determined endpoint.
+
+     When a file is removed, `tail''s behavior depends on whether it is
+     following the name or the descriptor.  When following by name,
+     tail can detect that a file has been removed and gives a message
+     to that effect, and if `--retry' has been specified it will
+     continue checking periodically to see if the file reappears.  When
+     following a descriptor, tail does not detect that the file has
+     been unlinked or renamed and issues no message;  even though the
+     file may no longer be accessible via its original name, it may
+     still be growing.
+
+     The option values `descriptor' and `name' may be specified only
+     with the long form of the option, not with `-f'.
+
+--retry
+     This option is meaningful only when following by name.  Without
+     this option, when tail encounters a file that doesn't exist or is
+     otherwise inaccessible, it reports that fact and never checks it
+     again.
+
+--sleep-interval=<em>N</em>
+     Change the number of seconds to wait between iterations (the
+     default is 1).  During one iteration, every specified file is
+     checked to see if it has changed size.
+
+--pid=<em>PID</em>
+     When following by name or by descriptor, you may specify the
+     process ID, PID, of the sole writer of all FILE arguments.  Then,
+     shortly after that process terminates, tail will also terminate.
+     This will work properly only if the writer and the tailing process
+     are running on the same machine.  For example, to save the output
+     of a build in a file and to watch the file grow, if you invoke
+     `make' and `tail' like this then the tail process will stop when
+     your build completes.  Without this option, you would have had to
+     kill the `tail -f' process yourself.
+          $ make >& makerr & tail --pid=$! -f makerr
+     If you specify a PID that is not in use or that does not correspond
+     to the process that is writing to the tailed files, then `tail'
+     may terminate long before any FILEs stop growing or it may not
+     terminate until long after the real writer has terminated.
+
+--max-consecutive-size-changes=<em>N</em>
+     This option is meaningful only when following by name.  Use it to
+     control how long `tail' follows the descriptor of a file that
+     continues growing at a rapid pace even after it is deleted or
+     renamed.  After detecting <em>N</em> consecutive size changes for a file,
+     `open'/`fstat' the file to determine if that file name is still
+     associated with the same device/inode-number pair as before.  See
+     the output of `tail --help' for the default value.
+
+--max-unchanged-stats=<em>N</em>
+     When tailing a file by name, if there have been this many
+     consecutive iterations for which the size has remained the same,
+     then `open'/`fstat' the file to determine if that file name is
+     still associated with the same device/inode-number pair as before.
+     When following a log file that is rotated this is approximately the
+     number of seconds between when tail prints the last pre-rotation
+     lines and when it prints the lines that have accumulated in the
+     new log file.  See the output of `tail --help' for the default
+     value.  This option is meaningful only when following by name.
+
+-n <em>N</em>
+--lines=<em>N</em>
+     Output the last N lines.
+
+-q
+-quiet
+--silent
+     Never print file name headers.
+
+-v
+--verbose
+     Always print file name headers.</pre>
+<p> If more than one FILE is specified, `tail' prints a one-line 
+  header consisting of ==> FILE NAME <== before the output for each FILE. <br>
+  <br>
+  GNU `tail' can output any amount of data (some other versions of `tail' cannot). 
+  It also has no `-r' option (print in reverse), since reversing a file is really 
+  a different job from printing the end of a file; BSD `tail' (which is the one 
+  with `-r') can only reverse files that are at most as large as its buffer, which 
+  is typically 32k. A more reliable and versatile way to reverse files is the 
+  GNU `<a href="../term_tools/bash/tac.html">tac</a>' command. <br>
+  <br>
+  `tail' accepts two option formats: the new one, in which numbers are arguments 
+  to the options (`-n 1'), and the old one, in which the number precedes any option 
+  letters (`-1' or `+1'). If any option-argument is a number N starting with a 
+  `+', `tail' begins printing with the Nth item from the start of each file, instead 
+  of from the end. </p>
+<p><b>Examples</b></p>
+<p>Extract the last 85 lines from a file: </p>
+<p class="telety"> tail -85 file,txt </p>
+<p>Extract lines 40-50 from a file, first using <span class="body"><a href="head.html">head</a></span> to get the first 50 lines then tail to get the last 10: </p>
+<p class="telety"> head -50 file.txt | tail -10 </p>
+<p><i>"Money will buy a pretty good dog, but it won't buy the wag 
+of his tail" - Henry Wheeler Shaw</i></p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="csplit.html">csplit</a> - Split a file into context-determined pieces<br>
+  <a href="cut.html">cut</a> - Divide a file into several parts<br>
+  <a href="fmt.html">fmt</a> - Reformat paragraph text<br>
+  <a href="head.html">head</a> - Output the first part of file(s)<br>
+  <a href="join.html">join</a> - Join lines on a common field <br>
+  <a href="paste.html">paste</a> - Merge lines of files<br>
+<a href="split.html">split</a> - Split a file into fixed-size pieces </p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

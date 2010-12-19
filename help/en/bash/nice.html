@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>nice MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> nice</h1> 
+<p>Run a command with modified scheduling priority, print or modify 
+the scheduling priority of a job.</p>
+<pre>SYNTAX
+      nice [<i>Option</i>]... [<i>Command</i> [<i>Arg</i>]...]
+
+OPTION
+      -n <i>MyADJUSTMENT</i>
+      -<i>MyADJUSTMENT</i>
+      --adjustment=<i>MyADJUSTMENT</i>
+
+ Priority can be adjusted by `nice' over the range
+  of -20 (the highest priority) 
+  to 19 (the lowest)</pre>
+<p> If no arguments are given, `nice' prints the current scheduling 
+  priority, which it inherited. </p>
+<p>Otherwise, `nice' runs the given <i>Command</i> with its scheduling 
+  priority adjusted. <br>
+  <br>
+  If no option for <i>MyADJUSTMENT</i> is given, the priority of the command is 
+  incremented by 10. You must have appropriate privileges to specify a negative 
+  adjustment. <br>
+  <br>
+  Because most shells have a built-in command by the same name, using the unadorned 
+  command name in a script or interactively may get you different functionality 
+  than that described here.<br>
+  <br>
+  <i>&quot;Work is achieved by those employees who have not yet reached their 
+  level of incompetence&quot; - Laurence J. Peter (The 
+  Peter Principle)</i> </p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="nohup.html">nohup</a> - Run a command immune to hangups<br>
+  <a href="sync.html">sync</a> - Synchronize data on disk with memory<br>
+  <a href="sleep.html">sleep</a> - Delay for a specified time <br>
+Equivalent Windows commands: 
+  <a href="../term_tools/nt/start.html">START</a> /HIGH - Start a program with `high' scheduling 
+  priority</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

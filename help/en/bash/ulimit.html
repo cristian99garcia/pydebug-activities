@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>ulimit MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> ulimit</h1> 
+<p>User limits - limit the use of system-wide resources.</p>
+<pre>Syntax
+      ulimit [-acdfHlmnpsStuv] [<var>limit</var>]
+
+Options
+
+   -S   Change and report the soft limit associated with a resource. 
+   -H   Change and report the hard limit associated with a resource. 
+
+   -a   All current limits are reported. 
+   -c   The maximum size of core files created. 
+   -d   The maximum size of a process's data segment. 
+   -f   The maximum size of files created by the shell(default option) 
+   -l   The maximum size that may be locked into memory. 
+   -m   The maximum resident set size. 
+   -n   The maximum number of open file descriptors. 
+   -p   The pipe buffer size. 
+   -s   The maximum stack size. 
+   -t   The maximum amount of cpu time in seconds. 
+   -u   The maximum number of processes available to a single user. 
+   -v   The maximum amount of virtual memory available to the process. </pre>
+<p>ulimit provides control over the resources available to the shell and to processes started by it, on systems that allow such control. </p>
+<p>The soft limit is the value that the kernel enforces for
+the corresponding resource. The hard limit acts as a
+ceiling for the soft limit.</p>
+<p>An unprivileged process may
+only set its soft limit to a value in the range from 0 up
+to the hard limit, and (irreversibly) lower its hard
+limit. A privileged process may make arbitrary changes to
+either limit value.</p>
+<p>If <i>limit</i> is given, it is the new value of the specified 
+  resource. Otherwise, the current value of the soft limit for the specified resource 
+  is printed, unless the `-H' option is supplied. </p>
+<p>When setting new limits, if neither `-H' nor `-S' is supplied, both the hard 
+  and soft limits are set.<br>
+  <br>
+  Values are in 1024-byte increments, except for `-t', which is in seconds, `-p', 
+  which is in units of 512-byte blocks, and `-n' and `-u', which are unscaled 
+  values.
+<p>The return status is zero unless an invalid option is supplied, 
+  a non-numeric argument other than <span class="code">unlimited</span> is supplied as a <i>limit</i>, or 
+  an error occurs while setting a new limit.</p>
+<p>ulimit is a bash built in command.<br>
+  <br>
+  <i>&ldquo;Every man is a damn fool for at least five minutes every day; wisdom consists of not exceeding that limit&rdquo; - Elbert Hubbard</i> </p>
+<p><b>Related</b>:</p>
+<p>  <a href="../term_tools/bash/limits.conf.html">limits.conf - configuration file<br>
+  </a><a href="quota.html">quota</a> - Display disk usage and limits<br>
+setrlimit - Set resource limit <br>
+<a href="http://en.wikipedia.org/wiki/Fork_bomb">Fork bomb</a> - Wikipedia<br>
+Equivalent Windows command: <a href="../term_tools/nt/set.html">
+</a><a href="../term_tools/nt/diruse.html">DIRUSE</a> - Display disk usage</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

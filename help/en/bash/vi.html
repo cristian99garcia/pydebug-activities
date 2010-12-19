@@ -1,0 +1,301 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>VI MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+.grn {color: #006633}
+-->
+</style>
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> VI Editor Commands</h1> 
+<p>Vi has two modes <i>insertion</i> mode and <i>command</i> mode. <br>
+The editor begins in command mode, where  cursor movement and copy/paste editing occur. <br>
+
+Most commands execute as soon as  typed except for &quot;colon&quot; commands which execute when you press the return key. </p>
+<p><b>Switch to Text or Insert mode:</b></p>
+<table border="1" width="80%" cellspacing="0" cellpadding="3">
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Open line above cursor </div></td>
+    <td><strong>O</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Insert text at beginning of line</div></td>
+    <td><strong>I </strong></td>
+    <td><div align="right">Insert text at cursor</div></td>
+    <td><strong>i</strong></td>
+    <td><div align="right">Insert text after cursor</div></td>
+    <td><strong>a</strong></td>
+    <td><div align="right">Append text at line end</div></td>
+    <td><strong>A</strong></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Open line below cursor</div></td>
+    <td><strong>o</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+<p><b>Switch to Command mode:</b></p>
+<table border="0" width="28%" cellspacing="0" cellpadding="3">
+  <tr>
+    <td width="75%"><div align="right">Switch to command mode</div></td>
+    <td width="25%"><b>&lt;ESC&gt;</b></td>
+  </tr>
+</table>
+<p><strong>Cursor Movement (command mode):</strong></p>
+<table border="1" width="80%" cellspacing="0" cellpadding="3">
+  <tr>
+    <td height="15">&nbsp;</td>
+    <td height="15">&nbsp;</td>
+    <td height="15"><div align="right">Scroll <u>B</u>ackward 1 screen</div></td>
+    <td height="15"><strong>&lt;ctrl&gt;b</strong></td>
+    <td height="15">&nbsp;</td>
+    <td height="15">&nbsp;</td>
+  </tr>
+  <tr>
+    <td height="15">&nbsp;</td>
+    <td height="15">&nbsp;</td>
+    <td height="15"><div align="right">Scroll <u>U</u>p 1/2 screen</div></td>
+    <td height="15"><strong>&lt;ctrl&gt;u</strong></td>
+    <td height="15">&nbsp;</td>
+    <td height="15">&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Go to beginning of line</div></td>
+    <td><strong>0</strong></td>
+    <td><div align="right">Go to line <span class="grn"><var>n</var></span></div></td>
+    <td><strong><var class="grn">n</var>G</strong></td>
+    <td><div align="right">Go to end of line</div></td>
+    <td><strong>$</strong></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Scroll <u>D</u>own 1/2 screen</div></td>
+    <td><strong>&lt;ctrl&gt;d</strong></td>
+    <td><div align="right">Go to line number <span class="grn">##</span></div></td>
+    <td><b>:<span class="grn">##</span></b></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Scroll <u>F</u>orward 1 screen</div></td>
+    <td><strong>&lt;ctrl&gt;f</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Go to last line</div></td>
+    <td><strong>G</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Scroll by sentence f/b</td>
+    <td><strong>( )</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>Scroll by word f/b</td>
+    <td><strong>w b</strong></td>
+    <td>Move left, down, up, right</td>
+    <td><strong>h j k l</strong></td>
+    <td><div align="right">Left <span class="grn">6</span> chars</div></td>
+    <td><span class="grn"><b>6</b></span><b>h</b></td>
+  </tr>
+  <tr>
+    <td>Scroll by paragraph f/b</td>
+    <td><b>{ } </b></td>
+    <td>Directional Movement</td>
+    <td><strong>Arrow Keys</strong></td>
+    <td><div align="right">Go to line #<span class="grn">6</span></div></td>
+    <td><span class="grn"><b>6</b></span><b>G</b></td>
+  </tr>
+</table>
+<p><b>Deleting text <strong>(command mode)</strong>:</b></p>
+<table border="1" width="80%" cellpadding="3" cellspacing="0">
+  <tr>
+    <td><div align="right">Change word </div></td>
+    <td><strong>cw</strong></td>
+    <td><div align="right">Replace one character</div></td>
+    <td><strong>r</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Delete word</div></td>
+    <td><strong>dw</strong></td>
+    <td><div align="right">Delete text at cursor</div></td>
+    <td><strong>x</strong></td>
+    <td><div align="right">Delete entire line (to buffer)</div></td>
+    <td><strong>dd</strong></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Delete (backspace) text at cursor</div></td>
+    <td><b>X</b></td>
+    <td><div align="right">Delete <span class="grn">5</span> lines (to buffer)</div></td>
+    <td><span class="grn"><b>5</b></span><b>dd</b></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>Delete current to end of line</td>
+    <td><b>D</b></td>
+    <td><div align="right">Delete lines <span class="grn">5-10</span></div></td>
+    <td><strong>:<span class="grn">5,10</span>d </strong></td>
+  </tr>
+</table>
+<p><b>Editing <strong>(command mode)</strong>:</b></p>
+<table border="1" width="80%" cellpadding="3" cellspacing="0">
+  <tr>
+    <td><div align="right">Copy line</div></td>
+    <td><strong>yy </strong></td>
+    <td><div align="right">Copy <var class="grn">n</var> lines</div></td>
+    <td><strong><var class="grn">n</var>yy</strong></td>
+    <td><div align="right">Copy lines <span class="grn">1-2</span>/paste after&nbsp;<span class="grn">3</span></div></td>
+    <td><strong>:<span class="grn">1,2</span>t <span class="grn">3</span></strong></td>
+  </tr>
+  <tr>
+    <td><div align="right">Paste above current line</div></td>
+    <td><strong>P</strong></td>
+    <td><div> </div></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td><div align="right">Paste below current line</div></td>
+    <td><strong>p</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Move lines <span class="grn">4-5</span>/paste after&nbsp;<span class="grn">6</span></div></td>
+    <td><strong>:<span class="grn">4,5</span>m <span class="grn">6</span></strong></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Join previous line</div></td>
+    <td><strong>J</strong></td>
+  </tr>
+  <tr>
+    <td><div align="right">Search backward for <var>string</var></div></td>
+    <td><strong>?<var>string</var></strong></td>
+    <td><div align="right">Search forward for <var>string</var></div></td>
+    <td><strong>/<var>string</var></strong></td>
+    <td>Find next <var>string</var> occurrence</td>
+    <td><strong>n</strong></td>
+  </tr>
+  <tr>
+    <td><div align="right">% (entire file)<b> s </b>(search and replace) /old text with new/ <b>c</b> (confirm) <b>g</b> (global - all)</div></td>
+    <td><strong>:%s/oldstring/newstring/cg</strong></td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Ignore case during search</div></td>
+    <td><strong>:set ic</strong></td>
+  </tr>
+  <tr>
+    <td><div align="right">Repeat last command</div></td>
+    <td><b>.</b></td>
+    <td><div align="right">Undo previous command</div></td>
+    <td><strong>u</strong></td>
+    <td><div align="right">Undo all changes to line</div></td>
+    <td><strong>U</strong></td>
+  </tr>
+</table>
+<p><b>Save and Quit <strong>(command mode)</strong>:</b></p>
+<table border="1" width="80%" cellspacing="0" cellpadding="3">
+  <tr>
+    <td><div align="right">Save changes to buffer</div></td>
+    <td><strong>:w</strong></td>
+    <td><div align="right">Save changes and quit vi</div></td>
+    <td><strong>:wq</strong></td>
+    <td><div align="right">Save file to new file</div></td>
+    <td><strong>:w <i>file</i></strong></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td><div align="right">Quit without saving</div></td>
+    <td><strong>:q!</strong></td>
+    <td><div align="right">Save lines to new file</div></td>
+    <td><strong>:<span class="grn">10,15</span>w <i>file</i></strong></td>
+  </tr>
+</table>
+<p><span class="code">:syntax on</span> Turn on syntax highlighting<br>
+<span class="code">:syntax off </span>Turn off syntax highlighting<br>
+<span class="code">:set number</span> Turn on Line numbering (shorthand :set nu) <br>
+<span class="code">:set nonumber</span> Turn off Line numbering (shorthand :set nonu) </p>
+<p><span class="code">:set ignorecase</span> Ignore case sensitivity when searching<br>
+<span class="code">:set noignorecase</span> Restore case sensitivity (default) <br>
+<br>
+<span class="code">:set autoindent </span>Turn on Auto-indentation <br>
+Use the command<span class="code"> &gt;&gt;</span> to indent and the <span class="code">&lt;&lt;</span> command to outdent <br>
+<span class="code">:set shiftwidth=4</span> Set indentation to four spaces<br>
+<span class="code">:set noautoindent</span> Turn off Auto-indentation</p>
+<p><i>&ldquo;vi was written for a world that doesn't exist anymore - unless you decide to get a satellite phone and use it to connect to the Net at 2400 baud&rdquo; - Bill Joy</i></p>
+<p><b></b><b>Related</b>:</p>
+<p>    <a href="http://www.amazon.com/exec/obidos/ASIN/059652983X/ss64">Book - Learning the vi &amp; vim Editor</a><br>
+<a href="http://sshmenu.sourceforge.net/articles/bcvi/">bcvi</a> - Remote file editing with SSH<br>
+
+<a href="http://www.ungerhu.com/jxh/vi.html">Full list of VI commands</a> <br>
+<a href="http://www.vim.org/scripts/script.php?script_id=1658">NerdTree</a> - A VIM plugin for navigating the filesystem<br>
+<a href="http://www.eng.hawaii.edu/Tutor/vi.html">vi Tutorial</a><br>
+<a href="http://www.nano-editor.org/">nano-editor.org</a> - simple text editor </p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

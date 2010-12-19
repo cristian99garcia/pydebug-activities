@@ -24,6 +24,9 @@ import gtk
 import gtk.glade
 #import pydebug
 #from pydebug import pydebug_instance
+
+# Initialize logging.
+from  pydebug_logging import _logger, log_environment, log_dict
         
 class FileTree:
     column_names = [_('Name'), _('Size'), _('Last Changed')]
@@ -122,6 +125,7 @@ class FileTree:
             if file.endswith('.pyc'): continue
             if file.endswith('.pyo'): continue
             if file.endswith('~'): continue
+            if file.endswith('playpen'): continue
             fullname = os.path.join(self.dirname,file)
             if not os.path.isdir(fullname) and not os.path.isfile(fullname): continue
             if len(file)>16:

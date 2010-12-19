@@ -40,7 +40,7 @@ EMBEDED_SHELL_COLOR = '#DDFFDD'
 EMBEDED_BREAKPOINT_COLOR = '#DDDDFF'
 TRACE_INSERT = 'from IPython.Debugger import Tracer; debug = Tracer(); debug() #PyDebugTemp\n'
 SHELL_INSERT = 'from IPython.Shell import IPShellEmbed; pdbshell = IPShellEmbed([],banner="%s"); pdbshell() #PyDebugTemp\n'
-EMBED_TOKEN = 'IPShellEmbed'
+SHELL_TOKEN = 'IPShellEmbed'
 #following is for 0.11 ipython
 #insertion = 'from IPython.frontend.terminal.embed import embed; embed() #PyDebugTemp\n'
 #insertion = 'from IPython.Debugger import Tracer; debug = Tracer(); debug() #PyDebugTemp\n'
@@ -240,6 +240,8 @@ class GtkSourceview2Page(SearchablePage):
         """
         Do any initialization here.
         """
+        global mark_seq
+        mark_seq = 0
         self.fullPath = fullPath
         self._activity = activity
         self.breakpoints = {}
@@ -331,34 +333,51 @@ class GtkSourceview2Page(SearchablePage):
                         else:
                             self.text_buffer.set_highlight_syntax(True)
         self.restore_breakpoints()
+        self.restore_embeds()
         self.text_buffer.end_not_undoable_action()
         self.text_buffer.set_modified(False)
         self.text_view.grab_focus()
     
     def restore_breakpoints(self):
+        """restore the marks and the coloration"""
         file_nickname = self._activity.glean_file_id_from_fullpath(self.fullPath)
-        self.break_list = self._activity.debug_dict.get(file_nickname + '-breakpoints')
-        if not self.break_list: return
-        del self._activity.debug_dict[file_nickname + '-breakpoints']
-        if not self._activity.load_breakpoints:
-            alert = self._activity.util.confirmation_alert(_('Chose OK to restore, Cancel to delete them.'),
-                                                      _('This Activity has Breakpoints!'),
-                                                      self._restore_brkpt_cb)
-        else:
-            self._restore_brkpt_cb(None,None)
-
-    def _restore_brkpt_cb(self,alert,response):
-        #callback not taken if not response ok
+        self.break_list = self._activity.debug_dict.get(file_nickname + '-breakpoints','')
+        if self.break_list:
+            self.break_list = self.break_list.split(',')
+            del self._activity.debug_dict[file_nickname + '-breakpoints']
+        
         self._activity.load_breakpoints = True
-        self.break_list = self.break_list.split(',')
         for line in self.break_list:
-            line_start = self.text_buffer.get_iter_at_line(int(line) - 1)
-            line_end = line_start.copy()
-            line_end.forward_line()
-            self.text_buffer.apply_tag_by_name(BREAKPOINT_CAT,line_start,line_end)
+            line_start, line_end = self.get_iter_limits_for_line(int(line) - 1)
             mark = self.create_mark_universal(BREAKPOINT_CAT, line_start)
+            self.text_buffer.apply_tag_by_name(BREAKPOINT_CAT,line_start,line_end)
             _logger.debug('set breakpoint on line:%s'%line)
-                
+    
+    def get_iter_limits_for_line(self, line):
+        """from buffer line (offset from 0), generate iter limits for line"""
+        line_start = self.text_buffer.get_iter_at_line(int(line))
+        line_end = line_start.copy()
+        line_end.forward_line()
+        return line_start, line_end
+    
+    def restore_embeds(self):
+        """colorize the inserted debug statement"""
+        first, last = self.text_buffer.get_bounds()
+        text = self.text_buffer.get_text(first, last)
+        new_offset = text.find('#PyDebugTemp')
+        offset = 0
+        while new_offset > -1:
+            offset += new_offset + 1
+            line = self.text_buffer.get_iter_at_offset(offset).get_line()
+            self.embeds[line] = 'embed'
+            start, end = self.get_iter_limits_for_line(line)
+            embed_line = self.text_buffer.get_text(start, end)
+            if embed_line.find(TRACE_INSERT) > -1:
+                self.text_buffer.apply_tag_by_name(TRACE_CAT, start, end)
+            elif embed_line.find(SHELL_TOKEN) > -1:
+                self.text_buffer.apply_tag_by_name(SHELL_CAT, start, end)
+            new_offset = text[offset:].find('#PyDebugTemp')
+        
     def save_hash(self):   
         self.md5sum = self._activity.util.md5sum(self.fullPath)
 
@@ -448,6 +467,8 @@ class GtkSourceview2Page(SearchablePage):
     def save_breakpoints(self):
         """breakpoints saved in debug_dict {<activity folder> - <filename> : [<numeric list>]}"""
         break_list = ''
+        trace_list = ''
+        shell_list = ''
         file_nickname = self._activity.glean_file_id_from_fullpath(self.fullPath)
         
         #build 650 does not have gtksourceview.forward_iter_to_source_mark
@@ -455,15 +476,31 @@ class GtkSourceview2Page(SearchablePage):
         #while self.text_buffer.forward_iter_to_source_mark(iter,BREAKPOINT_CAT):
         
         (start,end) = self.text_buffer.get_bounds()
-        marks_list = self.get_marks_in_region_in_category(start, end, BREAKPOINT_CAT)
+        marks_list = self.get_marks_in_region_in_category(start, end)
         for m in marks_list:
-            iter = self.text_buffer.get_iter_at_mark(m)
-            break_list += str(iter.get_line()+1) + ','
+            if m.get_name().startswith(BREAKPOINT_CAT):
+                iter = self.text_buffer.get_iter_at_mark(m)
+                break_list += str(iter.get_line()+1) + ','
+            if m.get_name().startswith(TRACE_CAT):
+                iter = self.text_buffer.get_iter_at_mark(m)
+                trace_list += str(iter.get_line()+1) + ','
+            if m.get_name().startswith(SHELL_CAT):
+                iter = self.text_buffer.get_iter_at_mark(m)
+                shell_list += str(iter.get_line()+1) + ','
         if len(break_list) > 0:
             #trim off last ','
             break_list = break_list[:-1]
             self._activity.debug_dict[file_nickname + '-breakpoints'] = break_list
-            log_dict(self._activity.debug_dict,'debug_dict j ==>:')
+        if len(trace_list) > 0:
+            #trim off last ','
+            trace_list = trace_list[:-1]
+            self._activity.debug_dict[file_nickname + '-traces'] = trace_list
+        if len(shell_list) > 0:
+            #trim off last ','
+            shell_list = shell_list[:-1]
+            self._activity.debug_dict[file_nickname + '-shells'] = shell_list
+        if len(break_list) or len(trace_list) or len(shell_list):
+            _logger.debug('Breaks:%r Traces:%r Shells:%r'%(break_list,trace_list,shell_list,))
         
     def can_undo_redo(self):
         """
@@ -630,7 +667,9 @@ class GtkSourceview2Page(SearchablePage):
         names.  So to mimic the later gtksourceview2, we apend a time_string to the
         category name and use startswith as a test of category
         """
-        mark_str = prefix + str(time())
+        global mark_seq
+        mark_str = '%s%05s'%(prefix, mark_seq,)
+        mark_seq += 1
         #_logger.debug('mark name:%s'%(mark_str,))
         return mark_str
                             
@@ -655,7 +694,7 @@ class GtkSourceview2Page(SearchablePage):
                     break
                 marks = self.text_buffer.get_source_marks_at_iter(start_iter, category)
                 mark_list += marks
-            _logger.debug('number of marks found in buffer in region:%s'%(len(mark_list),))
+        _logger.debug('number of marks found in buffer in region:%s'%(len(mark_list),))
         return mark_list
         
 
@@ -699,7 +738,7 @@ class GtkSourceview2Page(SearchablePage):
         self.text_buffer.delete(line_start, line_end)
         if self.current_line.find(TRACE_INSERT) > -1:
             current_state = TRACE_CAT
-        elif self.current_line.find(EMBED_TOKEN) > -1:
+        elif self.current_line.find(SHELL_TOKEN) > -1:
             current_state = SHELL_CAT
         else:
             current_state = None            
@@ -733,20 +772,22 @@ class GtkSourceview2Page(SearchablePage):
             return
         mark = self.create_mark_universal(tag_name, line_start)
         line_no = line_start.get_line()
-        self.embeds[line_no] = ''
-        padding = self.get_indent(self.current_line)
-        indent = self.pad(padding)
-        self.text_buffer.insert(line_start,indent+insertion)
-        line_start = self.text_buffer.get_iter_at_mark(mark)
-        line_end = line_start.copy()
-        forwarded = line_end.forward_line() #self.text_buffer.forward_iter_to_source_mark(line_end,tag_name)
-        if forwarded:
-            self.text_buffer.move_mark(mark, line_end)
+        prev_line_iter = self.text_buffer.get_iter_at_line(line_no - 1)
+        prev_content = self.text_buffer.get_text(prev_line_iter,line_start)
+        if prev_content.find('PyDebugTemp') == -1:
+            current_line = self.text_buffer.get_text(line_start, line_end)
+            padding = self.get_indent(current_line)
+            indent = self.pad(padding)
+            self.text_buffer.insert(line_start,indent+insertion)
+            self.embeds[line_no] = tag_name
+            line_start = self.text_buffer.get_iter_at_mark(mark)
+            line_end = line_start.copy()
             line_end.forward_line()
-            self.text_buffer.apply_tag_by_name(tag_name, line_start, line_end)
+            self.text_buffer.move_mark(mark, line_end)
+            _logger.debug('inserted line %s'%(tag_name,))
         else:
-            _logger.debug('failed to forward to mark with tag:%s'%(tag_name,))
-        _logger.debug('inserted line %s'%(tag_name,))
+            line_start = prev_line_iter
+        self.text_buffer.apply_tag_by_name(tag_name, line_start, line_end)
 
     def get_indent(self,line):
         i = 0

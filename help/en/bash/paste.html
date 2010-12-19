@@ -1,0 +1,71 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>paste MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> paste</h1> 
+<p>Merge lines of files, write to standard output lines consisting 
+  of sequentially corresponding lines of each given file, separated by a TAB character.</p>
+<pre>SYNTAX
+      paste [<em>options</em>]... [<em>file</em>]...
+
+OPTIONS
+   -s
+   --serial
+        Paste the lines of one file at a time rather than one line from
+        each file.
+
+   -d <em>DELIM-LIST</em>
+   --delimiters <em>DELIM-LIST</em>
+        Consecutively use the characters in <em>DELIM-LIST</em> instead of TAB to
+        separate merged lines.  When <em>DELIM-LIST</em> is exhausted, start again
+        at its beginning.
+
+Standard input is used for a file name of `-' or if no input files are given.</pre>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="csplit.html">csplit</a> - Split a file into context-determined pieces<br>
+  <a href="cut.html">cut</a> - Divide a file into several parts<br>
+  <a href="fold.html">fold</a> - Wrap input lines to fit in specified width <br>
+  <a href="fmt.html">fmt</a> - Reformat paragraph text<br>
+  <a href="join.html">join</a> - Join lines on a common field <br>
+  <a href="split.html">split</a> - Split a file into fixed-size pieces<br>
+<a href="tail.html">tail</a> - Output the last part of files </p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

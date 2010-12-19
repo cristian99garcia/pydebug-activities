@@ -82,7 +82,7 @@ def main():
     #import jobctrl 
     
     # For autoreloading of modules (%autoreload, %aimport)    
-    #import ipy_autoreload
+    import ipy_autoreload
     
     # For winpdb support (%wdb)
     #import ipy_winpdb

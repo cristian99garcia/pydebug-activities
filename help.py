@@ -99,6 +99,11 @@ class Help(Window):
 
         self._web_view.load_uri(self.HOME)
         self.pid = Popen(['/usr/bin/pydoc','-p','23432'])
+        
+    def close_pydoc(self):
+        _logger.debug('closing pid %s'%(self.pid.pid,))
+        self.killpid = Popen(['kill',str(self.pid.pid),])
+        #self.pid.kill()
 
     def get_help_toolbar(self):
         return self.help_toolbar

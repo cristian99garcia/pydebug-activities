@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>alias MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> alias</h1> 
+<p>Create an alias, aliases allow a string to be substituted for a word when it 
+is used as the first word of a simple command. </p>
+<pre>Syntax
+      alias [-p] [<i>name</i>[=<i>value</i>] ...]
+
+      unalias [-a] [<var>name</var> ... ]
+
+Key
+   -p   Print the current values
+
+   -a   Remove All aliases</pre>
+<p> If arguments are supplied, an alias is defined for each name whose value is 
+  given. </p>
+<p>If no value is given, `alias' will print the current value of the alias. <br>
+  <br>
+  Without arguments or with the `-p' option, alias prints the list of aliases 
+  on the standard output in a form that allows them to be reused as input. </p>
+<p>name may not be `alias' or `unalias'.</p>
+<p>unalias may be used to remove each <i>name </i>from the list of defined aliases.</p>
+<p><b>Examples</b></p>
+<p> Create an alias 'ls' that will change the default action of ls:<br>
+
+<span class="code">$ alias ls='ls --classify'<br>
+$ ls <br>
+$ unalias ls</span></p>
+<p>More aliases for ls:<span class="code"><br>
+$ alias la='ls -lAXh --color=always' &nbsp;&nbsp;#Show all, sort by extension <br>
+</span>
+<span class="code">$ alias ls-al='ls -al' &nbsp;&nbsp;#fix typo missing space <br>
+</span>
+<span class="code">$ alias l=&quot;ls -l&quot;<br>
+$ alias la=&quot;ls -la&quot;</span></p>
+<p>Use alias to fix missing space typos:<br>
+<span class="code"> $ alias cd..='cd ..'<br>
+$ </span>
+<span class="code">alias ..='cd ..'<br>
+<br>
+</span>Display the working directory<span class="code"> <br>
+$ alias .='echo $PWD'</span></p>
+<p>Prevent accidental deletions by making <a href="rm.html">rm</a> interactive: <br>
+<span class="code">$ alias rm='rm -i'</span></p>
+<p>Shorten apt-get installation commands: <br>
+<span class="code">$ alias canhaz='sudo apt-get install'</span></p>
+<p>Run firefox and open a specific website:<br>
+<span class="code">$ alias fftr='/home/simon/firefox/firefox http://ss64.com'</span><br>
+  <br>
+<b>Make an alias permanent</b></p>
+<p>  Use your favorite text editor to create a file called <b><span class="code">~/</span>.bash_aliases</b>, and type 
+  the alias commands into the file. <br>
+<b>.bash_aliases</b> will run at login (or you can just execute it with <b>..bash_aliases</b> )</p>
+<p><b>Details</b><br>
+<br>
+The first word of each simple command, if unquoted, is checked to see if it has an alias. If so, that word is replaced by the text of the alias. The alias name and the replacement text may contain any valid shell input, including shell metacharacters, with the exception that the alias name may not contain `='. <br>
+<br>
+The first word of the replacement text is tested for aliases, but a word that is identical to an alias being expanded is not expanded a second time. This means that one may alias ls to "ls -F", for instance, and Bash does not try to recursively expand the replacement text. <br>
+<br>
+If the last character of the alias value is a space or tab character, then the next command word following the alias is also checked for alias expansion. <br>
+<br>
+There is no mechanism for using arguments in the replacement text, as in csh. If arguments are needed, a shell function should be used . Aliases are not expanded when the shell is not interactive, unless the expand_aliases shell option is set using shopt . <br>
+<br>
+The rules concerning the definition and use of aliases are somewhat confusing. Bash always reads at least one complete line of input before executing any of the commands on that line. Aliases are expanded when a command is read, not when it is executed. Therefore, an alias definition appearing on the same line as another command does not take effect until the next line of input is read. The commands following the alias definition on that line are not affected by the new alias. This behavior is also an issue when functions are executed. Aliases are expanded when a function definition is read, not when the function is executed, because a function definition is itself a compound command. As a consequence, aliases defined in a function are not available until after that function is executed. To be safe, always put alias definitions on a separate line, and do not use alias in compound commands. <br>
+<br>
+`alias' and `unalias' are BASH built-ins. For almost every purpose, shell functions are preferred over aliases. <br>
+  <br>
+  <i>“There are many reasons why novelists write, but they all have one thing in common - a need to create an alternative world” - John Fowles</i></p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="export.html">export</a> - Set an environment variable<br>
+  <a href="env.html">env</a> - Display, set, or remove environment variables<br>
+  <a href="echo.html">echo</a> - Display message on screen <br>
+  <a href="readonly.html">readonly</a> - Mark variables/functions as readonly 
+  <br>
+  <a href="shift.html">shift</a> - Shift positional parameters<br>
+  Equivalent Windows command: 
+<a href="../term_tools/nt/set.html"></a><a href="../term_tools/nt/set.html">SET</a> - Display, set, or remove Windows  environment 
+variables.</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

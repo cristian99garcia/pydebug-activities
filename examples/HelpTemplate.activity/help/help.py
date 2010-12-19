@@ -36,6 +36,13 @@ from sugar.graphics.toolbutton import ToolButton
 
 import hulahop
 #hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
+hulahop.startup(os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'], 'data/gecko'))
+import xpcom
+from xpcom.nsError import *
+#from xpcom import components
+#from xpcom.components import interfaces
+from browser import Browser
+from xpcom.components import interfaces
 
 """#from hulahop.webview import WebView
 from browser import Browser
@@ -44,8 +51,6 @@ from xpcom.components import interfaces
 """
 gobject.threads_init()
 
-HOME = os.path.join(activity.get_bundle_path(), _('help/HelpApi.htm'))
-#HOME = "http://website.com/something.html"
 HELP_PANE = 1
 
 # Initialize logging.
@@ -55,22 +60,24 @@ _logger = logging.getLogger()
 class Help(Window):
     def __init__(self, parent):
         self.parent_obj = parent
-        hulahop.startup(os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'data','gecko'))
-        #from hulahop.webview import WebView
-        from browser import Browser
-        import xpcom
-        from xpcom.components import interfaces
+        
+        if version < 0.838: 
+            from hulahop.webview import WebView as Browser
+        else:
+            from browser import Browser
+        
         self.help_id = None
         self.handle = ActivityHandle()
         self.handle.activity_id = util.unique_id()
         Window.__init__(self)
         self.connect('realize',self.realize_cb)
 
-        #self.props.max_participants = 1
-
         self._web_view = Browser()
 
-        #Mimic the other tabs (hide the fact that this is another window)
+        #determine which language we are going to be using
+        help_root = self.get_help_root()
+        self.HOME = os.path.join(help_root, 'HelpApi.htm')
+    
         self.toolbox = Toolbox()
         self.toolbox.connect('current_toolbar_changed',self.goto_cb)
         self.set_toolbox(self.toolbox)
@@ -90,7 +97,7 @@ class Help(Window):
 
         self.toolbox.set_current_toolbar(HELP_PANE)
 
-        self._web_view.load_uri(HOME)
+        self._web_view.load_uri(self.HOME)
 
     def get_help_toolbar(self):
         return self.help_toolbar
@@ -153,7 +160,27 @@ class Help(Window):
         else:
             _logger.debug('wnck_window was none')
             return None
-                
+        
+    def get_help_root(self):
+        lang = os.environ.get('LANGUAGE')
+        if not lang:
+            lang = os.environ.get('LANG')
+        if not lang:
+            lang = 'en_US'
+        if len(lang) > 1:
+            two_char = lang[:2]
+        else:
+            two_char = ''
+        root = os.path.join(os.environ['SUGAR_BUNDLE_PATH'],'help',two_char)
+        if os.path.isdir(root):
+            return root
+        root = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'help',two_char)
+        if os.path.isdir(root):
+            return root
+        #default to a non localized root
+        root = os.path.join(os.environ['SUGAR_BUNDLE_PATH'],'help')
+        return root
+    
 class Toolbar(gtk.Toolbar):
     def __init__(self, web_view):
         gobject.GObject.__init__(self)
@@ -180,11 +207,39 @@ class Toolbar(gtk.Toolbar):
         self.insert(home, -1)
         home.show()
 
-        progress_listener = self._web_view.progress
-        progress_listener.connect('location-changed',
-                                  self._location_changed_cb)
-        progress_listener.connect('loading-stop', self._loading_stop_cb)
+        separator = gtk.SeparatorToolItem()
+        separator.set_draw(False)
+        separator.set_expand(True)
+        self.insert(separator, -1)
+        separator.show()
 
+        stop_button = ToolButton('activity-stop')
+        stop_button.set_tooltip(_('Stop'))
+        #stop_button.props.accelerator = '<Ctrl>Q'
+        stop_button.connect('clicked', self.__stop_clicked_cb)
+        self.insert(stop_button, -1)
+        stop_button.show()
+        
+        if version < 0.838:
+            self._listener = xpcom.server.WrapObject(EarlyListener(self),
+                                                     interfaces.nsIWebProgressListener)
+            weak_ref = xpcom.client.WeakReference(self._listener)
+    
+            mask = interfaces.nsIWebProgress.NOTIFY_STATE_NETWORK | \
+                   interfaces.nsIWebProgress.NOTIFY_LOCATION
+            self._web_view.web_progress.addProgressListener(self._listener, mask)
+        else:
+        
+            progress_listener = self._web_view.progress
+            progress_listener.connect('location-changed',
+                                      self._location_changed_cb)
+            progress_listener.connect('loading-stop', self._loading_stop_cb)
+
+        
+
+    def __stop_clicked_cb(self, button):
+        self._help.pydebug.py_stop()
+        
     def _location_changed_cb(self, progress_listener, uri):
         self.update_navigation_buttons()
 
@@ -206,6 +261,32 @@ class Toolbar(gtk.Toolbar):
 
     def _go_home_cb(self, button):
         self._web_view.load_uri(HOME)
+
+class EarlyListener(object):
+    #from xpcom.components import interfaces
+
+    _com_interfaces_ = interfaces.nsIWebProgressListener
+
+    def __init__(self, toolbar):
+        self._toolbar = toolbar
+    
+    def onLocationChange(self, webProgress, request, location):
+        self._toolbar.update_navigation_buttons()
+        
+    def onProgressChange(self, webProgress, request, curSelfProgress,
+                         maxSelfProgress, curTotalProgress, maxTotalProgress):
+        pass
+    
+    def onSecurityChange(self, webProgress, request, state):
+        pass
+        
+    def onStateChange(self, webProgress, request, stateFlags, status):
+        if stateFlags & interfaces.nsIWebProgressListener.STATE_IS_NETWORK:
+            self._toolbar.update_navigation_buttons()
+
+    def onStatusChange(self, webProgress, request, status, message):
+        pass
+  
 
 def command_line(cmd):
     _logger.debug('command_line cmd:%s'%cmd)

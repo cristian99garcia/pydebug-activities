@@ -1,0 +1,138 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>join MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> join</h1> 
+<p>Join lines on a common field, writes to standard output a line 
+for each pair of input lines that have identical join fields.</p>
+<pre>SYNTAX
+      join [<em>Options</em>]... <em>File</em>1 <em>File</em>2</pre>
+<p><span class="body"> Description<br>
+  <br>
+  Either FILE1 or FILE2 (but not both) can be `-', meaning standard input. FILE1 
+  and FILE2 should be already sorted in increasing textual order on the join fields, 
+  using the collating sequence specified by the `LC_COLLATE' locale. <br>
+  <br>
+  Unless the `-t' option is given, the input should be sorted ignoring blanks 
+  at the start of the join field, as in `sort -b'. If the `--ignore-case' option 
+  is given, lines should be sorted without regard to the case of characters in 
+  the join field, as in `sort<br>
+  -f'.<br>
+  <br>
+  The defaults are:<br>
+  </span><span class="body">The join field is the first field in each line; <br>
+  Fields in the input are separated by one or more blanks, with leading blanks 
+  on the line ignored; <br>
+  Fields in the output are separated by a space; <br>
+  Each output line consists of the join field, the remaining fields from FILE1, 
+  then the remaining fields from FILE2.</span></p>
+
+<pre>OPTIONS
+
+`-a <em>FILE-NUMBER</em>'
+     Print a line for each unpairable line in file <em>FILE-NUMBER</em> (either
+     `1' or `2'), in addition to the normal output.
+
+`-e <em>STRING</em>'
+     Replace those output fields that are missing in the input with
+     <em>STRING</em>.
+
+`-i'
+`--ignore-case'
+     Ignore differences in case when comparing keys.  With this option,
+     the lines of the input files must be ordered in the same way.  Use
+     `sort -f' to produce this ordering.
+
+`-1 <em>FIELD</em>'
+`-j1 <em>FIELD</em>'
+     Join on field <em>FIELD</em> (a positive integer) of file 1.
+
+`-2 <em>FIELD</em>'
+`-j2 <em>FIELD</em>'
+     Join on field <em>FIELD</em> (a positive integer) of file 2.
+
+`-j <em>FIELD</em>'
+     Equivalent to `-1 <em>FIELD</em> -2 <em>FIELD'</em>.
+
+`-o <em>FIELD-LIST</em>...'
+     Construct each output line according to the format in <em>FIELD-LIST</em>.
+     Each element in <em>FIELD-LIST</em> is either the single character `0' or
+     has the form M.N where the file number, M, is `1' or `2' and N is
+     a positive field number.
+
+     A field specification of `0' denotes the join field.  In most
+     cases, the functionality of the `0' field spec may be reproduced
+     using the explicit M.N that corresponds to the join field.
+     However, when printing unpairable lines (using either of the `-a'
+     or `-v' options), there is no way to specify the join field using
+     M.N in FIELD-LIST if there are unpairable lines in both files.  To
+     give `join' that functionality, POSIX invented the `0' field
+     specification notation.
+
+     The elements in <em>FIELD-LIST</em> are separated by commas or blanks.
+     Multiple <em>FIELD-LIST</em> arguments can be given after a single `-o'
+     option; the values of all lists given with `-o' are concatenated
+     together.  All output lines - including those printed because of
+     any -a or -v option - are subject to the specified <em>FIELD-LIST</em>.
+
+`-t <em>CHAR</em>'
+     Use character <em>CHAR</em> as the input and output field separator.
+
+`-v <em>FILE-NUMBER</em>'
+     Print a line for each unpairable line in file <em>FILE-NUMBER </em>(either
+     `1' or `2'), instead of the normal output.</pre>
+<p><b><i><br>
+  </i></b><i>A nation is not in danger of financial disaster merely because it 
+  owes itself money&quot; - Andrew William Mellon</i><br>
+  <br>
+  <b> Related commands</b>:<br>
+  <br>
+  <a href="csplit.html">csplit</a> - Split a file into context-determined pieces<br>
+  <a href="cut.html">cut</a> - Divide a file into several parts <br>
+  <a href="fmt.html">fmt</a> - Reformat paragraph text <br>
+  <a href="fold.html">fold</a> - Wrap input lines to fit in specified width<br>
+  <a href="head.html">head</a> - Output the first part of file(s) <br>
+  <a href="paste.html">paste</a> - Merge lines of files<br>
+  <a href="split.html">split</a> - Split a file into fixed-size pieces<br>
+  <a href="tail.html">tail</a> - Output the last part of files <br>
+Equivalent Windows command: 
+<a href="../term_tools/nt/fc.html">FC</a> - Compare two files</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

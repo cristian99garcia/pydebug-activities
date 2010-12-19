@@ -112,7 +112,7 @@ class Utilities():
     
     def md5sum_tree(self, root):
         """return hexdigest of file tree under root"""
-        if not os.path.isdir(root):
+        if not (root and os.path.isdir(root)):
             return None
         h = hashlib.md5()
         for dirpath, dirnames, filenames in os.walk(root):

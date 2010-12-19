@@ -30,7 +30,7 @@ HELP_TAB = 1
 
 class HelpTemplate(activity.Activity):
     def __init__(self, handle):
-        activity.Activity.__init__(self, handle)
+        activity.Activity.__init__(self, handle, create_jobject = False)
 
         #following are essential for interface to Help
         self.help_x11 = None

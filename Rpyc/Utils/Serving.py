@@ -82,12 +82,18 @@ def serve_pipes(incoming, outgoing):
 # threaded utilities
 #
 def threaded_server(port = DEFAULT_PORT, **kw):
+    global sock
     sock = create_listener_socket(port)
-    while True:
+    while sock:
         newsock, name = sock.accept()
         t = Thread(target = serve_socket, args = (newsock,), kwargs = kw)
         t.setDaemon(True)
         t.start()
+        
+def threaded_server_close():
+    global sock
+    sock.close()
+    sock = None
 
 def start_threaded_server(*args, **kwargs):
     """starts the threaded_server on a separate thread. this turns the 

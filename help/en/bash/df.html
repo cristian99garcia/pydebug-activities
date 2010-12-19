@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>df MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> df</h1> 
+<p>Disk Free - display free disk space.<br>
+  With no arguments, `df' reports the space used and available on all currently 
+  mounted filesystems (of all types). Otherwise, `df' reports on the filesystem 
+containing each argument <i>file</i>. </p>
+<pre>SYNTAX
+     df [<i>option</i>]... [<i>file</i>]...
+
+Normally the disk space is printed in units of 1024 bytes, but this
+can be overridden.
+
+OPTIONS
+
+`-a'
+`--all'
+     Include in the listing filesystems that have a size of 0 blocks,
+     which are omitted by default.  Such filesystems are typically
+     special-purpose pseudo-filesystems, such as automounter entries.
+     Also, filesystems of type "ignore" or "auto", supported by some
+     operating systems, are only included if this option is specified.
+
+`-h'
+`--human-readable'
+     Append a size letter such as `M' for megabytes to each size.
+     Powers of 1024 are used, not 1000; `M' stands for 1,048,576 bytes.
+     Use the `-H' or `--si' option if you prefer powers of 1000.
+
+`-H'
+`--si'
+     Append a size letter such as `M' for megabytes to each size.  (SI
+     is the International System of Units, which defines these letters
+     as prefixes.)  Powers of 1000 are used, not 1024; `M' stands for
+     1,000,000 bytes.  Use the `-h' or `--human-readable' option if you
+     prefer powers of 1024.
+
+`-i'
+`--inodes'
+     List inode usage information instead of block usage.  An inode
+     (short for index node) is contains information about a file such
+     as its owner, permissions, timestamps, and location on the disk.
+
+`-k'
+`--kilobytes'
+     Print sizes in 1024-byte blocks, overriding the default block size.
+
+`-l'
+`--local'
+     Limit the listing to local filesystems.  By default, remote
+     filesystems are also listed.
+
+`-m'
+`--megabytes'
+     Print sizes in megabyte (that is, 1,048,576-byte) blocks.
+
+`--no-sync'
+     Do not invoke the `sync' system call before getting any usage data.
+     This may make `df' run significantly faster on systems with many
+     disks, but on some systems (notably SunOS) the results may be
+     slightly out of date.  This is the default.
+
+`-P'
+`--portability'
+     Use the POSIX output format.  This is like the default format
+     except that the information about each filesystem is always
+     printed on exactly one line; a mount device is never put on a line
+     by itself.  This means that if the mount device name is more than
+     20 characters long (e.g., for some network mounts), the columns
+     are misaligned.
+
+`--sync'
+     Invoke the `sync' system call before getting any usage data.  On
+     some systems (notably SunOS), doing this yields more up to date
+     results, but in general this option makes `df' much slower,
+     especially when there are many or very busy filesystems.
+
+`-t FSTYPE'
+`--type=FSTYPE'
+     Limit the listing to filesystems of type FSTYPE.  Multiple
+     filesystem types can be specified by giving multiple `-t' options.
+     By default, nothing is omitted.
+
+`-T'
+`--print-type'
+     Print each filesystem's type.  The types printed here are the same
+     ones you can include or exclude with `-t' and `-x'.  The particular
+     types printed are whatever is supported by the system.  Here are
+     some of the common names (this list is certainly not exhaustive):
+
+    `nfs'
+          An NFS filesystem, i.e., one mounted over a network from
+          another machine.  This is the one type name which seems to be
+          used uniformly by all systems.
+
+    `4.2, ufs, efs...'
+          A filesystem on a locally-mounted hard disk.  (The system
+          might even support more than one type here; Linux does.)
+
+    `hsfs, cdfs'
+          A filesystem on a CD-ROM drive.  HP-UX uses `cdfs', most other
+          systems use `hsfs' (`hs' for `High Sierra').
+
+    `pcfs'
+          An MS-DOS filesystem, usually on a diskette.
+
+`-x FSTYPE'
+`--exclude-type=FSTYPE'
+     Limit the listing to filesystems not of type FSTYPE.  Multiple
+     filesystem types can be eliminated by giving multiple `-x'
+     options.  By default, no filesystem types are omitted.
+
+`-v'
+     Ignored; for compatibility with System V versions of `df'.</pre>
+<p><span class="body"> If an argument FILE is a disk device file 
+  containing a mounted filesystem, `df' shows the space available on that filesystem 
+  rather than on the filesystem containing the device node (i.e., the root filesystem). 
+  GNU `df' does not attempt to determine the disk usage on unmounted filesystems, 
+  because on most kinds of systems doing so requires extremely nonportable intimate 
+  knowledge of filesystem structures.</span><br>
+  <i><br>
+  "A prediction is worth twenty explanations" - K. 
+  Brecher</i><b><br>
+  <br>
+  Related</b>:<br>
+  <br>
+  <a href="du.html">du</a> - Estimate file space usage<br>
+  quot(1M), tunefs(1M), mnttab(4), attributes(5) <br>
+  Equivalent Windows command:  DIRUSE - resource kit utility to show size of multiple subfolders</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

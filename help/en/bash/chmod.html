@@ -1,0 +1,373 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>chmod MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+<!--
+.tab1
+{
+	background-color: #ddd;
+	border-collapse: collapse;
+}
+.tab1 td
+{
+	border-bottom: 1px solid #999;
+		padding: 2px 8px;
+}
+.tab1 tbody tr:hover td
+{
+	background-color: #ccc;
+}
+
+-->
+</style>
+
+<script type="text/javascript">
+<!--
+
+/*
+Jeroen's Chmod Calculator- By Jeroen Vermeulen of Alphamega Hosting <jeroen@alphamegahosting.com> 
+Visit http://www.javascriptkit.com for this script and more
+This notice must stay intact
+*/
+ 
+function octalchange() 
+{
+	var val = document.chmod.t_total.value;
+	var ownerbin = parseInt(val.charAt(0)).toString(2);
+	while (ownerbin.length<3) { ownerbin="0"+ownerbin; };
+	var groupbin = parseInt(val.charAt(1)).toString(2);
+	while (groupbin.length<3) { groupbin="0"+groupbin; };
+	var otherbin = parseInt(val.charAt(2)).toString(2);
+	while (otherbin.length<3) { otherbin="0"+otherbin; };
+	document.chmod.owner4.checked = parseInt(ownerbin.charAt(0)); 
+	document.chmod.owner2.checked = parseInt(ownerbin.charAt(1));
+	document.chmod.owner1.checked = parseInt(ownerbin.charAt(2));
+	document.chmod.group4.checked = parseInt(groupbin.charAt(0)); 
+	document.chmod.group2.checked = parseInt(groupbin.charAt(1));
+	document.chmod.group1.checked = parseInt(groupbin.charAt(2));
+	document.chmod.other4.checked = parseInt(otherbin.charAt(0)); 
+	document.chmod.other2.checked = parseInt(otherbin.charAt(1));
+	document.chmod.other1.checked = parseInt(otherbin.charAt(2));
+	calc_chmod(1);
+};
+
+function calc_chmod(nototals)
+{
+  var users = new Array("owner", "group", "other");
+  var totals = new Array("","","");
+  var syms = new Array("","","");
+
+	for (var i=0; i<users.length; i++)
+	{
+	  var user=users[i];
+		var field4 = user + "4";
+		var field2 = user + "2";
+		var field1 = user + "1";
+		//var total = "t_" + user;
+		var symbolic = "sym_" + user;
+		var number = 0;
+		var sym_string = "";
+	
+		if (document.chmod[field4].checked == true) { number += 4; }
+		if (document.chmod[field2].checked == true) { number += 2; }
+		if (document.chmod[field1].checked == true) { number += 1; }
+	
+		if (document.chmod[field4].checked == true) {
+			sym_string += "r";
+		} else {
+			sym_string += "-";
+		}
+		if (document.chmod[field2].checked == true) {
+			sym_string += "w";
+		} else {
+			sym_string += "-";
+		}
+		if (document.chmod[field1].checked == true) {
+			sym_string += "x";
+		} else {
+			sym_string += "-";
+		}
+	
+		//if (number == 0) { number = ""; }
+	  //document.chmod[total].value = 
+		totals[i] = totals[i]+number;
+		syms[i] =  syms[i]+sym_string;
+	
+  };
+	if (!nototals) document.chmod.t_total.value = totals[0] + totals[1] + totals[2];
+	document.chmod.sym_total.value = "-" + syms[0] + syms[1] + syms[2];
+}
+window.onload=octalchange
+//-->
+</script>
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1>chmod</h1> 
+<p>Change access permissions, change mode. </p>
+<pre>Syntax
+       chmod [<i>Options</i>]... <i>Mode</i> [,<i>Mode</i>]... <i>file</i>...
+
+       chmod [<i>Options</i>]... <i>Numeric_Mode </i><i>file</i>...
+
+       chmod [<i>Options</i>]... --reference=<i>RFile</i> <i>file</i>...
+
+Options
+  -f, --silent, --quiet   suppress most error messages
+
+  -v, --verbose           output a diagnostic for every file processed
+  -c, --changes           like verbose but report only when a change is made
+
+      --reference=<i>RFile</i>   use <i>RFile</i>'s mode instead of MODE values
+
+  -R, --recursive         change files and directories recursively
+
+      --help              display help and exit
+
+      --version           output version information and exit</pre>
+<p> chmod changes the permissions of each given <i>file</i> according 
+to <i>mode</i>, where <i>mode</i> describes the permissions to modify. <i>Mode</i> can be specified with octal numbers or with letters. Using letters is easier to understand for most people. </p>
+<form name="chmod">
+<TABLE BORDER="0" CELLSPACING="0" CELLPADDING="0" style="font:normal 12px Verdana";>
+<TR ALIGN="LEFT" VALIGN="MIDDLE">
+<TD>Permissions: </TD>
+<TD><input type="text" name="t_total" value="751" size="4" onKeyUp="octalchange()"> </TD>
+<TD><input type="text" name="sym_total" value="" size="12" READONLY="1" STYLE='border: 0px none; font-family: "Courier New", Courier, mono;'></TD>
+</TR>
+</TABLE>
+<BR>
+<table cellpadding="2" cellspacing="0" border="0" style="font:normal 12px Verdana">
+<tr bgcolor="#333333">
+<td WIDTH="60" align="left"> </td>
+<td WIDTH="55" align="center" style="color:white"><b>owner
+</b></td>
+<td WIDTH="55" align="center" style="color:white"><b>group
+</b></td>
+<td WIDTH="55" align="center" style="color:white"><b>other
+<b></b></b></td>
+</tr>
+<tr bgcolor="#dddddd">
+<td WIDTH="60" align="left" nowrap BGCOLOR="#FFFFFF">read</td>
+<td WIDTH="55" align="center" bgcolor="#EEEEEE">
+<input type="checkbox" name="owner4" value="4" onclick="calc_chmod()">
+</td>
+<td WIDTH="55" align="center" bgcolor="#ffffff"><input type="checkbox" name="group4" value="4" onclick="calc_chmod()">
+</td>
+<td WIDTH="55" align="center" bgcolor="#EEEEEE">
+<input type="checkbox" name="other4" value="4" onclick="calc_chmod()">
+</td>
+</tr>
+<tr bgcolor="#dddddd">		
+<td WIDTH="60" align="left" nowrap BGCOLOR="#FFFFFF">write</td>
+<td WIDTH="55" align="center" bgcolor="#EEEEEE">
+<input type="checkbox" name="owner2" value="2" onclick="calc_chmod()"></td>
+<td WIDTH="55" align="center" bgcolor="#ffffff"><input type="checkbox" name="group2" value="2" onclick="calc_chmod()">
+</td>
+<td WIDTH="55" align="center" bgcolor="#EEEEEE">
+<input type="checkbox" name="other2" value="2" onclick="calc_chmod()">
+</td>
+</tr>
+<tr bgcolor="#dddddd">		
+<td WIDTH="60" align="left" nowrap BGCOLOR="#FFFFFF">execute</td>
+<td WIDTH="55" align="center" bgcolor="#EEEEEE">
+<input type="checkbox" name="owner1" value="1" onclick="calc_chmod()">
+</td>
+<td WIDTH="55" align="center" bgcolor="#ffffff"><input type="checkbox" name="group1" value="1" onclick="calc_chmod()">
+</td>
+<td WIDTH="55" align="center" bgcolor="#EEEEEE">
+<input type="checkbox" name="other1" value="1" onclick="calc_chmod()">
+</td>
+</tr>
+</table>
+</form>
+<p><b>Numeric mode:</b></p>
+<p>From one to four octal digits<br>
+  Any omitted digits are assumed to be leading zeros. <br>
+  <br>The first digit = selects attributes for the set user 
+  ID (4) and set group ID (2) and save text image (1)S<br>
+The second digit = permissions for the user who owns the file: read (4), write 
+(2), and execute (1)<br>
+The third digit = permissions for other users in the file's group: read (4), 
+write (2), and execute (1)<br>
+The fourth digit = permissions for other users NOT in the file's group: read 
+(4), write (2), and execute (1)</p>
+<p> The octal (0-7) value is calculated by adding up the values 
+  for each digit<br>
+  User (rwx) = 4+2+1 = <b>7</b><br>
+  Group(rx) = 4+1 = <b>5</b><br>
+  World (rx) = 4+1 =<b> 5</b><br>
+  chmode mode = 0755 </p>
+<p><b>Examples</b><br>
+  <br>
+<span class="code">chmod 400     <i>file</i></span> - Read by owner<br>
+<span class="code">chmod 040 <i>file</i></span> - Read by group<br>
+<span class="code">chmod 004 <i>file</i></span> - Read by world <br>
+<br>
+<span class="code">chmod 200 <i>file</i></span> - Write by owner<br>
+<span class="code">chmod 020 <i>file</i></span> - Write by group<br>
+<span class="code">chmod 002 <i>file</i></span> - Write by world<br>
+<br>
+<span class="code">chmod 100 <i>file</i></span> - execute by owner<br>
+<span class="code">chmod 010 <i>file</i></span> - execute by group<br>
+<span class="code">chmod 001 <i>file</i></span> - execute by world</p>
+<p>To combine these, just add the numbers together:<br>
+<span class="code">chmod 444 <i>file</i></span> - Allow read permission to owner and group and world<br>
+  <span class="code">chmod 777 <i>file</i></span> - Allow everyone to read, write, and execute <i> file</i></p>
+<p><b>Symbolic Mode</b>
+<p> The format of a symbolic mode is a combination of the letters <span class="telety">+-= rwxXstugoa</span><br>
+Multiple symbolic operations can be given, separated by commas. <br>
+The full syntax is <span class="code">[ugoa...][[+-=][rwxXstugo...]...][,...]</span> but this is explained below. <br>
+  <br>
+
+  A combination of the letters <span class="code">ugoa</span> controls which <b>users</b>' access to the 
+  file will be changed:</p>
+<blockquote>
+<table class=tab1>
+<tbody><tr>  <td><i> User</i></td>
+  <td><i>letter</i></td>
+</tr>
+<tr>  <td>The user who owns it</td>
+  <td><tt>u</tt></td>
+</tr>
+<tr>  <td>Other users in the file's Group</td>
+  <td><tt>g</tt></td>
+</tr>
+<tr>  <td>Other users not in the file's group</td>
+  <td><p><tt>o</tt></p></td>
+</tr>
+<tr>
+<td>All users</td>
+<td>a</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p>If none of these are given, the effect is as if <span class="code">a</span> were 
+  given, but bits that are set in the umask are not affected.<br>
+  <br>
+  All users <span class="code">a</span> is effectively 
+  user + group + others<br>
+  <br>
+  The operator '<span class="code">+</span>' causes the permissions selected to be added to the existing 
+  permissions of each file; '<span class="code">-</span>' causes them to be removed; and '<span class="code">=</span>' causes them 
+  to be the only permissions that the file has.<br>
+  <br>
+  The letters '<span class="code">rwxXstugo</span>' select the new <b>permissions</b> for the affected users: 
+</p>
+<blockquote>
+<table class=tab1><tbody><tr>  <td><i> Permission</i></td>
+  <td><i>letter</i></td>
+</tr>
+<tr>  <td>Read</td>
+  <td><tt>r</tt></td>
+</tr>
+<tr>  <td>Write</td>
+  <td><tt>w</tt></td>
+</tr>
+<tr>  <td>Execute (or access for directories)</td>
+  <td><tt>x</tt></td>
+</tr>
+<tr>
+<td>Execute only if the file is a directory <br>
+(or already has execute permission for some user)</td>
+<td>X</td>
+</tr>
+<tr>
+<td>Set user or group ID on execution</td>
+<td>s</td>
+</tr>
+<tr>
+<td>Save program text on swap device</td>
+<td>t</td>
+</tr>
+<tr>
+<td><br>
+The permissions that the User who owns the file currently has for it</td>
+<td>u</td>
+</tr>
+<tr>
+<td>The permissions that other users in the file's Group have for it</td>
+<td>g</td>
+</tr>
+<tr>
+<td>Permissions that Other users not in the file's group have for it</td>
+<td>o</td>
+</tr>
+</tbody></table>
+</blockquote>
+<p><b>Examples</b><br>
+  Deny execute permission to everyone: <br>
+  <span class="telety">chmod a-x <i>file</i></span><br>
+  <br>
+  Allow read permission to everyone:<br>
+  <span class="telety">chmod a+r <i>file</i></span><br>
+  <br>
+  Make a file readable and writable by the group and others: <br>
+  <span class="telety">chmod go+rw <i>file</i></span></p>
+<p>Make a shell script executable by the user/owner <br>
+<span class="code">$ chmod u+x myscript.sh</span><br>
+  <br>
+  Allow everyone to read, write, and execute the file and turn on the set group-ID: 
+  <br>
+  <span class="telety">chmod =rwx,g+s <i>file</i> </span><br>
+  <br>
+  Notes:<br>
+  When chmod is applied to a directory: <br>
+  read = list files in the directory<br>
+  write = add new files to the directory <br>
+  execute = access files in the directory <br>
+  <br>
+  chmod never changes the permissions of symbolic links. This is not a problem 
+  since the permissions of symbolic links are never used. However, for each symbolic 
+  link listed on the command line, chmod changes the permissions of the pointed-to 
+  file. In contrast, chmod ignores symbolic links encountered during recursive 
+  directory traversals. </p>
+<p>This page documents the GNU version of chmod.</p>
+<p><i>&quot;Whether a pretty woman grants or withholds her 
+  favours, she always likes to be asked for them&quot; - Ovid 
+  (Ars Amatoria) </i>  </p>
+<p><b>Related</b>:<br>
+  <br>
+  access - Determine whether a file can be accessed <br>
+<a href="ls.html">ls -l</a> - List current permissions:  -- 
+  u (owner)  -- g (group)  -- O (Other)<br>
+  <a href="chgrp.html">chgrp</a> - Change group ownership<br>
+<a href="chown.html">chown</a> - Change file owner and group<br>
+<a href="../term_tools/bash/syntax-permissions.html">bash syntax - Permissions</a><br>
+Equivalent Windows command: <a href="../term_tools/nt/cacls.html">CACLS</a> - Change file permissions</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

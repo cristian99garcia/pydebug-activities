@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>dd MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> dd</h1> 
+<p>Convert and copy a file, write disk headers, boot records, create a boot floppy. dd can make an exact clone of an (unmounted) disk, this will include all  blank space so the output destination must be at least as large as the input. </p>
+<pre>Syntax
+     dd [<em>Options</em>]
+	 
+Key
+   if=<i>FILE</i>
+      Input file : Read from FILE instead of standard input.
+
+   of=<i>FILE</i>
+      Output file : Write to FILE instead of standard output.  Unless `conv=notrunc'
+      is given, `dd' truncates FILE to zero bytes (or the size specified
+      with `seek=').
+
+   ibs=<em>BYTES</em>
+      Read BYTES bytes at a time.
+
+   obs=<em>BYTES</em>
+      Write BYTES bytes at a time.
+
+   bs=<em>BYTES</em>
+      Block size, both read and write <i>BYTES</i> bytes at a time.  This overrides `ibs'
+      and `obs'.
+
+   cbs=<em>BYTES</em>
+      Convert BYTES bytes at a time.
+
+   skip=<em>BLOCKS</em>
+      Skip BLOCKS `ibs'-byte blocks in the input file before copying.
+
+   seek=<em>BLOCKS</em>
+      Skip BLOCKS `obs'-byte blocks in the output file before copying.
+
+   count=<em>BLOCKS</em>
+      Copy BLOCKS `ibs'-byte blocks from the input file, instead of
+      everything until the end of the file.
+
+   conv=<em>CONVERSION</em>[,<em>CONVERSION</em>]...
+      Convert the file as specified by the CONVERSION argument(s).  
+      (No spaces around any comma)
+
+     Conversions:
+    `ascii'    Convert EBCDIC to ASCII.
+    `ebcdic'   Convert ASCII to EBCDIC.
+    `ibm'      Convert ASCII to alternate EBCDIC.
+    `block'    For each line in the input, output `cbs' bytes, replacing the
+               input newline with a space and padding with spaces as
+               necessary.
+    `unblock'  Replace trailing spaces in each `cbs'-sized input block with a newline.
+    `lcase'    Change uppercase letters to lowercase.
+    `ucase'    Change lowercase letters to uppercase.
+    `swab'     Swap every pair of input bytes.  GNU `dd', unlike others,
+               works when an odd number of bytes are read--the last byte is
+               simply copied (since there is nothing to swap it with).
+    `noerror'  Continue after read errors.
+    `notrunc'  Do not truncate the output file.
+    `sync'     Pad every input block to size of `ibs' with trailing zero bytes.
+          </pre>
+<p>  The numeric-valued options  (BYTES and BLOCKS) can be followed by a multiplier: `b'=512, `c'=1, `w'=2, `xM'=M, or any of the standard block size suffixes like `k'=1024.</p>
+<p><strong>Examples:</strong></p>
+<p>Clone one hard drive onto another<span class="code"> <br>
+$ dd if=/dev/sda of=/dev/sdb</span></p>
+<p>Clone a hard drive<span class="code"> </span>to an image file <br>
+<span class="code">$ dd if=/dev/hda of=/image.img</span></p>
+<p>Clone a hard drive to a zipped image file in 100Mb blocks <span class="code"><br>
+$ dd if=/dev/hda bs=100M | gzip -c &gt; /image.img</span></p>
+<p>Create a boot floppy:<br>
+<span class="code">$ dd if=boot.img of=/dev/fd0 bs=1440</span></p>
+<p><i> &quot;Success isn't something you chase. It's something you have 
+  to put forth the effort for constantly. Then maybe it'll come when you least 
+  expect it. Most people don't understand that&quot; - Michael 
+  Jordan </i><br>
+  <br>
+  <b> Related</b>:<br>
+<a href="http://www.codecoffee.com/tipsforlinux/articles/036.html">CodeCoffee.com</a> - dd examples<br>
+  <a href="cp.html">cp</a> - Copy one or more files to another location<br>
+<a href="ddrescue.html">ddrescue</a> - Data recovery tool
+<br>
+  <a href="install.html">install</a> - Copy files and set attributes<br>
+  <a href="mtools.html">mtools</a> - Manipulate MS-DOS files<br>
+
+  <a href="sum.html">sum</a> - Print a checksum for a file<br>
+Equivalent Windows command: <a href="../term_tools/nt/fsutil.html">FSUTIL</a> file setzerodata</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

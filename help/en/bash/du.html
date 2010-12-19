@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>du MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> du</h1> 
+<p>Disk Usage - report the amount of disk space used 
+by the specified files and for each subdirectory.</p>
+<pre>Syntax
+      du [<em>options</em>]... [<em>file</em>]...
+</pre>
+<p><span class="body">  With no arguments, `du' reports the disk space for the current
+  directory.  Normally the disk space is printed in units of 1024 bytes,
+  but this can be overridden</span></p>
+<pre>
+OPTIONS
+
+`-a'
+`--all'
+     Show counts for all files, not just directories.
+
+`-b'
+`--bytes'
+     Print sizes in bytes, overriding the default block size (*note
+     Block size::).
+
+`-c'
+`--total'
+     Print a grand total of all arguments after all arguments have been
+     processed.  This can be used to find out the total disk usage of a
+     given set of files or directories.
+
+`-D'
+`--dereference-args'
+     Dereference symbolic links that are command line arguments.  Does
+     not affect other symbolic links.  This is helpful for finding out
+     the disk usage of directories, such as `/usr/tmp', which are often
+     symbolic links.
+
+`-h'
+`--human-readable'
+     Append a size letter such as `M' for megabytes to each size.
+     Powers of 1024 are used, not 1000; `M' stands for 1,048,576 bytes.
+     Use the `-H' or `--si' option if you prefer powers of 1000.
+
+`-H'
+`--si'
+     Append a size letter such as `M' for megabytes to each size.  (SI
+     is the International System of Units, which defines these letters
+     as prefixes.)  Powers of 1000 are used, not 1024; `M' stands for
+     1,000,000 bytes.  Use the `-h' or `--human-readable' option if you
+     prefer powers of 1024.
+
+`-k'
+`--kilobytes'
+     Print sizes in 1024-byte blocks, overriding the default block size
+     (*note Block size::).
+
+`-l'
+`--count-links'
+     Count the size of all files, even if they have appeared already
+     (as a hard link).
+
+`-L'
+`--dereference'
+     Dereference symbolic links (show the disk space used by the file
+     or directory that the link points to instead of the space used by
+     the link).
+
+`--max-depth=DEPTH'
+     Show the total for each directory (and file if -all) that is at
+     most MAX_DEPTH levels down from the root of the hierarchy.  The
+     root is at level 0, so `du --max-depth=0' is equivalent to `du -s'.
+
+`-m'
+`--megabytes'
+     Print sizes in megabyte (that is, 1,048,576-byte) blocks.
+
+`-s'
+`--summarize'
+     Display only a total for each argument.
+
+`-S'
+`--separate-dirs'
+     Report the size of each directory separately, not including the
+     sizes of subdirectories.
+
+`-x'
+`--one-file-system'
+     Skip directories that are on different filesystems from the one
+     that the argument being processed is on.
+
+`--exclude=PAT'
+     When recursing, skip subdirectories or files matching PAT.  For
+     example, `du --exclude='*.o'' excludes files whose names end in
+     `.o'.
+
+`-X FILE'
+`--exclude-from=FILE'
+     Like `--exclude', except take the patterns to exclude from FILE,
+     one per line.  If FILE is `-', take the patterns from standard
+     input.
+
+On BSD systems, `du' reports sizes that are half the correct values
+for files that are NFS-mounted from HP-UX systems.  On HP-UX systems,
+it reports sizes that are twice the correct values for files that are
+NFS-mounted from BSD systems.  This is due to a flaw in HP-UX; it also
+affects the HP-UX `du' program.</pre>
+<p><b>Example</b></p>
+<p>List the total files sizes for everything 1 directory (or less) below the currrent directory ( . ) </p>
+<p>[simon@testserver]$<span class="telety"> du -hc --max-depth=1 .</span><br>
+400M ./data1<br>
+1.0G ./data2<br>
+
+1.3G .<br>
+1.3G total</p>
+<p><i>"Never go to a doctor whose office plants have died" - Erma 
+  Bombeck</i></p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="ls.html">ls</a> - List information about FILEs<br>
+Equivalent Windows command: 
+  DIRUSE - resource kit utility to show size of multiple subfolders.</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

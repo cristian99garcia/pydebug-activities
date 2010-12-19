@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>sed MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> sed</h1> 
+<p>SED is a stream editor. A stream editor is used to perform basic 
+  text transformations on an input stream (a file or input from a pipeline). <br>
+  While in some ways similar to an editor which permits scripted edits, SED works 
+  by making only one pass over the input(s), and is consequently more efficient. 
+  But it is SED's ability to filter text in a pipeline which particularly distinguishes 
+it from other types of editors.</p>
+<pre>SYNTAX
+      sed [<i>options</i>]...
+
+OPTIONS</pre>
+<p> <span class="body">A single command may be specified as the first argument 
+  to sed. Multiple commands may be specified by using the -e or -f options. All 
+  commands are applied to the input in the order they are specified regardless 
+of their origin.</span> </p>
+<pre>`-e SCRIPT'
+`--expression=SCRIPT'
+     Add the commands in SCRIPT to the set of commands to be run while
+     processing the input.
+
+`-f SCRIPT-FILE'
+`--file=SCRIPT-FILE'
+     Add the commands contained in the file SCRIPT-FILE to the set of
+     commands to be run while processing the input.
+
+`-n'
+`--quiet'
+`--silent'
+     By default, SED will print out the pattern space at then end of
+     each cycle through the script.  These options disable this
+     automatic printing, and SED will only produce output when
+     explicitly told to via the `p' command.
+
+`-h'
+`--help'
+     Print a usage message and then exit.
+
+`-V'
+`--version'
+     Print out version info and exit.</pre>
+<p> If no `-e', `-f', `--expression', or `--file' options are given 
+  on the command-line, then the first non-option argument on the command line 
+  is taken to be the SCRIPT to be executed. If any command-line parameters remain 
+  after processing the above, these parameters are interpreted as the names of 
+  input files to be processed. A file name of `-' refers to the standard input 
+  stream. The standard input will processed if no file names are specified.<br>
+  <br>
+  sed supports regular expressions (like <a href="awk.html">awk</a>), and can 
+  select whole lines or patterns of text.<br>
+  e.g. </p>
+<pre>`/REGEXP/'
+     This will select any line which matches the regular expression
+     REGEXP.  If REGEXP itself includes any `/' characters, each must
+     be escaped by a backslash (`\').
+
+`/REGEXP/I'
+`\%REGEXP%I'
+     The `I' modifier to regular-expression matching is a GNU extension
+     which causes the REGEXP to be matched in a case-insensitive manner.</pre>
+<p> Having selected a pattern you can either delete or replace it...</p>
+<pre>`d'
+     Delete the pattern space; immediately start next cycle.
+
+`s/REGEXP/REPLACEMENT/FLAGS'
+     (The `/' characters may be uniformly replaced by any other single
+     character within any given `s' command.)</pre>
+<blockquote>
+  <p><span class="body"> The `/' character (or whatever other character is used 
+    in its stead) can appear in the REGEXP or REPLACEMENT only if it is preceded 
+    by a `\' character. Also newlines may appear in the REGEXP using the two character 
+    sequence `\n'.<br>
+    <br>
+    The `s' command attempts to match the pattern space against the supplied REGEXP. 
+    If the match is successful, then that portion of the pattern space which was 
+    matched is replaced with REPLACEMENT.<br>
+    <br>
+    The REPLACEMENT can contain `\N' (N being a number from 1 to 9, inclusive) 
+    references, which refer to the portion of the match which is contained between 
+    the Nth `\(' and its matching `\)'.<br>
+    Also, the REPLACEMENT can contain unescaped `&' characters which will reference 
+    the whole matched portion of the pattern space. To include a literal `\', 
+    `&', or newline in the final replacement, be sure to precede the desired `\', 
+    `&', or newline in the REPLACEMENT with a `\'.</span> </p>
+</blockquote>
+<pre>     The `s' command can be followed with zero or more of the following
+     FLAGS:
+
+    `g'
+          Apply the replacement to *all* matches to the REGEXP, not
+          just the first.
+
+    `p'
+          If the substitution was made, then print the new pattern
+          space.
+
+    `NUMBER'
+          Only replace the NUMBERth match of the REGEXP.
+
+    `w FILE-NAME'
+          If the substitution was made, then write out the result to
+          the named file.
+
+    `I'
+          Match REGEXP in a case-insensitive manner.
+          (This is a GNU extension.)</pre>
+<p> More (much more) detail is available from `info sed'</p>
+<p><i>&quot;life is 10% what happens to me and 90% how I react to 
+  it&quot; - Charles 
+  Swindoll </i><b><br>
+  <br>
+  Related</b>:<br>
+  <br>
+  <a href="awk.html">awk</a> - Find and Replace text within file(s)<a href="cal.html"></a><br>
+  <a href="grep.html">grep</a> - Search file(s) for lines that match a given pattern<br>
+  regex(3)<br>
+  re_format(7) <br>
+Equivalent Windows commands:<a href="../term_tools/nt/findstr.html"> 
+FINDSTR</a> - Search for strings in files</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

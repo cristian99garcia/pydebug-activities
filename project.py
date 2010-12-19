@@ -71,6 +71,9 @@ class ProjectFunctions:
         except:
             _logger.debug('failed to os.mkdir %s'%dist_dir)
         
+        #are there changes in edit buffers not flushed to disk?
+        self.get_editor().save_all()
+
         #remove any embeded shell breakpoints
         self.get_editor().clear_embeds()
         
@@ -131,8 +134,8 @@ class ProjectFunctions:
         dsobject.metadata['activity'] = activity
         dsobject.metadata['version'] = self._activity.activity_dict.get('version',1) 
         #calculate and store the new md5sum
-        self._activity.debug_dict['tree_md5'] = self._activity.util.md5sum_tree(self._activity.child_path)
-        dsobject.metadata['tree_md5'] = self._activity.debug_dict['tree_md5']
+        dsobject.metadata['tree_md5'] = self.save_tree_md5(self._activity.child_path)
+        self._activity.debug_dict['tree_md5'] = dsobject.metadata['tree_md5']
         if dest: dsobject.set_file_path(dest)
         
         #actually make the call which writes to the journal
@@ -146,6 +149,11 @@ class ProjectFunctions:
         if self.journal_class: 
             self.journal_class.new_directory()
         
+    def save_tree_md5(self, path):
+        #calculate and store the new md5sum
+        self._activity.debug_dict['tree_md5'] = self._activity.util.md5sum_tree(self._activity.child_path)
+        return self._activity.debug_dict['tree_md5']
+
     def removable_backup(self):
         """ if there is a pydebug folder in root directory of a USB or SD, this
         routine will copy the debugee source tree to a folder name which includes
@@ -316,8 +324,26 @@ class ProjectFunctions:
     def _load_playpen(self,source_fn, iszip = False, istar=False):
         """entry point for both xo and file tree sources"""
         self._load_to_playpen_source = source_fn
+        #need to pass parameters to continuation routine
+        self.lp_iszip = iszip
+        self.lp_istar = istar
         #if necessary clean up contents of playpen
-        self._unload_playpen(source_fn)
+        #has the tree md5 changed?
+        if not self._activity.debug_dict['tree_md5'] == '':            
+            tree_md5 = self._activity.util.md5sum_tree(self._activity.child_path)
+            if tree_md5 and tree_md5 != self._activity.debug_dict['tree_md5']:
+                action_prompt = _('Select OK to abandon changes to ') + \
+                            os.path.basename(self._activity.child_path)
+                self._activity.util.confirmation_alert(action_prompt, \
+                        _('Changes have been made to the PyDebug work area.'), \
+                        self.continue_loading_playpen_cb)
+                return        
+        self.continue_loading_playpen_cb(None, None)
+            
+    def continue_loading_playpen_cb(self, alert, confirmation):           
+        self._unload_playpen()
+        iszip = self.lp_iszip
+        istar = self.lp_istar
         if self._load_to_playpen_source == None:
             #having done the clearing, just stop
             return
@@ -361,12 +387,23 @@ class ProjectFunctions:
         self._activity.child_path = self._new_child_path
         self.setup_new_activity()
         
-    def _unload_playpen(self, source_fn):
+   
+        """The following code needs to be copied inline to any routine which overwrites playpen
+        #has the tree md5 changed?
+        tree_md5 = self._activity.util.md5sum_tree(self._activity.child_path)
+        if tree_md5 != self._activity.debug_dict['tree_md5']:
+            action_prompt = _('Select OK to abandon changes to ') + \
+                            os.path.basename(self._activity.child_path)
+            self._activity.util.confirmation_alert(action_prompt,
+                                                   _('Changes have been made to the PyDebug work area.'),
+                                                   self.continue_inline_cb)
+        """
+        
+    def _unload_playpen(self):                                           
         #IPython gets confused if path it knows about suddenly disappears
         cmd = 'cd %s\n'%self._activity.activity_playpen
         self._activity.feed_virtual_terminal(0,cmd)
-        if self._activity.child_path and os.path.isdir(self._activity.child_path) \
-                and source_fn.endswith('.activity'):        
+        if self._activity.child_path and os.path.isdir(self._activity.child_path):
             self.abandon_changes = True
             #there is a on change call back to disable
             self._activity.debug_dict['tree_md5'] = ''

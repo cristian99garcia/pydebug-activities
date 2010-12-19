@@ -1,0 +1,438 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>diff MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> diff</h1> 
+<p>Display the differences between two files, or each corresponding 
+  file in two directories. <br>
+  Each set of differences is called a "diff" or "patch". For files that are identical, 
+  diff normally produces no output; for binary (non-text) files, diff normally 
+reports only that they are different.</p>
+<pre>Syntax
+      diff [<i>options</i>] <i>from-file to-file</i></pre>
+<pre>Options</pre><p>Multiple single letter options (unless they take an argument) can be combined into a single command line word: so `-ac' is equivalent to `-a -c'.</p> 
+<pre>
+      -<i>lines</i>  Show <i>lines</i> lines of context. This option is obsolete.
+
+       -a     Treat all files as text and compare  them  line-by-
+              line, even if they do not seem to be text.
+
+       -b     Ignore changes in amount of white space.
+
+       -B     Ignore  changes  that  just  insert or delete blank
+              lines.
+
+       --brief
+              Report only  whether  the  files  differ,  not  the
+              details of the differences.
+
+       -c     Use the context output format.
+
+       -C <i>lines</i>
+       --context[=<i>lines</i>]
+              Use  the  context  output format, showing <i>lines</i> (an
+              integer) lines of context, or three if lines is not
+              given.  For proper operation, patch typically needs
+              at least two lines of context.
+
+       --changed-group-format=<i>format</i>
+              Use <i>format</i> to output a line group  containing  dif-
+              fering  lines  from both files in if-then-else for-
+              mat.
+
+       -d     Change the algorithm to perhaps find a smaller  set
+              of changes.  This makes diff slower (sometimes much
+              slower).
+
+       -D <i>name</i>
+              Make merged if-then-else format output, conditional
+              on the preprocessor macro name.
+
+       -e
+       --ed   Make output that is a valid ed script.
+
+       --exclude=<i>pattern</i>
+              When comparing directories, ignore files and subdi-
+              rectories whose basenames match <i>pattern</i>.
+
+       --exclude-from=<i>file</i>
+              When comparing directories, ignore files and subdi-
+              rectories  whose  basenames  match any pattern con-
+              tained in <i>file</i>.
+
+       --expand-tabs
+              Expand tabs to spaces in the  output,  to  preserve
+              the alignment of tabs in the input files.
+
+       -f     Make  output  that  looks vaguely like an ed script
+              but has changes in the order  they  appear  in  the
+              file.
+
+       -F <i>regexp</i>
+              In  context  and  unified  format, for each hunk of
+              differences, show some of the last  preceding  line
+              that matches <i>regexp</i>.
+
+       --forward-ed
+              Make  output  that  looks vaguely like an ed script
+              but has changes in the order  they  appear  in  the
+              file.
+
+       -h     This  option currently has no effect; it is present
+              for Unix compatibility.
+
+       -H     Use heuristics to speed  handling  of  large  files
+              that have numerous scattered small changes.
+
+       --horizon-lines=<i>lines</i>
+              Do  not  discard the last <i>lines</i> lines of the common
+              prefix and the first lines lines of the common suf-
+              fix.
+
+       -i     Ignore  changes in case; consider upper- and lower-
+              case letters equivalent.
+
+       -I <i>regexp</i>
+              Ignore changes that just  insert  or  delete  lines
+              that match <i>regexp</i>.
+
+       --ifdef=<i>name</i>
+              Make merged if-then-else format output, conditional
+              on the preprocessor macro <i>name</i>.
+
+       --ignore-all-space
+              Ignore white space when comparing lines.
+
+       --ignore-blank-lines
+              Ignore changes that just  insert  or  delete  blank
+              lines.
+
+       --ignore-case
+              Ignore  changes in case; consider upper- and lower-
+              case to be the same.
+
+       --ignore-matching-lines=<i>regexp</i>
+              Ignore changes that just  insert  or  delete  lines
+              that match <i>regexp</i>.
+
+       --ignore-space-change
+              Ignore changes in amount of white space.
+
+       --initial-tab
+              Output a tab rather than a space before the text of
+              a line in normal or context  format.   This  causes
+              the alignment of tabs in the line to look normal.
+
+       -l     Pass the output through pr to paginate it.
+
+       -L <i>label</i>
+       --label=<i>label</i>
+              Use <i>label</i> instead of the file name in the context
+              format and unified format headers.
+
+       --left-column
+              Print only the left column of two common  lines  in
+              side by side format.
+
+       --line-format=<i>format</i>
+              Use  <i>format</i>  to  output all input lines in in-then-
+              else format.
+
+       --minimal
+              Change the algorithm to perhaps find a smaller  set
+              of changes.  This makes diff slower (sometimes much
+              slower).
+
+       -n     Output RCS-format diffs; like -f except  that  each
+              command specifies the number of lines affected.
+
+       -N
+       --new-file
+              In directory comparison, if a file is found in only
+              one directory, treat it as present but empty in the
+              other directory.
+
+       --new-group-format=<i>format</i>
+              Use  <i>format</i>  to  output a group of lines taken from
+              just the second file in if-then-else format.
+
+       --new-line-format=<i>format</i>
+              Use <i>format</i> to output a line  taken  from  just  the
+              second file in if-then-else format.
+
+       --old-group-format=<i>format</i>
+              Use  <i>format</i>  to  output a group of lines taken from
+              just the first file in if-then-else format.
+
+       --old-line-format=<i>format</i>
+              Use <i>format</i> to output a line  taken  from  just  the
+              first file in if-then-else format.
+
+       -p     Show which C function each change is in.
+
+       -P     When  comparing directories, if a file appears only
+              in the second directory of the  two,  treat  it  as
+              present but empty in the other.
+
+       --paginate
+              Pass the output through pr to paginate it.
+
+       -q     Report  only  whether  the  files  differ,  not the
+              details of the differences.
+
+       -r     When comparing directories, recursively compare any
+              subdirectories found.
+
+       --rcs  Output  RCS-format  diffs; like -f except that each
+              command specifies the number of lines affected.
+
+       --recursive
+              When comparing directories, recursively compare any
+              subdirectories found.
+
+       --report-identical-files
+       -s     Report when two files are the same.
+
+       -S <i>file</i>
+              When  comparing  directories,  start  with the file
+              <i>file</i>.  This is used for resuming an aborted compar-
+              ison.
+
+       --sdiff-merge-assist
+              Print extra information to help <a href="sdiff.html">sdiff</a>.  sdiff uses
+              this option when it runs diff.  This option is  not
+              intended for users to use directly.
+
+       --show-c-function
+              Show which C function each change is in.
+
+       --show-function-line=<i>regexp</i>
+              In  context  and  unified  format, for each hunk of
+              differences, show some of the last  preceding  line
+              that matches <i>regexp</i>.
+
+       --side-by-side
+              Use the side by side output format.
+
+       --speed-large-files
+              Use  heuristics  to  speed  handling of large files
+              that have numerous scattered small changes.
+
+       --starting-file=<i>file</i>
+              When comparing directories,  start  with  the  file
+              <i>file</i>.  This is used for resuming an aborted compar-
+              ison.
+
+       --suppress-common-lines
+              Do not print common lines in side by side format.
+
+       -t     Expand tabs to spaces in the  output,  to  preserve
+              the alignment of tabs in the input files.
+
+       -T     Output a tab rather than a space before the text of
+              a line in normal or context  format.   This  causes
+              the alignment of tabs in the line to look normal.
+
+       --text Treat  all  files as text and compare them line-by-
+              line, even if they do not appear to be text.
+
+       -u     Use the unified output format.
+
+       --unchanged-group-format=<i>format</i>
+              Use <i>format</i> to output a group of common lines  taken
+              from both files in if-then-else format.
+
+       --unchanged-line-format=<i>format</i>
+              Use <i>format</i> to output a line common to both files in
+              if-then-else format.
+
+       --unidirectional-new-file
+              When comparing directories, if a file appears  only
+              in  the  second  directory  of the two, treat it as
+              present but empty in the other.
+
+       -U <i>lines</i>
+       --unified[=<i>lines</i>]
+              Use the unified output format,  showing  <i>lines</i>  (an
+              integer) lines of context, or three if lines is not
+              given.  For proper operation, patch typically needs
+              at least two lines of context.
+
+       -v
+       --version
+              Output the version number of diff.
+
+       -w     Ignore white space when comparing lines.
+
+       -W <i>columns</i>
+       --width=<i>columns</i>
+              Use an output width of <i>columns</i> in side by side for-
+              mat.
+
+       -x <i>pattern</i>
+              When comparing directories, ignore files and subdi-
+              rectories whose basenames match <i>pattern</i>.
+
+       -X <i>file</i>
+              When comparing directories, ignore files and subdi-
+              rectories whose basenames match  any  pattern  con-
+              tained in <i>file</i>.
+
+       -y     Use the side by side output format.</pre>
+<p>In the simplest case, diff compares the contents of the two files <i>from-file 
+  </i>and <i>to-file</i>. A file name of - stands for text read from the standard 
+  input. </p>
+<p>If <i>from-file</i> is a directory and <i>to-file </i>is not, 
+  diff compares the file in <i>from-file</i> whose file name is that of <i>to-file</i>, 
+  and vice versa. The non-directory file must not be -. </p>
+<p>If both <i>from-file</i> and <i>to-file </i>are directories, diff 
+  compares corresponding files in both directories, in alphabetical order; this 
+  comparison is not recursive unless the -r or --recursive option is given. </p>
+<p>GNU `diff' can show whether files are different without detailing the differences. 
+  <br>
+  It also provides ways to suppress certain kinds of differences that are not 
+  important to you. <br>
+  <br>
+  Most commonly, such differences are changes in the amount of white space between 
+  words or lines. `diff' also provides ways to suppress differences in alphabetic 
+  case or in lines that match a regular expression that you provide. <br>
+  <br>
+  These options can accumulate; for example, you can ignore changes in both white 
+  space and alphabetic case.<b><br>
+  <br>
+  End -of-Line markers</b><br>
+  In operating systems that distinguish between text and binary files, `diff' 
+  normally reads and writes all data as text. <br>
+  <br>
+  Use the `--binary' option to force `diff' to read and write binary data instead. 
+  This option has no effect on a Posix-compliant system like GNU or traditional 
+  Unix. However, many personal computer operating systems represent the end of 
+  a line with a carriage return followed by a newline. <br>
+  <br>
+  On such systems, `diff' normally ignores these carriage returns on input and 
+  generates them at the end of each output line, but with the `--binary' option 
+  `diff' treats each carriage return as just another input character, and does 
+  not generate a carriage return at the end of each output line. <br>
+  <br>
+  This can be useful when dealing with non-text files that are meant to be interchanged 
+  with Posix-compliant systems.<b><br>
+  <br>
+Suppress differences in Blank and Tab Spacing</b></p>
+<p>  The `-b' and `--ignore-space-change' options ignore white space at line end, 
+  and considers all other sequences of one or more white space characters to be 
+  equivalent. <br>
+  <br>
+  The `-w' and `--ignore-all-space' options are stronger than `-b'. They ignore 
+  difference even if one file has white space where the other file has none. "White 
+  space" characters include tab, newline, vertical tab, form feed, carriage return, 
+  and space; some locales may define additional characters to be white space.<br>
+  <br>
+  <b><br>
+Ignore Case</b></p>
+<p>GNU `diff' can treat lowercase letters as equivalent to their uppercase counterparts, 
+  so that, for example, it considers `Funky Stuff', `funky STUFF', and `fUNKy 
+  stuFf' to all be the same. <br>
+  To request this, use the `-i' or `--ignore-case' option.<br>
+  <br>
+  <b>Suppressing Lines Matching a Regular Expression</b><br>
+  To ignore insertions and deletions of lines that match a regular expression, 
+  use the `-I REGEXP' or `--ignore-matching-lines=REGEXP' option. <br>
+  You should escape regular expressions that contain shell metacharacters to prevent 
+  the shell from expanding them. <br>
+  <br>
+  For example, `diff -I '^[0-9]'' ignores all changes to lines beginning with 
+  a digit. <br>
+  <br>
+  However, `-I' only ignores the insertion or deletion of lines that contain the 
+  regular expression if every changed line in the hunk--every insertion and every 
+  deletion--matches the regular expression. <br>
+  <br>
+  In other words, for each nonignorable change, `diff' prints the complete set 
+  of changes in its vicinity, including the ignorable ones. You can specify more 
+  than one regular expression for lines to ignore by using more than one `-I' 
+  option. `diff' tries to match each line against each regular expression, starting 
+  with the last one given.<br>
+  <br>
+  <b>Summarizing Which Files Differ</b><br>
+  When you only want to find out whether files are different, and you don't care 
+  what the differences are, you can use the summary output format. <br>
+  In this format, instead of showing the differences between the files, `diff' 
+  simply reports whether files differ. <br>
+  The `-q' and `--brief' options select this output format. <br>
+  This format is especially useful when comparing the contents of two directories. 
+  It is also much faster than doing the normal line by line comparisons, because 
+  `diff' can stop analyzing the files as soon as it knows that there are any differences. 
+  <br>
+  You can also get a brief indication of whether two files differ by using `cmp'. 
+  <br>
+  <br>
+  <b>Using diff to patch a file</b><br>
+  To show context around the differing lines GNU `diff' provides these output 
+  formats <br>
+  <br>
+  Normal Format: An output format that shows each hunk of differences without 
+  any surrounding context<br>
+  Context Format:: An output format that shows surrounding lines. <br>
+  Unified Format:: A more compact output format that shows context.<br>
+  <br>
+  `patch' can apply diffs by searching in the files for the lines of context around 
+  the differing lines; if those lines are actually a few lines away from where 
+  the diff says they are, `patch' can adjust the line numbers accordingly and 
+still apply the diff correctly.</p>
+<p><b>Example</b></p>
+<p><span class="telety">$ diff -q &lt;(sort file1.txt | uniq) &lt;(sort file2.txt | uniq)</span><br>
+  <br>
+The command above will return 0 if <span class="telety">file1.txt = file2.txt </span>and will return 1 if <span class="telety">file1.txt &ne; file2.txt</span><br>Note the files have to be sorted first (the order matters) and if the files could contain duplicate values, then the output of sort has to be run through the uniq command to eliminate any duplicate elements. </p>
+<p>For more on patching files and producing commands that direct the `ed' text 
+  editor to edit a file - see `info diff'<br>
+  <br>
+  <i># Oh lord won't you buy me a Mercedes Benz, my friends all drive Porsches, 
+  I must make amends # - Janice 
+Joplin </i> </p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="cmp.html">cmp</a> - Compare two files<br>
+  dircmp - Compare 2 directories<br>
+  <a href="diff3.html">diff3</a> - Show differences among three files<br>
+  <a href="sdiff.html">sdiff</a> - Merge two files interactively<br>
+  Equivalent Windows commands:  <a href="../term_tools/nt/comp.html">COMP</a> / <a href="../term_tools/nt/fc.html">FC</a> - Compare and display Characters/Lines which do not match.<br>
+(also the WINDIFF GUI)</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

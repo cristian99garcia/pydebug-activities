@@ -1,0 +1,89 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>ifup ifdown MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1>ifup / ifdown</h1> 
+<p>Bring a network interface up or down </p>
+<pre>Syntax
+      ifup [<i>options</i>] -a | <i>IFACE</i>...
+     
+      ifdown [<i>options</i>] -a|IFACE...
+
+Options
+   -a, --all       If given to ifup, affect all interfaces marked auto.
+                   Interfaces are brought up in the order in which they are defined in /etc/network/interfaces.
+
+                   If given to ifdown, affect all defined interfaces.
+                   Interfaces are brought down in the order in which they are currently listed in the state file.
+                   Only interfaces defined in /etc/network/interfaces will be brought down.
+
+   --force         Force configuration or deconfiguration of the interface.
+
+   --allow=<i>CLASS</i>   Only allow interfaces listed in an allow-CLASS line in /etc/network/interfaces
+                   to be acted upon.
+   -i <i>FILE</i>
+   --interfaces=<i>FILE
+               </i> 	Read interface definitions from FILE instead of from /etc/network/interfaces.
+
+   -n, --no-act    Don't configure any interfaces or run any "up" or "down" commands.
+
+   --no-mappings   Don't run any mappings. See interfaces for more information about the mapping feature.
+
+   -v, --verbose   Show commands as they are executed.
+
+   -h, --help      Display help for ifup
+
+   -V, --version   Show copyright and version information.
+</pre>
+<p><b>Examples</b></p>
+<p>Bring up all the interfaces defined with auto in /etc/network/interfaces</p>
+<p class="telety">ifup -a</p>
+<p>Bring up interface eth0</p>
+<p class="telety">ifup eth0</p>
+<p>Bring down all interfaces that are currently up.</p>
+<p class="telety">ifdown -a</p>
+<p><br>
+<i>&quot;Either I'm dead or my watch has stopped&quot; - Groucho Marx's last words</i></p>
+
+<p><b>Related:</b></p>
+<p>ifplugd - A link detection daemon for ethernet devices <br>
+  <a href="logout.html">logout</a> - Exit a login shell</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

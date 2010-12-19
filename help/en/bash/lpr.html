@@ -1,0 +1,190 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>lpr MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> lpr</h1> 
+<p>off line print - sends a print job to the default system queue.</p>
+<pre>SYNTAX
+      lpr [-P<em>printer</em>] [-#<em>num</em>] [-C <em>class</em>] [-J <em>job</em>] [-T <em>title</em>] [-U <em>user</em>] [-i [<em>numcols</em>]]
+            [-1234 <em>font</em>] [-w<em>num</em>] [-cdfghlnmprstv] [name ...]
+
+DESCRIPTION
+     Lpr uses a spooling daemon to print the named files when facilities become
+     available.  If no names appear, the standard input is assumed.
+
+     The following single letter options are used to notify the line printer
+     spooler that the files are not standard text files. The spooling daemon
+     will use the appropriate filters to print the data accordingly.
+
+     -c      The files are assumed to contain data produced by cifplot(1)
+
+     -d      The files are assumed to contain data from tex (DVI format from
+             Stanford).
+
+     -f      Use a filter which interprets the first character of each line as
+             a standard FORTRAN carriage control character.
+
+     -g      The files are assumed to contain standard plot data as produced
+             by the plot routines (see also plot for the filters used by the
+             printer spooler).
+
+     -l      Use a filter which allows control characters to be printed and
+             suppresses page breaks.
+
+     -n      The files are assumed to contain data from ditroff (device independent
+              troff).
+
+     -p      Use pr(1) to format the files (equivalent to print).
+
+     -t      The files are assumed to contain data from troff(1) (cat photo-
+             typesetter commands).
+
+     -v      The files are assumed to contain a raster image for devices like
+             the Benson Varian.
+
+     These options apply to the handling of the print job:
+
+     -P      Force output to a specific printer.  Normally, the default printer
+             is used (site dependent), or the value of the environment
+             variable PRINTER is used.
+
+     -h      Suppress the printing of the burst page.
+
+     -m      Send mail upon completion.
+
+     -r      Remove the file upon completion of spooling. Can not be used with
+             the -s option, due to security concerns.
+
+     -s      Use symbolic links.  Usually files are copied to the spool directory.
+               The -s option will use symlink(2) to link data files
+             rather than trying to copy them so large files can be printed.
+             This means the files should not be modified or removed until they
+             have been printed.
+
+     The remaining options apply to copies, the page display, and headers:
+
+     -#<em>num</em>   The quantity num is the number of copies desired of each file
+             named.  For example,
+
+                   lpr -#3 foo.c bar.c more.c
+
+             would result in 3 copies of the file foo.c, followed by 3 copies
+             of the file bar.c, etc.  On the other hand,
+
+                   cat foo.c bar.c more.c | lpr -#3
+
+             will give three copies of the concatenation of the files. Often a
+             site will disable this feature to encourage use of a photocopier
+             instead.
+
+     -[1234]<em>font</em>
+             Specifies a font to be mounted on font position i. The daemon
+             will construct a .railmag file referencing the font pathname.
+
+     -C <em>class</em>
+             Job classification to use on the burst page.  For example,
+
+                   lpr -C EECS foo.c
+
+             causes the system name (the name returned by hostname(1))  to be
+             replaced on the burst page by EECS, and the file foo.c to be
+             printed.
+
+     -J <em>job</em>  Job name to print on the burst page.  Normally, the first file's
+             name is used.
+
+     -T <em>title</em>
+             Title name for pr(1),  instead of the file name.
+
+     -U <em>user</em>
+             User name to print on the burst page, also for accounting purposes.
+             This option is only honored if the real user-id is daemon
+             (or that specified in the printcap file instead of daemon), and
+             is intended for those instances where print filters wish to requeue
+              jobs.
+
+     -i [<em>numcols</em>]
+             The output is indented. If the next argument is numeric
+             (<em>numcols</em>), it is used as the number of blanks to be printed before
+             each line; otherwise, 8 characters are printed.
+
+     -w<em>num</em>   Uses <em>num</em> as the page width for pr(1).
+
+Environment
+     If the following environment variable exists, it is used by lpr:
+
+     PRINTER  Specifies an alternate default printer.
+
+Files
+     /etc/passwd              Personal identification.
+     /etc/printcap            Printer capabilities data base.
+     /usr/sbin/lpd*           Line printer daemons.
+     /var/spool/output/*      Directories used for spooling.
+     /var/spool/output/*/cf*  Daemon control files.
+     /var/spool/output/*/df*  Data files specified in "cf" files.
+     /var/spool/output/*/tf*  Temporary copies of "cf" files.
+
+Diagnostics
+     If you try to spool too large a file, it will be truncated.  Lpr will object
+      to printing binary files.  If a user other than root prints a file
+     and spooling is disabled, lpr will print a message saying so and will not
+     put jobs in the queue.  If a connection to lpd(1) on the local machine
+     cannot be made, lpr will say that the daemon cannot be started.  Diagnostics
+     may be printed in the daemon's log file regarding missing spool
+     files by lpd(1).
+
+Bugs
+     Fonts for troff(1) and tex reside on the host with the printer. It is
+     currently not possible to use local font libraries.</pre>
+<p><b>Related</b>:<br>
+  <br>
+  banner - Print a line of text in extra large (poster size)<br>
+  cancel - Cancel request to printer<br>
+  <a href="lpc.html">lpc</a> - Line printer control program<br>
+  lprint - Print a file<br>
+  lprintd / lpd(8) - Abort a print job<br>
+  lprintq / lpq(1) - List the print queue<br>
+  <a href="lprm.html">lprm</a> - Remove jobs from the print queue <br>
+  pr(1) - Convert text files for printing <br>
+  printcap(5) - Printer Capability database<br>
+  <a href="symlink.html">symlink</a> - Make a new name for a file <br>
+  Equivalent Windows commands: <a href="../term_tools/nt/prncnfg.html">PRNCNFG</a> - Display, configure or rename a printer</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>less MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> less</h1> 
+<p>Display output one screen at a time, Search through output, Edit 
+the command line.</p>
+<pre>SYNTAX
+      <strong>less</strong> [<em>options</em>]
+
+      &lt;command&gt; | <strong>less</strong> [<em>options</em>]
+
+Moving Commands:
+
+Commands marked with * may be preceded by a number, N.
+Notes in parentheses indicate the behavior if N is given.
+
+  e  ^E  j  ^N  CR  *  Forward  one line   (or N lines).
+  y  ^Y  k  ^K  ^P  *  Backward one line   (or N lines).
+  f  ^F  ^V  SPACE  *  Forward  one window (or N lines).
+  b  ^B  ESC-v      *  Backward one window (or N lines).
+  z                 *  Forward  one window (and set window to N).
+  w                 *  Backward one window (and set window to N).
+  ESC-SPACE         *  Forward  one window, but don't stop at end-of-file.
+  d  ^D             *  Forward  one half-window (and set half-window to N).
+  u  ^U             *  Backward one half-window (and set half-window to N).
+  ESC-(  RightArrow *  Left  8 character positions (or N positions).
+  ESC-)  LeftArrow  *  Right 8 character positions (or N positions).
+  F                    Forward forever; like "tail -f".
+  r  ^R  ^L            Repaint screen.
+  R                    Repaint screen, discarding buffered input.
+
+  h  H                 Display this help.
+  q  :q  Q  :Q  ZZ     Exit.
+        ---------------------------------------------------
+        Default "window" is the screen height.
+        Default "half-window" is half of the screen height.
+
+ ---------------------------------------------------------------------------
+
+Searching Commands:
+
+  /pattern          *  Search forward for (N-th) matching line.
+  ?pattern          *  Search backward for (N-th) matching line.
+  n                 *  Repeat previous search (for N-th occurrence).
+  N                 *  Repeat previous search in reverse direction.
+  ESC-n             *  Repeat previous search, spanning files.
+  ESC-N             *  Repeat previous search, reverse dir. & spanning files.
+  ESC-u                Undo (toggle) search highlighting.
+        ---------------------------------------------------
+        Search patterns may be modified by one or more of:
+        ^N or !  Search for NON-matching lines.
+        ^E or *  Search multiple files (pass thru END OF FILE).
+        ^F or @  Start search at FIRST file (for /) or last file (for ?).
+        ^K       Highlight matches, but don't move (KEEP position).
+        ^R       Don't use REGULAR EXPRESSIONS.
+ ---------------------------------------------------------------------------
+
+Jumping commands:
+
+  g  <  ESC-<       *  Go to first line in file (or line N).
+  G  >  ESC->       *  Go to last line in file (or line N).
+  p  %              *  Go to beginning of file (or N percent into file).
+  {  (  [           *  Find close bracket } ) ].
+  }  )  ]           *  Find open bracket { ( [.
+  ESC-^F <c1> <c2>  *  Find close bracket <c2>.
+  ESC-^B <c1> <c2>  *  Find open bracket <c1> 
+        ---------------------------------------------------
+        Each "find close bracket" command goes forward to the close bracket 
+          matching the (N-th) open bracket in the top line.
+        Each "find open bracket" command goes backward to the open bracket 
+          matching the (N-th) close bracket in the bottom line.
+
+  m<letter>            Mark the current position with <letter>.
+  '<letter>            Go to a previously marked position.
+  ''                   Go to the previous position.
+  ^X^X                 Same as '.
+        ---------------------------------------------------
+        A mark is any upper-case or lower-case letter.
+        Certain marks are predefined:
+             ^  means  beginning of the file
+             $  means  end of the file
+ ---------------------------------------------------------------------------
+
+Changing files:
+
+  :e [file]            Examine a new file.
+  ^X^V                 Same as :e.
+  :n                *  Examine the (N-th) next file from the command line.
+  :p                *  Examine the (N-th) previous file from the command line.
+  :x                *  Examine the first (or N-th) file from the command line.
+  :d                   Delete the current file from the command line list.
+  =  ^G  :f            Print current file name.
+ ---------------------------------------------------------------------------
+
+Miscellaneous Commands:
+
+  -<flag>           Toggle a command line option [see OPTIONS below].
+  --<name>          Toggle a command line option, by name.
+  _<flag>           Display the setting of a command line option.
+  __<name>          Display the setting of an option, by name.
+  +cmd        Execute the less cmd each time a new file is examined.
+
+  !command    Execute the shell command with $SHELL.
+  |<b>X</b>command   Pipe file between current pos & mark <b>X</b> to shell command.
+  v           Edit the current file with $VISUAL or $EDITOR.
+  V           Print version number of "less".
+ ---------------------------------------------------------------------------
+
+OPTIONS:
+</pre>
+<p><span class="body">  Most options may be changed either on the command line,
+  or from within less by using the - or -- command.<br>
+  Options may be given in one of two forms: either a single
+  character preceded by a -, or a name preceeded by --.</span></p>
+<pre>
+FINDING:
+
+  -a  ........  --search-skip-screen
+                  Forward search, skips current screen.
+  -g  ........  --hilite-search
+                  Highlight only last match for searches.
+  -G  ........  --HILITE-SEARCH
+                  Don't highlight any matches for searches.
+  -h [N]  ....  --max-back-scroll=[N]
+                  Backward scroll limit.
+  -i  ........  --ignore-case
+                  Ignore case in searches.
+  -I  ........  --IGNORE-CASE
+                  Ignore case in searches and in search patterns.
+  -j [N]  ....  --jump-target=[N]
+                  Screen position of target lines.
+  -p [pattern]  --pattern=[<em>pattern</em>]
+                  Start at pattern (from command line).
+  -t [tag]  ..  --tag=[tag]
+                  Find a tag.
+  -T [tagsfile] --tag-file=[<em>tagsfile</em>]
+                  Use an alternate tags file.
+  -y [N]  ....  --max-forw-scroll=[<em>N</em>]
+                  Forward scroll limit.
+
+DISPLAY OPTIONS:
+
+  -D [<em>xn.n</em>]  .  --color=<em>xn.n</em>
+                  Set screen colors. (MS-DOS only)
+  -c  -C  ....  --clear-screen  --CLEAR-SCREEN
+                  Repaint by scrolling/clearing.
+  -P [<em>prompt</em>]   --prompt=[<em>prompt</em>]
+                  Define new prompt.
+  -m  -M  ....  --long-prompt  --LONG-PROMPT
+                  Set prompt style.
+  -n  -N  ....  --line-numbers  --LINE-NUMBERS
+                  Use line numbers.
+  -r  ........  --raw-control-chars
+                  Output "raw" control characters.
+  -s  ........  --squeeze-blank-lines
+                  Squeeze multiple blank lines.
+  -S  ........  --chop-long-lines
+                  Chop long lines.
+  -w  ........  --hilite-unread
+                  Highlight first new line after forward-screen.
+  -W  ........  --HILITE-UNREAD
+                  Highlight first new line after any forward movement.
+  -~  ........  --tilde
+                  Don't display tildes after end of file.
+  -z [<em>N</em>]  ....  --window=[<em>N</em>]
+                  Set size of window.
+
+FILE OPTIONS:
+
+  -b [<em>N</em>]  ....  --buffers=[<em>N</em>]
+                  Number of buffers.
+  -B  ........  --auto-buffers
+                  Don't automatically allocate buffers for pipes.
+  -f  ........  --force
+                  Force open non-regular files.
+  -k [<em>file</em>]  .  --lesskey-file=[<em>file</em>]
+                  Use a lesskey file.
+  -o [<em>file</em>]  .  --log-file=[<em>file</em>]
+                  Copy to log file (standard input only).
+  -O [<em>file</em>]  .  --LOG-FILE=[<em>file</em>]
+                  Copy to log file (unconditionally overwrite).
+
+MISC OPTIONS:
+
+  -d  ........  --dumb
+                  Dumb terminal.
+  -e  -E  ....  --quit-at-eof  --QUIT-AT-EOF
+                  Quit at end of file.
+  -q  -Q  ....  --quiet  --QUIET  --silent --SILENT
+                  Quiet the terminal bell.
+  -u  -U  ....  --underline-special  --UNDERLINE-SPECIAL
+                  Change handling of backspaces.
+  -x [<em>N</em>]  ....  --tabs=[<em>N</em>]
+                  Set tab stops.
+  -X  ........  --no-init
+                  Don't use termcap init/deinit strings.
+  -" [<em>c</em>[<em>c</em>]]  .  --quotes=[<em>c</em>[<em>c</em>]]
+                  Set shell quote characters.
+  -?  ........  --help
+                  Display help (from command line).
+  -V  ........  --version
+                  Display the version number of "less".
+ ---------------------------------------------------------------------------
+
+Line Editing:
+
+        These keys can be used to edit text being entered 
+        on the "command line" at the bottom of the screen.
+
+ RightArrow                       ESC-l     Move cursor right one character.
+ LeftArrow                        ESC-h     Move cursor left one character.
+ CNTL-RightArrow  ESC-RightArrow  ESC-w     Move cursor right one word.
+ CNTL-LeftArrow   ESC-LeftArrow   ESC-b     Move cursor left one word.
+ HOME                             ESC-0     Move cursor to start of line.
+ END                              ESC-$     Move cursor to end of line.
+ BACKSPACE                                  Delete char to left of cursor.
+ DELETE                           ESC-x     Delete char under cursor.
+ CNTL-BACKSPACE   ESC-BACKSPACE             Delete word to left of cursor.
+ CNTL-DELETE      ESC-DELETE      ESC-X     Delete word under cursor.
+ CNTL-U           ESC (MS-DOS only)         Delete entire line.
+ UpArrow                          ESC-k     Retrieve previous command line.
+ DownArrow                        ESC-j     Retrieve next command line.
+ TAB                                        Complete filename & cycle.
+ SHIFT-TAB                        ESC-TAB   Complete filename & reverse cycle.
+ CNTL-L                                     Complete filename, list all.</pre>
+<p><i>&ldquo;Counter to the widely held belief that industrial agriculture is more efficient and productive, small farms produce far more per acre than large farms&rdquo; - <a href="http://www.cnr.berkeley.edu/%7Echristos/articles/cv_organic_farming.html">Christos Vasilikiotis</a></i><a href="http://www.cnr.berkeley.edu/%7Echristos/articles/cv_organic_farming.html"><br>
+  </a><br>
+  <b> Related</b>:<br>
+  <br>
+  <a href="echo.html">echo</a> - Display message on screen<br>
+  <a href="head.html">head</a> - Output the first part of file(s)<br>
+  <a href="more.html">more</a> - Display output one screen at a time <br>
+  pg - Display one page at a time<br>
+  <a href="tee.html">tee</a> - Redirect output to multiple files <br>
+Equivalent Windows command:
+<a href="../term_tools/nt/more.html">MORE</a> - Display output one screen at a time.</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>sLocate - find files MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1>slocate</h1> 
+<p>Security Enhanced version of  GNU Locate. Secure Locate provides a secure way to index and quickly search for  files on your system. It uses incremental encoding just like GNU locate to compress its database to make searching faster, but it will also store file permissions and ownership so that users will not see files they do not have access to. </p>
+<pre>Syntax
+      slocate [-qi] [-d <i>path</i>] [--database=<i>path</i>] <i>search string</i>
+
+      slocate [-i] [-r <i>regexp</i>] [--regexp=<i>regexp</i>]
+
+      slocate [-qv] [-o <i>file</i>] [--output=<i>file</i>]
+
+      slocate [-e <i>dir1</i>,<i>dir2</i>,...] [-f <i>fstype1</i>,...] &lt;[-l <i>level</i>] [-c] &lt;[-U <i>path</i>] [-u]>
+
+      slocate [-Vh] [--version] [--help] 
+
+Options
+
+   -u            Create slocate database starting at path /. 
+
+   -U <i>dir</i>        Create slocate database starting at path <i>dir</i>.
+
+   -e <i>dir1,dir2</i>,...
+                 Exclude directories from the slocate database. 
+
+   -f <i>fstype1</i>,...
+                 Exclude files on specific file systems from the slocate database. 
+
+   -c            Parse '/etc/updatedb.conf' when updating the slocate database. 
+
+   -l <i>level</i>
+       Security level. 0 turns security checks off.
+       This will make search faster. 1 turns security checks on. This is the default. 
+
+   -i            Do a case insensitive search. 
+
+   -q            Quiet mode. Error messages are suppressed. 
+
+   -n <i>num</i>        Limit the amount of results shown to <i>num</i>. 
+
+   -r <i>regexp</i>
+    --regexp=<i>regexp</i>  Search the database using a basic POSIX regular expression. 
+
+   -o <i>file</i>
+    --output=<i>file</i>    The database to create. 
+
+   -d <i>path</i>
+    --database=<i>path</i>  The path of databases to search in. 
+   -h
+    --help           Display this help. 
+   -v
+    --verbose        Verbose mode. Display files when creating database. 
+   -V
+    --version        Display version. </pre>
+<p>slocate enables system users to search entire filesystems without displaying unauthorized files.</p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="locate.html">locate</a> - GNU Locate <br>
+  <a href="find.html"> find</a> - Search for files that meet a desired criteria<br>
+  fnmatch<br>
+  weekly.conf<br>
+Equivalent Windows command:
+<a href="dir.html">DIR</a> /S - Display a list of files and folders</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

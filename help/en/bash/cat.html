@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>cat MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> cat</h1>  
+<p>Display the contents of a file (concatenate)</p>
+<pre>Syntax
+      cat [<em>Options</em>] [<em>File</em>]...
+
+Concatenate <em>FILE</em>(s), or standard input, to standard output.
+
+  -A, --show-all           equivalent to -vET
+
+  -b, --number-nonblank    number nonblank output lines
+
+  -e                       equivalent to -vE
+
+  -E, --show-ends          display $ at end of each line
+
+  -n, --number             number all output lines
+
+  -s, --squeeze-blank      never more than one single blank line
+
+  -t                       equivalent to -vT
+
+  -T, --show-tabs          display TAB characters as ^I
+
+  -u                       (ignored)
+
+  -v, --show-nonprinting   use ^ and M- notation, except for LFD and TAB
+
+      --help               display this help and exit
+
+      --version            output version information and exit
+
+With no <em>FILE</em>, or when <em>FILE</em> is -, read standard input.</pre>
+<p><b>Examples</b>: <br>
+  <br>
+  Display a file<br>
+  <span class="telety">$ cat myfile.txt </span></p>
+<p>Concatenate two files: <span class="telety"><br>
+$ cat file1.txt file2.txt > union.txt</span></p>
+<p>If you need to combine two files but also eliminate duplicates, this can be done with <a href="sort.html">sort</a> unique: <br>
+<span class="telety">$  sort -u file1.txt file2.txt > unique_union.txt</span></p>
+<p>Put the contents of a file into a variable<br>
+<span class="telety">$ my_variable=`cat $myfile.txt`</span></p>
+<p><i>&quot;To be nobody but yourself - in a world which is doing 
+  its best, night and day, to make you like everybody else - means to fight the 
+  hardest battle which any human being can fight, and never stop fighting&quot; 
+  - E. 
+  E. Cummings </i></p>
+<p> <b>Related</b>:<br>
+  <br>
+  <a href="cp.html">cp</a> - Copy one or more files to another location<br>
+  <a href="mv.html">mv</a> - Move or rename files or directories<br>
+<a href="../term_tools/bash/tac.html">tac</a> - Concatenate and write files in reverse <br>
+<a href="http://souptonuts.sourceforge.net/chirico/articles/1/stupidcat.html">Stupid Cat tricks</a> - by Mike Chirico<br>
+Equivalent Windows command: <a href="../term_tools/nt/type.html">  TYPE</a> - Display the contents of a text file</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

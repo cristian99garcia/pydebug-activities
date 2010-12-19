@@ -1,0 +1,132 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>crontab MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> crontab (cron table)</h1> 
+<p>Schedule a command to run at a later time</p>
+<pre>SYNTAX
+      crontab [ -u <em>user</em> ] <em>file</em>
+      crontab [ -u <em>user</em> ] { -l | -r | -e }
+
+Key
+   -l  List - display the current crontab entries.
+
+   -r  Remove the current crontab.
+
+   -e  Edit the current crontab using the editor specified by the 
+       VISUAL or EDITOR environment variables.
+       After you exit from the editor, the modified crontab will be installed automatically.
+</pre>
+<p>  <span class="body">Crontab is the program used to install, deinstall or  list
+  the tables used to drive the <a href="cron.html">cron</a> daemon in Vixie Cron.<br>
+  Each user can have their own crontab, and though these are
+  files  in  /var,  they  are  not  intended  to  be  edited
+  directly.<br>
+  <br>
+
+  If  the  -u  option is given, it specifies the name of the
+  user whose crontab is to be tweaked.  If  this  option  is 
+  not  given,  crontab  examines "your" crontab, i.e., the       
+  crontab of the person executing the  command.   Note  that <a href="su.html">su</a> can  confuse  crontab  and  that if you are running
+  inside of <a href="su.html">su</a> you should always use the  -u  option  for
+  safety's sake.</span><br>
+  <br>
+  <span class="telety">cron <em>file</em> </span>is used to install a new
+  crontab from some named file  or  standard  input  if  the
+pseudo-filename `-' is given.</p>
+<p>Each line in the cron table follows the following format: 7 fields left to right </p>
+<table border="1" bordercolor="#333333" cellpadding="5" cellspacing="0">
+<tbody><tr><th align="left" class="body">Field</th><th align="left" class="body">Meaning</th>
+</tr><tr>
+<td width="30" align="center" class="body">1</td><td class="body">Minute (0-59)</td>
+</tr>
+<tr>
+<td align="center" class="body">2</td><td class="body">Hour (2-24)</td>
+
+</tr>
+<tr>
+<td align="center" class="body">3</td><td class="body">Day of month (1-31)</td>
+</tr>
+<tr>
+<td align="center" class="body">4</td>
+<td class="body">Month (1-12, Jan, Feb, ...)</td>
+</tr>
+<tr>
+<td align="center" class="body">5</td>
+<td class="body">Day of week (0-6) 0=Sunday, 1=Monday ... <br>
+  or Sun, Mon, Tue, Wed, Thur, Fri </td>
+</tr>
+<tr>
+
+<td align="center" class="body">6</td><td class="body">User that the command will run as</td>
+</tr>
+<tr>
+<td align="center" class="body">7</td><td class="body">Command to execute</td>
+</tr>
+</tbody></table>
+<p>There are several ways of specifying multiple values in a field:</p>
+<p> <span class="body">&#8226; The comma (',') operator specifies a list of values, for example: &quot;1,3,4,7,8&quot;<br>
+&#8226; The dash ('-') operator specifies a range of values, for example: &quot;1-6&quot;, which is equivalent to &quot;1,2,3,4,5,6&quot;<br>
+&#8226; The asterisk ('*') operator specifies all possible values for a field. e.g. every hour or every day.</span></p>
+<p>There is also an operator which some extended versions of cron support, the slash ('/') operator, which can be used to skip a given number of values. For example, &quot;*/3&quot; in the hour time field is equivalent to &quot;0,3,6,9,12,15,18,21&quot;; &quot;*&quot; specifies 'every hour' but the &quot;/3&quot; means that only the first, fourth, seventh...and such values given by &quot;*&quot; are used.</p>
+<p>Cron will email to  the <span class="telety">user</span> all output of the commands it runs, to silence this, redirect the output to a log file or to /dev/null</p>
+<p><strong>Example</strong></p>
+<p>Run <span class="telety">/usr/bin/somecommand</span> at 12.59 every day and supress the output (redirect to null) <br>
+  <br>
+  <span class="telety">59 12 * * * simon /usr/bin/somecommand &gt;&gt; /dev/null 2&gt;&amp;1</span></p>
+<p><strong>Permissions</strong><br>
+If the <span class="telety">allow</span> file exists, then you must be listed therein in order to be allowed to use this command. If the allow file does not exist but the deny file does exist, then you must not be listed in the deny file in order to use this command. If neither of these files exists, then depending on site-dependent configuration parameters, only the super user will be allowed to use this command, or all users will be able to use this command.</p>
+<p><i>"Wisdom is the power to put our time and our knowledge to the 
+    proper use" - Thomas 
+  J. Watson </i></p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="cron.html">cron</a> - daemon to execute scheduled commands<br>
+  <a href="nice.html">nice</a> - Change job scheduling priority<br>
+  <a href="builtin.html">builtin</a> - Run a shell builtin<br>
+  <a href="chroot.html">chroot</a> - Run a command with a different root directory<br>
+  <a href="exec.html">exec</a> - Execute a command<br>
+  <a href="nohup.html">nohup</a> - Run a command immune to hangups<br>
+  <a href="source.html">.source</a> - Run commands from a file <br>
+  <a href="su.html">su</a> - Run a command with substitute user and group id<br>
+  <a href="watch.html">watch</a> - Execute/display a program periodically<br>
+Equivalent Windows command: <a href="../term_tools/nt/schtasks.html">schtasks</a> - Schedule a command to run at a later time</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

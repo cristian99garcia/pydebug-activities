@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>export MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1>export</h1> 
+<p>Set an environment variable. Mark each <var>name</var> to be passed to child processes in the environment.</p>
+<pre>Syntax
+      export [-fn] [-p] [<var>name</var>[=<var>value</var>]]
+
+Options
+      -f   The <var>name</var>s refer to shell functions; 
+           otherwise the names refer to shell variables
+      -n   No longer mark each <var>name</var> for export.
+      -p   Display output in a form that may be reused as input. 
+</pre>
+<p> If no <var>names</var> are supplied, or if the `-p' option is given, a list 
+  of exported names is displayed. </p>
+<p>The return status is zero unless an invalid option is supplied, one of the 
+  names is not a valid shell variable name, or `-f' is supplied with a name that 
+  is not a shell function.</p>
+<p>export is a BOURNE shell command and a POSIX `special' builtin.<br>
+  <br>
+  Example - local variables</p>
+<pre>old_file=export.csv
+new_file=last.csv
+mv $old_file $new_file</pre>
+<p>Example - global variables</p>
+<pre>mydepartment=Sales ; export mydepartment
+mycustomer='Brown Brothers' ; export mycustomer</pre>
+<p><em>&quot;An average user will saturate their cognitive capacity
+    if
+they have more than seven things to remember&quot;</em></p>
+<p><b>Related:</b><br>
+  <br>
+  <a href="env.html">env</a> - Display, set, or remove environment variables<br>
+  <a href="echo.html">echo</a> - Display message on screen <br>
+  <a href="hostname.html">hostname</a> - Print or set system name<br>
+  <a href="local.html">local</a> - Create variables <br>
+  printenv - Print environment variables <br>
+  <a href="readonly.html">readonly</a> - Mark variables/functions as readonly 
+  <br>
+  <a href="shift.html">shift</a> - Shift positional parameters<br>
+  <a href="unset.html">unset</a> - Remove variable or function names <br>
+Equivalent Windows command: <a href="../term_tools/nt/setx.html">SETX</a> - Set environment variables permanently</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

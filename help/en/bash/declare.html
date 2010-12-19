@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>declare MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> declare</h1> 
+<p>Declare variables and give them attributes.</p>
+<pre>SYNTAX
+      declare [-afFrxi] [-p] [<var>name</var>[=<var>value</var>]]
+
+OPTIONS
+
+      -a  Each name is an array variable.
+
+      -f   Use function names only.
+<br>      -F   Inhibit the display of function definitions; 
+           only the function name and attributes are printed. 
+           (implies -f)
+
+      -i   The variable is to be treated as an integer; 
+           arithmetic evaluation is performed when the 
+           variable is assigned a value.<br>
+      -p   Display the attributes and values of each <var>name</var>. 
+           When `-p' is used, additional options are ignored.
+
+      -r   Make <i>name</i>s readonly. These names cannot then <br>           be assigned values by subsequent assignment statements 
+           or unset.
+<br>      -x   Mark each <i>name</i> for export to subsequent commands <br>           via the environment.</pre>
+<p><span class="body">If no <var>name</var>s are given, then `declare' will display 
+  the values of variables instead.</span> </p>
+<dl compact> 
+  <dt><span class="body"> </span> 
+  <dt><span class="body">Using <samp>`+'</samp> instead of <samp>`-'</samp> turns 
+    off the attribute instead. <br>
+    <br>
+    When used in a function, <code>declare</code> makes each <var>name</var> local, 
+    as with the <code>local</code> command. <br>
+    <br>
+    The <code>typeset</code> command is supplied for compatibility with the Korn 
+    shell; however, it has been deprecated in favor of the <code>declare</code> 
+    builtin command. <br>
+    <br>
+    The return status is zero unless an invalid option is encountered, an attempt 
+    is made to define a function using <samp>`-f foo=bar'</samp>, an attempt is 
+    made to assign a value to a readonly variable, an attempt is made to assign 
+    a value to an array variable without using the compound assignment syntax 
+    , one of the <var>names</var> is not a valid shell variable name, an attempt 
+    is made to turn off readonly status for a readonly variable, an attempt is 
+    made to turn off array status for an array variable, or an attempt is made 
+    to display a non-existent function with <samp>`-f'</samp>. <br>
+    <br>
+    <i>"My mother never saw the irony in calling me a son-of-a-bitch." - Jack 
+    Nicholson </i> </span> 
+</dl>
+<p><b> Related</b>:<br>
+  <br>
+  <a href="alias.html">alias</a> - Create an alias<br>
+  <a href="env.html">env</a> - Display, set, or remove environment variables<br>
+  <a href="echo.html">echo</a> - Display message on screen <br>
+  <a href="export.html"> export</a> - Set an environment variable<br>
+  <a href="hostname.html">hostname</a> - Print or set system name<br>
+  <a href="local.html">local</a> - Create variables <br>
+  printenv - Print environment variables <br>
+  <a href="readonly.html">readonly</a> - Mark variables/functions as readonly 
+  <br>
+  <a href="shift.html">shift</a> - Shift positional parameters <br>
+  Equivalent Windows command: 
+  <a href="../term_tools/nt/set.html">SET</a> - Display, set, or remove Windows  environment 
+  variables</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

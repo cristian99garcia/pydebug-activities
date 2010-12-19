@@ -1,0 +1,144 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>csplit MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> csplit</h1> 
+<p>Split a file into context-determined pieces.</p>
+<pre>SYNTAX
+     csplit [<em>options</em>]... <em>INPUT</em> <em>PATTERN</em>...
+</pre>
+<p>Creates zero or more output files containing sections of
+<i>INPUT</i> (standard input if <i>INPUT</i> is - ).</p>
+<p>The contents of the output files are determined by the <i>PATTERN</i>arguments, as detailed below.  An error occurs if a <i>PATTERN</i> argument
+refers to a nonexistent line of the input file (e.g., if no remaining
+line matches a given regular expression).  After every <i>PATTERN</i> has been
+matched, any remaining input is copied into one last output file.<br>
+<br>
+By default, `csplit' prints the number of bytes written to each
+output file after it has been created.</p>
+<pre>     The types of pattern arguments are:
+
+<i>N</i>
+     Create an output file containing the input up to but not including
+     line <i>N</i> (a positive integer).  If followed by a repeat count, also
+     create an output file containing the next LINE lines of the input
+     file once for each repeat.
+
+/<i>REGEXP</i>/[<i>OFFSET</i>]
+     Create an output file containing the current line up to (but not
+     including) the next line of the input file that contains a match
+     for <i>REGEXP</i>.  The optional <i>OFFSET</i> is a `+' or `-' followed by a
+     positive integer.  If it is given, the input up to the matching
+     line plus or minus <i>OFFSET</i> is put into the output file, and the
+     line after that begins the next section of input.
+
+%<i>REGEXP</i>%[<i>OFFSET</i>]
+     Like the previous type, except that it does not create an output
+     file, so that section of the input file is effectively ignored.
+
+{<i>REPEAT-COUNT</i>}
+     Repeat the previous pattern <i>REPEAT-COUNT</i> additional times.
+     <i>REPEAT-COUNT</i> can either be a positive integer or an asterisk,
+     meaning repeat as many times as necessary until the input is
+     exhausted.
+</pre>
+<p>The output files' names consist of a prefix (`xx' by default)
+followed by a suffix.  By default, the suffix is an ascending sequence
+of two-digit decimal numbers from `00' and up to `99'.  In any case,
+concatenating the output files in sorted order by filename produces the
+original input file.<br>
+<br>
+By default, if `csplit' encounters an error or receives a hangup,
+interrupt, quit, or terminate signal, it removes any output files that
+it has created so far before it exits.</p>
+<pre>   The program accepts the following options.
+
+-f <i>PREFIX</i>
+--prefix=<i>PREFIX</i>
+     Use <i>PREFIX</i> as the output file name prefix.
+
+-b <i>SUFFIX</i>
+--suffix=<i>SUFFIX</i>
+     Use <i>SUFFIX</i> as the output file name suffix.  When this option is
+     specified, the suffix string must include exactly one
+     `printf(3)'-style conversion specification, possibly including
+     format specification flags, a field width, a precision
+     specifications, or all of these kinds of modifiers.  The format
+     letter must convert a binary integer argument to readable form;
+     thus, only `d', `i', `u', `o', `x', and `X' conversions are
+     allowed.  The entire SUFFIX is given (with the current output file
+     number) to `sprintf(3)' to form the file name suffixes for each of
+     the individual output files in turn.  If this option is used, the
+     `--digits' option is ignored.
+
+-n <i>DIGITS</i>
+--digits=<i>DIGITS</i>
+     Use output file names containing numbers that are DIGITS digits
+     long instead of the default 2.
+
+-k
+--keep-files
+     Do not remove output files when errors are encountered.
+
+-z
+--elide-empty-files
+     Suppress the generation of zero-length output files.  (In cases
+     where the section delimiters of the input file are supposed to
+     mark the first lines of each of the sections, the first output
+     file will generally be a zero-length file unless you use this
+     option.)  The output file sequence numbers always run
+     consecutively starting from 0, even when this option is specified.
+
+-s
+-q
+--silent
+--quiet
+     Do not print counts of output file sizes.</pre>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="cut.html">cut</a> - Divide a file into several parts<br>
+  <a href="fmt.html">fmt</a> - Reformat paragraph text<br>
+  <a href="fold.html">fold</a> - Wrap input lines to fit in specified width<br>
+  <a href="join.html">join</a> - Join lines on a common field <br>
+  <a href="paste.html">paste</a> - Merge lines of files<br>
+  <a href="split.html">split</a> - Split a file into fixed-size pieces<br>
+<a href="tail.html">tail</a> - Output the last part of files </p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>install MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> install</h1> 
+<p>Copy files and set attributes, copies files while setting their 
+permission modes and, if possible, their owner and group.</p>
+<pre>SYNTAX
+      install [<i>options</i>]... <em>SOURCE DEST</em>
+
+      install [<i>options</i>]... <em>SOURCE</em>... <em>DIRECTORY</em>
+
+      install -d [<i>options</i>]... <em>DIRECTORY</em>...
+
+DESCRIPTION
+The 3 variants above install either a single SOURCE file to DEST target
+or copy multiple SOURCE files to the destination. In the last variant,
+each DIRECTORY (and any missing parent directories) is created.
+
+`install' is similar to `cp', but allows you to control the
+attributes of destination files.  It is typically used in Makefiles to
+copy programs into their destination directories.  It refuses to copy
+files onto themselves.
+
+OPTIONS
+
+-b
+--backup
+     Make a backup of each file that would otherwise be overwritten or
+     removed.  *Note Backup options::.
+
+-C
+     Install file, unless target already exists and is the same file,
+     in which case the modification time is not changed.
+
+-c
+     Ignored; for compatibility with old Unix versions of `install'.
+
+-d
+--directory
+     Create each given directory and any missing parent directories,
+     setting the owner, group and mode as given on the command line or
+     to the defaults.  It also gives any parent directories it creates
+     those attributes.  (This is different from the SunOS 4.x
+     `install', which gives directories that it creates the default
+     attributes.)
+
+-g <em>GROUP</em>
+--group=<em>GROUP</em>
+     Set the group ownership of installed files or directories to
+     GROUP. The default is the process's current group.  GROUP may be
+     either a group name or a numeric group id.
+
+-m <em>MODE</em>
+--mode=<em>MODE</em>
+     Set the permissions for the installed file or directory to MODE,
+     which can be either an octal number, or a symbolic mode as in
+     `chmod', with 0 as the point of departure (*note File
+     permissions::).  The default mode is 0755--read, write, and execute
+     for the owner, and read and execute for group and other.
+
+-o <em>OWNER</em>
+--owner=<em>OWNER</em>
+     If `install' has appropriate privileges (is run as root), set the
+     ownership of installed files or directories to OWNER. The default
+     is `root'.  OWNER may be either a user name or a numeric user ID.
+
+-p
+--preserve-timestamps
+     Set the time of last access and the time of last modification of
+     each installed file to match those of each corresponding original
+     file.  When a file is installed without this option, its last
+     access and last modification times are both set to the time of
+     installation.  This option is useful if you want to use the last
+     modification times of installed files to keep track of when they
+     were last built as opposed to when they were last installed.
+
+-s
+--strip
+     Strip the symbol tables from installed binary executables.
+
+-S <em>SUFFIX</em>
+--suffix=<em>SUFFIX</em>
+     Append SUFFIX to each backup file made with `-b'.
+
+-v
+--verbose
+     Print the name of each file before copying it.
+
+-V <em>METHOD</em>
+--version-control=<em>METHOD</em>
+     Change the type of backups made with `-b'.  The METHOD argument
+     can be `numbered' (or `t'), `existing' (or `nil'), or `never' (or
+     `simple').</pre>
+<p><i>SysAdmins can't be sued for malpractice but surgeons don't 
+  have to deal with patients who install new versions of their own innards.</i><br>
+  <br>
+  <b> Related</b>:<br>
+  <br>
+  <a href="cp.html">cp</a> - Copy one or more files to another location<br>
+Equivalent Windows command: <a href="../term_tools/nt/robocopy.html">ROBOCOPY</a> - Robust File and Folder Copy </p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

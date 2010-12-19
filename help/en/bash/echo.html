@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>echo MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> echo</h1> 
+<p>Display message on screen, writes each given STRING to standard 
+output, with a space between each and a newline after the last one.</p>
+<pre>Syntax
+     echo [<em>options</em>]... [<em>string</em>]...
+
+Options
+
+ -n
+     Do not output the trailing newline.
+
+ -E
+     Disable the interpretation of the following backslash-escaped characters
+
+ -e
+     Enable interpretation of the following backslash-escaped
+     characters in each STRING:
+
+    \a          alert (bell)
+
+    \b          backspace
+
+    \c          suppress trailing newline
+
+    \e          escape <br> <br>    \f          form feed
+
+    \n          new line
+
+    \r          carriage return
+
+    \t          horizontal tab
+
+    \v          vertical tab
+
+    \\          backslash
+
+    \<i>NNN</i>
+          the character whose ASCII code is NNN (octal); if NNN is not
+          a valid octal number, it is printed literally.
+
+    \x<i>nnn</i><br>          the character whose ASCII code is the hexadecimal value <br>          nnn (one to three digits)</pre>
+<p>echo is a BASH built-in command</p>
+<p><b>Examples</b></p>
+<p>Echo can also display in color by using Escape sequences for  foreground (30..37) and background (40..47) colours.</p>
+<p class="code">$ COL_BLUE=&quot;\x1b[34;01m&quot;<br>
+$ COL_RESET=&quot;\x1b[39;49;00m&quot;<br>
+$ echo -e $COL_BLUE&quot;Important Message: &quot;$COL_RESET&quot;This is a message&quot;</p>
+<p>Here is a shell script to display all the color combinations: </p>
+<pre> #!/bin/bash
+ #
+ echo ---Bg---40---41---42---43---44---45---46---47
+ for i in {30..37} # foreground
+ do
+ echo -n -e fg$i- 
+ for j in {40..47} # background
+ do
+ echo -n -e '\E['$i';'$j'm SS64'
+ tput sgr0 # Reset text attributes to normal without clear
+ done
+ echo # newline
+ done
+ 
+ echo -- Clear BG --
+ for n in {30..37} # foreground
+ do
+ echo -e fg$n '\E['$n';'01'm SS64'
+ tput sgr0 # Reset text attributes to normal without clear
+ done</pre>
+<p><em>&quot;The only thing that helps me pass the time away; is knowing I'll be back at Echo Beach some day&quot; - Martha and the Muffins</em><b></b><b><br>
+  <br>
+  Related</b>:<br>
+  <br>
+  <a href="head.html">head</a> - Output the first part of file(s)<a href="less.html"><br>
+  less</a> - Display output one screen at a time<br>
+  <a href="more.html">more</a> - Display output one screen at a time <br>
+  pg - Display one page at a time<br>
+  <a href="tee.html">tee</a> - Redirect output to multiple files <br>
+Equivalent Windows command:  <a href="echo.html">ECHO</a> - Display message on screen</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

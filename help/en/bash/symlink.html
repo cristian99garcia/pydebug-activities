@@ -1,0 +1,125 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>symlink MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> symlink</h1> 
+<p>make a new name for a file</p>
+<pre>Syntax
+       #include <unistd.h>
+
+       int symlink(const char *OldPath, const char *NewPath);</pre>
+<p><span class="body"> 
+  symlink creates a symbolic link named NewPath which contains the string OldPath.<br>
+  <br>
+  Symbolic links are interpreted at run-time as if the contents of the link had 
+  been substituted into the path being followed to find a file or directory.<br>
+  <br>
+  Symbolic links may contain .. path components, which (if used at the start of 
+  the link) refer to the parent directories of that in which the link resides.<br>
+  <br>
+  A symbolic link (also known as a soft link) may point to an existing file or 
+  to a nonexistent one; the latter case is known as a dangling link.<br>
+  <br>
+  The permissions of a symbolic link are irrelevant; the ownership is ignored 
+  when following the link, but is checked when removal or renaming of the link 
+  is requested and the link is in a directory with the sticky bit set.<br>
+  <br>
+  If NewPath exists it will NOT be overwritten.</span><br>
+</p>
+<pre>
+RETURN VALUE
+       On  success,  zero is returned.  On error, -1 is returned,
+       and errno is set appropriately.
+
+ERRORS
+       EPERM  The filesystem containing NewPath does not  support
+              the creation of symbolic links.
+
+       EFAULT OldPath  or  NewPath points outside your accessible
+              address space.
+
+       EACCES Write access to the directory containing NewPath is
+              not allowed for the process's effective uid, or one
+              of the directories in NewPath did not allow  search
+              (execute) permission.
+
+       ENAMETOOLONG
+              OldPath or NewPath was too long.
+
+       ENOENT A  directory component in NewPath does not exist or
+              is a dangling symbolic  link,  or  OldPath  is  the
+              empty string.
+
+       ENOTDIR
+              A  component used as a directory in NewPath is not,
+              in fact, a directory.
+
+       ENOMEM Insufficient kernel memory was available.
+
+       EROFS  NewPath is on a read-only filesystem.
+
+       EEXIST NewPath already exists.
+
+       ELOOP  Too many symbolic links were encountered in resolving
+              NewPath.
+
+       ENOSPC The  device containing the file has no room for the
+              new directory entry.
+
+       EIO    An I/O error occurred.</pre>
+<p>NOTES <br>
+  No checking of OldPath is done. <br>
+  Deleting the name referred to by a symlink will actually delete the file (unless 
+  it also has other hard links). If this behaviour is not desired, use link.<br>
+  <br>
+  <i>&quot;Women might be able to fake orgasms. But men can fake whole relationships." 
+  - Sharon Stone 
+  </i> </p>
+<p><b>Related</b>:<br>
+  <br>
+  readlink(2)<br> 
+link(2), <br>
+unlink(2), rename(2), open(2), lstat(2), <br>
+  <a href="ln.html">ln</a> - Make links between files<br>
+Equivalent Windows command:
+  <a href="../term_tools/nt/shortcut.html">SHORTCUT</a> - Create a windows shortcut (.LNK 
+file)</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

@@ -75,7 +75,9 @@ class GtkSourceview2Editor:
         self.edit_notebook.remove_page(n)
                
     def _page_removed_cb(self, notebook, page, n):
-        pg_obj = self._get_page()
+        #pg_obj = self._get_page()
+        if page.text_buffer.can_undo():
+            page.save()
         _logger.debug('removing page %d. interactive_close:%r. Modified:%r'%
                       (n,self.interactive_close,page.text_buffer.can_undo()))
     
@@ -268,6 +270,19 @@ class GtkSourceview2Editor:
                     break_list.append('%s:%s'%(page.fullPath,iter.get_line()+1,))
         return break_list
 
+    """
+    Simplifying assumption: Breakpoints are stored only in marks in the text_buffer.
+                             (and must therefore be put away in debug_dict)
+                             Embeded lines are stored in file itself with comment
+                                '#PyDebugTemp' and self identify their presence
+    """
+                                
+    def save_all_breakpoints(self):
+        for i in range(self.edit_notebook.get_n_pages()):
+            page = self.edit_notebook.get_nth_page(i)
+            if isinstance(page,GtkSourceview2Page):
+                page.save_breakpoints()
+    """
     def remove_all_embeds(self):
         for i in range(self.edit_notebook.get_n_pages()):
             page = self.edit_notebook.get_nth_page(i)
@@ -280,7 +295,7 @@ class GtkSourceview2Editor:
                     _logger.debug('delete candidate line:%s'%(delete_candidate,))
                     if delete_candidate.find('PyDebugTemp') > -1:
                         self.text_buffer.delete(embed_line,iter)
-                        
+    """                   
     def get_list_of_embeded_files(self):
         file_list = []
         for i in range(self.edit_notebook.get_n_pages()):
@@ -289,7 +304,7 @@ class GtkSourceview2Editor:
                 if len(page.embeds) > 0:
                     file_list.append(page.fullPath)
         return file_list
-                    
+                   
     def remove_embeds_from_file(self,fullPath):
         text = ''
         try:
@@ -302,12 +317,12 @@ class GtkSourceview2Editor:
             _file.close()
         except IOException,e:
             _logger.error('unable to rewrite%s Exception:%s'%(fullPath,e))
-                          
+                         
     def clear_embeds(self):
         flist = self.get_list_of_embeded_files()
         for f in flist:
             self.remove_embeds_from_file(f)
-            
+        
     def save_all(self):
         _logger.info('save all %i Editor pages. write pdbrc: %s' % (self.edit_notebook.get_n_pages(),self.breakpoints_changed,))
         #if self._activity.is_foreign_dir():

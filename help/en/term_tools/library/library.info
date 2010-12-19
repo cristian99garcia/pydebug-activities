@@ -1,0 +1,9 @@
+[Library]
+name = cmnd_tools
+global_name = cmnd_tools
+long_name = cmnd_tools
+category = media
+library_version = 1
+host_version = 1
+l10n = false
+locale = en

@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>bc MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1>bc</h1> 
+<p>An arbitrary precision calculator language </p>
+<pre>Syntax
+      bc <i>options</i> <i>file</i>... 
+
+Options:
+   -h, --help
+       Print the usage and exit.
+
+ <i>file</i>  A file containing the calculations/functions to perform.
+       May be piped from standard input  
+
+   -i, --interactive
+       Force interactive mode.
+ 
+   -l, --mathlib
+       Define the standard math library.
+ 
+   -w, --warn
+       Give warnings for extensions to POSIX bc.
+
+   -s, --standard
+       Process exactly the POSIX bc language.
+
+   -q, --quiet
+       Do not print the normal GNU bc welcome.
+
+   -v, --version
+       Print the version number and copyright and quit.</pre>
+<p>bc is a language that supports arbitrary precision numbers with interactive execution of statements. bc starts by processing code from all the files listed on the command line in the order listed. After all files have been processed, bc reads from the standard input. All code is executed as it is read. (If a file contains a command to halt the processor, bc will never read from the standard input.)</p>
+<p>The most common use of bc is within a shell script, using a &quot;here&quot; document to pass the program details to bc.</p>
+<p><b>Example shell script</b></p>
+<pre>#!/bin/bash
+# bcsample - An example of calculations with bc
+if [ $# != 1 ]
+  then
+  echo "A number argument is required"
+  exit
+fi
+
+bc &lt;&lt;END-OF-INPUT
+  scale=6
+  /* first we define the function */
+  define myfunc(x){
+  return(sqrt(x) + 10);
+  }
+
+  /* then use the function to do the calculation*/
+ x=$1
+ "Processing";x;" result is ";myfunc(x)
+ quit
+END-OF-INPUT
+
+echo &quot;(to 6 decimal places)&quot;</pre>
+<p>Run the  script above with:<br>
+<span class="telety">$ chmod a+x bcsample<br>
+$ ./bcsample 125 </span></p>
+<p><b>Standard functions supported by bc</b></p>
+<p><span class="telety">length ( expression )</span><br>
+The value of the length function is the number of significant digits in the expression. <br>
+<span class="telety">read ( )</span><br>
+Read a number from the standard input, regardless of where the function occurs. Beware, this can cause problems with the mixing of data and program in the standard input. The best use for this function is in a previously written program that needs input from the user, but never allows program code to be input from the user. </p>
+<p><span class="telety">scale ( expression )</span><br>
+The  number of digits after the decimal point in the expression. </p>
+<p><span class="telety">sqrt ( expression )</span><br>
+The  square root of the expression.</p>
+<p> Most standard math expressions are of course supported: <span class="telety"> + - / * % ^ </span></p>
+<p><span class="telety">++ var</span><br>
+increment the variable by one and set the new value as the result of the expression. </p>
+<p><span class="telety">var ++</span><br>
+The result of the expression is the value of the variable and  the variable is then incremented by one. </p>
+<p><span class="telety">-- var</span><br>
+decrement the variable by one and set the new value as the result of the expression. <br>
+<br>
+<span class="telety">var --</span><br>
+The result of the expression is the value of the variable and  the variable is then decremented by one. <br>
+<br>
+<span class="telety">( expr )</span><br>
+Brackets alter the standard precedence to force the evaluation of an expression. </p>
+<p><span class="telety">var = expr</span><br>
+The variable var is assigned the value of the expression. </p>
+<p>Relational expressions and Boolean operations are also legal, look at the full bc man page for more </p>
+<p><b>Comments</b><br>
+/* In-line comments */<br>
+# single line comment. The end of line character is not part of the comment and is processed normally. </p>
+<p><i>&ldquo;If I were again beginning my studies, I would follow the advice of Plato and start with mathematics&rdquo; - Galileo</i></p>
+<p><b>Related bash commands</b>:<br>
+  <br>
+  <a href="dc.html">dc</a> - Desk Calculator<br>
+</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

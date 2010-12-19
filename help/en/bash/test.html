@@ -1,0 +1,256 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>test MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem --><h1> test</h1> 
+<span class="body">Evaluate a conditional expression <var>expr</var>. </span><br>
+<pre>Syntax
+      test <i>expr</i><br>         [ <i>expr</i>
+
+Options</pre>
+<p>Each operator and operand must be a separate argument. When the <code>[</code> 
+  form is used, the last argument to the command must be a <code>]</code>. Expressions 
+  may be combined using the following operators, listed in decreasing order of 
+  precedence. </p>
+<dl> 
+  <dd> 
+    <dl compact> 
+      <dt><code>! <var>expr</var></code> 
+    </dl>
+  <dd> 
+    <pre>True if <var>expr</var> is <strong>false</strong>.</pre>
+  </dd>
+  <dt><code>( <var>expr</var> )</code> </dt>
+  <dd> 
+    <pre>Returns the value of <var>expr</var>. This may be used to override the
+normal precedence of operators. </pre>
+  </dd>
+  <dt><code><var>expr1</var> -a <var>expr2</var></code> </dt>
+  <dd> 
+    <pre>True if both <var>expr1</var> <strong>and</strong> <var>expr2</var> are true.</pre>
+  </dd>
+  <dt><code><var>expr1</var> -o <var>expr2</var></code> </dt>
+  <dd> 
+    <pre>True if either <var>expr1</var> <strong>or</strong> <var>expr2</var> is true.</pre>
+  </dd>
+</dl>
+<p><span class="body">The <code>test</code> and <code>[</code> builtins evaluate 
+  conditional expressions using a set of rules based on the number of arguments.</span> 
+</p>
+<dl> 
+  <dd> 
+    <dl compact> 
+      <dt><span class="body">0 arguments </span>
+      <dd> 
+        <p><span class="body">The expression is false. </span></p>
+      <dt><span class="body">1 argument </span>
+      <dd> 
+        <p><span class="body">The expression is true if and only if the argument 
+          is not null. </span></p>
+      <dt><span class="body">2 arguments </span>
+      <dd> 
+        <p><span class="body">If the first argument is <samp>`!'</samp>, the expression 
+          is true if and only if the second argument is null. If the first argument 
+          is one of the unary conditional operators, the expression is true if 
+          the unary test is true. If the first argument is not a valid unary operator, 
+          the expression is false. </span></p>
+      <dt><span class="body">3 arguments </span>
+      <dd> 
+        <p><span class="body">If the second argument is one of the binary conditional 
+          operators, the result of the expression is the result of the binary 
+          test using the first and third arguments as operands. If the first argument 
+          is <samp>`!'</samp>, the value is the negation of the two-argument test 
+          using the second and third arguments. If the first argument is exactly 
+          <samp>`('</samp> and the third argument is exactly <samp>`)'</samp>, 
+          the result is the one-argument test of the second argument. Otherwise, 
+          the expression is false. The <samp>`-a'</samp> and <samp>`-o'</samp> 
+          operators are considered binary operators in this case. </span></p>
+      <dt><span class="body">4 arguments </span>
+      <dd> 
+        <p><span class="body">If the first argument is <samp>`!'</samp>, the result 
+          is the negation of the three-argument expression composed of the remaining 
+          arguments. Otherwise, the expression is parsed and evaluated according 
+          to precedence using the rules listed above. </span></p>
+      <dt><span class="body">5 or more arguments </span>
+      <dd> 
+        <p><span class="body">The expression is parsed and evaluated according 
+          to precedence using the rules listed above.</span></p>
+      </dd>
+    </dl>
+</dl>
+<p>The above applies to the BOURNE shell built-in, the BASH `test' 
+  command has the following additional options:</p>
+<p><span class="body"><b>File type tests </b><br>
+  <br>
+  These options test for particular types of files. All cases will only return
+  True (0) if the file exists.</span></p>
+<pre>`-b <em>file</em>'
+     True if <em>file</em> is a Block special device.
+
+`-c <em>file</em>'
+     True if <em>file</em> is a Character special device.
+
+`-d <em>file</em>'
+     True if <em>file</em> is a Directory.
+
+`-e <em>file</em>'
+     True if <em>file</em> Exists.
+
+`-f <em>file</em>'
+     True if <em>file</em> is a regular File.
+
+`-g <em>file</em>'
+     True if <em>file</em> has its set-group-id bit set.
+
+`-G <em>file</em>'
+     True if <em>file</em> is owned by the current effective group id.
+
+`-k <em>file</em>'
+     True if <em>file</em> has its "sticky" bit set.
+
+`-h <em>file</em>'
+`-L <em>file</em>'
+     True if <em>file</em> is a symbolic Link.
+
+`-O <em>file</em>'
+     True if <em>file</em> is owned by the current effective user id.
+
+`-p <em>file</em>'
+     True if <em>file</em> is a named Pipe.
+
+`-r <em>file</em>'
+     True if <em>file</em> is readable.
+
+`-S <em>file</em>'
+     True if <em>file</em> is a Socket.
+
+`-s <em>file</em>'
+     True if <em>file</em> has a Size greater than zero.
+
+`-t [FD]'
+     True if FD is opened on a terminal.  If FD is omitted, it defaults
+     to 1 (standard output).
+
+`-u <em>file</em>'
+     True if <em>file</em> has its set-user-id bit set.
+
+`-w <em>file</em>'
+     True if <em>file</em> is writable.
+
+`-x <em>file</em>'
+     True if <em>file</em> is executable.
+
+`<em>file</em>1 -ef <em>file</em>2'
+     True if <em>file</em>1 and <em>file</em>2 have the same device and inode numbers,
+     i.e., if they are hard links to each other.</pre>
+<p><span class="body"><b>File Age</b><br>
+These options test  the file modification date.</span></p>
+<pre>
+`<em>file</em>1 -nt <em>file</em>2'
+     True if <em>file</em>1 is newer than <em>file</em>2.
+
+`<em>file</em>1 -ot <em>file</em>2'
+     True if <em>file</em>1 is older than <em>file</em>2.</pre>
+<p><span class="body"> <b>String tests</b><br>
+  These options test string characteristics. Strings are not quoted for `test', 
+  though you may need to quote them to protect characters with special meaning 
+  to the shell, e.g., spaces.</span> </p>
+<pre>`-z <em>String</em>'
+     True if the length of <em>String</em> is zero.
+
+`-n <em>String</em>'
+`<em>String</em>'
+     True if the length of <em>String</em> is nonzero.
+
+`<em>String</em>1 = <em>String</em>2'
+     True if the strings are equal.
+
+`<em>String</em>1 != <em>String</em>2'
+     True if the strings are not equal.</pre>
+<p><span class="body"> <b>Numeric tests</b><br>
+  Numeric relationals. The arguments must be entirely numeric (possibly negative), 
+  or the special expression `-l STRING', which evaluates to the length of STRING.</span> 
+</p>
+<pre>`ARG1 -eq ARG2'
+`ARG1 -ne ARG2'
+`ARG1 -lt ARG2'
+`ARG1 -le ARG2'
+`ARG1 -gt ARG2'
+`ARG1 -ge ARG2'
+     These arithmetic binary operators return true if ARG1 is equal,
+     not-equal, less-than, less-than-or-equal, greater-than, or
+     greater-than-or-equal than ARG2, respectively.
+
+   For example:
+
+     test -1 -gt -2 && echo yes
+     => yes
+     test -l abc -gt 1 && echo yes
+     => yes
+     test 0x100 -eq 1
+     error--> test: integer expression expected before -eq</pre>
+<p><strong><span class="body">  Examples</span></strong></p>
+<pre>$ ls -al<br>total 67
+
+drwxr-xr-x  18 root    root   4096  Jun 9 21:12 ./<br>drwxr-xr-x  18 root    root   4096  Jun 9 21:12 ../<br>-rw-rw-rw-   1 simon	users  4096  Jun 9  07:30  london<br>-rwsrwsrwx   1 simon	users  4096  Jun 9  07:32  aberdeen<br>-rw-------   1 simon	users  4096  Jun 9  07:29  bristol<br>-rw-r--r--   1 simon   users  4096  Jun 9  07:29  bath<br>$</pre>
+<p>$ test -r paris<br>
+  $ echo $?<br>
+  1<br>
+$</p>
+<p>Because the file `paris' is not Readable, the value returned
+is false (non zero)<br>
+</p>
+<pre>if [ &quot;$LOGNAME&quot; <strong>=</strong> &quot;scott&quot; ]<br>then<br>    echo &quot;Logged in as Scott&quot;<br>else<br>	 echo &quot;incorrect user&quot;<br>fi</pre>
+<p>If the logname variable = scott then the test returns TRUE (0)</p>
+<p><em>&quot;The test of a vocation is the love of the drudgery it involves&quot; - Logan Pearsall</em></p>
+<p><b>Related</b>:<br>
+  <br>
+  <a href="case.html">case</a> - Conditionally perform a command<br>
+  <a href="cmp.html">cmp</a> - Compare two files<br>
+  <a href="expr.html">expr</a> - Evaluate expressions<br>
+  <a href="eval.html">eval</a> - Evaluate several commands/arguments <br>
+  <a href="for.html">for</a> - Expand <var>words</var>, and execute <var>commands</var> 
+  <br>
+  <a href="if.html">if</a> - Conditionally perform a command  <br>
+  pathchk - Check file name portability<br>
+Equivalent Windows command: <a href="../term_tools/nt/set.html">
+</a><a href="../term_tools/nt/if.html">IF</a> - Conditionally perform a command</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>

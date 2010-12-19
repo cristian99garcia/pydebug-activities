@@ -27,6 +27,7 @@ import gtk.glade
 
 #sugar stuff
 from sugar.graphics.toolbutton import ToolButton
+from sugar.graphics.icon import Icon
 import sugar.graphics.toolbutton
 from sugar.datastore import datastore
 
@@ -400,6 +401,8 @@ class ProjectGui(ProjectFunctions):
                 shutil.rmtree(self._to_home_dest, ignore_errors=True)
             shutil.copytree(self._activity.child_path,self._to_home_dest)
             self._activity.util.set_permissions(self._to_home_dest)
+            #mark the md5 as saved
+            self.save_tree_md5(self._activity.child_path)
             #redraw the treeview
             self.activity_window.set_file_sys_root(self.storage)
 
@@ -605,6 +608,21 @@ class ProjectGui(ProjectFunctions):
         self.manifest_class.position_recent()
      
     def clear_clicked_cb(self, button):
+        #if necessary clean up contents of playpen
+        #has the tree md5 changed?
+        if not self._activity.debug_dict['tree_md5'] == '':            
+            tree_md5 = self._activity.util.md5sum_tree(self._activity.child_path)
+            if tree_md5 != self._activity.debug_dict['tree_md5']:
+                action_prompt = _('Select OK to abandon changes to ') + \
+                            os.path.basename(self._activity.child_path)
+                self._activity.util.confirmation_alert(action_prompt, \
+                        _('Changes have been made to the PyDebug work area.'), \
+                        self.continue_clear_clicked_cb)
+                return        
+        self.continue_clear_clicked_cb(None, None)
+
+    def continue_clear_clicked_cb(self, alert, confirmation):
+        self._unload_playpen()
         new_tree = os.path.join(self._activity.activity_playpen,'untitled.activity')
         if self._activity.child_path == new_tree:
             root = self.storage            
@@ -643,7 +661,7 @@ class ProjectGui(ProjectFunctions):
         alias_cmd = 'alias pp="cd %s"\n'%(self._activity.child_path,)
         self._activity.feed_virtual_terminal(1,alias_cmd)
         self._activity.feed_virtual_terminal(0,alias_cmd)
-
+        
         #add the bin directory to path
         if self._activity.child_path not in os.environ['PATH'].split(':'):
             os.environ['PATH'] = os.path.join(self._activity.child_path,'bin') + ':' + os.environ['PATH']
@@ -812,7 +830,7 @@ class DataStoreTree():
             tooltips.set_tip(widget, value)
             tooltips.enable()
         except:
-            _logger.exception('show_tooltip exception')
+            #_logger.exception('show_tooltip exception')
             tooltips.set_tip(widget, emptytext)
 
     def init_columns(self):

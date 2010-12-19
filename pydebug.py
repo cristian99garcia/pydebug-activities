@@ -58,7 +58,8 @@ import IPython.ipapi
 
 #following taken from Rpyc module
 #import Rpyc 
-from Rpyc.Utils.Serving import start_threaded_server, DEFAULT_PORT
+from Rpyc.Utils.Serving import start_threaded_server, threaded_server_close, DEFAULT_PORT
+from Rpyc.Servers import forking_server
 from Rpyc.Connection import *
 from Rpyc.Stream import *
 import select
@@ -132,13 +133,12 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         self.passed_in_ds_object = None
         if handle.object_id and handle.object_id != '':
             self.passed_in_ds_object = datastore.get(handle.object_id)
-            debugstr = ''
             if self.passed_in_ds_object:
                 d = self.passed_in_ds_object.metadata
                 #log_dict(d,'initial datastore metadata ==>:')
-            self.request_new_jobject = False
         else:
-            self.request_new_jobject = True
+            ds_object = self.get_new_dsobject()
+            handle.object_id = ds_object.get_object_id()
             _logger.debug('no initial datastore object id passed in via handle')
 
         #Save a global poiinter so remote procedure calls can communicate with pydebug
@@ -182,24 +182,27 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         #give the server a chance to get started so terminal can connect to it
         self.non_blocking_server()
         #glib.idle_add(self.non_blocking_server)
-
+        """
         if self.request_new_jobject and self.debug_dict.get('jobject_id','') != '':
             self.request_new_jobject = False
-            
+    
         #keep on using the same journal entry
         if self.debug_dict.get('jobject_id','') != '':
             handle.object_id = self.debug_dict.get('jobject_id','')
-
+        """
+        
         # init the Classes we are subclassing
         _logger.debug('about to init  superclass activity. Elapsed time: %f'%\
                       (time.clock()-start_clock))
-        Activity.__init__(self, handle,  create_jobject = self.request_new_jobject)
+        Activity.__init__(self, handle,  create_jobject = False)
+        """
         if self.request_new_jobject:
             #check to see if the object was created
             if self._jobject:
                 self.debug_dict['jobject_id'] = str(self._jobject.object_id)
             else:
                 _logger.debug('failed to create jobject in Activity.__init__')
+        """
         self.connect('realize',self.realize_cb)
         self.accelerator = gtk.AccelGroup()
         self.add_accel_group(self.accelerator)
@@ -318,11 +321,16 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         
     def __stop_clicked_cb(self,button):
         _logger.debug('caught stop clicked call back')
-        self.close(skip_save = True)
+        #threaded_server_close()
+        self.help.close_pydoc()
+        self.save_all_breakpoints()
+        self.close(skip_save = False)
         
       
     def non_blocking_server(self):
         start_threaded_server()
+        #gobject.idle_add(start_threaded_server)
+        #forking_server.main()
     
     def new_pane(self,funct,i):
         self.panes[PANES[i]] = i
@@ -518,7 +526,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
             self.activity_dict['child_path'] = self.debug_dict.get('child_path','')
             if os.path.isdir(self.activity_dict.get('child_path')):
                 self.child_path = self.activity_dict['child_path']
-                self.setup_new_activity()
+                #self.setup_new_activity()
         #update the journal display - required when the journal is used to delete an item
         if self.journal_class: 
             self.journal_class.new_directory()            
@@ -528,20 +536,23 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         The paradigm designed into the XO, ie an automatic load from the Journal at activity startup
         does not make sense during a debugging session.  An errant stack overflow can easily crash
         the system and require a reboot.  For the session manager to overwrite the changes that are stored
-        on disk, but not yet saved in the journal is highly undesireable. So we'll let the user save to
+        on disk, but not yet saved in the journal is  undesireable. So we'll let the user save to
         the journal, and perhaps optionally to the sd card (because it is removable, should the system die)
-        """
+        
         try:
             fd = open(file_path,'w+')
             if fd:
                 fd.close()
             else:
                 _logger.debug('failed to open output file')
-            self.update_metadata()    
-            self.save_editor_status()
-            self.put_config()
+        """
+        self.update_metadata()    
+        self.save_editor_status()
+        self.put_config()
+        """
         except Exception,e:
             _logger.debug('Write file exception %s'%e)
+        """
         return
         
     def update_metadata(self):
@@ -609,12 +620,13 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
             return activity.get_window().activate(1)
         else:
             return None
-    """
+    
     def check_child_md5(self):    
         if self.child_path and self.debug_dict.get('tree_md5',''):
             if self.debug_dict.get('tree_md5','') == self.util.md5sum_tree(self.child_path):
-                self.setup_new_activity()
+                #self.setup_new_activity()
                 #the tree is valid so take up where we left off
+                pass
             else:
                 self.util.confirmation_alert(_('Continue even though stored checksum does not match current checksum'),
                            _('CAUTION: The program in the playpen may have been changed.'),
@@ -622,7 +634,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         
     def startup_continue(self,alert,response):
         self.setup_new_activity()
-        
+    """    
     def save_editor_status(self):
         if self.edit_notebook.get_n_pages() == 0: return
         current_page = self.edit_notebook.get_current_page()

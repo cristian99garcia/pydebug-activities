@@ -1,0 +1,129 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd"><html>
+<head>
+<link rel="STYLESHEET" href="../term_tools/main.css" type="text/css">
+<title>mtr MAN Page</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body><!-- #BeginLibraryItem "/Library/head_bash.lbi" --><div id="nav-menu">
+<ul>
+<li><a class="rl" href="../term_tools/index.html"><img src="../term_tools/images/ss64.gif" title="Home" alt="Home"></a></li>
+<li><a class="rl" href="../term_tools/bash"><img src="../term_tools/images/bash-l.gif" title="bash" alt="bash"></a></li>
+<li><!-- Search Google -->
+<form action="http://www.google.com/search" method="get" style="margin:0px;padding:0px;">
+<div align="right">
+<input name="q" type="text" class="body" size="25">
+<input class="submit" type="submit" value="Search">
+<input type="hidden" name="q" value="site:ss64.com/bash/">
+</div>
+</form></li>
+<li><a class="rr" href="syntax.html"><img src="../term_tools/images/syntax-r.gif" title="Bash Syntax"></a></li>
+</ul>
+</div> <!-- #EndLibraryItem -->
+<h1> mtr </h1> 
+<p>Network diagnostics (traceroute/ping.)</p>
+<pre>Syntax
+     mtr [-hvrctglspni46] [--help] [--version] [--report] [--report-cycles <i>COUNT</i>]
+	        [--curses] [--split] [--raw] [--no-dns] [--gtk] [--address <i>IP.ADD.RE.SS</i>]
+			   [--interval <i>SECONDS</i>] [--psize <i>BYTES</i> | -s <i>BYTES</i>] <i>HOSTNAME</i> [<i>PACKETSIZE</i>]
+
+Key
+   -c <i>COUNT</i>
+   --report-cycles <i>COUNT</i>
+       Use this option to set the number of pings sent to determine both the machines on the network and
+       the reliability of those machines. Each cycle lasts one second. 
+
+   -s <i>BYTES</i>
+   --psize <i>BYTES</i>
+   <i>PACKETSIZE</i>
+       These options or a trailing PACKETSIZE on the commandline set the packet size (in Bytes inclusive IP and ICMP headers) used for probing.
+       If set to a negative number, every iteration will use a different, random packetsize up to that number. 
+
+   -g
+   --gtk
+       Force mtr to use the GTK+ based X11 window interface (if available). GTK+ must have
+       been available on the system when mtr was built for this to work. See <a href="http://www.gtk.org/">GTK+</a>
+
+   -p
+   --split
+       Set mtr to spit out a format that is suitable for a split-user interface.
+
+   -h
+   --help
+       Print a summary of command line argument options. 
+
+   -l
+   --raw
+       Tell mtr to use the raw output format. This format is better suited for archival of the
+       measurement results. It could be parsed to be presented into any of the other display methods. 
+
+   -a <i>IP.ADD.RE.SS</i>
+   --address<i> IP.ADD.RE.SS</i>
+       Bind outgoing packets' socket to a specific interface, so that any packet will be sent
+       through this interface. NOTE that this option doesn't apply to DNS requests (which
+       could be and could not be what you want). 
+
+   -i <i>SECONDS</i>
+   --interval <i>SECONDS</i>
+       Use this option to specify the positive number of seconds between ICMP ECHO requests. The default value for this parameter is one second. 
+
+   -t
+   --curses
+       Force mtr to use the curses based terminal interface (if available). 
+
+   -n
+   --no-dns
+       Force mtr to display numeric IP numbers and not try to resolve the host names. 
+
+   -r
+   --report
+       Put mtr into report mode. When in this mode, mtr will run for the number of cycles specified by
+       the -c option, and then print statistics and exit. 
+       This mode is useful for generating statistics about network quality.
+       Note that each running instance of mtr generates a significant amount of network traffic.
+       Using mtr to measure the quality of your network may result in decreased network performance.
+
+   -v
+   --version
+       Print the installed version of mtr.
+
+   -4  Use IPv4 only. 
+
+   -6  Use IPv6 only.</pre>
+<p>mtr combines the functionality of the traceroute and ping programs in a single network diagnostic tool.</p>
+<p>As mtr starts, it investigates the network connection between the host mtr runs on and HOSTNAME. by sending packets with purposly low TTLs. It continues to send packets with low TTL, noting the response time of the intervening routers. This allows mtr to print the response percentage and response times of the internet route to HOSTNAME. A sudden increase in packetloss or response time is often an indication of a bad (or simply overloaded) link. </p>
+<p>Some modern routers give a lower priority to ICMP ECHO packets than to other network traffic. Consequently, the reliability of these routers reported by mtr will be significantly lower than the actual reliability of these routers.</p>
+<p><b>Examples</b></p>
+<p class="code">$ mtr 192.168.12.34<br>
+$ mtr google.com</p>
+<p><br>
+MTR (Matt's traceroute) was written by Matt Kimball, with contributions by many people.</p>
+<p><i>“I don’t measure a man’s success by how high he climbs but how high he bounces when he hits bottom” -  General George S. Patton </i></p>
+<p><b>Related</b>:</p>
+<p><a href="http://www.bitwizard.nl/mtr/">The mtr web page</a> - download the latest version<br> 
+<a href="ping.html">ping</a> - Test a network connection<br>
+  <a href="traceroute.html">traceroute</a> - Trace Route to Host<br>
+  Equivalent Windows command: <a href="../term_tools/nt/set.html"></a><a href="../term_tools/nt/pathping.html">PATHPING</a> - Display, set, or remove Windows  environment 
+variables.</p>
+<!-- #BeginLibraryItem "/Library/foot_bash.lbi" --><p align="left"><script type="text/javascript"><!--
+google_ad_client = "pub-6140977852749469";
+google_ad_width = 300;
+google_ad_height = 250;
+google_ad_format = "300x250_as";
+google_ad_type = "text_image";
+google_ad_channel ="1984328893";
+google_color_border = "CCCCCC";
+google_color_bg = "CCCCCC";
+google_color_link = "000000";
+google_color_text = "333333";
+google_color_url = "0000FF";
+//--></script>
+<script type="text/javascript"
+  src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+</script><br>
+</p>
+<div align="center"><hr size="1">
+  <p id="top"><a href="#"><img src="../term_tools/images/top-4.gif" width="47" height="53" border="0" alt="Back to the Top" title="Back to the Top"></a></p>
+  <p class="tagline">&copy; Copyright <a href="http://ss64.com/">SS64.com</a> 1999-2010<br>
+Some rights reserved<br>
+</p>
+</div><!-- #EndLibraryItem --></body>
+</html>
