@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>The while statement</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="control-flow.html" title="Chapter 6. Control Flow" /><link rel="prev" href="if-statement.html" title="The if statement" /><link rel="next" href="for-loop.html" title="The for loop" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The while statement</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="if-statement.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 6. Control Flow</th><td width="20%" align="right"> <a accesskey="n" href="for-loop.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="while-statement"></a>The while statement</h2></div></div></div><p>
+		
+		The <code class="literal">while</code> statement allows you to repeatedly execute a block of
+		statements as long as a condition is true. A <code class="literal">while</code> statement is an
+		example of what is called a <span class="emphasis"><em>looping</em></span> statement. A
+		<code class="literal">while</code> statement can have an optional <code class="literal">else</code> clause.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id3058859"></a>Using the while statement</h3></div></div></div><div class="example"><a id="using-while-statement"></a><p class="title"><b>Example 6.2. Using the while statement</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: while.py</span>
+
+number = <span class="py-number">23</span>
+running = <span class="py-builtin">True</span>
+
+<span class="py-statement">while</span> running:
+	guess = <span class="py-builtin">int</span>(<span class="py-builtin">raw_input</span>(<span class="py-string">'Enter an integer : '</span>))
+
+	<span class="py-statement">if</span> guess == number:
+		<span class="py-statement">print</span> <span class="py-string">'Congratulations, you guessed it.'</span>
+		running = <span class="py-builtin">False</span> <span class="py-comment"># this causes the while loop to stop</span>
+	<span class="py-statement">elif</span> guess &lt; number:
+		<span class="py-statement">print</span> <span class="py-string">'No, it is a little higher than that.'</span>
+	<span class="py-statement">else</span>:
+		<span class="py-statement">print</span> <span class="py-string">'No, it is a little lower than that.'</span>
+<span class="py-statement">else</span>:
+	<span class="py-statement">print</span> <span class="py-string">'The while loop is over.'</span>
+	<span class="py-comment"># Do anything else you want to do here</span>
+
+<span class="py-statement">print</span> <span class="py-string">'Done'</span>
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3058882"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python while.py
+Enter an integer : 50
+No, it is a little lower than that.
+Enter an integer : 22
+No, it is a little higher than that.
+Enter an integer : 23
+Congratulations, you guessed it.
+The while loop is over.
+Done
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3058910"></a>How It Works</h4></div></div></div><p>
+				
+				In this program, we are still playing the guessing game, but the advantage
+				is that the user is allowed to keep guessing until he guesses correctly -
+				there is no need to repeatedly execute the program for each guess as we
+				have done previously. This aptly demonstrates the use of the
+				<code class="literal">while</code> statement.
+				
+				</p><p>
+				
+				We move the <code class="literal">raw_input</code> and <code class="literal">if</code>
+				statements to inside the <code class="literal">while</code> loop and set the
+				variable <code class="varname">running</code> to <code class="literal">True</code> before
+				the while loop. First, we check if the variable <code class="varname">running</code>
+				is <code class="literal">True</code> and then proceed to execute the corresponding
+				<span class="emphasis"><em>while-block</em></span>. After this block is executed, the
+				condition is again checked which in this case is the <code class="varname">running</code>
+				variable. If it is true, we execute the while-block again, else we continue
+				to execute the optional else-block and then continue to the next statement.
+				
+				</p><p>
+				
+				The <code class="literal">else</code> block is executed when the <code class="literal">while</code>
+				loop condition becomes <code class="literal">False</code> - this may even be the first
+				time that the condition is checked. If there is an <code class="literal">else</code>
+				clause for a <code class="literal">while</code> loop, it is always executed unless you
+				have a <code class="literal">while</code> loop which loops forever without ever breaking
+				out!
+				
+				</p><p>
+				
+				The <code class="literal">True</code> and <code class="literal">False</code> are called Boolean
+				types and you can consider them to be equivalent to the value
+				<code class="literal">1</code> and <code class="literal">0</code> respecitvely. It's important
+				to use these where the condition or checking is important and not the actual
+				value such as <code class="literal">1</code>.
+				
+				</p><p>
+				
+				The else-block is actually redundant since you can put those statements
+				in the same block (as the <code class="literal">while</code> statement) after the
+				<code class="literal">while</code> statement to get the same effect.
+				
+				</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note for C/C++ Programmers</h3><p>
+					
+					Remember that you can have an <code class="literal">else</code> clause for
+					the <code class="literal">while</code> loop.
+					
+					</p></div></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="if-statement.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="control-flow.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="for-loop.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">The if statement </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> The for loop</td></tr></table></div></body></html>

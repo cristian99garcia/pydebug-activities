@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Byte-compiled .pyc files</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="modules.html" title="Chapter 8. Modules" /><link rel="prev" href="modules.html" title="Chapter 8. Modules" /><link rel="next" href="from-import.html" title="The from..import statement" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Byte-compiled .pyc files</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="modules.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 8. Modules</th><td width="20%" align="right"> <a accesskey="n" href="from-import.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="byte-compiled"></a>Byte-compiled .pyc files</h2></div></div></div><p>
+		
+		Importing a module is a relatively costly affair, so Python does some tricks to make
+		it faster. One way is to create <span class="emphasis"><em>byte-compiled</em></span> files with the extension
+		<code class="filename">.pyc</code> which is related to the intermediate form that Python transforms
+		the program into (remember the <a href="features-of-python.html#python-vm">intro section on how Python
+		works</a> ?). This <code class="filename">.pyc</code> file is useful when you import the module the
+		next time from a different program - it will be much faster since part of the processing
+		required in importing a module is already done. Also, these byte-compiled files are
+		platform-independent. So, now you know what those <code class="filename">.pyc</code> files really are.
+		
+		</p></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="modules.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="modules.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="from-import.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 8. Modules </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> The from..import statement</td></tr></table></div></body></html>

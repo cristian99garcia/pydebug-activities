@@ -316,7 +316,7 @@ class ProjectGui(ProjectFunctions):
             _file.write(icon_str)
             _file.close()
         except IOError, e:
-            msg = _("I/O error(%s): %s"%(e))
+            msg = _("I/O error:") + str(e)
             _logger.error(msg)
         except Exception, e:
             msg = "Unexpected error:%s"%e

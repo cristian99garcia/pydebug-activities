@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>The for loop</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="control-flow.html" title="Chapter 6. Control Flow" /><link rel="prev" href="while-statement.html" title="The while statement" /><link rel="next" href="break-statement.html" title="The break statement" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The for loop</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="while-statement.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 6. Control Flow</th><td width="20%" align="right"> <a accesskey="n" href="break-statement.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="for-loop"></a>The for loop</h2></div></div></div><p>
+		
+		The <code class="literal">for..in</code> statement is another looping statement which
+		<span class="emphasis"><em>iterates</em></span> over a sequence of objects i.e. go through each item
+		in a sequence. We will see more about <a href="sequences.html" title="Sequences">sequences</a> in
+		detail in later chapters. What you need to know right now is that a sequence is just
+		an ordered collection of items.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id3059152"></a>Using the for statement</h3></div></div></div><div class="example"><a id="using-for-statement"></a><p class="title"><b>Example 6.3. Using the for statement</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: for.py</span>
+
+<span class="py-statement">for</span> i <span class="py-statement">in</span> <span class="py-builtin">range</span>(<span class="py-number">1</span>, <span class="py-number">5</span>):
+	<span class="py-statement">print</span> i
+<span class="py-statement">else</span>:
+	<span class="py-statement">print</span> <span class="py-string">'The for loop is over'</span>
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3059174"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python for.py
+1
+2
+3
+4
+The for loop is over
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3059193"></a>How It Works</h4></div></div></div><p>
+				
+				In this program, we are printing a <span class="emphasis"><em>sequence</em></span> of
+				numbers. We generate this sequence of numbers using hte built-in
+				<code class="function">range</code> function.
+				
+				</p><p>
+				
+				What we do here is supply it two numbers and <code class="function">range</code>
+				returns a sequence of numbers starting from the first number and up to
+				the second number. For example, <code class="literal">range(1,5)</code> gives the
+				sequence <code class="literal">[1, 2, 3, 4]</code>. By default,
+				<code class="function">range</code> takes a step count of 1. If we supply a third
+				number to <code class="function">range</code>, then that becomes the step count.
+				For example, <code class="literal">range(1,5,2)</code> gives
+				<code class="literal">[1,3]</code>. Remember that the range extends
+				<span class="emphasis"><em>up to</em></span> the second number i.e. it does
+				<span class="bold"><strong>not</strong></span> include the second number.
+				
+				</p><p>
+				
+				The <code class="literal">for</code> loop then iterates over this range -
+				<code class="literal">for i in range(1,5)</code> is equivalent to
+				<code class="literal">for i in [1, 2, 3, 4]</code> which is like assigning each
+				number (or object) in the sequence to i, one at a time, and then
+				executing the block of statements for each value of <code class="varname">i</code>.
+				In this case, we just print the value in the block of statements.
+				
+				</p><p>
+				
+				Remember that the <code class="literal">else</code> part is optional. When included,
+				it is always executed once after the <code class="literal">for</code> loop is over
+				unless a <a href="break-statement.html" title="The break statement">break</a> statement is encountered.
+				
+				</p><p>
+				
+				Remember that the <code class="literal">for..in</code> loop works for any sequence.
+				Here, we have a list of numbers generated by the built-in
+				<code class="function">range</code> function, but in general we can use any kind
+				of sequence of any kind of objects! We will explore this idea in detail
+				in later chapters.
+				
+				</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Note for C/C++/Java/C# Programmers</h3><p>
+					
+					The Python <code class="literal">for</code> loop is radically different from
+					the C/C++ <code class="literal">for</code> loop. C# programmers will note that
+					the <code class="literal">for</code> loop in Python is similar to the
+					<code class="literal">foreach</code> loop in C#. Java programmers will note
+					that the same is similar to <code class="literal">for (int i : IntArray)</code>
+					in Java 1.5 .
+					
+					</p><p>
+					
+					In C/C++, if you want to write
+					<code class="literal">for (int i = 0; i &lt; 5; i++)</code>, then in
+					Python you write just <code class="literal">for i in range(0,5)</code>. As
+					you can see, the <code class="literal">for</code> loop is simpler, more
+					expressive and less error prone in Python.
+					
+					</p></div></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="while-statement.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="control-flow.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="break-statement.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">The while statement </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> The break statement</td></tr></table></div></body></html>

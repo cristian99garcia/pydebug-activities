@@ -329,7 +329,7 @@ class ProjectFunctions:
         self.lp_istar = istar
         #if necessary clean up contents of playpen
         #has the tree md5 changed?
-        if not self._activity.debug_dict['tree_md5'] == '':            
+        if not self._activity.debug_dict.get('tree_md5','') == '':            
             tree_md5 = self._activity.util.md5sum_tree(self._activity.child_path)
             if tree_md5 and tree_md5 != self._activity.debug_dict['tree_md5']:
                 action_prompt = _('Select OK to abandon changes to ') + \

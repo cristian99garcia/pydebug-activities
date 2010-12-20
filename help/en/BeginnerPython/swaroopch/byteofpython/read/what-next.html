@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Chapter 16. What Next?</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="index.html" title="A Byte of Python" /><link rel="prev" href="more-python-summary.html" title="Summary" /><link rel="next" href="explore-more.html" title="Explore More" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter 16. What Next?</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="more-python-summary.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="explore-more.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="chapter" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title"><a id="what-next"></a>Chapter 16. What Next?</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section"><a href="what-next.html#graphical-software">Graphical Software</a></span></dt><dd><dl><dt><span class="section"><a href="what-next.html#id3080050">Summary of GUI Tools</a></span></dt></dl></dd><dt><span class="section"><a href="explore-more.html">Explore More</a></span></dt><dt><span class="section"><a href="what-next-summary.html">Summary</a></span></dt></dl></div><p>
+	
+	If you have read this book thoroughly till now and practiced writing a lot of programs, then you
+	must have become comfortable and familiar with Python.  You have probably created some Python
+	programs to try out stuff and to exercise your Python skills as well. If you have not done it
+	already, you should. The question now is 'What Next?'.
+	
+	</p><p>
+	
+	I would suggest that you tackle this problem: create your own command-line
+	<span class="emphasis"><em>address-book</em></span> program using which you can add, modify, delete or search for
+	your contacts such as friends, family and colleagues and their information such as email address
+	and/or phone number. Details must be stored for later retrieval.
+	
+	</p><p>
+	
+	This is fairly easy if you think about it in terms of all the various stuff that we have come
+	across till now. If you still want directions on how to proceed, then here's a hint.
+	
+	</p><p><b>Hint. (You shouldn't be reading this). </b>
+		
+		Create a class to represent the person's information. Use a dictionary to store person
+		objects with their name as the key. Use the cPickle module to store the objects
+		persistently on your hard disk. Use the dictionary built-in methods to add, delete and
+		modify the persons.
+		
+		</p><p>
+	
+	Once you are able to do this, you can claim to be a Python programmer. Now, immediately send me
+	a mail thanking me for this great book ;-) . This step is optional but recommended.
+	
+	</p><p>
+	
+	Here are some ways to continue your journey with Python:
+	
+	</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="graphical-software"></a>Graphical Software</h2></div></div></div><p>
+		
+		<span class="bold"><strong>GUI</strong></span> Libraries using Python - you need these to create
+		your own graphical programs using Python. You can create your own IrfanView or
+		Kuickshow or anything like that using the GUI libraries with their Python bindings.
+		Bindings are what allow you to write programs in Python and use the libraries which are
+		themselves written in C or C++ or other languages.
+		
+		</p><p>
+		
+		There are lots of choices for GUI using Python:
+		
+		</p><div class="itemizedlist"><ul type="disc"><li><p><b>PyQt. </b>
+					
+					This is the Python binding for the Qt toolkit which is the foundation
+					upon which the KDE is built. Qt is extremely easy to use and very
+					powerful especially due to the Qt Designer and the amazing Qt
+					documentation. You can use it for free on Linux but you will have to
+					pay for it if you want to use it on Windows. PyQt is free if you want
+					to create free (GPL'ed) software on Linux/Unix and paid if you want to
+					create proprietary software. A good resource on PyQt is
+					<a href="http://www.opendocs.org/pyqt/" target="_top">'GUI Programming with
+					Python: Qt Edition'</a>. See the
+					<a href="http://www.riverbankcomputing.co.uk/pyqt/index.php" target="_top">official homepage</a> for more details.
+					
+					</p></li><li><p><b>PyGTK. </b>
+					
+					This is the Python binding for the GTK+ toolkit which is the
+					foundation upon which GNOME is built. GTK+ has many quirks in usage
+					but once you become comfortable, you can create GUI apps fast. The
+					Glade graphical interface designer is indispensable. The documentation
+					is yet to improve. GTK+ works well on Linux but its port to Windows
+					is incomplete. You can create both free as well as proprietary software
+					using GTK+. See the <a href="http://www.pygtk.org/" target="_top">official
+					homepage</a> for more details.
+					
+					</p></li><li><p><b>wxPython. </b>
+					
+					This is the Python bindings for the wxWidgets toolkit. wxPython has
+					a learning curve associated with it. However, it is very portable
+					and runs on Linux, Windows, Mac and even embedded platforms. There
+					are many IDEs available for wxPython which include GUI designers as
+					well such as <a href="http://spe.pycs.net/" target="_top">SPE (Stani's Python
+					Editor)</a> and the
+					<a href="http://wxglade.sourceforge.net/" target="_top">wxGlade</a> GUI
+					builder. You can create free as well as proprietary software using
+					wxPython. See the <a href="http://www.wxpython.org/" target="_top">official
+					homepage</a> for more details.
+					
+					</p></li><li><p><b>TkInter. </b>
+					
+					This is one of the oldest GUI toolkits in existence. If you have used
+					<span class="application">IDLE</span>, you have seen a TkInter program at
+					work. The documentation for TkInter at <a href="http://www.pythonware.com/library/tkinter/introduction/index.htm" target="_top">PythonWare.org</a> is comprehensive. TkInter is portable and works
+					on both Linux/Unix as well as Windows. Importantly, TkInter is part of
+					the standard Python distribution.
+					
+					</p></li><li><p>
+				
+				For more choices, see the <a href="http://www.python.org/cgi-bin/moinmoin/GuiProgramming" target="_top">GuiProgramming wiki page at Python.org</a>
+				
+				</p></li></ul></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="id3080050"></a>Summary of GUI Tools</h3></div></div></div><p>
+			
+			Unfortunately, there is no one standard GUI tool for Python. I suggest that you
+			choose one of the above tools depending on your situation. The first factor is
+			whether you are willing to pay to use any of the GUI tools. The second factor
+			is whether you want the program to run on Linux or Windows or both. The third
+			factor is whether you are a KDE or GNOME user on Linux.
+			
+			</p><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><h3 class="title">Future Chapters</h3><p>
+				
+				I am contemplating writing 1 or 2 chapters for this book on GUI Programming.
+				I will be probably be choosing wxPython as the choice of toolkit. If you would
+				like to present your views on the subject, please join the
+				<a href="http://lists.ibiblio.org/mailman/listinfo/byte-of-python" target="_top">byte-of-python mailing list</a> where readers discuss with me on what
+				improvements can be made to the book.
+				
+				</p></div></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="more-python-summary.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="explore-more.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Summary </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> Explore More</td></tr></table></div></body></html>

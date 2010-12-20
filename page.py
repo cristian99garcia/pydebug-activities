@@ -442,10 +442,10 @@ class GtkSourceview2Page(SearchablePage):
             self.save_hash()
             self.label.set_text(os.path.basename(self.fullPath))
             self.text_buffer.set_modified(False)
-            msg = _("File saved: %s md5sumn:%s"%(os.path.basename(self.fullPath),self.md5sum))
+            msg = "File saved: %s md5sumn:%s"%(os.path.basename(self.fullPath),self.md5sum,)
             _logger.debug(msg)
         except IOError:
-            msg = _("I/O error(%s): %s"%(IOError[0], IOError[1]))
+            msg = _("I/O error ") + str(IOError[1])
             self._activity.alert(msg)
         except:
             msg = "Unexpected error:", sys.exc_info()[1]

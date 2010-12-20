@@ -1,0 +1,7 @@
+*.pyc
+*.e4p
+*.zip
+.eric4project/
+.ropeproject/
+dist
+

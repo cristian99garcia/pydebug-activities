@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>Dictionary</title><link rel="stylesheet" href="byte.css" type="text/css" /><meta name="generator" content="DocBook XSL Stylesheets V1.67.2" /><link rel="start" href="index.html" title="A Byte of Python" /><link rel="up" href="data-structures.html" title="Chapter 9. Data Structures" /><link rel="prev" href="tuple.html" title="Tuple" /><link rel="next" href="sequences.html" title="Sequences" /></head><body>
+<div class="header">
+<strong><a href="http://www.byteofpython.info/" class="header-link">A Byte of Python</a></strong>
+</div>
+<div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Dictionary</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="tuple.html"><img src="images/prev.gif" alt="Prev" /></a> </td><th width="60%" align="center">Chapter 9. Data Structures</th><td width="20%" align="right"> <a accesskey="n" href="sequences.html"><img src="images/next.gif" alt="Next" /></a></td></tr></table><hr /></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="dictionary"></a>Dictionary</h2></div></div></div><p>
+		
+		A dictionary is like an address-book where you can find the address or contact details
+		of a person by knowing only his/her name i.e. we associate
+		<span class="bold"><strong>keys</strong></span> (name) with <span class="bold"><strong>values</strong></span>
+		(details). Note that the key must be unique just like you cannot find out the correct
+		information if you have two persons with the exact same name.
+		
+		</p><p>
+		
+		Note that you can use only immutable objects (like strings) for the keys of a dictionary
+		but you can use either immutable or mutable objects for the values of the dictionary.
+		This basically translates to say that you should use only simple objects for keys.
+		
+		</p><p>
+		
+		Pairs of keys and valus are specified in a dictionary by using the notation
+		<code class="literal">d = {key1 : value1, key2 : value2 }</code>. Notice that they key/value pairs
+		are separated by a colon and the pairs are separated themselves by commas and all this
+		is enclosed in a pair of curly brackets.
+		
+		</p><p>
+		
+		Remember that key/value pairs in a dictionary are not ordered in any manner. If you want
+		a particular order, then you will have to sort them yourself before using it.
+		
+		</p><p>
+		
+		The dictionaries that you will be using are instances/objects of the
+		<code class="classname">dict</code> class.
+		
+		</p><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h3 class="title"><a id="using-dictionaries"></a>Using Dictionaries</h3></div></div></div><div class="example"><a id="id3066768"></a><p class="title"><b>Example 9.4. Using dictionaries</b></p><pre class="programlisting">
+				
+<span class="py-comment">#!/usr/bin/python</span>
+<span class="py-comment"># Filename: using_dict.py</span>
+
+<span class="py-comment"># 'ab' is short for 'a'ddress'b'ook</span>
+
+ab = {		<span class="py-string">'Swaroop'</span>   : <span class="py-string">'swaroopch@byteofpython.info'</span>,
+		<span class="py-string">'Larry'</span>     : <span class="py-string">'larry@wall.org'</span>,
+		<span class="py-string">'Matsumoto'</span> : <span class="py-string">'matz@ruby-lang.org'</span>,
+		<span class="py-string">'Spammer'</span>   : <span class="py-string">'spammer@hotmail.com'</span>
+	}
+
+<span class="py-statement">print</span> <span class="py-string">"Swaroop's address is %s"</span> % ab[<span class="py-string">'Swaroop'</span>]
+
+<span class="py-comment"># Adding a key/value pair</span>
+ab[<span class="py-string">'Guido'</span>] = <span class="py-string">'guido@python.org'</span>
+
+<span class="py-comment"># Deleting a key/value pair</span>
+<span class="py-statement">del</span> ab[<span class="py-string">'Spammer'</span>]
+
+<span class="py-statement">print</span> <span class="py-string">'\nThere are %d contacts in the address-book\n'</span> % <span class="py-builtin">len</span>(ab)
+
+<span class="py-statement">for</span> name, address <span class="py-statement">in</span> ab.items():
+	<span class="py-statement">print</span> <span class="py-string">'Contact %s at %s'</span> % (name, address)
+
+<span class="py-statement">if</span> <span class="py-string">'Guido'</span> <span class="py-statement">in</span> ab: <span class="py-comment"># OR ab.has_key('Guido')</span>
+	<span class="py-statement">print</span> <span class="py-string">"\nGuido's address is %s"</span> % ab[<span class="py-string">'Guido'</span>]
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3066781"></a>Output</h4></div></div></div><pre class="screen">
+				
+$ python using_dict.py
+Swaroop's address is swaroopch@byteofpython.info
+
+There are 4 contacts in the address-book
+
+Contact Swaroop at swaroopch@byteofpython.info
+Contact Matsumoto at matz@ruby-lang.org
+Contact Larry at larry@wall.org
+Contact Guido at guido@python.org
+
+Guido's address is guido@python.org
+				
+				</pre></div><div class="section" lang="en" xml:lang="en"><div class="titlepage"><div><div><h4 class="title"><a id="id3065791"></a>How It Works</h4></div></div></div><p>
+				
+				We create the dictionary <code class="varname">ab</code> using the notation already
+				discussed. We then access key/value pairs by specifying the key using the
+				indexing operator as discussed in the context of lists and tuples.
+				Observe that the syntax is very simple for dictionaries as well.
+				
+				</p><p>
+				
+				We can add new key/value pairs by simply using the indexing operator to
+				access a key and assign that value, as we have done for Guido in the
+				above case.
+				
+				</p><p>
+				
+				We can delete key/value pairs using our old friend - the <code class="literal">del</code>
+				statement. We simply specify the dictionary and the indexing operator for the
+				key to be removed and pass it to the <code class="literal">del</code> statement.
+				There is no need to know the value corresponding to the key for this
+				operation.
+				
+				</p><p>
+				
+				Next, we access each key/value pair of the dictionary using the
+				<code class="methodname">items</code> method of the dictionary which returns a
+				list of tuples where each tuple contains a pair of items - the key followed
+				by the value. We retrieve this pair and assign it to the variables
+				<code class="varname">name</code> and <code class="varname">address</code> correspondingly
+				for each pair using the <code class="literal">for..in</code> loop and then print
+				these values in the for-block.
+				
+				</p><p>
+				
+				We can check if a key/value pair exists using the <code class="literal">in</code>
+				operator or even the <code class="methodname">has_key</code> method of the
+				<code class="classname">dict</code> class. You can see the documentation for
+				the complete list of methods of the <code class="classname">dict</code> class
+				using <code class="literal">help(dict)</code>.
+				
+				</p><p><b>Keyword Arguments and Dictionaries. </b>
+					
+					On a different note, if you have used keyword arguments in your
+					functions, you have already used dictionaries! Just think about it
+					- the key/value pair is specified by you in the parameter list of
+					the function definition and when you access variables within your
+					function, it is just a key access of a dictionary (which is called
+					the <span class="emphasis"><em>symbol table</em></span> in compiler design
+					terminology).
+					
+					</p></div></div></div><div class="navfooter"><hr /><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="tuple.html"><img src="images/prev.gif" alt="Prev" /></a> </td><td width="20%" align="center"><a accesskey="u" href="data-structures.html"><img src="images/up.gif" alt="Up" /></a></td><td width="40%" align="right"> <a accesskey="n" href="sequences.html"><img src="images/next.gif" alt="Next" /></a></td></tr><tr><td width="40%" align="left" valign="top">Tuple </td><td width="20%" align="center"><a accesskey="h" href="index.html"><img src="images/home.gif" alt="Home" /></a></td><td width="40%" align="right" valign="top"> Sequences</td></tr></table></div></body></html>

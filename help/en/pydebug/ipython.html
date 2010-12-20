@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>IPython</title>
+<link href="CSS/Georgia.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>The IPython debugger</h1>
+<p>When the &quot;Activity&quot; screen is displayed,  there are actually four programs  operating at the same time. At the lowest level, there is a Terminal program. This the standard unix/linux text mode command line window that is available on all unix machines. Running inside the terminal program, there is a set of twins, the IPython debugger which wraps around its big brother,  the standard python interactive interpreter. These two are almost a single unit, but the IPython brother is much more talkative, helpful. Lastly, on top of the IPython debugger sits PyDebug, which defines a few additional commands to which  it responds. </p>
+<p>So the new user of PyDebug has a big challenge. She needs to learn  a few commands at each of these four levels:</p>
+<ol>
+  <li>Terminal - provides access to organized information, files, folders, makes copies, talks to the operating system, and through it to the hardware. (see Lesson 2 for an introduction to the <a href="lesson_2.html">10 most useful Terminal commands</a>) </li>
+  <li>python interpreter -- a heavy lifter, does most of the work of running python programs </li>
+  <li>IPython -- the better communicator and teacher, more likely to explain how the failure occured, and the structure of things. </li>
+  <li>PyDebug -- knows about Sugar,  the XO, and the Journal, and can handle the details of saving and restoring Activity <br />
+  Bundles.</li>
+</ol>
+<p>Though it helps to think of four different sets of commands, there are really only two different personalities, the Terminal, and the Debugger. They can be distinguished by the prompt. The Terminal has a prompt that looks something like: &quot;[Chat.activity]$&quot;. The Debugger's prompt looks more like &quot;In [23]&quot; (the number is increased by 1 for every command you give).</p>
+<p>You can change from the Debugger to the Terminal by typing &lt;control&gt;d (middle far left key at the same time as the &quot;D&quot; key). To go from the Terminal to the Debugger, Just type &quot;go&quot;&lt;enter&gt;. (The &lt;enter&gt; key is the &quot;go do it&quot; key that is implied when you are giving commands to a command line interpreter. From now on, I will just assume that you know that you must end a command with the &lt;enter&gt; key). Sometimes, if the debugger stops responding as you expect, you can fix the problem by exiting IPython by issuing the &lt;ctl&gt;d command, and then going back into IPython with &quot;go&quot;. </p>
+<h3>Developing, Running, and Debugging a Stand Alone Python Program </h3>
+<p>During the first phase of writing an activity, you will probably just be working on a single file (See the  <a href="../ActivityBook/ActivitiesGuideSugar__StandalonePythonReadEtexts.html">chapter and example</a> in &quot;Making Sugar Activities&quot;) . To run a stand alone program in IPython, you need to type &quot;run &lt;your program name&gt;&quot; at the IPython prompt. (you can leave off the &quot;.py&quot; if you want). After the first time you run your program, you can use the &lt;up arrow&gt; key to repeat the last command to run it again. </p>
+<p>Most likely you will get an error. If it's a runtime error rather than a definition error, you will get a traceback. The drop down box at the top right of the screen provides &quot;plain&quot;,&quot;context&quot;, and &quot;verbose&quot; choices. This specifies how much information you would like in the traceback listing. Chose &quot;verbose&quot; until it becomes too much.</p>
+<p>You can single step through your program by adding a &quot;-d&quot; to your run command; ie. &quot;run -d &lt;your program name&gt;&quot;. When you are stopped at a breakpoint, you will see the &quot;&lt;ipdb&gt;&quot; prompt. There is a set of commands for &quot;s(tep)&quot;ing into the procedure, passing over the procedure &quot;n(ext)&quot;, and continuing &quot;c(ontinue)&quot; to the next breakpoint. Often one of the most interesting commands is to issue the &quot;who&quot; command, which lists the values of all the local variables in the context of the current procedure. </p>
+<p>&nbsp; </p>
+<p>&nbsp;</p>
+<p>IPython is essentially a text mode debugger to which some graphical connections have been added to make it easier to use. At the IPython prompt you can type &quot;go&quot; . This will start your program as a sugar activity in just the same manner as if you click the &quot;Run&quot; icon at the top left. If the debugger becomes locked up, you may be able to stop it (&lt;control&gt;d) and restart it again by typing &quot;go&quot; at the terminal prompt. </p>
+<h3>Switching between the text-mode and graphical screens </h3>
+<p>Use &lt;alt&gt;-&lt;tab&gt; to switch between the graphical output page created by your application, and the text-mode debugging screen of the PyDebug Activity. </p>
+<h2></h2>
+</body>
+</html>
