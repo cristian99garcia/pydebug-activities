@@ -55,7 +55,7 @@ HELP_PANE = 1
 
 # Initialize logging.
 import logging
-_logger = logging.getLogger()
+_logger = logging.getLogger('HelpTemplate')
 
 class Help(Window):
     def __init__(self, parent):
@@ -87,7 +87,7 @@ class Help(Window):
         self.toolbox.add_toolbar(_('Activity'), activitybar)
         activitybar.show_all()
         
-        self.help_toolbar = Toolbar(self._web_view)
+        self.help_toolbar = Toolbar(self._web_view, self)
         self.help_toolbar.show()
         self.toolbox.add_toolbar(_('Help'), self.help_toolbar)
         self.toolbox._notebook.set_current_page(HELP_PANE)
@@ -129,6 +129,10 @@ class Help(Window):
             window.activate(gtk.get_current_event_time())
         else:
             _logger.debug('failed to get window')
+            
+    def close (self):
+        self.goto_cb(None, 0)
+        self.parent_obj.py_stop()
             
     def goto_cb(self, page, tab):
         _logger.debug('current_toolbar_changed event called goto_cb. tab: %s'%tab)
@@ -182,10 +186,11 @@ class Help(Window):
         return root
     
 class Toolbar(gtk.Toolbar):
-    def __init__(self, web_view):
+    def __init__(self, web_view, _help):
         gobject.GObject.__init__(self)
 
         self._web_view = web_view
+        self._help = _help
 
         self._back = ToolButton('go-previous-paired')
         self._back.set_tooltip(_('Back'))
@@ -238,7 +243,7 @@ class Toolbar(gtk.Toolbar):
         
 
     def __stop_clicked_cb(self, button):
-        self._help.pydebug.py_stop()
+        self._help.close()
         
     def _location_changed_cb(self, progress_listener, uri):
         self.update_navigation_buttons()

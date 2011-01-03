@@ -156,7 +156,16 @@ class Utilities():
         output = p1.communicate()
         if p1.returncode != 0 :
             _logger.debug('error returned from shell command: %s was %s'%(cmd,output[0]))
-            if alert_error: self.alert(_('%s Command returned non zero\n'%cmd+output[0]))
+            #early sugar builds put cancel button off screen for long alerts
+            out_str = _("command line:") + cmd + output[0]
+            alert_text = ''
+            num_lines = len(out_str) // 100 + 1
+            if num_lines > 6:
+                num_lines = 6
+            for i in range(num_lines):
+                alert_text += out_str[i * 100: (i + 1) * 100] + '\n'
+            if alert_error:
+                self.alert(_('%s Command returned non zero\n'%alert_text))
         return output[0],p1.returncode
         
     def non_conflicting(self,root,basename):

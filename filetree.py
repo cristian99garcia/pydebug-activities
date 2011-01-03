@@ -82,7 +82,7 @@ class FileTree:
             tooltips.set_tip(widget, value)
             tooltips.enable()
         except:
-            _logger.exception('show_tooltip exception')
+            #_logger.exception('show_tooltip exception')
             tooltips.set_tip(widget, emptytext)
 
     def init_columns(self):
@@ -139,10 +139,11 @@ class FileTree:
             if tvpath:
                 self.treeview.expand_row(tvpath,False)
         
-    def set_file_sys_root(self,root):
-        self.file_sys_root = root
+    def set_file_sys_root(self, root, append = False):
+        #self.file_sys_root = root
         self.dirname = root
-        self.ft_model.clear()
+        if not append:
+            self.ft_model.clear()
         if not root: return
         self.new_directory(root)
         #self.current_citer = self.ft_model.append(None,[None,os.path.basename(self.file_sys_root),
@@ -179,6 +180,8 @@ class FileTree:
         (model,iter)=selection.get_selected()
         fullpath = model.get(iter,4)
         if fullpath[0].endswith('.activity'):
+            #change 12/26/10 -- do nothing
+            return
             self.parent.child_path = fullpath[0]
             self.parent.read_activity_info()
         
@@ -188,6 +191,8 @@ class FileTree:
         if self.iter != None:
             self.path = self.ft_model.get_path(self.iter)
             self.treeview.scroll_to_cell(self.path,use_align=True,row_align=0.2)
+        else:
+            _logger.debug('position to not found:%s'%fullpath)
             
     def position_recent(self,path = None):
         if not path: self.path = path 
@@ -196,19 +201,16 @@ class FileTree:
         
         
     def fn_compare(self,model,path,iter,fullpath):
-        if model.get(iter,4) == fullpath:
+        if model.get(iter,4)[0] == fullpath:
             self.iter = iter
             return True
         return False
         
     def file_pixbuf(self, filename):
-        folderpb = self.get_icon_pixbuf('STOCK_DIRECTORY')
-        filepb = self.get_icon_pixbuf('STOCK_FILE')
         if os.path.isdir(filename):
-            pb = folderpb
+            return  self.get_icon_pixbuf('STOCK_DIRECTORY')
         else:
-            pb = filepb
-        return pb
+            return self.get_icon_pixbuf('STOCK_FILE')
 
     def get_icon_pixbuf(self, stock):
         return self.treeview.render_icon(stock_id=getattr(gtk, stock),

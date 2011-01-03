@@ -19,10 +19,9 @@
 import os
 from gettext import gettext as _
 
-# Initialize logging.
-import logging
-_logger = logging.getLogger('PyDebug')
-_logger.setLevel(logging.INFO)
+#import logging
+from  pydebug_logging import _logger, log_environment, log_dict
+
 
 #establish a remote procedure call pipe connection with the PyDebug process
 from Rpyc import SocketConnection
@@ -37,6 +36,7 @@ except Exception, e:
     print(str(e))
     assert False
 pydebug_path = db.pydebug_path
+xmode = db.debug_dict.get('xmode')
 _logger.debug('./bin/start_debug.py established connectioon. pydebug path: %s'%pydebug_path)
 
 #these alternative definitions are required for ipython v0.11 and greater
@@ -72,4 +72,6 @@ if child_path:
     os.chdir(child_path)
 else:
     os.chdir(db.activity_playpen)
+if xmode:   
+    ip.ipmagic('xmode %s'%xmode)
     

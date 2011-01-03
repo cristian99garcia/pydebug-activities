@@ -138,7 +138,10 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
                 #log_dict(d,'initial datastore metadata ==>:')
         else:
             ds_object = self.get_new_dsobject()
-            handle.object_id = ds_object.get_object_id()
+            if hasattr(ds_object, 'get_object_id'):
+                handle.object_id = ds_object.get_object_id()
+            else:
+                handle.object_id = ds_object.object_id
             _logger.debug('no initial datastore object id passed in via handle')
 
         #Save a global poiinter so remote procedure calls can communicate with pydebug
@@ -421,14 +424,20 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         
         
     def set_ipython_traceback(self):
-        pass
-        """
         tb = self.debug_dict['traceback']
-        ip = IPython.ipapi.get()
-        ipmagic = ip.user_ns['ipmagic']
-        ipmagic('xmode ' + tb)
+        _logger.debug('set traceback:%s'%tb)
         """
-        
+        ip = IPython.ipapi.get()
+        if ip:
+            ip.ipmagic('xmode %s'%tb)
+        else:
+            _logger.error('did not get ip from IPython.ipapi')
+        #ipmagic = ip.user_ns['ipmagic']
+        #ip.magic_xmode(tb)
+        """
+        self.feed_virtual_terminal(0,"%%xmode %s\n"%tb)
+        gobject.idle_add(self.set_terminal_focus)
+
     def find_import(self,fn):
         _logger.debug('find_import in file %s'%fn)
         try_fn = os.path.join(self.child_path,fn)
@@ -538,6 +547,15 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         the system and require a reboot.  For the session manager to overwrite the changes that are stored
         on disk, but not yet saved in the journal is  undesireable. So we'll let the user save to
         the journal, and perhaps optionally to the sd card (because it is removable, should the system die)
+        """
+         
+        try:
+            self.update_metadata()    
+            self.save_editor_status()
+            self.put_config()
+        except Exception,e:
+            _logger.exception('Write file exception %s'%e)
+            raise e
         
         try:
             fd = open(file_path,'w+')
@@ -545,14 +563,8 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
                 fd.close()
             else:
                 _logger.debug('failed to open output file')
-        """
-        self.update_metadata()    
-        self.save_editor_status()
-        self.put_config()
-        """
-        except Exception,e:
-            _logger.debug('Write file exception %s'%e)
-        """
+        except Exception, e:
+            _logger.exception('Write file exception %s'%e)
         return
         
     def update_metadata(self):
@@ -569,6 +581,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
                     if key == 'title' or key == 'activity': continue
                     md[key] = self.activity_dict[key]
                 md['title'] = 'PyDebug_' + chunk
+                md['title_set_by_user'] = '1'
                 md['bundle_id'] = 'org.laptop.PyDebug'
                 try:
                     pass

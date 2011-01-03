@@ -3,6 +3,7 @@ from gettext import gettext as _
 import sys
 import gtk
 import pygame
+from time import sleep
 
 import sugar.activity.activity
 import sugar.graphics.toolbutton
@@ -14,7 +15,7 @@ import TestGame
 
 class TestActivity(sugar.activity.activity.Activity):
     def __init__(self, handle):
-        super(TestActivity, self).__init__(handle)
+        super(TestActivity, self).__init__(handle, False)
         
         self.paused = False
 
@@ -29,6 +30,8 @@ class TestActivity(sugar.activity.activity.Activity):
         # Note that set_canvas implicitly calls read_file when resuming from the Journal.
         self.set_canvas(self._pygamecanvas)
         
+        #wait until the window is realized
+        sleep(3)
         # Start the game running.
         self._pygamecanvas.run_pygame(self.game.run)
         

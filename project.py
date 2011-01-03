@@ -79,15 +79,20 @@ class ProjectFunctions:
         
         #create the manifest for the bundle
         manifest_ok = self.write_manifest()
+        
+        #see if this bundle passes the parse test
+        bundle = ActivityBundle(self._activity.child_path)
+        
         do_tgz = True
         mime = self._activity.MIME_ZIP
         activity = 'org.laptop.PyDebug'
         #if manifest was successful, write the xo bundle to the instance directory
-        if manifest_ok:
+        if bundle:
             do_tgz = False
             try:                
                 #actually write the xo file
-                if self._activity.sugar_minor >= 84:
+                if self._activity.sugar_minor >= 82:
+                    _logger.debug('making xo bundle from: %s'%(self._activity.child_path))
                     config = bundlebuilder.Config(self._activity.child_path)
                     packager = bundlebuilder.XOPackager(bundlebuilder.Builder(config))
                     packager.package()
@@ -120,7 +125,7 @@ class ProjectFunctions:
                 _logger.exception('outer exception %r'%e)
                 do_tgz = True
         else:
-            _logger.debug('unable to create manifest')
+            _logger.debug('unable to parse bundle with ActivityBundle object')
         if do_tgz:
             dest = self.just_do_tar_gz()
             if dest:
@@ -294,7 +299,9 @@ class ProjectFunctions:
         dsdict=self.ds.get_metadata()
         file_name_from_ds = self.ds.get_file_path()
         project = dsdict.get('package','')
-        if not (project.endswith('.xo') or project.endswith('.tar.gz')):
+        mime_type = dsdict.get('mime_type')
+        _logger.debug('load from journal, mime type: %s'%mime_type)        
+        if not mime_type in [self._activity.MIME_TYPE, self._activity.MIME_ZIP,]:
             self._activity.util.alert(_('This journal item does not appear to be a zipped activity. Package:%s.'%project))
             self.ds.destroy()
             self.ds = None
@@ -302,10 +309,15 @@ class ProjectFunctions:
         filestat = os.stat(file_name_from_ds)         
         size = filestat.st_size
         _logger.debug('In try_to_load_from_journal. Object_id %s. File_path %s. Size:%s'%(object_id[0], file_name_from_ds, size))
-        if project.endswith('.xo'):
+        if mime_type == self._activity.MIME_TYPE:
             try:
                 self._bundler = ActivityBundle(file_name_from_ds)
-                name = self._bundler.get_name()
+                name_with_blanks = self._bundler.get_name()
+                name = ''
+                for i in range(len(name_with_blanks)):
+                    if name_with_blanks[i] == ' ': continue
+                    name += name_with_blanks[i]
+                self._activity.activity_dict['name'] = name
                 iszip=True
                 istar = False
             except:
@@ -348,21 +360,35 @@ class ProjectFunctions:
             #having done the clearing, just stop
             return
         if iszip:
-            self._bundler.install(self._activity.activity_playpen)
-            if self.ds: self.ds.destroy()
+            if self._activity.sugar_minor >= 84:
+                self._bundler.install(self._activity.activity_playpen)
+            else:
+                #self._bundler.install()
+                tmp_name = os.path.basename(self._new_child_path) + '.xo'
+                dest = os.path.join(self._activity.activity_playpen, tmp_name)
+                shutil.copy(self._load_to_playpen_source,dest)
+                os.chdir(self._activity.activity_playpen)
+                cmd = 'unzip -q %s'%dest
+                _logger.debug('loading XO file with cmd %s'%cmd)
+                rtn = self._activity.util.command_line(cmd)
+                if rtn[1] != 0: return
+                os.unlink(dest)
+
+            if self.ds:
+                self.ds.destroy()
             self.ds = None
         elif istar:
             dsdict = self.ds.get_metadata()
             project = dsdict.get('package','dummy.tar.gz')
             name = project.split('.')[0]
             dest = os.path.join(self._activity.activity_playpen,project)
-            shutil.copy(source_fn,dest)
+            shutil.copy(self._load_to_playpen_source,dest)
             os.chdir(self._activity.activity_playpen)
             cmd = 'tar zxf %s'%dest
             _logger.debug('loading tar.gz with cmd %s'%cmd)
             rtn = self._activity.util.command_line(cmd)
             if rtn[1] != 0: return
-            #os.unlink(dest)
+            os.unlink(dest)
             if self.ds: self.ds.destroy()
             self.ds = None
         elif os.path.isdir(self._load_to_playpen_source):
@@ -381,7 +407,9 @@ class ProjectFunctions:
             _logger.debug('returned from copytree')
         elif os.path.isfile(self._load_to_playpen_source):
             source_basename = os.path.basename(self._load_to_playpen_source)
-            dest = os.path.join(self._activity.child_path,source_basename)
+            #dest = os.path.join(self._activity.child_path,source_basename)
+            dest = self._activity.child_path
+            _logger.debug('file copy from %s to %s'%(self._load_to_playpen_source, dest,))
             shutil.copy(self._load_to_playpen_source,dest)
         self._activity.debug_dict['source_tree'] = self._load_to_playpen_source
         self._activity.child_path = self._new_child_path
@@ -399,9 +427,11 @@ class ProjectFunctions:
                                                    self.continue_inline_cb)
         """
         
-    def _unload_playpen(self):                                           
+    def _unload_playpen(self, rmtree = True):                                           
         #IPython gets confused if path it knows about suddenly disappears
-        cmd = 'cd %s\n'%self._activity.activity_playpen
+        #cmd = "cd '%s'\n"%self._activity.pydebug_path
+        os.environ['HOME'] = self._activity.debugger_home
+        cmd = "quit()\ngo\n"
         self._activity.feed_virtual_terminal(0,cmd)
         if self._activity.child_path and os.path.isdir(self._activity.child_path):
             self.abandon_changes = True
@@ -409,7 +439,7 @@ class ProjectFunctions:
             self._activity.debug_dict['tree_md5'] = ''
             self._activity.debug_dict['child_path'] = ''
             self.get_editor().remove_all()
-            if self._activity.child_path:
+            if rmtree:
                 shutil.rmtree(self._activity.child_path)
             self.abandon_changes = False
             
@@ -438,13 +468,26 @@ class ProjectFunctions:
             #msg = _('%s not recognized by ActivityBundle parser. Does activity/activity.info exist?'%os.path.basename(path))
             #self._activity.util.alert(msg)
             self._activity.init_activity_dict()
-            if self._activity.child_path and os.path.isdir(self._activity.child_path) and self._activity.child_path.endswith('.activity'):
-                name = os.path.basename(self._activity.child_path).split('.')[0]
+            if self._activity.child_path and os.path.isdir(self._activity.child_path) and \
+                                self._activity.child_path.endswith('.activity'):
+                name = os.path.basename(path).split('.')[0]
                 self._activity.activity_dict['name'] = name
                 self._activity.activity_dict['bundle_id'] = 'org.laptop.'  + name               
                 return  #maybe should issue an alert here
         self._activity.activity_dict['version'] = str(bundle.get_activity_version())
-        self._activity.activity_dict['name'] = bundle.get_name()
+        
+        ############################
+        #note to myself -- Made a decision I'm now forced to live with:
+        #bundle install appears to crunch blanks out of name when it installs
+        ###########################
+        
+        name_with_blanks = bundle.get_name()
+        name = ''
+        for i in range(len(name_with_blanks)):
+            if name_with_blanks[i] == ' ': continue
+            name += name_with_blanks[i]
+        self._activity.activity_dict['name'] = name
+
         self._activity.activity_dict['bundle_id'] = bundle.get_bundle_id()
         self._activity.activity_dict['command'] = bundle.get_command()
         cmd_args = bundle.get_command()

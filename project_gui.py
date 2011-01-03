@@ -113,7 +113,10 @@ class ProjectGui(ProjectFunctions):
     def setup_project_page(self):
         self.activity_treeview = self.wTree.get_widget('file_system')
         self.activity_window = FileTree(self, self.activity_treeview,self.wTree)
-        self.activity_window.set_file_sys_root('/home/olpc/Activities')
+        #activity_dir = os.path.dirname(self._activity.sugar_bundle_path)
+        #self.activity_window.set_file_sys_root(activity_dir)
+        #self.activity_window.set_file_sys_root('/usr/share/activities', append = True)
+        
         self.examples_treeview = self.wTree.get_widget('examples')
         self.examples_window = FileTree(self._activity, self.examples_treeview,self.wTree)
         self.examples_window.set_file_sys_root(os.path.join\
@@ -231,6 +234,8 @@ class ProjectGui(ProjectFunctions):
         self.try_to_load_from_journal(object_id)
         
     def save_to_journal_cb(self,button):
+        if self.activity_data_changed:
+            self._keep_activity_info(None)
         self.write_binary_to_datastore()
         
     def name_changed_cb(self, widget, event):
@@ -241,14 +246,14 @@ class ProjectGui(ProjectFunctions):
         #make a suggestion for module if it is blank
         widget_field = self.wTree.get_widget('module')
         module = widget_field.get_text()
-        if module == '':
+        if module == '' or module == 'untitled':
             widget_field.set_text(name.lower())
             
         #make a suggestion for class if it is blank
         widget_field = self.wTree.get_widget('class')
         myclass = widget_field.get_text()
         if myclass == '':
-            widget_field.set_text(name)
+            widget_field.set_text('sugar_subclass')
             
         #make a suggestion for bundle_id if it is blank
         widget_field = self.wTree.get_widget('bundle_id')
@@ -358,7 +363,10 @@ class ProjectGui(ProjectFunctions):
         else:
             to_what.set_label('shelf')
             but.hide()
-            self.activity_window.set_file_sys_root('/home/olpc/Activities')
+            activity_dir = os.path.dirname(self._activity.sugar_bundle_path)
+            self.activity_window.set_file_sys_root(activity_dir)
+            self.activity_window.set_file_sys_root('/usr/share/activities', append = True)        
+            self.activity_window.set_file_sys_root('/usr/share/sugar/activities', append = True)        
             button = self.wTree.get_widget('from_activities')
             tt = gtk.Tooltips()
             tt.set_tip(button,_('Copy the selected Activity or file to the debug workplace'))
@@ -368,6 +376,8 @@ class ProjectGui(ProjectFunctions):
     
     def to_home_clicked_cb(self,widget):
         _logger.debug('Entered to_home_clicked_cb')
+        if self.activity_data_changed:
+            self._keep_activity_info(None)
         self._to_home_dest = os.path.join(self.storage,self._activity.activity_dict['name']+'.activity')
         if False: #os.path.isdir(self._to_home_dest):
             target_md5sum = self._activity.util.md5sum_tree(self._to_home_dest)
@@ -405,6 +415,7 @@ class ProjectGui(ProjectFunctions):
             self.save_tree_md5(self._activity.child_path)
             #redraw the treeview
             self.activity_window.set_file_sys_root(self.storage)
+            self.activity_window.position_to(self._to_home_dest)
 
             #write snapshot of source tree to removable media if /pydebug directory exists
             self.removable_backup()
@@ -427,29 +438,31 @@ class ProjectGui(ProjectFunctions):
                 self.load_activity_to_playpen(fullpath)
             else: #this is a file folder, just copy it to project
                 source_basename = os.path.basename(fullpath)
-                dest = os.path.join(self._activity.activity_playpen,source_basename)
+                dest = os.path.join(self._activity.child_path,source_basename)
                 self.copy_tree(fullpath,dest)
         else:
             #selected is a file, just copy it into the current project
             basename = os.path.basename(fullpath)
-            if os.path.isfile(os.path.join(self._activity.child_path,basename)):
+            dest = os.path.join(self._activity.child_path,basename)
+            if os.path.isfile(dest):
                 #change name if necessary to prevent collision 
                 basename = self._activity.util.non_conflicting(self._activity.child_path,basename)
-            shutil.copy(fullpath,os.path.join(self._activity.child_path,basename))
-            self.manifest_point_to(os.path.join(self._activity.child_path,basename))
+            shutil.copy(fullpath,dest)
+            self.manifest_point_to(dest)
             
     def from_examples_clicked_cb(self,widget):
-        _logger.debug('Entered from_examples_clicked_cb')
         selection=self.examples_treeview.get_selection()
         (model,iter)=selection.get_selected()
         if iter == None:
             self._activity.util.alert(_('Must select File or Directory item to Load'))
             return
         fullpath = model.get(iter,4)[0]
+        _logger.debug('Entered from_examples_clicked_cb. source fullpath: %s'%fullpath)
         self._load_to_playpen_source = fullpath
         if fullpath.endswith('.activity'):
             self.load_activity_to_playpen(fullpath)
-            return        
+            return
+        """
         if fullpath.endswith('.xo'):
             try:
                 self._bundler = ActivityBundle(fullpath)
@@ -468,6 +481,23 @@ class ProjectGui(ProjectFunctions):
         #if os.path.isdir(fullpath):
         self._new_child_path = self._activity.child_path
         self._load_playpen(fullpath)
+        """
+        #is this is a file folder, just copy it to project
+        if os.path.isdir(fullpath):
+            basename = os.path.basename(fullpath)
+            dest = os.path.join(self._activity.child_path, basename)
+            self.copy_tree(fullpath,dest)
+            _logger.debug('copying tree from %s to %s'%(fullpath, dest, ))
+        else:
+            #selected is a file, just copy it into the current project
+            basename = os.path.basename(fullpath)
+            dest = os.path.join(self._activity.child_path,basename)
+            if os.path.isfile(dest):
+                #change name if necessary to prevent collision 
+                basename = self._activity.util.non_conflicting(self._activity.child_path,basename)
+            shutil.copy(fullpath, os.path.join(self._activity.child_path,basename))
+        self.manifest_point_to(os.path.join(self._activity.child_path,basename))
+
    
     #def filetree_activated(self):
     #_logger.debug('entered pydebug filetree_activated')
@@ -515,9 +545,10 @@ class ProjectGui(ProjectFunctions):
             #check to see if the folder already exists, if so change its name
             _logger.debug('need to make decision to move or create child base:%s. new_name:%s'%\
                           (os.path.basename(self._activity.child_path), new_name))
-            if os.path.isdir(self._activity.child_path) and os.path.basename(self._activity.child_path) !=  new_name:
+            if os.path.isdir(self._activity.child_path) and \
+                    os.path.basename(self._activity.child_path) !=  new_name:
                 self.get_editor().remove_all()
-                self._activity.init_activity_dict()
+                #self._activity.init_activity_dict()
 
                 cmd = 'mv %s %s'%(self._activity.child_path,new_child_path)
                 result,status = self._activity.util.command_line(cmd)
@@ -525,10 +556,12 @@ class ProjectGui(ProjectFunctions):
                     _logger.error('tried to rename %s directory unsuccessfully'%self._activity.child_path)
                     return
                 self._activity.child_path = new_child_path
+                self.setup_new_activity()
+        """
         else: #need to create the directories
             if not os.path.isdir(os.path.join(new_child_path,'activity')):
                 os.makedirs(os.path.join(new_child_path,'activity'))
-                
+        """        
         
     def write_activity_info(self):
         #write the activity.info file
@@ -880,7 +913,7 @@ class DataStoreTree():
                 num_found += count            
         except Exception,e:
             _logger.exception('datastore error %s'%e)
-            return
+            return dslist
         
         #sort the list around mtime
         ds_list = sorted(ds_list, key=lambda entry: entry.get_metadata().get('mtime'), reverse=True)

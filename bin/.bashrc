@@ -11,6 +11,9 @@ if [ -f /etc/bashrc ]; then
 	. /etc/bashrc
 fi
 
+#redefine the prompt
+export PS1='[\W]\$ '
+
 # some more ls aliases
 alias ll='ls -l'
 alias la='ls -A'

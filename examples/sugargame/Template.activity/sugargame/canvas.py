@@ -38,7 +38,7 @@ class PygameCanvas(gtk.EventBox):
         pygame.init()
         
         # Restore the default cursor.
-        self._socket.get_window().set_cursor(None)
+        self._socket.window.set_cursor(None)
 
         # Initialize the Pygame window.
         r = self.get_allocation()

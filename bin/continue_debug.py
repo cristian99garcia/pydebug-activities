@@ -185,6 +185,16 @@ activity_root = os.path.join('/home/olpc/.sugar/default/',bundle_id)
 os.environ['SUGAR_ACTIVITY_ROOT'] = activity_root
 _logger.debug('sugar_activity_root set to %s'%activity_root)
 
+#sugar makes the activity directories, so we need to also
+#put this in a try block, so that if permissions reject operation, we don't die
+try:
+    if not os.path.isdir(activity_root):
+        private_folders = ['data', 'tmp', 'instance',]
+        for folder in private_folders:
+            os.makedirs(os.path.join(activity_root,folder))
+except:
+    pass
+
 #following is useful for its side-effects    
 info = activityfactory.get_environment(bundle_info)
 

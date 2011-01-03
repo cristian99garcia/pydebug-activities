@@ -49,6 +49,7 @@ class Terminal:
         self._create_tab({'cwd':self.activity_playpen})
         
         #start the debugger user interface
+        #12/2010 note: tried threads again, very confusing results, disable for !st release
         #alias_cmd = 'alias go="%s/bin/ipython.py -gthread"\n'%(self.sugar_bundle_path,)
         go_cmd = _('go')
         alias_cmd = 'alias %s="%s/bin/ipython.py "\n'%(go_cmd,self.sugar_bundle_path,)
@@ -105,7 +106,8 @@ class Terminal:
         for i in range(self.terminal_notebook.get_n_pages()):
             if self.terminal_notebook.get_nth_page(i).vt == vt:
                 label = self.terminal_notebook.get_nth_page(i).label
-                label.set_text(vt.get_window_title())
+                title = vt.get_window_title()
+                label.set_text(title[title.rfind('/') + 1:])
                 return
     
     def _drag_data_received_cb(self, widget, context, x, y, selection, target, time):

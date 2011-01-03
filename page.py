@@ -619,6 +619,9 @@ class GtkSourceview2Page(SearchablePage):
 
             #previously inserted lines, marks are deleted, now do next_state
             _logger.debug('ready for insertion, current state:%s'%(current_state,))
+            line_start = self.text_buffer.get_iter_at_line(self.clicked_line_num)
+            line_end = line_start.copy()
+            line_end.forward_line()
             self.make_insertion(current_state, line_start, line_end)
         return False        
 
@@ -763,7 +766,7 @@ class GtkSourceview2Page(SearchablePage):
             tag_name = TRACE_CAT
         elif current_state == TRACE_CAT:
             file_nickname = os.path.basename(self.fullPath)
-            line_no = line_start.get_line()
+            line_no = line_start.get_line() + 1
             shell_at = '%s:%s'%(file_nickname,line_no,)
             insertion = SHELL_INSERT%(shell_at,)
             tag_name = SHELL_CAT
@@ -776,6 +779,7 @@ class GtkSourceview2Page(SearchablePage):
         prev_content = self.text_buffer.get_text(prev_line_iter,line_start)
         if prev_content.find('PyDebugTemp') == -1:
             current_line = self.text_buffer.get_text(line_start, line_end)
+            _logger.debug('make insertion line:%s'%(current_line,))
             padding = self.get_indent(current_line)
             indent = self.pad(padding)
             self.text_buffer.insert(line_start,indent+insertion)

@@ -128,7 +128,7 @@ class ActivityToolbar(gtk.Toolbar):
         self._updating_share = False
     
     def __traceback_changed_cb(self, combo):
-        it = combo.get_active_iter()
+        #it = combo.get_active_iter()
         value = combo.get_active()
         _logger.debug('combo box value:%s'%(value,))
         if value == 0:

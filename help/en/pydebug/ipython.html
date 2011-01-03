@@ -19,15 +19,34 @@
 </ol>
 <p>Though it helps to think of four different sets of commands, there are really only two different personalities, the Terminal, and the Debugger. They can be distinguished by the prompt. The Terminal has a prompt that looks something like: &quot;[Chat.activity]$&quot;. The Debugger's prompt looks more like &quot;In [23]&quot; (the number is increased by 1 for every command you give).</p>
 <p>You can change from the Debugger to the Terminal by typing &lt;control&gt;d (middle far left key at the same time as the &quot;D&quot; key). To go from the Terminal to the Debugger, Just type &quot;go&quot;&lt;enter&gt;. (The &lt;enter&gt; key is the &quot;go do it&quot; key that is implied when you are giving commands to a command line interpreter. From now on, I will just assume that you know that you must end a command with the &lt;enter&gt; key). Sometimes, if the debugger stops responding as you expect, you can fix the problem by exiting IPython by issuing the &lt;ctl&gt;d command, and then going back into IPython with &quot;go&quot;. </p>
+<h3>Become Familiar with Tab Completion</h3>
+<p>Tab completion, after starting to type something, is the idea that the computer can be asked to guess what you started typing. If the program looks through the list of commands or things that start with the letters you have already typed, it finds one of three situations:</p>
+<ol>
+  <li>None of the possible choices start with the letters you have typed. -- &lt;tab&gt; does nothing.</li>
+  <li>The characters you have typed already uniquely define one command. -- &lt;tab&gt; completes the command</li>
+  <li>There is more than one commands that starts with the letters you have typed. -- &lt;tab&gt; presents you with the list of possible completions.</li>
+</ol>
+<p><br />
+  We ran into tab completion <a href="lesson_2.html#completion">when we were talking about the Command line</a>. IPython adds the third response to the &lt;tab&gt; key, the presenting of all the possible completions. If you start using this feature, it can become a powerful and efficient way to explore problems with your python code.  <a href="lesson_3.html">Lesson 3</a> explores this feature in greater detail.</p>
+<p>IPython</p>
 <h3>Developing, Running, and Debugging a Stand Alone Python Program </h3>
 <p>During the first phase of writing an activity, you will probably just be working on a single file (See the  <a href="../ActivityBook/ActivitiesGuideSugar__StandalonePythonReadEtexts.html">chapter and example</a> in &quot;Making Sugar Activities&quot;) . To run a stand alone program in IPython, you need to type &quot;run &lt;your program name&gt;&quot; at the IPython prompt. (you can leave off the &quot;.py&quot; if you want). After the first time you run your program, you can use the &lt;up arrow&gt; key to repeat the last command to run it again. </p>
-<p>Most likely you will get an error. If it's a runtime error rather than a definition error, you will get a traceback. The drop down box at the top right of the screen provides &quot;plain&quot;,&quot;context&quot;, and &quot;verbose&quot; choices. This specifies how much information you would like in the traceback listing. Chose &quot;verbose&quot; until it becomes too much.</p>
-<p>You can single step through your program by adding a &quot;-d&quot; to your run command; ie. &quot;run -d &lt;your program name&gt;&quot;. When you are stopped at a breakpoint, you will see the &quot;&lt;ipdb&gt;&quot; prompt. There is a set of commands for &quot;s(tep)&quot;ing into the procedure, passing over the procedure &quot;n(ext)&quot;, and continuing &quot;c(ontinue)&quot; to the next breakpoint. Often one of the most interesting commands is to issue the &quot;who&quot; command, which lists the values of all the local variables in the context of the current procedure. </p>
-<p>&nbsp; </p>
-<p>&nbsp;</p>
-<p>IPython is essentially a text mode debugger to which some graphical connections have been added to make it easier to use. At the IPython prompt you can type &quot;go&quot; . This will start your program as a sugar activity in just the same manner as if you click the &quot;Run&quot; icon at the top left. If the debugger becomes locked up, you may be able to stop it (&lt;control&gt;d) and restart it again by typing &quot;go&quot; at the terminal prompt. </p>
-<h3>Switching between the text-mode and graphical screens </h3>
-<p>Use &lt;alt&gt;-&lt;tab&gt; to switch between the graphical output page created by your application, and the text-mode debugging screen of the PyDebug Activity. </p>
+<p>The first time you run your program,  you will most likely get an error. If it's a runtime error rather than a definition error, you will get a traceback. The drop down box at the top right of the screen provides &quot;plain&quot;,&quot;context&quot;, and &quot;verbose&quot; choices. This specifies how much information you want in the traceback listing. Chose &quot;verbose&quot; until it becomes too much.</p>
+<p>You can single step through your program by adding a &quot;-d&quot; to your run command; ie. &quot;run -d &lt;your program name&gt;&quot;. When run with the &quot;-d&quot; option, IPython will stop at the first executable line in your program. If you enter &quot;c&quot; for &quot;continue&quot;, your program will run to completion, or until it hits an error. Or if you have set breakpoints using the <a href="Edit_page.html#setting">left click on the number in the Editor</a>, the &quot;continue&quot; will preceed to the breakpoint you have set. </p>
+<p> When you are stopped at a breakpoint, you will see the &quot;&lt;ipdb&gt;&quot; prompt. There is a <a href="ipdb.html">NEW set of commands</a> that are useful for controlling the interaction with your running program (follow the link for the complete set):</p>
+<ul>
+  <li>&quot;s&quot; == for &quot;s(tep)&quot;ing into the procedure</li>
+  <li>&quot;n&quot; == &quot;n(ext)&quot;, passing over the procedure </li>
+  <li> &quot;c&quot; == &quot;c(ontinue)&quot;, and continuing  to the next breakpoint. </li>
+  <li>At the &quot;&lt;ipdb&gt;&quot; prompt, you can get a list of available commands by hitting the &quot;?&quot; command. </li>
+  <li>Often one of the most interesting commands is to issue the &quot;who&quot; command, which lists the values of all the local variables in the context of the current procedure. </li>
+</ul>
+<h3>Running a Sugar Activity </h3>
+<p>At the IPython prompt you can type &quot;go&quot; . This will start your program as a sugar activity in just the same manner as if you click the &quot;Run&quot; icon at the top left. The process of running a Sugar Activity creates a new Sceen and will hide the PyDebug screen you used to start the new program. So you will frequently need to switch back and forth between these two screens.</p>
+<h3>Switching between the PyDebug Screen and Your New Sugar Activity Screen </h3>
+<p>Use &lt;alt&gt;-&lt;tab&gt; to switch between the graphical output page created by your application, and the text-mode debugging screen of the PyDebug Activity. On recent Sugar Desktops (Build 767, and after) you can change screens by using the &lt;Frame&gt; key (upper left corner of keyboard), or by running the cursor into any corner of the screen. </p>
+<p>If PyDebug becomes locked up, you may be able to correct the situation by restarting the IPython process. You can do this by hitting &lt;control&gt;d at the IPython prompt, and restart it again by typing &quot;go&quot; at the terminal prompt (note that &quot;go&quot; command is used both at the Terminal prompt, and at the IPython prompt to start your Sugar Activity -- hopefully this will reduce confusion in the early states of learning PyDebug). </p>
+<h3></h3>
 <h2></h2>
 </body>
 </html>

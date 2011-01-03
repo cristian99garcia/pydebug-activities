@@ -1,0 +1,27 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Untitled Document</title>
+<link href="CSS/Georgia.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>Use IPython tab completion, and introspection</h1>
+<p>The &quot;os&quot; module in python permits applications to run on windows, linux, and Apple mac machines. It will be found in most of the Activites on the XO, and it has many functions. Suppose you want to use a function that is an Operating System function, but you don't know the name of the function. Introspection is your tool to find out.</p>
+<p>Click on the &quot;Activity&quot; tab, type &quot;import os&quot;. You can get a list of all the functions in &quot;os&quot; by typeing &quot;os.&lt;tab&gt;&quot; (The &quot;.&quot; is required). The list is too long to fit on one screen, so you'll have to <a href="lesson_1.html#shortcuts">page up</a> to see the whole list . Let's suppose that you want to find out how to trim off everything except the last part of a filename. As you look through the list, you might notice that there is an entry labeled 'path'.</p>
+<p>So check it out. Type &quot;os.path.&lt;tab&gt;&quot;. You get another long list. You see a few that seem promising (basename, curdir, dirname, normpath, pardir, relpath, splt, stat). The list is alphabetic, and so for fun you decide to start from the bottom.</p>
+<p>Type &quot;os.path.stat??&quot;. The ?? says you want as much information as possible. You get a lot of information. The &lt;fn&gt;&lt;shift&gt;&lt;up arrow&gt; doesn't seem to work. I tried hitting a lot of keys, and accidently hit the &quot;h&quot; key. I got to a help page for the &quot;less&quot; pager, which is what IPython uses whenever it has a lot of data to send to the screen. There is lots of information about which keys to use to control the pager, and it says you can use &quot;q&quot; to quit the help, which brings you back to the long listing about os.path.stat. Hitting &quot;q&quot; from there returns you to the IPython prompt.</p>
+<p>So next try &quot;os.path.split??&quot;. Did you &lt;up arrow&gt;, erase stat, and type &quot;split&quot; ? It looks like &quot;split&quot; could be used for your purposes. You can just throw away the tail, and the head is what you are looking for. But some of the other methods may accomplish what you wand also.</p>
+<p>Skipping ahead, you will find that &quot;os.path.basename??&quot; describes exactly what you were looking for. So let's test it out. Type &quot;os.path.ba&lt;tab&gt; completes to &quot;in (20) os.path.basename&quot;. Now you are going to give it a long path, and see if it returns just the last part. So continue typeing &quot;(/h&quot;&lt;tab&gt; which is completed to &quot;In (21) os.path.basename('/home/&quot; . Then you type &quot;o&quot;&lt;tab&gt; --&gt; os.path.basename('/home/olpc/. You type &quot;A&quot;&lt;tab&gt; which becomes os.path.basename('/home/olpc/Activities/. Then you type &quot;Py&quot;&lt;tab&gt;. It responds os.path.bassename(/home/olpc/Activities/PyDebug.activity. You type &quot;py&quot;&lt;tab&gt;. You notice the py also would select pytoolbar.py so you just finish it off, typing &quot;debug.py')&quot; and it responds with the answer you were execting .</p>
+<p>Then you wonder if you could pick off the last portion of the path with the same function. You &lt;up arrow&gt; the last command, and backspace to erase the &quot;pydebug.py&quot;. The result is not what you expected -- just an empty string &quot;&quot;. If you delete the trailing &quot;/&quot;, you get results more like you expected -- &quot;PyDebug.activity&quot;. </p>
+<h3>PyDoc as an introspection tool </h3>
+<p>Go to the &quot;HOME&quot; of the Help menu (the round hollow circle) on the menu. Select PyDoc link and scroll down to find the /usr/lib/python section. Click on &quot;os&quot; which will take you to information that is available from PyDoc on the OS module. </p>
+<p>You will find &quot;basename&quot;, &quot;dirname&quot;, and &quot;split&quot; listed under functions, but not nearly as much information about the source, inputs, and return values as was available from IPython.</p>
+<h3>Dir() as an introspection tool  </h3>
+<p>Return to the Activity tab, and type &quot;dir(os)&quot;. Following this type &quot;dir(os.path)&quot;. This demonstrates the native ability python to document itself. The &quot;dir&quot; command is the raw lookup tool that comes with the standard python command line interpreter. I find the IPython interface, with its tab completion, and the ability to narrow the possibilities by typing a few characters, to be much more useful. </p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+
+</html>

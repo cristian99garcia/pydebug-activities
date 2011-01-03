@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Untitled Document</title>
+<link href="CSS/Georgia.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>Debugging Techniques</h1>
+<p>Part of the challenge of debugging it to understand where things come from and figureing out what to pay attention to and what to ignore. Even the simplist program, such as HelloWorld.activity can look pretty complicated when you start debuggin it. That is because so much comes with inheritance from the activity.Activity super class. The following line says that   the HelpTemplate class inherits from &quot;activity.Activity&quot; all of the methods, variables defined in the &quot;Activity&quot; class found in the &quot;activity&quot; module
+:</p>
+<pre>class HelpTemplate(activity.Activity): 
+</pre>
+<p>The diagram which follows depicts this inheritance with the arrow labeled "1". </p>
+<p>The arrows, labeled &quot;2&quot;, refer to the debugging help that IPython and Ipdb give you as your program is difining the &quot;buttons&quot;, and &quot;Callback Methods&quot; which permit your Activity to be useful. During this phase, IPython is supervising your program . If there is a run time error, it gives you a traceback of how the program got to the place where the error occurred. If you issue the &quot;trace&quot; command, Ipdb runs your program line by line, asking all the time &quot;is there a breakpoint set for this line?&quot; Because it is asking this question all the time, you will find that &quot;trace&quot; runs much slower that &quot;go&quot;. </p>
+<p>You set a breakpoint by left clicking on the number column of the line where you want to start looking at variables, or single stepping. (refer to <a href="Edit_page.html#setting">Editor, Setting Breakpoints</a> for details) . You can set as many breakpoints as you want, using the Edit page of PyDebug, before you issue the &quot;trace&quot; command. </p>
+<p>After you have started &quot;trace&quot;ing, and are typing commands at the &quot;ipdb&gt;&quot; prompt, a new set of commands becomes available (see a short reminder list of these commands by typing &quot;?&quot; at the &quot;ipdb&gt;&quot; prompt. <a href="ipdb.html">Click here to read a longer description of the IPDB commands</a>. </p>
+<p>You can get a list of breakpoints that you have set, and you can set additional breakpoints by typing &lt;filename&gt;:&lt;line number&gt;. If you want to use the Editor tab, and left click on the number line, you need to &quot;q&quot;uit from &quot;ipdb&gt;&quot; prompt, then go into the Editor to set the breakpoint, and return to the &quot;Activity&quot; page to reissue the &quot;trace&quot; command, which will start the debug session once again. </p>
+<p><img src="Debug_flow.png" width="443" height="358" /> </p>
+<p>After the Buttons and Callbacks are defined, the Activity framework calls the &quot;GTK mainloop&quot;. At this point the loop labeled &quot;3&quot; takes over. Button press &quot;events&quot; are received by the &quot;GTK mainloop&quot;, and then sent to &quot;pygtk&quot;, via the regular python interpreter, and eventually wind up causing your Callback methods to be executed. At this point, the line by line examination to see if a breakpoint has been set, (loop 2), is no longer active.</p>
+<p>This is where you need to modify your code by setting tracepoints (blue highlights) or shell escapes (green highlights) to watch what your program is doing. These modifications to your code are shown in the diagram as the circular arrow labeled &quot;4&quot;. You insert a call to IPdb, and IPython, which permit you to examine variables, single step, and follow the execution of your program until the method returns to the GTK mainloop. </p>
+<p>Please refer to the section on<a href="Edit_page.html#setting"> Setting Breakpoints</a> for a detailed description of how to set and clear breakpoints. During the phase where you are defining your buttons and callbacks, and when you use the tracepoint (blue hightlight), the &quot;ipdb&gt;&quot; prompt is displayed and the <a href="ipdb.html">"pdb" command set </a>is active.</p>
+<p> An additional couple of commands are defined as shown by the following command line interaction: </p>
+<ol>
+  <li>The &quot;ps&quot; command &quot;prints self&quot;. It's output is long, showing lots of the variables that are inherited from &quot;Activity&quot; class.</li>
+  <li>The &quot;pi&quot; command &quot;prints&quot; the variables of an instance of a class. In this case we are printing the contents of the dictionary that is created by the &quot;Help&quot; class in the &quot;help&quot; module (file) in the &quot;help&quot; directory. Use the Editor tab to find and open &quot;playpen/HelpTemplate.activity/help/help.py&quot;. </li>
+</ol>
+<pre>synchronize called. file:/home/olpc/.sugar/default/org.laptop.PyDebug/data/pydebug/
+		playpen/HelpTemplate.activity/helptemplate.py. line:51. Col:0<br />ipdb&gt; ps<br />self help = &lt;Help object at 0x9e481e4 (sugar+graphics+window+Window at 0x9f94030)&gt;<br />self _pservice = &lt;PresenceService object at 0x9b34d4c (sugar+presence+presenceservice+
+		PresenceService at 0x99805c0)&gt;<br />self _deleting = False<br />self _is_fullscreen = False<br />self _activity_id = 63a9ef8f5d91129fd0cd9605a810efb84d6c5ffe<br />self _invites_queue = []<br />self _join_id = None<br />self _enable_fullscreen_mode = True<br />self _unfullscreen_button = &lt;UnfullscreenButton object at 0x9e480a4 (GtkWindow at
+		 0x9f94240)&gt;<br />self canvas = &lt;gtk.Button object at 0x9e4fc0c (GtkButton at 0x9e0ec78)&gt;<br />self _jobject = None<br />self _vbox = &lt;gtk.VBox object at 0x9e4807c (GtkVBox at 0x9f45160)&gt;<br />self _hbox = &lt;gtk.HBox object at 0x9e4802c (GtkHBox at 0x9f451b8)&gt;</pre>
+<p>When I wanted to print the variables of the Help class I created, the first time, I forgot to include &quot;self.&quot; in the print request, and I didn't get the output I expected. A lot of the variables are not yet defined, but I am able to verify that the &quot;HOME&quot; variable is set properly. Later, if I wanted to check the values of these variables in the Help class, I would set a trace call (blue highlight) somewhere in a method that was part of the Help class, and use the &quot;ps&quot; command to view the same variables. </p>
+<pre>ipdb&gt; pi help<br />ipdb&gt; pi self.help<br />self.help _unfullscreen_button = &lt;UnfullscreenButton object at 0x9e481bc (GtkWindow at 
+		0x9f3b710)&gt;<br />self.help _event_box = &lt;gtk.EventBox object at 0x9e48194 (GtkEventBox at 0x9f94908)&gt;<br />self.help canvas = &lt;Browser object at 0x9e4820c (hulahop+webview+WebView at 0x9e0c788)&gt;<br />self.help handle = &lt;sugar.activity.activityhandle.ActivityHandle object at 0x9e44c6c&gt;<br />self.help help_toolbar = &lt;Toolbar object at 0x9e484b4 (GtkToolbar at 0x9e74348)&gt;<br />self.help tray = None<br />self.help _enable_fullscreen_mode = True<br />self.help help_id = None<br />self.help _alerts = []<br />self.help _web_view = &lt;Browser object at 0x9e4820c (hulahop+webview+WebView at 
+		0x9e0c788)&gt;<br />self.help _is_fullscreen = False<br />self.help HOME = /home/olpc/.sugar/default/org.laptop.PyDebug/data/pydebug/
+		playpen/HelpTemplate.activity/help/HelpApi.htm</p></pre
+></body>
+
+</html>

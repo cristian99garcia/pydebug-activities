@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Untitled Document</title>
+<link href="CSS/Georgia.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<h1>Learn XO keyboard,  and  the Terminal Activity</h1>
+<p>To set up for this lesson, please <a href="project_page.html#examples">load the HelloWorld.activity</a> from the examples window of the Project Page. Then click on the &quot;Activity&quot; tab, and exit into the Terminal &quot;&lt;ctl&gt; D&quot; .</p>
+<h3><a name="shortcuts">Essential navigation shortcuts:</a>  </h3>
+<ol>
+  <li>&lt;up arrow-pg up&gt; == repeat previous commands. Repeated &lt;up arrow&gt;s gets you to earlier and earlier in the history.</li>
+  <li>&lt;fn&gt;&lt;shift&gt;&lt;up arrow&gt; (3 keys at once) == scroll up one screen</li>
+  <li>&lt;ctl&gt;&lt;alt&gt;&lt;erase&gt; (3 keys at once) == restart the Sugar desktop (use when nothing is working--all data will be lost).</li>
+  <li>&lt;frame&gt; (upper right-most key) == switch between Sugar's currently available windows. Push again to hide frame.</li>
+</ol>
+<p>Type &quot;history 10&quot;, or to use tab completion, &quot;hi &lt;tab&gt; 10&quot;. This shows the previous commands that you can get to with the up and down arrows on the keyboard. Issue the history command, without the number 10. This will include the full history since PyDebug was loaded on your machine, and could be very long. If longer than one page, use the &lt;fn&gt;&lt;shift&gt;&lt;up arrow&gt; to view older history. If there is a command you want to use again, just type &quot;!&lt;number&gt; to reissue the command. </p>
+<h3>Using a pager </h3>
+<p>Type &quot;cat pydebug.py&quot; and hit &lt;enter&gt;. The &quot;cat&quot; command lists any file to the terminal screen. The &quot;pydebug.py&quot; file is the main file for the PyDebug activity. You can use the &lt;fn&gt;&lt;shift&gt;&lt;up arrow&gt; to see the earlier parts of the program. But it's not really convenient. The &quot;less&quot; program is designed to make it easier to look at long files. Type &quot;less pydebug.py&quot;. Note that it stops after the first page. Use &lt;fn&gt;&lt;down arrow&gt; and &lt;fn&gt;&lt;up arrow&gt; to scroll up and down in the text. If it is easier, the &quot;f&quot; and &quot;b&quot; key allow you to do the same with a single keystroke. When you are done looking at the file, the &quot;q&quot; key is used to &quot;quit&quot;. IPython uses the &quot;less&quot; pager most of the time when it is presenting long documents to you. One of the times is when you issue &quot;?&quot; at the IPython prompt. Go into IPython now (type &quot;go&quot;), and type &quot;?&quot;. Check out the action of the &quot;f&quot;,&quot;b&quot;,&lt;fn&gt;&lt;up arrow&gt;,&lt;fn&gt;&lt;down arrow&gt;, and &quot;q&quot; keys. Note that the pager doesn't wipe out what was on the screen before you started using it. </p>
+<h3>Learn about the second Terminal page </h3>
+<p>Click on the &quot;Activity&quot; tab of PyDebug, and then on the &quot;HelloWorld.activity&quot; tab at the bottom right of the sceen. When you get to this page, it will appear slightly whiter that the IPython screen (which is slightly yellow). Let's explore the navigation aids available on this terminal screen. First type &quot;alias&quot;. The shell will respond with all the aliases that are currently defined for you. We will use the following:</p>
+<ul>
+  <li>pp == Go to the activity which is currently loaded into the PyDebug playpen (the program being debugged).</li>
+  <li>act == Go to the folder which holds the Activities that are loaded into to XO.</li>
+  <li>cd == Go to the home directory where PyDebug is permitted to write permanent files</li>
+  <li>olcp == Go to the main home directory for the 'olpc' user, where user data is stored. </li>
+</ul>
+<p>The &quot;pwd&quot; will print the entire path for the working directory, and can be used to see the results of each of the above commands. </p>
+<p>The other aliases on the list are helpful in making frequently used command more humanly readible or require fewer keystrokes and will be discussed in more detail in <a href="lesson_2.html">lesson 2 </a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+</body>
+
+</html>

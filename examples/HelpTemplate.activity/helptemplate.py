@@ -18,7 +18,8 @@ from gettext import gettext as _
 import gtk
 import gobject
 import logging
-_logger = logging.getLogger()
+_logger = logging.getLogger('HelpTemplate')
+_logger.setLevel(logging.DEBUG)
 
 from sugar.activity import activity
 from sugar.graphics.toolbutton import ToolButton
@@ -58,6 +59,15 @@ class HelpTemplate(activity.Activity):
             
     def set_toolbar(self,tab):
         self.toolbox.set_current_toolbar(tab)
+        
+    def py_stop(self):
+        self.__stop_clicked_cb(None)
+        
+    def __stop_clicked_cb(self,button):
+        _logger.debug('caught stop clicked call back')
+        self.close(skip_save = True)
+        
+
             
     ################  Help routines
     def help_selected(self):
