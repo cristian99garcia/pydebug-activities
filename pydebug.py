@@ -37,6 +37,7 @@ from sugar.datastore import datastore
 import sugar.activity.bundlebuilder as bundlebuilder
 from sugar.bundle.activitybundle import ActivityBundle
 from sugar.activity.activity import Activity
+import sugar.activity.activity as activity
 from sugar import profile
 
 #application stuff
@@ -108,6 +109,7 @@ MASKED_ENVIRONMENT = [
     'DBUS_SESSION_BUS_ADDRESS',
     'PPID'
 ]
+ICTDIR = '/home/olpc/.ictcore'
 
 #global module variable communicates to debugged programs
 global pydebug_instance
@@ -343,6 +345,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
     
     def make_paths(self):
         self.pydebug_path = os.environ['SUGAR_BUNDLE_PATH']
+        self.debugger_home = self.home = self.get_home()
         p_path = os.environ['SUGAR_BUNDLE_PATH']
         if os.environ.get("PYTHONPATH",'') == '':
             os.environ['PYTHONPATH'] = self.pydebug_path
@@ -350,16 +353,15 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
             p_path_list = os.environ['PYTHONPATH'].split(':')
             if not self.pydebug_path in p_path_list:
                 os.environ['PYTHONPATH'] = self.pydebug_path + ':' + os.environ.get("PYTHONPATH",'')
-        _logger.debug('sugar_bundle_path:%s\nsugar_activity_root:%s'%(os.environ['SUGAR_BUNDLE_PATH'],
-                                                                      os.environ['SUGAR_ACTIVITY_ROOT']))
-        self.debugger_home = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'data')
+        _logger.debug('sugar_bundle_path:%s\npydebug home:%s'%(os.environ['SUGAR_BUNDLE_PATH'],
+                                                                      self.home))
         self.child_path = None
         os.environ["HOME"]=self.debugger_home
         path_list = os.environ['PATH'].split(':')
         new_path = os.path.join(self.pydebug_path,'bin:')
         if not new_path in path_list:
             os.environ['PATH'] = new_path + os.environ['PATH']
-        self.storage = os.path.join(os.environ['SUGAR_ACTIVITY_ROOT'],'data/pydebug')
+        self.storage = os.path.join(self.home,'pydebug')
         self.sugar_bundle_path = os.environ['SUGAR_BUNDLE_PATH']
         self.activity_playpen = os.path.join(self.storage,'playpen')
         if not os.path.isdir(self.activity_playpen):
@@ -370,6 +372,30 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         _logger.debug('Set IPYTHONDIR to %s'%self.debugger_home)
         os.environ['IPYTHONDIR'] = self.debugger_home
     
+    def get_home(self):
+        """Accomodates the change in Sugar for getting root"""
+        #look for bitfrost antidote
+        ictcore = self.get_writeable_ictcore()
+        if ictcore:
+            return ictcore
+        if hasattr(activity, 'get_activity_root'):
+            return os.path.join(activity.get_activity_root(), 'data')
+        return os.path.join(self.get_activity_root(), 'data')
+        
+    def get_writeable_ictcore(self):
+        """bitfrost isolates activities from one another, defeat this for
+            ict activities"""
+        if os.path.isdir(ICTDIR):
+            #is it writeable?
+            try:
+                fd = open(os.path.join(ICTDIR,'test'),'w')
+                fd.write('this is a test')
+                fd.close()
+                os.unlink(os.path.join(ICTDIR,'test'))
+            except IOError,e:
+                return None
+            return ICTDIR
+        
     def setup_home_directory(self):
         """The directory which Sugar activities have permission to write in"""
         src = os.path.join(self.pydebug_path,'bin','.bashrc')

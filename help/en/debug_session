@@ -1,0 +1,41 @@
+synchronize called. file:/home/olpc/.sugar/default/org.laptop.PyDebug/data/pydebug/playpen/HelpTemplate.activity/helptemplate.py. line:51. Col:0
+ipdb> ps
+self help = <Help object at 0x9e481e4 (sugar+graphics+window+Window at 0x9f94030)>
+self _pservice = <PresenceService object at 0x9b34d4c (sugar+presence+presenceservice+PresenceService at 0x99805c0)>
+self _deleting = False
+self _is_fullscreen = False
+self _activity_id = 63a9ef8f5d91129fd0cd9605a810efb84d6c5ffe
+self _invites_queue = []
+self _join_id = None
+self _enable_fullscreen_mode = True
+self _unfullscreen_button = <UnfullscreenButton object at 0x9e480a4 (GtkWindow at 0x9f94240)>
+self canvas = <gtk.Button object at 0x9e4fc0c (GtkButton at 0x9e0ec78)>
+self _jobject = None
+self _vbox = <gtk.VBox object at 0x9e4807c (GtkVBox at 0x9f45160)>
+self _hbox = <gtk.HBox object at 0x9e4802c (GtkHBox at 0x9f451b8)>
+
+
+self _max_participants = 0
+self _bus = <sugar.activity.activityservice.ActivityService at /org/laptop/Activity/63a9ef8f5d91129fd0cd9605a810efb84d6c5ffe at 0x9e44a4c>
+self _alerts = []
+self tray = None
+ipdb> pi help
+ipdb> pi self.help
+self.help _unfullscreen_button = <UnfullscreenButton object at 0x9e481bc (GtkWindow at 0x9f3b710)>
+self.help _event_box = <gtk.EventBox object at 0x9e48194 (GtkEventBox at 0x9f94908)>
+self.help canvas = <Browser object at 0x9e4820c (hulahop+webview+WebView at 0x9e0c788)>
+self.help handle = <sugar.activity.activityhandle.ActivityHandle object at 0x9e44c6c>
+self.help help_toolbar = <Toolbar object at 0x9e484b4 (GtkToolbar at 0x9e74348)>
+self.help tray = None
+self.help _enable_fullscreen_mode = True
+self.help help_id = None
+self.help _alerts = []
+self.help _web_view = <Browser object at 0x9e4820c (hulahop+webview+WebView at 0x9e0c788)>
+self.help _is_fullscreen = False
+self.help HOME = /home/olpc/.sugar/default/org.laptop.PyDebug/data/pydebug/playpen/HelpTemplate.activity/help/HelpApi.htm
+self.help toolbox = <Toolbox object at 0x9e482ac (SugarToolbox at 0x9f3eed8)>
+self.help _vbox = <gtk.VBox object at 0x9e4816c (GtkVBox at 0x9f45210)>
+self.help parent_obj = <HelpTemplate object at 0x9e38f7c (SugarActivity at 0x9f94190)>
+self.help _hbox = <gtk.HBox object at 0x9e480cc (GtkHBox at 0x9f452c0)>
+ipdb> ERROR: An unexpected error occurred while tokenizing input
+T

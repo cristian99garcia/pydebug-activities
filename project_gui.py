@@ -698,6 +698,12 @@ class ProjectGui(ProjectFunctions):
         #add the bin directory to path
         if self._activity.child_path not in os.environ['PATH'].split(':'):
             os.environ['PATH'] = os.path.join(self._activity.child_path,'bin') + ':' + os.environ['PATH']
+            
+        #make a link to the playpen if it doesn't conflict with existing diredtory
+        link_dir = os.path.join('/home/olpc/Activities',
+                            os.path.basename(self._activity.child_path))
+        if not os.path.isdir(link_dir):
+            os.symlink(self._activity.child_path,link_dir)
         
         #calculate and store the md5sum
         self._activity.debug_dict['tree_md5'] = self._activity.util.md5sum_tree(self._activity.child_path)

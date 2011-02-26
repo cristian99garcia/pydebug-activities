@@ -443,6 +443,13 @@ class ProjectFunctions:
                 shutil.rmtree(self._activity.child_path)
             self.abandon_changes = False
             
+            #check to see if the Activity directory has a link to playpen
+            link_dir = os.path.join('/home/olpc/Activities',
+                            os.path.basename(self._activity.child_path))
+            if os.path.islink(link_dir):
+                os.unlink(link_dir)
+                
+            
     def copy_tree(self,source,dest):
             if os.path.isdir(dest):
                 try:
