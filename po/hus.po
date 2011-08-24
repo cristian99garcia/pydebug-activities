@@ -1,0 +1,509 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-12-20 12:48+0000\n"
+"PO-Revision-Date: 2011-08-19 17:02+0200\n"
+"Last-Translator:  <ieliiptenek@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hus\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.1\n"
+
+#: activity/activity.info:2
+msgid "PyDebug"
+msgstr "PyDebug"
+
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Name"
+msgstr "Bij"
+
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Size"
+msgstr "Puwél"
+
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Last Changed"
+msgstr "Taltaláb jalk'úl"
+
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:75
+msgid "Traceback:"
+msgstr "Bodhondhaxtaláb"
+
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:76
+msgid "Plain"
+msgstr "Pak'chal"
+
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:77
+msgid "Context"
+msgstr "Utat xe'tsintal"
+
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:78
+msgid "Verbose"
+msgstr "Jun kwenél i káw"
+
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:107
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:77
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:186
+#: /home/olpc/Activities/PyDebug.activity/help.py:222
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:37
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:62
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:217
+msgid "Stop"
+msgstr "Kublej"
+
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:212
+#: /home/olpc/Activities/PyDebug.activity/help.py:79
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:87
+msgid "Activity"
+msgstr "T'ojláb"
+
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:54
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:64
+msgid "Start Debugging"
+msgstr "Ka tujchij tit dhikal"
+
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:62
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:140
+msgid "Copy"
+msgstr "K'ot'biy"
+
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:68
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:148
+msgid "Paste"
+msgstr "Ts'at'k'a'"
+
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:75
+msgid "Open New Tab"
+msgstr "Ka japiy juni ít madhidh"
+
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:82
+msgid "Close Tab"
+msgstr "Ka mapuy an madhidh"
+
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:89
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:132
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:97
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:132
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:132
+msgid "Fullscreen"
+msgstr "Putat walek"
+
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:128
+msgid ""
+"\n"
+"\n"
+" Use the HELP in the Ipython interpreter to learn to DEBUG your program.\n"
+msgstr ""
+"\n"
+"\n"
+" Ka ayindha' HELP xi in nits'biyal an Python abal ka ejtow ka t'okedha' an "
+"tsalpadh t'ojláb\n"
+
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:138
+#: /home/olpc/Activities/PyDebug.activity/terminal.py:53
+#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:58
+msgid "go"
+msgstr "k'alel"
+
+#: /home/olpc/Activities/PyDebug.activity/util.py:51
+msgid "There is no Activity file"
+msgstr "Yab wa'ats i dhuchlab ti t'ojláb"
+
+#: /home/olpc/Activities/PyDebug.activity/util.py:159
+#, python-format, 
+msgid "%s Command returned non zero\n"
+msgstr "%s An abatnom yab in wichba' an yab jant'oj\n"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:130
+msgid "Circle"
+msgstr "kwechodh"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:131
+msgid "Square"
+msgstr "tsé' junat walté'"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:132
+msgid "Diamond"
+msgstr "Mak'idh t'ujub"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:133
+msgid "Star"
+msgstr "ót"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:184
+msgid ""
+"Switch views between the \"Installed\" Activities directory and your \"home"
+"\" storage directory"
+msgstr ""
+"Ka jalk'unchij in wal xi \"punchidhits\" ti an k'elab an t'ojlabchik ani xi "
+"k'wajat tin \"home'\" juntij tamkudh"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:189
+msgid ""
+"Copy the files in the debug workplace to your \"home\" storage directory"
+msgstr ""
+"Ka K'otbiy an dhuchlab ti al an dhikal t'ojláb al an k'elab \"home\" juntij "
+"tamkudh"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:194
+msgid "Load and modify these example programs. See the help Tutorials"
+msgstr ""
+"Ka k'otbiy ani ka jalk'uy an tsalpadh t'ojláb xi eynenek ti t'iplab. Ka "
+"tsu'uw an Tutoriales xi tolmix"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:227
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:227
+msgid "Must select Journal item to Load"
+msgstr "Ka takuy jun i tsakam dhuchlab xi kwajat ti Diario abal ka T'uchpin"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:319
+msgid "I/O error:"
+msgstr "I/O uk'pidh"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:355
+msgid ""
+"Copy the selected directory or file from your \"home\" storage to the debug "
+"workplace"
+msgstr ""
+"Ka k'otbiy an k'elab dhuche' xi ch'uchbidh o an dhuchlab xi k'wajat jun "
+"tamkudh ti \"home\" ani ka wat'ba' ti jolat dhikal"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:364
+msgid "Copy the selected Activity or file to the debug workplace"
+msgstr ""
+"Ka k'otbiy xi ti t'ojláb o ti dhuchlab xi ch'uchbidh ani ka wat'ba' ti "
+"dhikal t'ojláb"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:375
+#, python-format, 
+msgid "OK to delete/overwrite %s?"
+msgstr "OK to delete/overwrite %s?"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:376
+msgid "This destination has been changed by another application"
+msgstr "Axé' xi ultaláb jalk'unenek k'ál junakej i ayindhanél"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:417
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:446
+msgid "Must select File or Directory item to Load"
+msgstr "Ka takuy Archivo o dhayáb úw abal ka k'adhiy"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:512
+msgid "Activities must be given a new and unique name"
+msgstr "An t'ojlabchik in tomnál kin ko'oy jun i ít ani junini' bijláb"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:584
+msgid "Must select a File or Folder to delete"
+msgstr "Ka takuy juni dhuchlab o jún boye' i dhuchlab abal ka paklun"
+
+# %s
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:590
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:593
+#, python-format, 
+msgid "Would you like to continue deleting %s?"
+msgstr "Would you like to continue deleting %s?"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:591
+msgid "CAUTION: You are about to DELETE a FOLDER!!"
+msgstr "ATSKWA': ¡In k'ipchal wé' abal ka pakluw jun boye' i dhuchlab!"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:594
+msgid "ABOUT TO DELETE A FILE!!"
+msgstr "Tsipkats in k'ipchal ka pakluw an dhuchlab"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:616
+#: /home/olpc/Activities/PyDebug.activity/project.py:335
+msgid "Select OK to abandon changes to "
+msgstr "Ka takuy OK abal ka jiltow an jalk'uxtaláb "
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:619
+#: /home/olpc/Activities/PyDebug.activity/project.py:338
+msgid "Changes have been made to the PyDebug work area."
+msgstr "Jal´'unchamej in jolát juntij t'ojnal a Pydebug"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:792
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:57
+msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
+msgstr ""
+"Ka t'uchiy an dhuchlab xi ch'uchbidh xi k'wajat ti Diario XO (or tar.gz) "
+"abal ka dhikan"
+
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:796
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:61
+msgid ""
+"Zip up all the files in your debug workplace and store them in the Journal"
+msgstr ""
+"Ka k'ununuy patal an dhuchlab juntij in tojnál ti dhikal ani ka dhaya' al "
+"jun i Diario"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:54
+msgid "New File"
+msgstr "Ít dhuchlab"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:64
+msgid "Open File"
+msgstr "Ka japiy an dhuchlab"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:74
+msgid "Save File"
+msgstr "Ka dhaya' an dhuchlab"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:84
+msgid "Save As"
+msgstr "Dhaya' jant'ini'"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:109
+msgid "Undo"
+msgstr "Wichk'ow"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:117
+msgid "Redo"
+msgstr "Tsabts'ejka'"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:132
+msgid "Cut"
+msgstr "Et'oy"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:161
+msgid "Find and Replace"
+msgstr "Aliy ani ka Jalk'uy"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:174
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:117
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:117
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:117
+msgid "Zoom out"
+msgstr "Tsipilmedha'"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:180
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:122
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:122
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:122
+msgid "Zoom in"
+msgstr "Puwedha'"
+
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:359
+msgid "FIND OR REPLACE"
+msgstr "ALIY ANI KA JALK'UY"
+
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:279
+#: /home/olpc/Activities/PyDebug.activity/help.py:83
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:51
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:108
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:182
+msgid "Edit"
+msgstr "Jalk'uxtaláb"
+
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:280
+#: /home/olpc/Activities/PyDebug.activity/help.py:87
+msgid "Project"
+msgstr "Tsalap nap t'ojláb"
+
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:281
+#: /home/olpc/Activities/PyDebug.activity/help.py:92
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/helptemplate.py:45
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:92
+msgid "Help"
+msgstr "Tolmix"
+
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:458
+msgid "Loading Help Page"
+msgstr "Tolmix ka k'adhba' i wal xeklek"
+
+# %s
+#: /home/olpc/Activities/PyDebug.activity/project.py:298
+#, python-format, 
+msgid "This journal item does not appear to be a zipped activity. Package:%s."
+msgstr "This journal item does not appear to be a zipped activity. Package:%s."
+
+#: /home/olpc/Activities/PyDebug.activity/help.py:196
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:191
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:240
+msgid "Back"
+msgstr "Wichiy"
+
+#: /home/olpc/Activities/PyDebug.activity/help.py:203
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:198
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:247
+msgid "Forward"
+msgstr "Ne'etsnanchij"
+
+#: /home/olpc/Activities/PyDebug.activity/help.py:210
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:205
+msgid "Home"
+msgstr "Tujtal"
+
+# %s
+#: /home/olpc/Activities/PyDebug.activity/page.py:416
+#, python-format, 
+msgid "Would you like to include %s in your project?"
+msgstr "Would you like to include %s in your project?"
+
+#: /home/olpc/Activities/PyDebug.activity/page.py:417
+msgid "This MODIFIED File is not in your package"
+msgstr "Axé' xi jalk'udh dhuchlab xant'oj ta t'iél"
+
+#: /home/olpc/Activities/PyDebug.activity/page.py:420
+msgid "Would you like to Save the file, or cancel and abandon the changes?"
+msgstr "A lé' ka dhaya' an dhuchlab o ka wichk'ow ani ka jiltoy in jalk'úl?"
+
+#: /home/olpc/Activities/PyDebug.activity/page.py:421
+msgid "This File Has Been Changed"
+msgstr "Jalk'uwamej axé' xi dhuchlab"
+
+#: /home/olpc/Activities/PyDebug.activity/page.py:448
+msgid "I/O error "
+msgstr "k'ibts'ontaláb "
+
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
+msgid "<ctrl>space"
+msgstr "(ctrl) jolát"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:46
+msgid "Pygame"
+msgstr "Pygame"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:59
+msgid "Start"
+msgstr "Tujtal"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:67
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:123
+msgid "Title"
+msgstr "Ók' bijláb"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:72
+msgid "MIME"
+msgstr "Letsbax"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:87
+msgid "Journal"
+msgstr "Chudhél dhuchlab"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:100
+msgid "Save"
+msgstr "Dhaya'"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:108
+msgid "Delete"
+msgstr "Pakuw"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:138
+msgid "Description"
+msgstr "Tejwa'medha'"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:156
+msgid "Tags"
+msgstr "Ch'uchbiy úw bijláb"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:198
+msgid "Copy File To The Journal"
+msgstr "Ka k'otbiy an dhuchlab ba juni chudhél dhuchlab"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:206
+msgid "Files"
+msgstr "Dhuchlabchik"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
+msgid "Success"
+msgstr "Alwa'taláb"
+
+# %s
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
+#, python-format, 
+msgid "%s added to Journal."
+msgstr "%s added to Journal."
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:55
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:112
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:186
+msgid "Read"
+msgstr "Ajumtaláb"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:63
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:56
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:120
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:194
+msgid "View"
+msgstr "Tsu'uw"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Text_to_Speech/gst_choir_example.py:34
+msgid "Hello, World!"
+msgstr "Nenek, puwél tsabál"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
+msgid "Off-line"
+msgstr "Eléb ti kits'lab"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
+msgid "Share, or invite someone."
+msgstr "Ka dheyna',o ka kaniy jita'"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
+msgid "On-line"
+msgstr "Ti al an tsólóm"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
+msgid "Connected"
+msgstr "Polts'odh"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:125
+msgid "joined the chat"
+msgstr "Polts'odh ti dhucht'ilom"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:136
+msgid "left the chat"
+msgstr "K'watab ti dhucht'ilom"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:147
+msgid "is here"
+msgstr "Tejé' k'wajat"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
+msgid "Failure"
+msgstr "K'ibeltaláb"
+
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
+msgid "Error getting document from tube"
+msgstr ""
+"Uk'pintaláb tam ti bats'uwat an dhuchlab xi junax belal ti kwechodh béljá'"
+
+#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:54
+msgid "trace"
+msgstr "Ch'uchbixtaláb"
+
+#: /home/olpc/Activities/PyDebug.activity/bin/continue_debug.py:126
+msgid ""
+"\n"
+"\n"
+"There is no program loaded into the Work Area. \n"
+"Please use the \"Project\" tab so set up the debug session\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Yab wa'ats i tsalpadh t'ojláb xi k'adhbax ti xe'tsintal an T'ojláb.Ka "
+"ni'i'iy \"Project\" abal ka t'ojojon an dhikal t'ojláb\n"
+"\n"
