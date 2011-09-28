@@ -2,18 +2,19 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-20 12:48+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2011-04-12 06:15+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ta\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Translate Toolkit 1.7.0\n"
 
 #: activity/activity.info:2
@@ -30,7 +31,7 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
 #: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
 msgid "Size"
-msgstr ""
+msgstr "அளவு"
 
 #: /home/olpc/Activities/PyDebug.activity/filetree.py:32
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
@@ -62,13 +63,13 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:62
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:217
 msgid "Stop"
-msgstr ""
+msgstr "நிறுத்து"
 
 #: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:212
 #: /home/olpc/Activities/PyDebug.activity/help.py:79
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:87
 msgid "Activity"
-msgstr ""
+msgstr "செயற்பாடு"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:54
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:64
@@ -78,12 +79,12 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:62
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:140
 msgid "Copy"
-msgstr ""
+msgstr "பிரதி செய்"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:68
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:148
 msgid "Paste"
-msgstr ""
+msgstr "ஒட்டு"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:75
 msgid "Open New Tab"
@@ -99,7 +100,7 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:132
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:132
 msgid "Fullscreen"
-msgstr ""
+msgstr "முழுத்திரை"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:128
 msgid ""
@@ -136,8 +137,9 @@ msgid "Diamond"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:133
+#, fuzzy
 msgid "Star"
-msgstr ""
+msgstr "ஆரம்பி"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:184
 msgid ""
@@ -244,15 +246,15 @@ msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:84
 msgid "Save As"
-msgstr ""
+msgstr "மாற்றி சேமி"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:109
 msgid "Undo"
-msgstr ""
+msgstr "செயலை ரத்து செய்"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:117
 msgid "Redo"
-msgstr ""
+msgstr "மீழ் செய்"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:132
 msgid "Cut"
@@ -267,14 +269,14 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:117
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:117
 msgid "Zoom out"
-msgstr ""
+msgstr "சிறிதாக்கிக் காட்டு"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:180
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:122
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:122
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:122
 msgid "Zoom in"
-msgstr ""
+msgstr "பெரிதாக்கிக் காட்டு"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:359
 msgid "FIND OR REPLACE"
@@ -286,7 +288,7 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:108
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:182
 msgid "Edit"
-msgstr ""
+msgstr "திருத்து"
 
 #: /home/olpc/Activities/PyDebug.activity/pydebug.py:280
 #: /home/olpc/Activities/PyDebug.activity/help.py:87
@@ -298,7 +300,7 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/helptemplate.py:45
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:92
 msgid "Help"
-msgstr ""
+msgstr "உதவி"
 
 #: /home/olpc/Activities/PyDebug.activity/pydebug.py:458
 msgid "Loading Help Page"
@@ -316,7 +318,7 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:36
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:240
 msgid "Back"
-msgstr ""
+msgstr "பின்"
 
 #: /home/olpc/Activities/PyDebug.activity/help.py:203
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:198
@@ -325,7 +327,7 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:42
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:247
 msgid "Forward"
-msgstr ""
+msgstr "முன்னோக்கி அனுப்பு"
 
 #: /home/olpc/Activities/PyDebug.activity/help.py:210
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:205
@@ -363,7 +365,7 @@ msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:59
 msgid "Start"
-msgstr ""
+msgstr "ஆரம்பி"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:67
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:123
@@ -376,15 +378,15 @@ msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:87
 msgid "Journal"
-msgstr ""
+msgstr "சஞ்சிகை"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:100
 msgid "Save"
-msgstr ""
+msgstr "சேமி"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:108
 msgid "Delete"
-msgstr ""
+msgstr "அழித்தல்"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:138
 msgid "Description"
@@ -422,7 +424,7 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:120
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:194
 msgid "View"
-msgstr ""
+msgstr "பார்வை"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Text_to_Speech/gst_choir_example.py:34
 msgid "Hello, World!"
