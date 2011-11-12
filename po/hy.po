@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-20 12:48+0000\n"
-"PO-Revision-Date: 2011-11-12 19:19+0200\n"
+"PO-Revision-Date: 2011-11-12 19:20+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: hy\n"
@@ -188,7 +188,7 @@ msgstr "Կրկնօրինակել ընտրված Գործունեությունը
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:375
 #, python-format
 msgid "OK to delete/overwrite %s?"
-msgstr " «ընդունել»` ջնջել/վերագրանցելու համար %s"
+msgstr "«ընդունել»` ջնջել/վերագրանցելու համար %s"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:376
 msgid "This destination has been changed by another application"
