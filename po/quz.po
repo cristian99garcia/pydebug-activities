@@ -1,0 +1,583 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-12-20 12:48+0000\n"
+"PO-Revision-Date: 2011-11-26 09:13+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: quz\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n % 10 == 1 && n % 100 != 11) ? 0 : 1;\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#  "Depurador Python"
+#: activity/activity.info:2
+msgid "PyDebug"
+msgstr ""
+
+#  "Nombre"
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Name"
+msgstr ""
+
+#  "Tamaño"
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Size"
+msgstr ""
+
+#  "Último cambio"
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Last Changed"
+msgstr ""
+
+#  "Seguimiento:"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:75
+msgid "Traceback:"
+msgstr ""
+
+#  "Texto plano"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:76
+msgid "Plain"
+msgstr ""
+
+#  "Contexto"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:77
+msgid "Context"
+msgstr ""
+
+#  "Verboso"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:78
+msgid "Verbose"
+msgstr ""
+
+#  "Parar"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:107
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:77
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:186
+#: /home/olpc/Activities/PyDebug.activity/help.py:222
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:37
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:62
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:217
+msgid "Stop"
+msgstr "Sayachiy"
+
+#  "Actividad"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:212
+#: /home/olpc/Activities/PyDebug.activity/help.py:79
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:87
+msgid "Activity"
+msgstr ""
+
+#  "Comenzar a depurar"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:54
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:64
+msgid "Start Debugging"
+msgstr ""
+
+#  "Copiar"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:62
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:140
+msgid "Copy"
+msgstr "Kikinchay"
+
+#  "Pegar"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:68
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:148
+msgid "Paste"
+msgstr "K'askachiy"
+
+#  "Abrir nueva pestaña"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:75
+msgid "Open New Tab"
+msgstr ""
+
+#  "Cerrar pestaña"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:82
+msgid "Close Tab"
+msgstr ""
+
+#  "Pantalla completa"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:89
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:132
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:97
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:132
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:132
+msgid "Fullscreen"
+msgstr "Hunt'asqa pantalla"
+
+#  "\n"
+#  "\n"
+#  " Use HELP en el intérprete de Python para aprender a DEPURAR su programa.\n"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:128
+msgid ""
+"\n"
+"\n"
+" Use the HELP in the Ipython interpreter to learn to DEBUG your program.\n"
+msgstr ""
+
+#  "ir"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:138
+#: /home/olpc/Activities/PyDebug.activity/terminal.py:53
+#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:58
+msgid "go"
+msgstr ""
+
+#  "Este no es el archivo de una actividad"
+#: /home/olpc/Activities/PyDebug.activity/util.py:51
+msgid "There is no Activity file"
+msgstr ""
+
+#  "%s Comando no devolvió cero\n"
+#: /home/olpc/Activities/PyDebug.activity/util.py:159
+#, python-format
+msgid "%s Command returned non zero\n"
+msgstr ""
+
+#  "Círculo"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:130
+msgid "Circle"
+msgstr ""
+
+#  "Cuadrado"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:131
+msgid "Square"
+msgstr ""
+
+#  "Diamante"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:132
+msgid "Diamond"
+msgstr ""
+
+#  "Estrella"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:133
+msgid "Star"
+msgstr ""
+
+#  "Alterna la vista entre el directorio de las actividades \"instaladas\" y tu "
+#  "directorio \"home\""
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:184
+msgid ""
+"Switch views between the \"Installed\" Activities directory and your \"home"
+"\" storage directory"
+msgstr ""
+
+#  "Copia los archivos en el lugar de trabajo de depuración hacia su directorio "
+#  "\"home\""
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:189
+msgid ""
+"Copy the files in the debug workplace to your \"home\" storage directory"
+msgstr ""
+
+#  "Copia y modifica estos programas de ejemplo. Ver los Tutoriales de ayuda"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:194
+msgid "Load and modify these example programs. See the help Tutorials"
+msgstr ""
+
+#  "Debe seleccionar un artículo del Diario para Cargar"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:227
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:227
+msgid "Must select Journal item to Load"
+msgstr ""
+
+#  "I/O error:"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:319
+msgid "I/O error:"
+msgstr ""
+
+#  "Copia el directorio seleccionado o el archivo de tu carpeta \"home\" al "
+#  "espacio de depuración"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:355
+msgid ""
+"Copy the selected directory or file from your \"home\" storage to the debug "
+"workplace"
+msgstr ""
+
+#  "Copia la actividad seleccionada o el archivo hacia el espacio de depuración"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:364
+msgid "Copy the selected Activity or file to the debug workplace"
+msgstr ""
+
+#  "¿Permitir el borrado/sobreescrito %s?"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:375
+#, python-format
+msgid "OK to delete/overwrite %s?"
+msgstr ""
+
+#  "Este destino ha sido cambiado por otra aplicación"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:376
+msgid "This destination has been changed by another application"
+msgstr ""
+
+#  "Debe seleccionar un Archivo o Directorio para Cargar"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:417
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:446
+msgid "Must select File or Directory item to Load"
+msgstr ""
+
+#  "Las actividades deben tener un nombre único"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:512
+msgid "Activities must be given a new and unique name"
+msgstr ""
+
+#  "Debe seleccionar un Archivo o Carpeta para borrar"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:584
+msgid "Must select a File or Folder to delete"
+msgstr ""
+
+#  "Desea continuar borrando %s?"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:590
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:593
+#, python-format
+msgid "Would you like to continue deleting %s?"
+msgstr ""
+
+#  "ATENCIÓN: Usted está a punto de BORRAR una CARPETA!!"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:591
+msgid "CAUTION: You are about to DELETE a FOLDER!!"
+msgstr ""
+
+#  "A PUNTO DE BORRAR UN ARCHIVO!!"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:594
+msgid "ABOUT TO DELETE A FILE!!"
+msgstr ""
+
+#  "Seleccione OK para descartar los cambios "
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:616
+#: /home/olpc/Activities/PyDebug.activity/project.py:335
+msgid "Select OK to abandon changes to "
+msgstr ""
+
+#  "Se han hecho cambios al área de trabajo del Depurador Python."
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:619
+#: /home/olpc/Activities/PyDebug.activity/project.py:338
+msgid "Changes have been made to the PyDebug work area."
+msgstr ""
+
+#  "Carga del diario un archivo XO (o tar.gz) para el área de trabajo del "
+#  "depurador"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:792
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:57
+msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
+msgstr ""
+
+#  "Zipea todos los archivos de su lugar de trabajo de depuración y lo guarda el "
+#  "Diario"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:796
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:61
+msgid ""
+"Zip up all the files in your debug workplace and store them in the Journal"
+msgstr ""
+
+#  "Archivo Nuevo"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:54
+msgid "New File"
+msgstr ""
+
+#  "Abrir Archivo"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:64
+msgid "Open File"
+msgstr ""
+
+#  "Guardar Archivo"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:74
+msgid "Save File"
+msgstr ""
+
+#  "Guardar como"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:84
+msgid "Save As"
+msgstr ""
+
+#  "Deshacer"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:109
+msgid "Undo"
+msgstr ""
+
+#  "Rehacer"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:117
+msgid "Redo"
+msgstr ""
+
+#  "Cortar"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:132
+msgid "Cut"
+msgstr ""
+
+#  "Buscar y Reemplazar"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:161
+msgid "Find and Replace"
+msgstr ""
+
+#  "Reducir"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:174
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:117
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:117
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:117
+msgid "Zoom out"
+msgstr "Kharuykachaspa huch'uyachiq"
+
+#  "Ampliar"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:180
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:122
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:122
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:122
+msgid "Zoom in"
+msgstr "Achuykachaspa hatunyachiq"
+
+#  "Buscar o Reemplazar"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:359
+msgid "FIND OR REPLACE"
+msgstr ""
+
+#  "Editar"
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:279
+#: /home/olpc/Activities/PyDebug.activity/help.py:83
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:51
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:108
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:182
+msgid "Edit"
+msgstr "Allinchay"
+
+#  "Proyecto"
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:280
+#: /home/olpc/Activities/PyDebug.activity/help.py:87
+msgid "Project"
+msgstr ""
+
+#  "Ayuda"
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:281
+#: /home/olpc/Activities/PyDebug.activity/help.py:92
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/helptemplate.py:45
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:92
+msgid "Help"
+msgstr "Yanapay"
+
+#  "Cargando la Página de Ayuda"
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:458
+msgid "Loading Help Page"
+msgstr ""
+
+#  "Esta entrada del diario no parece ser una actividad zipeada. Paquete:%s."
+#: /home/olpc/Activities/PyDebug.activity/project.py:298
+#, python-format
+msgid "This journal item does not appear to be a zipped activity. Package:%s."
+msgstr ""
+
+#  "Volver"
+#: /home/olpc/Activities/PyDebug.activity/help.py:196
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:191
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:240
+msgid "Back"
+msgstr "Kutichiy"
+
+#  "Avanzar"
+#: /home/olpc/Activities/PyDebug.activity/help.py:203
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:198
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:247
+msgid "Forward"
+msgstr ""
+
+#  "Hogar"
+#: /home/olpc/Activities/PyDebug.activity/help.py:210
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:205
+msgid "Home"
+msgstr ""
+
+#  "¿Desea incluir %s en su proyecto?"
+#: /home/olpc/Activities/PyDebug.activity/page.py:416
+#, python-format
+msgid "Would you like to include %s in your project?"
+msgstr ""
+
+#  "Este Archivo MODIFICADO no está en su paquete"
+#: /home/olpc/Activities/PyDebug.activity/page.py:417
+msgid "This MODIFIED File is not in your package"
+msgstr ""
+
+#  "Desea Guardar el archivo, o Cancelar y descartar los cambios?"
+#: /home/olpc/Activities/PyDebug.activity/page.py:420
+msgid "Would you like to Save the file, or cancel and abandon the changes?"
+msgstr ""
+
+#  "Este archivo ha cambiado"
+#: /home/olpc/Activities/PyDebug.activity/page.py:421
+msgid "This File Has Been Changed"
+msgstr ""
+
+#  "E/S error "
+#: /home/olpc/Activities/PyDebug.activity/page.py:448
+msgid "I/O error "
+msgstr ""
+
+#  "<ctrl>espacio"
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
+msgid "<ctrl>space"
+msgstr ""
+
+#  "Pygame"
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:46
+msgid "Pygame"
+msgstr ""
+
+#  "Comenzar"
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:59
+msgid "Start"
+msgstr "Qallariy"
+
+#  "Título"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:67
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:123
+msgid "Title"
+msgstr ""
+
+#  "MIME"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:72
+msgid "MIME"
+msgstr ""
+
+#  "Diario"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:87
+msgid "Journal"
+msgstr ""
+
+#  "Guardar"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:100
+msgid "Save"
+msgstr ""
+
+#  "Borrar"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:108
+msgid "Delete"
+msgstr "Pichay"
+
+#  "Descripción"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:138
+msgid "Description"
+msgstr ""
+
+#  "Etiquetas"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:156
+msgid "Tags"
+msgstr "Sutichaq"
+
+#  "Copiar Archivo al Diario"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:198
+msgid "Copy File To The Journal"
+msgstr ""
+
+#  "Archivos"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:206
+msgid "Files"
+msgstr ""
+
+#  "Éxito"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
+msgid "Success"
+msgstr ""
+
+#  "%s fue agregado al Diario."
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
+#, python-format
+msgid "%s added to Journal."
+msgstr ""
+
+#  "Leer"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:55
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:112
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:186
+msgid "Read"
+msgstr ""
+
+#  "Ver"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:63
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:56
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:120
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:194
+msgid "View"
+msgstr "Qhaway"
+
+#  "Hola, Mundo!"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Text_to_Speech/gst_choir_example.py:34
+msgid "Hello, World!"
+msgstr ""
+
+#  "Fuera de línea"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
+msgid "Off-line"
+msgstr ""
+
+#  "Compartir, o invitar a alguien."
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
+msgid "Share, or invite someone."
+msgstr ""
+
+#  "En línea"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
+msgid "On-line"
+msgstr ""
+
+#  "Conectado"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
+msgid "Connected"
+msgstr "T'inkisqa"
+
+#  "se ha unido al chat"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:125
+msgid "joined the chat"
+msgstr ""
+
+#  "a abandonado el chat"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:136
+msgid "left the chat"
+msgstr ""
+
+#  "está aquí"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:147
+msgid "is here"
+msgstr ""
+
+#  "Fracaso"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
+msgid "Failure"
+msgstr ""
+
+#  "Error obteniendo el documento desde el tubo"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
+msgid "Error getting document from tube"
+msgstr ""
+
+#  "rastro"
+#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:54
+msgid "trace"
+msgstr ""
+
+#  "\n"
+#  "\n"
+#  "No hay ningún programa cargado en el Área de Trabajo. \n"
+#  "Por favor use la pestaña \"Proyecto\" para setear una sesión del depurador\n"
+#  "\n"
+#: /home/olpc/Activities/PyDebug.activity/bin/continue_debug.py:126
+msgid ""
+"\n"
+"\n"
+"There is no program loaded into the Work Area. \n"
+"Please use the \"Project\" tab so set up the debug session\n"
+"\n"
+msgstr ""
