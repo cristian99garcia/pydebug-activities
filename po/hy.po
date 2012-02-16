@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-20 12:48+0000\n"
-"PO-Revision-Date: 2011-12-24 04:50+0200\n"
+"PO-Revision-Date: 2012-01-24 02:24+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: hy\n"
@@ -217,7 +217,7 @@ msgstr "Զգուշացում` Դուք պատրաստվում եք ջնջել Թ
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:594
 msgid "ABOUT TO DELETE A FILE!!"
-msgstr "ՈւՐ ՈՐ Է  ՋՆՋՎԵԼՈՒ Է ԹՂԹԱՊԱՆԱԿԸ"
+msgstr "ՈւՐ ՈՐ Է ՋՆՋՎԵԼՈՒ Է ԹՂԹԱՊԱՆԱԿԸ"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:616
 #: /home/olpc/Activities/PyDebug.activity/project.py:335
