@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-20 12:48+0000\n"
-"PO-Revision-Date: 2012-03-14 10:58+0200\n"
-"Last-Translator: Meechai <malaku38@hotmail.com>\n"
+"PO-Revision-Date: 2012-03-16 05:40+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: th\n"
 "MIME-Version: 1.0\n"
@@ -173,7 +173,7 @@ msgid ""
 "workplace"
 msgstr ""
 "คัดลอกไดเรกทอรี่ที่เลือกหรือไฟล์จากศูนย์กลางของคุณแล้วมาเก็บค่าในพื้นที่การแ"
-"ก้จุดบกพร่อง "
+"ก้จุดบกพร่อง"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:364
 msgid "Copy the selected Activity or file to the debug workplace"
@@ -358,7 +358,7 @@ msgstr "ไฟล์นี้ได้ถูกเปลี่ยนแปลง
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:448
 msgid "I/O error "
-msgstr "ข้อผิดพลาดทาง I/O"
+msgstr "ข้อผิดพลาดทาง I/O "
 
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
 msgid "<ctrl>space"
