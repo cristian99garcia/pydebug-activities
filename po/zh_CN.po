@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-20 12:48+0000\n"
-"PO-Revision-Date: 2012-03-20 05:27+0200\n"
-"Last-Translator: lite <litekok@gmail.com>\n"
+"PO-Revision-Date: 2012-03-22 01:10+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: zh_CN\n"
 "MIME-Version: 1.0\n"
@@ -216,7 +216,7 @@ msgstr "要删除一个文件！！"
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:616
 #: /home/olpc/Activities/PyDebug.activity/project.py:335
 msgid "Select OK to abandon changes to "
-msgstr "选择“确定”放弃更改"
+msgstr "选择“确定”放弃更改 "
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:619
 #: /home/olpc/Activities/PyDebug.activity/project.py:338
@@ -355,7 +355,7 @@ msgstr "文件已更改"
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:448
 msgid "I/O error "
-msgstr "I/O 错误"
+msgstr "I/O 错误 "
 
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
 msgid "<ctrl>space"
