@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """Analysis of text input into executable blocks.
 
 The main class in this module, :class:`InputSplitter`, is designed to break
