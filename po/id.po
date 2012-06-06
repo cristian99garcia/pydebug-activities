@@ -2,19 +2,20 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-20 12:48+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2012-06-06 03:18+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: activity/activity.info:2
 msgid "PyDebug"
@@ -24,13 +25,14 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
 #: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 #: /home/olpc/Activities/PyDebug.activity/filetree.py:32
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
 #: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+#, fuzzy
 msgid "Size"
-msgstr ""
+msgstr "Ukuran"
 
 #: /home/olpc/Activities/PyDebug.activity/filetree.py:32
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
@@ -61,14 +63,16 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:37
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:62
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:217
+#, fuzzy
 msgid "Stop"
-msgstr ""
+msgstr "Berhenti"
 
 #: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:212
 #: /home/olpc/Activities/PyDebug.activity/help.py:79
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:87
+#, fuzzy
 msgid "Activity"
-msgstr ""
+msgstr "Aktivitas"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:54
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:64
@@ -77,29 +81,33 @@ msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:62
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:140
+#, fuzzy
 msgid "Copy"
-msgstr ""
+msgstr "Salin"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:68
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:148
+#, fuzzy
 msgid "Paste"
-msgstr ""
+msgstr "Tempel"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:75
 msgid "Open New Tab"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:82
+#, fuzzy
 msgid "Close Tab"
-msgstr ""
+msgstr "Tutup Tab"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:89
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:132
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:97
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:132
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:132
+#, fuzzy
 msgid "Fullscreen"
-msgstr ""
+msgstr "Layar Penuh"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:128
 msgid ""
@@ -124,16 +132,19 @@ msgid "%s Command returned non zero\n"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:130
+#, fuzzy
 msgid "Circle"
-msgstr ""
+msgstr "Lingkaran"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:131
+#, fuzzy
 msgid "Square"
-msgstr ""
+msgstr "Persegi"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:132
+#, fuzzy
 msgid "Diamond"
-msgstr ""
+msgstr "Berlian"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:133
 msgid "Star"
@@ -160,8 +171,9 @@ msgid "Must select Journal item to Load"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:319
+#, fuzzy
 msgid "I/O error:"
-msgstr ""
+msgstr "Galat I/O:"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:355
 msgid ""
@@ -235,16 +247,19 @@ msgid "New File"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:64
+#, fuzzy
 msgid "Open File"
-msgstr ""
+msgstr "Buka Berkas"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:74
+#, fuzzy
 msgid "Save File"
-msgstr ""
+msgstr "Simpan Berkas"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:84
+#, fuzzy
 msgid "Save As"
-msgstr ""
+msgstr "Simpan Sebagai"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:109
 msgid "Undo"
@@ -255,8 +270,9 @@ msgid "Redo"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:132
+#, fuzzy
 msgid "Cut"
-msgstr ""
+msgstr "Potong"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:161
 msgid "Find and Replace"
@@ -266,15 +282,17 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:117
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:117
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:117
+#, fuzzy
 msgid "Zoom out"
-msgstr ""
+msgstr "Perkecil"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:180
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:122
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:122
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:122
+#, fuzzy
 msgid "Zoom in"
-msgstr ""
+msgstr "Perbesar"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:359
 msgid "FIND OR REPLACE"
@@ -286,19 +304,21 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:108
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:182
 msgid "Edit"
-msgstr ""
+msgstr "Sunting"
 
 #: /home/olpc/Activities/PyDebug.activity/pydebug.py:280
 #: /home/olpc/Activities/PyDebug.activity/help.py:87
+#, fuzzy
 msgid "Project"
-msgstr ""
+msgstr "Proyek"
 
 #: /home/olpc/Activities/PyDebug.activity/pydebug.py:281
 #: /home/olpc/Activities/PyDebug.activity/help.py:92
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/helptemplate.py:45
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:92
+#, fuzzy
 msgid "Help"
-msgstr ""
+msgstr "Bantuan"
 
 #: /home/olpc/Activities/PyDebug.activity/pydebug.py:458
 msgid "Loading Help Page"
@@ -350,8 +370,9 @@ msgid "This File Has Been Changed"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:448
+#, fuzzy
 msgid "I/O error "
-msgstr ""
+msgstr "Galat I/O: "
 
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
 msgid "<ctrl>space"
@@ -367,28 +388,32 @@ msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:67
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:123
+#, fuzzy
 msgid "Title"
-msgstr ""
+msgstr "Judul"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:72
 msgid "MIME"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:87
+#, fuzzy
 msgid "Journal"
-msgstr ""
+msgstr "Jurnal"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:100
 msgid "Save"
-msgstr ""
+msgstr "Simpan"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:108
+#, fuzzy
 msgid "Delete"
-msgstr ""
+msgstr "Hapus"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:138
+#, fuzzy
 msgid "Description"
-msgstr ""
+msgstr "Keterangan"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:156
 msgid "Tags"
@@ -399,8 +424,9 @@ msgid "Copy File To The Journal"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:206
+#, fuzzy
 msgid "Files"
-msgstr ""
+msgstr "Berkas"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
 msgid "Success"
@@ -414,15 +440,17 @@ msgstr ""
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:55
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:112
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:186
+#, fuzzy
 msgid "Read"
-msgstr ""
+msgstr "Baca"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:63
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:56
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:120
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:194
+#, fuzzy
 msgid "View"
-msgstr ""
+msgstr "Tampilan"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Text_to_Speech/gst_choir_example.py:34
 msgid "Hello, World!"
@@ -441,8 +469,9 @@ msgid "On-line"
 msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
+#, fuzzy
 msgid "Connected"
-msgstr ""
+msgstr "Terhubung"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:125
 msgid "joined the chat"
@@ -458,8 +487,9 @@ msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
+#, fuzzy
 msgid "Failure"
-msgstr ""
+msgstr "Gagal"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
