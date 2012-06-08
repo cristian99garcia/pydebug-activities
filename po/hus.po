@@ -7,15 +7,15 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-20 12:48+0000\n"
-"PO-Revision-Date: 2011-08-19 17:02+0200\n"
-"Last-Translator:  <ieliiptenek@gmail.com>\n"
+"PO-Revision-Date: 2011-09-12 19:42+0200\n"
+"Last-Translator: <saulleoart@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: hus\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Pootle 2.0.1\n"
+"X-Generator: Translate Toolkit 1.7.0\n"
 
 #: activity/activity.info:2
 msgid "PyDebug"
@@ -41,7 +41,7 @@ msgstr "Taltaláb jalk'úl"
 
 #: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:75
 msgid "Traceback:"
-msgstr "Bodhondhaxtaláb"
+msgstr "Bodhondhaxtaláb:"
 
 #: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:76
 msgid "Plain"
@@ -111,7 +111,7 @@ msgstr ""
 "\n"
 "\n"
 " Ka ayindha' HELP xi in nits'biyal an Python abal ka ejtow ka t'okedha' an "
-"tsalpadh t'ojláb\n"
+"tsalpadh t'ojláb.\n"
 
 #: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:138
 #: /home/olpc/Activities/PyDebug.activity/terminal.py:53
@@ -124,17 +124,18 @@ msgid "There is no Activity file"
 msgstr "Yab wa'ats i dhuchlab ti t'ojláb"
 
 #: /home/olpc/Activities/PyDebug.activity/util.py:159
-#, python-format, 
+#, python-format
+#, python-format,
 msgid "%s Command returned non zero\n"
 msgstr "%s An abatnom yab in wichba' an yab jant'oj\n"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:130
 msgid "Circle"
-msgstr "kwechodh"
+msgstr "Kwechodh"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:131
 msgid "Square"
-msgstr "tsé' junat walté'"
+msgstr "Tsé' junat walté'"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:132
 msgid "Diamond"
@@ -172,7 +173,7 @@ msgstr "Ka takuy jun i tsakam dhuchlab xi kwajat ti Diario abal ka T'uchpin"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:319
 msgid "I/O error:"
-msgstr "I/O uk'pidh"
+msgstr "I/O uk'pidh:"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:355
 msgid ""
@@ -189,9 +190,10 @@ msgstr ""
 "dhikal t'ojláb"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:375
-#, python-format, 
+#, python-format
+#, python-format,
 msgid "OK to delete/overwrite %s?"
-msgstr "OK to delete/overwrite %s?"
+msgstr "¿ALWA' ku pakuw/tsáb dhucha' %s?"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:376
 msgid "This destination has been changed by another application"
@@ -213,9 +215,10 @@ msgstr "Ka takuy juni dhuchlab o jún boye' i dhuchlab abal ka paklun"
 # %s
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:590
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:593
-#, python-format, 
+#, python-format
+#, python-format,
 msgid "Would you like to continue deleting %s?"
-msgstr "Would you like to continue deleting %s?"
+msgstr "¿A le' ka ne'etsnanchij tit pakul %s?"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:591
 msgid "CAUTION: You are about to DELETE a FOLDER!!"
@@ -233,7 +236,7 @@ msgstr "Ka takuy OK abal ka jiltow an jalk'uxtaláb "
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:619
 #: /home/olpc/Activities/PyDebug.activity/project.py:338
 msgid "Changes have been made to the PyDebug work area."
-msgstr "Jal´'unchamej in jolát juntij t'ojnal a Pydebug"
+msgstr "Jal´'unchamej in jolát juntij t'ojnal a PyDebug."
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:792
 #: /home/olpc/Activities/PyDebug.activity/datastoretree.py:57
@@ -326,9 +329,12 @@ msgstr "Tolmix ka k'adhba' i wal xeklek"
 
 # %s
 #: /home/olpc/Activities/PyDebug.activity/project.py:298
-#, python-format, 
+#, python-format
+#, python-format,
 msgid "This journal item does not appear to be a zipped activity. Package:%s."
-msgstr "This journal item does not appear to be a zipped activity. Package:%s."
+msgstr ""
+"Axe' xi chudhel t'ojlab yab tejwa' max pel jun i dhey t'ojlab zipeada. "
+"Paquete.%s."
 
 #: /home/olpc/Activities/PyDebug.activity/help.py:196
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:191
@@ -355,9 +361,10 @@ msgstr "Tujtal"
 
 # %s
 #: /home/olpc/Activities/PyDebug.activity/page.py:416
-#, python-format, 
+#, python-format
+#, python-format,
 msgid "Would you like to include %s in your project?"
-msgstr "Would you like to include %s in your project?"
+msgstr "¿A le' ka punk'uy %s ti a tsalápnadh t'ojlábil?"
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:417
 msgid "This MODIFIED File is not in your package"
@@ -373,7 +380,7 @@ msgstr "Jalk'uwamej axé' xi dhuchlab"
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:448
 msgid "I/O error "
-msgstr "k'ibts'ontaláb "
+msgstr "K'ibts'ontaláb "
 
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
 msgid "<ctrl>space"
@@ -430,9 +437,10 @@ msgstr "Alwa'taláb"
 
 # %s
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
-#, python-format, 
+#, python-format
+#, python-format,
 msgid "%s added to Journal."
-msgstr "%s added to Journal."
+msgstr "%s punk'uyat ti Chudhél dhuchlab."
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:55
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:112
@@ -457,7 +465,7 @@ msgstr "Eléb ti kits'lab"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
 msgid "Share, or invite someone."
-msgstr "Ka dheyna',o ka kaniy jita'"
+msgstr "Ka dheyna',o ka kaniy jita'."
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
 msgid "On-line"
@@ -469,15 +477,15 @@ msgstr "Polts'odh"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:125
 msgid "joined the chat"
-msgstr "Polts'odh ti dhucht'ilom"
+msgstr "polts'odh ti dhucht'ilom"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:136
 msgid "left the chat"
-msgstr "K'watab ti dhucht'ilom"
+msgstr "k'watab ti dhucht'ilom"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:147
 msgid "is here"
-msgstr "Tejé' k'wajat"
+msgstr "tejé' k'wajat"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
@@ -492,7 +500,7 @@ msgstr ""
 
 #: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:54
 msgid "trace"
-msgstr "Ch'uchbixtaláb"
+msgstr "ch'uchbixtaláb"
 
 #: /home/olpc/Activities/PyDebug.activity/bin/continue_debug.py:126
 msgid ""
