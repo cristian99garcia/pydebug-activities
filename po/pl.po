@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-20 12:48+0000\n"
+"POT-Creation-Date: 2013-03-24 22:15+0200\n"
 "PO-Revision-Date: 2012-02-22 07:57+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,479 +18,330 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "PyDebug"
 msgstr "Debuger Pythona"
 
-#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
-msgid "Name"
-msgstr "Nazwisko"
+#. TRANS: "summary" option from activity.info file
+msgid "PyDebug"
+msgstr "Debuger Pythona"
 
-#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
-msgid "Size"
-msgstr "Rozmiar"
+#. TRANS: "description" option from activity.info file
+msgid "PyDebug"
+msgstr "Debuger Pythona"
 
-#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
-msgid "Last Changed"
-msgstr "Ostatnio zmienione"
+#~ msgid "Name"
+#~ msgstr "Nazwisko"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:75
-msgid "Traceback:"
-msgstr "Śledzenie:"
+#~ msgid "Size"
+#~ msgstr "Rozmiar"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:76
-msgid "Plain"
-msgstr "Zwykły"
+#~ msgid "Last Changed"
+#~ msgstr "Ostatnio zmienione"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:77
-msgid "Context"
-msgstr "Kontekst"
+#~ msgid "Traceback:"
+#~ msgstr "Śledzenie:"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:78
-msgid "Verbose"
-msgstr "Gadatliwy"
+#~ msgid "Plain"
+#~ msgstr "Zwykły"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:107
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:77
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:186
-#: /home/olpc/Activities/PyDebug.activity/help.py:222
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:37
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:62
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:217
-msgid "Stop"
-msgstr "Stop"
+#~ msgid "Context"
+#~ msgstr "Kontekst"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:212
-#: /home/olpc/Activities/PyDebug.activity/help.py:79
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:87
-msgid "Activity"
-msgstr "Aktywność"
+#~ msgid "Verbose"
+#~ msgstr "Gadatliwy"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:54
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:64
-msgid "Start Debugging"
-msgstr "Rozpocznij debugowanie"
+#~ msgid "Stop"
+#~ msgstr "Stop"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:62
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:140
-msgid "Copy"
-msgstr "Kopiuj"
+#~ msgid "Activity"
+#~ msgstr "Aktywność"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:68
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:148
-msgid "Paste"
-msgstr "Wklej"
+#~ msgid "Start Debugging"
+#~ msgstr "Rozpocznij debugowanie"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:75
-msgid "Open New Tab"
-msgstr "Otwórz nową zakładkę"
+#~ msgid "Copy"
+#~ msgstr "Kopiuj"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:82
-msgid "Close Tab"
-msgstr "Zamknij zakładkę"
+#~ msgid "Paste"
+#~ msgstr "Wklej"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:89
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:132
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:97
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:132
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:132
-msgid "Fullscreen"
-msgstr "Pełny ekran"
+#~ msgid "Open New Tab"
+#~ msgstr "Otwórz nową zakładkę"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:128
-msgid ""
-"\n"
-"\n"
-" Use the HELP in the Ipython interpreter to learn to DEBUG your program.\n"
-msgstr ""
-"\n"
-"\n"
-" Użyj POMOCY w czytniku lpython żeby nauczyć się DEBUGOWAĆ swój program.\n"
+#~ msgid "Close Tab"
+#~ msgstr "Zamknij zakładkę"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:138
-#: /home/olpc/Activities/PyDebug.activity/terminal.py:53
-#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:58
-msgid "go"
-msgstr "idź"
+#~ msgid "Fullscreen"
+#~ msgstr "Pełny ekran"
 
-#: /home/olpc/Activities/PyDebug.activity/util.py:51
-msgid "There is no Activity file"
-msgstr "Nie ma pliku Aktywności"
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ " Use the HELP in the Ipython interpreter to learn to DEBUG your program.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ " Użyj POMOCY w czytniku lpython żeby nauczyć się DEBUGOWAĆ swój program.\n"
 
-#: /home/olpc/Activities/PyDebug.activity/util.py:159
+#~ msgid "go"
+#~ msgstr "idź"
+
+#~ msgid "There is no Activity file"
+#~ msgstr "Nie ma pliku Aktywności"
+
 #, python-format
-msgid "%s Command returned non zero\n"
-msgstr "%s Komenda zwróciła nie zero\n"
+#~ msgid "%s Command returned non zero\n"
+#~ msgstr "%s Komenda zwróciła nie zero\n"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:130
-msgid "Circle"
-msgstr "Okrąg"
+#~ msgid "Circle"
+#~ msgstr "Okrąg"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:131
-msgid "Square"
-msgstr "Kwadrat"
+#~ msgid "Square"
+#~ msgstr "Kwadrat"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:132
-msgid "Diamond"
-msgstr "Diament"
+#~ msgid "Diamond"
+#~ msgstr "Diament"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:133
-msgid "Star"
-msgstr "Gwiazda"
+#~ msgid "Star"
+#~ msgstr "Gwiazda"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:184
-msgid ""
-"Switch views between the \"Installed\" Activities directory and your \"home"
-"\" storage directory"
-msgstr ""
-"Zmienia widok między katalogiem zainstalowanych Aktywności a katalogiem "
-"\"home\""
+#~ msgid ""
+#~ "Switch views between the \"Installed\" Activities directory and your \"home"
+#~ "\" storage directory"
+#~ msgstr ""
+#~ "Zmienia widok między katalogiem zainstalowanych Aktywności a katalogiem "
+#~ "\"home\""
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:189
-msgid ""
-"Copy the files in the debug workplace to your \"home\" storage directory"
-msgstr "Kopiuj pliki z miejsca debugowania do katalogu \"home\""
+#~ msgid ""
+#~ "Copy the files in the debug workplace to your \"home\" storage directory"
+#~ msgstr "Kopiuj pliki z miejsca debugowania do katalogu \"home\""
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:194
-msgid "Load and modify these example programs. See the help Tutorials"
-msgstr "Wgraj i zmodyfikuj te przykładowe programy. Obejrzyj samouczki pomocy."
+#~ msgid "Load and modify these example programs. See the help Tutorials"
+#~ msgstr "Wgraj i zmodyfikuj te przykładowe programy. Obejrzyj samouczki pomocy."
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:227
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:227
-msgid "Must select Journal item to Load"
-msgstr "Musisz wybrać wpis z Dziennika żeby go Wgrać"
+#~ msgid "Must select Journal item to Load"
+#~ msgstr "Musisz wybrać wpis z Dziennika żeby go Wgrać"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:319
-msgid "I/O error:"
-msgstr "I/O błąd:"
+#~ msgid "I/O error:"
+#~ msgstr "I/O błąd:"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:355
-msgid ""
-"Copy the selected directory or file from your \"home\" storage to the debug "
-"workplace"
-msgstr ""
-"Kopiuj wybrany plik lub katalog z katalogu \"home\" do miejsca debugowania."
+#~ msgid ""
+#~ "Copy the selected directory or file from your \"home\" storage to the debug "
+#~ "workplace"
+#~ msgstr ""
+#~ "Kopiuj wybrany plik lub katalog z katalogu \"home\" do miejsca debugowania."
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:364
-msgid "Copy the selected Activity or file to the debug workplace"
-msgstr "Kopiuj wybraną Aktywność lub plik do miejsca debugowania"
+#~ msgid "Copy the selected Activity or file to the debug workplace"
+#~ msgstr "Kopiuj wybraną Aktywność lub plik do miejsca debugowania"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:375
 #, python-format
-msgid "OK to delete/overwrite %s?"
-msgstr "Na pewno chcesz usunąć/zastąpić %s?"
+#~ msgid "OK to delete/overwrite %s?"
+#~ msgstr "Na pewno chcesz usunąć/zastąpić %s?"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:376
-msgid "This destination has been changed by another application"
-msgstr "Miejsce docelowe zostało zmienione przez inną aplikację"
+#~ msgid "This destination has been changed by another application"
+#~ msgstr "Miejsce docelowe zostało zmienione przez inną aplikację"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:417
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:446
-msgid "Must select File or Directory item to Load"
-msgstr "Musisz wybrać Plik lub Katalog aby Wgrać"
+#~ msgid "Must select File or Directory item to Load"
+#~ msgstr "Musisz wybrać Plik lub Katalog aby Wgrać"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:512
-msgid "Activities must be given a new and unique name"
-msgstr "Aktywności muszą mieć nową i niepowtarzalną nazwę"
+#~ msgid "Activities must be given a new and unique name"
+#~ msgstr "Aktywności muszą mieć nową i niepowtarzalną nazwę"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:584
-msgid "Must select a File or Folder to delete"
-msgstr "Musisz wybrać plik lub folder, aby usunąć"
+#~ msgid "Must select a File or Folder to delete"
+#~ msgstr "Musisz wybrać plik lub folder, aby usunąć"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:590
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:593
 #, python-format
-msgid "Would you like to continue deleting %s?"
-msgstr "Chcesz kontynuować usuwanie %s?"
+#~ msgid "Would you like to continue deleting %s?"
+#~ msgstr "Chcesz kontynuować usuwanie %s?"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:591
-msgid "CAUTION: You are about to DELETE a FOLDER!!"
-msgstr "UWAGA: Masz zamiar USUNĄĆ FOLDER!!"
+#~ msgid "CAUTION: You are about to DELETE a FOLDER!!"
+#~ msgstr "UWAGA: Masz zamiar USUNĄĆ FOLDER!!"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:594
-msgid "ABOUT TO DELETE A FILE!!"
-msgstr "MASZ ZAMIAR USUNĄĆ PLIK!!"
+#~ msgid "ABOUT TO DELETE A FILE!!"
+#~ msgstr "MASZ ZAMIAR USUNĄĆ PLIK!!"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:616
-#: /home/olpc/Activities/PyDebug.activity/project.py:335
-msgid "Select OK to abandon changes to "
-msgstr "Wybierz OK aby porzucić zmiany "
+#~ msgid "Select OK to abandon changes to "
+#~ msgstr "Wybierz OK aby porzucić zmiany "
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:619
-#: /home/olpc/Activities/PyDebug.activity/project.py:338
-msgid "Changes have been made to the PyDebug work area."
-msgstr "Zmiany zostały wprowadzone do miejsca pracy Debugera Pythona."
+#~ msgid "Changes have been made to the PyDebug work area."
+#~ msgstr "Zmiany zostały wprowadzone do miejsca pracy Debugera Pythona."
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:792
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:57
-msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
-msgstr ""
-"Wgraj wybrany plik z Dziennika XO (albo tar.gz) do miejsca pracy debugera"
+#~ msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
+#~ msgstr ""
+#~ "Wgraj wybrany plik z Dziennika XO (albo tar.gz) do miejsca pracy debugera"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:796
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:61
-msgid ""
-"Zip up all the files in your debug workplace and store them in the Journal"
-msgstr ""
-"Spakuj wszystkie pliki z miejsca debugowania i przechowaj je w Dzienniku"
+#~ msgid ""
+#~ "Zip up all the files in your debug workplace and store them in the Journal"
+#~ msgstr ""
+#~ "Spakuj wszystkie pliki z miejsca debugowania i przechowaj je w Dzienniku"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:54
-msgid "New File"
-msgstr "Nowy Plik"
+#~ msgid "New File"
+#~ msgstr "Nowy Plik"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:64
-msgid "Open File"
-msgstr "Otwórz Plik"
+#~ msgid "Open File"
+#~ msgstr "Otwórz Plik"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:74
-msgid "Save File"
-msgstr "Zapisz Plik"
+#~ msgid "Save File"
+#~ msgstr "Zapisz Plik"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:84
-msgid "Save As"
-msgstr "Zapisz jako"
+#~ msgid "Save As"
+#~ msgstr "Zapisz jako"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:109
-msgid "Undo"
-msgstr "Cofnij"
+#~ msgid "Undo"
+#~ msgstr "Cofnij"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:117
-msgid "Redo"
-msgstr "Ponów"
+#~ msgid "Redo"
+#~ msgstr "Ponów"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:132
-msgid "Cut"
-msgstr "Wytnij"
+#~ msgid "Cut"
+#~ msgstr "Wytnij"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:161
-msgid "Find and Replace"
-msgstr "Znajdź i zastąp"
+#~ msgid "Find and Replace"
+#~ msgstr "Znajdź i zastąp"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:174
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:117
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:117
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:117
-msgid "Zoom out"
-msgstr "Zmniejsz"
+#~ msgid "Zoom out"
+#~ msgstr "Zmniejsz"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:180
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:122
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:122
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:122
-msgid "Zoom in"
-msgstr "Powiększ"
+#~ msgid "Zoom in"
+#~ msgstr "Powiększ"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:359
-msgid "FIND OR REPLACE"
-msgstr "ZNAJDŹ LUB ZASTĄP"
+#~ msgid "FIND OR REPLACE"
+#~ msgstr "ZNAJDŹ LUB ZASTĄP"
 
-#: /home/olpc/Activities/PyDebug.activity/pydebug.py:279
-#: /home/olpc/Activities/PyDebug.activity/help.py:83
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:51
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:108
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:182
-msgid "Edit"
-msgstr "Edytuj"
+#~ msgid "Edit"
+#~ msgstr "Edytuj"
 
-#: /home/olpc/Activities/PyDebug.activity/pydebug.py:280
-#: /home/olpc/Activities/PyDebug.activity/help.py:87
-msgid "Project"
-msgstr "Projekt"
+#~ msgid "Project"
+#~ msgstr "Projekt"
 
-#: /home/olpc/Activities/PyDebug.activity/pydebug.py:281
-#: /home/olpc/Activities/PyDebug.activity/help.py:92
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/helptemplate.py:45
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:92
-msgid "Help"
-msgstr "Pomoc"
+#~ msgid "Help"
+#~ msgstr "Pomoc"
 
-#: /home/olpc/Activities/PyDebug.activity/pydebug.py:458
-msgid "Loading Help Page"
-msgstr "Ładowanie Strony Pomocy"
+#~ msgid "Loading Help Page"
+#~ msgstr "Ładowanie Strony Pomocy"
 
-#: /home/olpc/Activities/PyDebug.activity/project.py:298
 #, python-format
 #, python-format,
-msgid "This journal item does not appear to be a zipped activity. Package:%s."
-msgstr "Ta pozycja w dzienniku nie wyświetla się jako spakowana. Pakiet:%s."
+#~ msgid "This journal item does not appear to be a zipped activity. Package:%s."
+#~ msgstr "Ta pozycja w dzienniku nie wyświetla się jako spakowana. Pakiet:%s."
 
-#: /home/olpc/Activities/PyDebug.activity/help.py:196
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:191
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:36
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:36
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:36
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:240
-msgid "Back"
-msgstr "Wstecz"
+#~ msgid "Back"
+#~ msgstr "Wstecz"
 
-#: /home/olpc/Activities/PyDebug.activity/help.py:203
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:198
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:42
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:42
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:42
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:247
-msgid "Forward"
-msgstr "Dalej"
+#~ msgid "Forward"
+#~ msgstr "Dalej"
 
-#: /home/olpc/Activities/PyDebug.activity/help.py:210
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:205
-msgid "Home"
-msgstr "Początek"
+#~ msgid "Home"
+#~ msgstr "Początek"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:416
 #, python-format
-msgid "Would you like to include %s in your project?"
-msgstr "Chcesz dołączyć %s do twojego projektu?"
+#~ msgid "Would you like to include %s in your project?"
+#~ msgstr "Chcesz dołączyć %s do twojego projektu?"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:417
-msgid "This MODIFIED File is not in your package"
-msgstr "Ten ZMODYFIKOWANY Plik nie znajduje się w twoim pakiecie"
+#~ msgid "This MODIFIED File is not in your package"
+#~ msgstr "Ten ZMODYFIKOWANY Plik nie znajduje się w twoim pakiecie"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:420
-msgid "Would you like to Save the file, or cancel and abandon the changes?"
-msgstr "Chcesz Zapisać plik, anulować czy zrezygnować ze zmian?"
+#~ msgid "Would you like to Save the file, or cancel and abandon the changes?"
+#~ msgstr "Chcesz Zapisać plik, anulować czy zrezygnować ze zmian?"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:421
-msgid "This File Has Been Changed"
-msgstr "Plik został zmieniony"
+#~ msgid "This File Has Been Changed"
+#~ msgstr "Plik został zmieniony"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:448
-msgid "I/O error "
-msgstr "I/O błąd "
+#~ msgid "I/O error "
+#~ msgstr "I/O błąd "
 
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
-msgid "<ctrl>space"
-msgstr "<ctrl>odstęp"
+#~ msgid "<ctrl>space"
+#~ msgstr "<ctrl>odstęp"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:46
-msgid "Pygame"
-msgstr "Pygame"
+#~ msgid "Pygame"
+#~ msgstr "Pygame"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:59
-msgid "Start"
-msgstr "Start"
+#~ msgid "Start"
+#~ msgstr "Start"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:67
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:123
-msgid "Title"
-msgstr "Tytuł"
+#~ msgid "Title"
+#~ msgstr "Tytuł"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:72
-msgid "MIME"
-msgstr "MME"
+#~ msgid "MIME"
+#~ msgstr "MME"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:87
-msgid "Journal"
-msgstr "Dziennik"
+#~ msgid "Journal"
+#~ msgstr "Dziennik"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:100
-msgid "Save"
-msgstr "Zapisz"
+#~ msgid "Save"
+#~ msgstr "Zapisz"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:108
-msgid "Delete"
-msgstr "Usuń"
+#~ msgid "Delete"
+#~ msgstr "Usuń"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:138
-msgid "Description"
-msgstr "Opis"
+#~ msgid "Description"
+#~ msgstr "Opis"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:156
-msgid "Tags"
-msgstr "Tagi"
+#~ msgid "Tags"
+#~ msgstr "Tagi"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:198
-msgid "Copy File To The Journal"
-msgstr "Kopiuj plik do Dziennika"
+#~ msgid "Copy File To The Journal"
+#~ msgstr "Kopiuj plik do Dziennika"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:206
-msgid "Files"
-msgstr "Pliki"
+#~ msgid "Files"
+#~ msgstr "Pliki"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
-msgid "Success"
-msgstr "Sukces"
+#~ msgid "Success"
+#~ msgstr "Sukces"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
 #, python-format
-msgid "%s added to Journal."
-msgstr "%s dodano do Dziennika."
+#~ msgid "%s added to Journal."
+#~ msgstr "%s dodano do Dziennika."
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:55
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:112
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:186
-msgid "Read"
-msgstr "Czytaj"
+#~ msgid "Read"
+#~ msgstr "Czytaj"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:63
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:56
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:120
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:194
-msgid "View"
-msgstr "Widok"
+#~ msgid "View"
+#~ msgstr "Widok"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Text_to_Speech/gst_choir_example.py:34
-msgid "Hello, World!"
-msgstr "Witaj Świecie!"
+#~ msgid "Hello, World!"
+#~ msgstr "Witaj Świecie!"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
-msgid "Off-line"
-msgstr "Niepołączony"
+#~ msgid "Off-line"
+#~ msgstr "Niepołączony"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
-msgid "Share, or invite someone."
-msgstr "Podziel się lub zaproś kogoś."
+#~ msgid "Share, or invite someone."
+#~ msgstr "Podziel się lub zaproś kogoś."
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
-msgid "On-line"
-msgstr "Połączony"
+#~ msgid "On-line"
+#~ msgstr "Połączony"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
-msgid "Connected"
-msgstr "Połączony"
+#~ msgid "Connected"
+#~ msgstr "Połączony"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:125
-msgid "joined the chat"
-msgstr "dołączył do rozmowy"
+#~ msgid "joined the chat"
+#~ msgstr "dołączył do rozmowy"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:136
-msgid "left the chat"
-msgstr "opuścił rozmowę"
+#~ msgid "left the chat"
+#~ msgstr "opuścił rozmowę"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:147
-msgid "is here"
-msgstr "jest tutaj"
+#~ msgid "is here"
+#~ msgstr "jest tutaj"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
-msgid "Failure"
-msgstr "Niepowodzenie"
+#~ msgid "Failure"
+#~ msgstr "Niepowodzenie"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
-msgid "Error getting document from tube"
-msgstr "Błąd podczas pobierania dokumentu z tuby"
+#~ msgid "Error getting document from tube"
+#~ msgstr "Błąd podczas pobierania dokumentu z tuby"
 
-#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:54
-msgid "trace"
-msgstr "ślad"
+#~ msgid "trace"
+#~ msgstr "ślad"
 
-#: /home/olpc/Activities/PyDebug.activity/bin/continue_debug.py:126
-msgid ""
-"\n"
-"\n"
-"There is no program loaded into the Work Area. \n"
-"Please use the \"Project\" tab so set up the debug session\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"Brak programów załadowanych do Obszaru Roboczego. \n"
-"Wybierz etykietę \"Projekt\", aby skonfigurować sesję debugowania\n"
-"\n"
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "There is no program loaded into the Work Area. \n"
+#~ "Please use the \"Project\" tab so set up the debug session\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ "Brak programów załadowanych do Obszaru Roboczego. \n"
+#~ "Wybierz etykietę \"Projekt\", aby skonfigurować sesję debugowania\n"
+#~ "\n"
