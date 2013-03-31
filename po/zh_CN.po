@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-12-20 12:48+0000\n"
+"POT-Creation-Date: 2013-03-29 19:04+0200\n"
 "PO-Revision-Date: 2012-03-22 01:10+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,473 +17,324 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Pootle 2.0.5\n"
 
-#: activity/activity.info:2
+#. TRANS: "name" option from activity.info file
 msgid "PyDebug"
 msgstr "PyDebug"
 
-#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
-msgid "Name"
-msgstr "名称"
+#. TRANS: "summary" option from activity.info file
+msgid "PyDebug"
+msgstr "PyDebug"
 
-#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
-msgid "Size"
-msgstr "大小"
+#. TRANS: "description" option from activity.info file
+msgid "PyDebug"
+msgstr "PyDebug"
 
-#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
-msgid "Last Changed"
-msgstr "上次更改"
+#~ msgid "Name"
+#~ msgstr "名称"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:75
-msgid "Traceback:"
-msgstr "堆栈跟踪："
+#~ msgid "Size"
+#~ msgstr "大小"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:76
-msgid "Plain"
-msgstr "普通"
+#~ msgid "Last Changed"
+#~ msgstr "上次更改"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:77
-msgid "Context"
-msgstr "上下文"
+#~ msgid "Traceback:"
+#~ msgstr "堆栈跟踪："
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:78
-msgid "Verbose"
-msgstr "详细"
+#~ msgid "Plain"
+#~ msgstr "普通"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:107
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:77
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:186
-#: /home/olpc/Activities/PyDebug.activity/help.py:222
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:37
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:62
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:217
-msgid "Stop"
-msgstr "停止"
+#~ msgid "Context"
+#~ msgstr "上下文"
 
-#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:212
-#: /home/olpc/Activities/PyDebug.activity/help.py:79
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:87
-msgid "Activity"
-msgstr "活动"
+#~ msgid "Verbose"
+#~ msgstr "详细"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:54
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:64
-msgid "Start Debugging"
-msgstr "开始调试"
+#~ msgid "Stop"
+#~ msgstr "停止"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:62
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:140
-msgid "Copy"
-msgstr "复制"
+#~ msgid "Activity"
+#~ msgstr "活动"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:68
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:148
-msgid "Paste"
-msgstr "粘贴"
+#~ msgid "Start Debugging"
+#~ msgstr "开始调试"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:75
-msgid "Open New Tab"
-msgstr "打开新标签"
+#~ msgid "Copy"
+#~ msgstr "复制"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:82
-msgid "Close Tab"
-msgstr "关闭标签"
+#~ msgid "Paste"
+#~ msgstr "粘贴"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:89
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:132
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:97
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:132
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:132
-msgid "Fullscreen"
-msgstr "全屏显示"
+#~ msgid "Open New Tab"
+#~ msgstr "打开新标签"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:128
-msgid ""
-"\n"
-"\n"
-" Use the HELP in the Ipython interpreter to learn to DEBUG your program.\n"
-msgstr ""
-"\n"
-"\n"
-" 学习调试程序，请使用IPython解释器中的HELP。\n"
+#~ msgid "Close Tab"
+#~ msgstr "关闭标签"
 
-#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:138
-#: /home/olpc/Activities/PyDebug.activity/terminal.py:53
-#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:58
-msgid "go"
-msgstr "开始"
+#~ msgid "Fullscreen"
+#~ msgstr "全屏显示"
 
-#: /home/olpc/Activities/PyDebug.activity/util.py:51
-msgid "There is no Activity file"
-msgstr "没有任何活动文件"
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ " Use the HELP in the Ipython interpreter to learn to DEBUG your program.\n"
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ " 学习调试程序，请使用IPython解释器中的HELP。\n"
 
-#: /home/olpc/Activities/PyDebug.activity/util.py:159
+#~ msgid "go"
+#~ msgstr "开始"
+
+#~ msgid "There is no Activity file"
+#~ msgstr "没有任何活动文件"
+
 #, python-format
-msgid "%s Command returned non zero\n"
-msgstr "%s 命令返回值不为零\n"
+#~ msgid "%s Command returned non zero\n"
+#~ msgstr "%s 命令返回值不为零\n"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:130
-msgid "Circle"
-msgstr "圆形"
+#~ msgid "Circle"
+#~ msgstr "圆形"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:131
-msgid "Square"
-msgstr "方形"
+#~ msgid "Square"
+#~ msgstr "方形"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:132
-msgid "Diamond"
-msgstr "菱形"
+#~ msgid "Diamond"
+#~ msgstr "菱形"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:133
-msgid "Star"
-msgstr "星形"
+#~ msgid "Star"
+#~ msgstr "星形"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:184
-msgid ""
-"Switch views between the \"Installed\" Activities directory and your \"home"
-"\" storage directory"
-msgstr "在“已安装”活动目录和“家”存储目录之间切换视图"
+#~ msgid ""
+#~ "Switch views between the \"Installed\" Activities directory and your \"home"
+#~ "\" storage directory"
+#~ msgstr "在“已安装”活动目录和“家”存储目录之间切换视图"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:189
-msgid ""
-"Copy the files in the debug workplace to your \"home\" storage directory"
-msgstr "在调试工作区中复制文件到“家”存储目录"
+#~ msgid ""
+#~ "Copy the files in the debug workplace to your \"home\" storage directory"
+#~ msgstr "在调试工作区中复制文件到“家”存储目录"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:194
-msgid "Load and modify these example programs. See the help Tutorials"
-msgstr "加载并修改这些示例程序。请看帮助教程"
+#~ msgid "Load and modify these example programs. See the help Tutorials"
+#~ msgstr "加载并修改这些示例程序。请看帮助教程"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:227
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:227
-msgid "Must select Journal item to Load"
-msgstr "必须选择要加载的日志"
+#~ msgid "Must select Journal item to Load"
+#~ msgstr "必须选择要加载的日志"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:319
-msgid "I/O error:"
-msgstr "I/O 错误:"
+#~ msgid "I/O error:"
+#~ msgstr "I/O 错误:"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:355
-msgid ""
-"Copy the selected directory or file from your \"home\" storage to the debug "
-"workplace"
-msgstr "从“家”存储目录复制选定的目录或文件到调试工作区"
+#~ msgid ""
+#~ "Copy the selected directory or file from your \"home\" storage to the debug "
+#~ "workplace"
+#~ msgstr "从“家”存储目录复制选定的目录或文件到调试工作区"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:364
-msgid "Copy the selected Activity or file to the debug workplace"
-msgstr "复制选定的活动或文件到调试工作区"
+#~ msgid "Copy the selected Activity or file to the debug workplace"
+#~ msgstr "复制选定的活动或文件到调试工作区"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:375
 #, python-format
-msgid "OK to delete/overwrite %s?"
-msgstr "确定要 删除/覆盖 %s？"
+#~ msgid "OK to delete/overwrite %s?"
+#~ msgstr "确定要 删除/覆盖 %s？"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:376
-msgid "This destination has been changed by another application"
-msgstr "该目标已被别的应用改变。"
+#~ msgid "This destination has been changed by another application"
+#~ msgstr "该目标已被别的应用改变。"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:417
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:446
-msgid "Must select File or Directory item to Load"
-msgstr "必须选择要加载的文件或目录"
+#~ msgid "Must select File or Directory item to Load"
+#~ msgstr "必须选择要加载的文件或目录"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:512
-msgid "Activities must be given a new and unique name"
-msgstr "活动必须给定新的唯一名称"
+#~ msgid "Activities must be given a new and unique name"
+#~ msgstr "活动必须给定新的唯一名称"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:584
-msgid "Must select a File or Folder to delete"
-msgstr "必须选择要删除的文件或文件夹"
+#~ msgid "Must select a File or Folder to delete"
+#~ msgstr "必须选择要删除的文件或文件夹"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:590
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:593
 #, python-format
-msgid "Would you like to continue deleting %s?"
-msgstr "你想继续删除%s吗？"
+#~ msgid "Would you like to continue deleting %s?"
+#~ msgstr "你想继续删除%s吗？"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:591
-msgid "CAUTION: You are about to DELETE a FOLDER!!"
-msgstr "注意：你是要删除一个文件夹！！"
+#~ msgid "CAUTION: You are about to DELETE a FOLDER!!"
+#~ msgstr "注意：你是要删除一个文件夹！！"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:594
-msgid "ABOUT TO DELETE A FILE!!"
-msgstr "要删除一个文件！！"
+#~ msgid "ABOUT TO DELETE A FILE!!"
+#~ msgstr "要删除一个文件！！"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:616
-#: /home/olpc/Activities/PyDebug.activity/project.py:335
-msgid "Select OK to abandon changes to "
-msgstr "选择“确定”放弃更改 "
+#~ msgid "Select OK to abandon changes to "
+#~ msgstr "选择“确定”放弃更改 "
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:619
-#: /home/olpc/Activities/PyDebug.activity/project.py:338
-msgid "Changes have been made to the PyDebug work area."
-msgstr "PyDebug工作区已更改。"
+#~ msgid "Changes have been made to the PyDebug work area."
+#~ msgstr "PyDebug工作区已更改。"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:792
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:57
-msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
-msgstr "加载选定日志XO（或tar.gz）文件到调试工作区"
+#~ msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
+#~ msgstr "加载选定日志XO（或tar.gz）文件到调试工作区"
 
-#: /home/olpc/Activities/PyDebug.activity/project_gui.py:796
-#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:61
-msgid ""
-"Zip up all the files in your debug workplace and store them in the Journal"
-msgstr "压缩调试工作区的所有文件，并存储在日志中"
+#~ msgid ""
+#~ "Zip up all the files in your debug workplace and store them in the Journal"
+#~ msgstr "压缩调试工作区的所有文件，并存储在日志中"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:54
-msgid "New File"
-msgstr "新建文件"
+#~ msgid "New File"
+#~ msgstr "新建文件"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:64
-msgid "Open File"
-msgstr "打开文件"
+#~ msgid "Open File"
+#~ msgstr "打开文件"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:74
-msgid "Save File"
-msgstr "保存文件"
+#~ msgid "Save File"
+#~ msgstr "保存文件"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:84
-msgid "Save As"
-msgstr "另存为"
+#~ msgid "Save As"
+#~ msgstr "另存为"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:109
-msgid "Undo"
-msgstr "撤销"
+#~ msgid "Undo"
+#~ msgstr "撤销"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:117
-msgid "Redo"
-msgstr "重做"
+#~ msgid "Redo"
+#~ msgstr "重做"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:132
-msgid "Cut"
-msgstr "剪切"
+#~ msgid "Cut"
+#~ msgstr "剪切"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:161
-msgid "Find and Replace"
-msgstr "查找和替换"
+#~ msgid "Find and Replace"
+#~ msgstr "查找和替换"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:174
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:117
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:117
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:117
-msgid "Zoom out"
-msgstr "缩小"
+#~ msgid "Zoom out"
+#~ msgstr "缩小"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:180
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:122
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:122
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:122
-msgid "Zoom in"
-msgstr "放大"
+#~ msgid "Zoom in"
+#~ msgstr "放大"
 
-#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:359
-msgid "FIND OR REPLACE"
-msgstr "查找或替换"
+#~ msgid "FIND OR REPLACE"
+#~ msgstr "查找或替换"
 
-#: /home/olpc/Activities/PyDebug.activity/pydebug.py:279
-#: /home/olpc/Activities/PyDebug.activity/help.py:83
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:51
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:108
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:182
-msgid "Edit"
-msgstr "编辑"
+#~ msgid "Edit"
+#~ msgstr "编辑"
 
-#: /home/olpc/Activities/PyDebug.activity/pydebug.py:280
-#: /home/olpc/Activities/PyDebug.activity/help.py:87
-msgid "Project"
-msgstr "项目"
+#~ msgid "Project"
+#~ msgstr "项目"
 
-#: /home/olpc/Activities/PyDebug.activity/pydebug.py:281
-#: /home/olpc/Activities/PyDebug.activity/help.py:92
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/helptemplate.py:45
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:92
-msgid "Help"
-msgstr "帮助"
+#~ msgid "Help"
+#~ msgstr "帮助"
 
-#: /home/olpc/Activities/PyDebug.activity/pydebug.py:458
-msgid "Loading Help Page"
-msgstr "载入帮助页"
+#~ msgid "Loading Help Page"
+#~ msgstr "载入帮助页"
 
-#: /home/olpc/Activities/PyDebug.activity/project.py:298
 #, python-format
-msgid "This journal item does not appear to be a zipped activity. Package:%s."
-msgstr "该日志条目不会作为压缩活动出现。包：%s。"
+#~ msgid "This journal item does not appear to be a zipped activity. Package:%s."
+#~ msgstr "该日志条目不会作为压缩活动出现。包：%s。"
 
-#: /home/olpc/Activities/PyDebug.activity/help.py:196
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:191
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:36
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:36
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:36
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:240
-msgid "Back"
-msgstr "后退"
+#~ msgid "Back"
+#~ msgstr "后退"
 
-#: /home/olpc/Activities/PyDebug.activity/help.py:203
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:198
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:42
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:42
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:42
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:247
-msgid "Forward"
-msgstr "前进"
+#~ msgid "Forward"
+#~ msgstr "前进"
 
-#: /home/olpc/Activities/PyDebug.activity/help.py:210
-#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:205
-msgid "Home"
-msgstr "主页"
+#~ msgid "Home"
+#~ msgstr "主页"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:416
 #, python-format
-msgid "Would you like to include %s in your project?"
-msgstr "你想加入%s到项目中吗？"
+#~ msgid "Would you like to include %s in your project?"
+#~ msgstr "你想加入%s到项目中吗？"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:417
-msgid "This MODIFIED File is not in your package"
-msgstr "修改过的该文件不在包内"
+#~ msgid "This MODIFIED File is not in your package"
+#~ msgstr "修改过的该文件不在包内"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:420
-msgid "Would you like to Save the file, or cancel and abandon the changes?"
-msgstr "你想保存该文件，或取消并放弃更改吗？"
+#~ msgid "Would you like to Save the file, or cancel and abandon the changes?"
+#~ msgstr "你想保存该文件，或取消并放弃更改吗？"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:421
-msgid "This File Has Been Changed"
-msgstr "文件已更改"
+#~ msgid "This File Has Been Changed"
+#~ msgstr "文件已更改"
 
-#: /home/olpc/Activities/PyDebug.activity/page.py:448
-msgid "I/O error "
-msgstr "I/O 错误 "
+#~ msgid "I/O error "
+#~ msgstr "I/O 错误 "
 
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
-msgid "<ctrl>space"
-msgstr "<ctrl>space"
+#~ msgid "<ctrl>space"
+#~ msgstr "<ctrl>space"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:46
-msgid "Pygame"
-msgstr "Pygame"
+#~ msgid "Pygame"
+#~ msgstr "Pygame"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:59
-msgid "Start"
-msgstr "开始"
+#~ msgid "Start"
+#~ msgstr "开始"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:67
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:123
-msgid "Title"
-msgstr "标题"
+#~ msgid "Title"
+#~ msgstr "标题"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:72
-msgid "MIME"
-msgstr "MIME"
+#~ msgid "MIME"
+#~ msgstr "MIME"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:87
-msgid "Journal"
-msgstr "日志"
+#~ msgid "Journal"
+#~ msgstr "日志"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:100
-msgid "Save"
-msgstr "保存"
+#~ msgid "Save"
+#~ msgstr "保存"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:108
-msgid "Delete"
-msgstr "删除"
+#~ msgid "Delete"
+#~ msgstr "删除"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:138
-msgid "Description"
-msgstr "描述"
+#~ msgid "Description"
+#~ msgstr "描述"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:156
-msgid "Tags"
-msgstr "标签"
+#~ msgid "Tags"
+#~ msgstr "标签"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:198
-msgid "Copy File To The Journal"
-msgstr "复制文件到日志"
+#~ msgid "Copy File To The Journal"
+#~ msgstr "复制文件到日志"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:206
-msgid "Files"
-msgstr "文件"
+#~ msgid "Files"
+#~ msgstr "文件"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
-msgid "Success"
-msgstr "成功"
+#~ msgid "Success"
+#~ msgstr "成功"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
 #, python-format
-msgid "%s added to Journal."
-msgstr "%s已加入到日志"
+#~ msgid "%s added to Journal."
+#~ msgstr "%s已加入到日志"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:55
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:112
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:186
-msgid "Read"
-msgstr "读取"
+#~ msgid "Read"
+#~ msgstr "读取"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:63
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:56
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:120
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:194
-msgid "View"
-msgstr "查看"
+#~ msgid "View"
+#~ msgstr "查看"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Text_to_Speech/gst_choir_example.py:34
-msgid "Hello, World!"
-msgstr "世界，你好！"
+#~ msgid "Hello, World!"
+#~ msgstr "世界，你好！"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
-msgid "Off-line"
-msgstr "离线"
+#~ msgid "Off-line"
+#~ msgstr "离线"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
-msgid "Share, or invite someone."
-msgstr "分享，或邀请某人。"
+#~ msgid "Share, or invite someone."
+#~ msgstr "分享，或邀请某人。"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
-msgid "On-line"
-msgstr "在线"
+#~ msgid "On-line"
+#~ msgstr "在线"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
-msgid "Connected"
-msgstr "已连接"
+#~ msgid "Connected"
+#~ msgstr "已连接"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:125
-msgid "joined the chat"
-msgstr "已加入到聊天室"
+#~ msgid "joined the chat"
+#~ msgstr "已加入到聊天室"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:136
-msgid "left the chat"
-msgstr "已离开聊天室"
+#~ msgid "left the chat"
+#~ msgstr "已离开聊天室"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:147
-msgid "is here"
-msgstr "在这里"
+#~ msgid "is here"
+#~ msgstr "在这里"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
-msgid "Failure"
-msgstr "失败"
+#~ msgid "Failure"
+#~ msgstr "失败"
 
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
-#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
-msgid "Error getting document from tube"
-msgstr "从管道取得文件出错"
+#~ msgid "Error getting document from tube"
+#~ msgstr "从管道取得文件出错"
 
-#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:54
-msgid "trace"
-msgstr "跟踪"
+#~ msgid "trace"
+#~ msgstr "跟踪"
 
-#: /home/olpc/Activities/PyDebug.activity/bin/continue_debug.py:126
-msgid ""
-"\n"
-"\n"
-"There is no program loaded into the Work Area. \n"
-"Please use the \"Project\" tab so set up the debug session\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"没有程序加载到工作区。\n"
-"设置该调试会话请使用“项目”标签\n"
-"\n"
+#~ msgid ""
+#~ "\n"
+#~ "\n"
+#~ "There is no program loaded into the Work Area. \n"
+#~ "Please use the \"Project\" tab so set up the debug session\n"
+#~ "\n"
+#~ msgstr ""
+#~ "\n"
+#~ "\n"
+#~ "没有程序加载到工作区。\n"
+#~ "设置该调试会话请使用“项目”标签\n"
+#~ "\n"
