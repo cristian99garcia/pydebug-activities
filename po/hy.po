@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-30 08:47+0200\n"
+"POT-Creation-Date: 2010-12-20 12:48+0000\n"
 "PO-Revision-Date: 2012-01-24 02:24+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,325 +21,482 @@ msgstr ""
 msgid "PyDebug"
 msgstr "(PyDebug) Պիթոնի վրիպազերծում"
 
-#~ msgid "Name"
-#~ msgstr "Անուն"
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Name"
+msgstr "Անուն"
 
-#~ msgid "Size"
-#~ msgstr "Չափս"
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Size"
+msgstr "Չափս"
 
-#~ msgid "Last Changed"
-#~ msgstr "Վերջին փոփոխությունը"
+#: /home/olpc/Activities/PyDebug.activity/filetree.py:32
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:776
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:40
+msgid "Last Changed"
+msgstr "Վերջին փոփոխությունը"
 
-#~ msgid "Traceback:"
-#~ msgstr "Սխալների հետապնդման ծրագիր:"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:75
+msgid "Traceback:"
+msgstr "Սխալների հետապնդման ծրագիր:"
 
-#~ msgid "Plain"
-#~ msgstr "Պարզ Տեքստ"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:76
+msgid "Plain"
+msgstr "Պարզ Տեքստ"
 
-#~ msgid "Context"
-#~ msgstr "Համատեքստ"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:77
+msgid "Context"
+msgstr "Համատեքստ"
 
-#~ msgid "Verbose"
-#~ msgstr "Շատախոս"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:78
+msgid "Verbose"
+msgstr "Շատախոս"
 
-#~ msgid "Stop"
-#~ msgstr "Կանգնեցնել"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:107
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:77
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:186
+#: /home/olpc/Activities/PyDebug.activity/help.py:222
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:37
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:62
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:217
+msgid "Stop"
+msgstr "Կանգնեցնել"
 
-#~ msgid "Activity"
-#~ msgstr "Գործունեություն"
+#: /home/olpc/Activities/PyDebug.activity/pytoolbar.py:212
+#: /home/olpc/Activities/PyDebug.activity/help.py:79
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:87
+msgid "Activity"
+msgstr "Գործունեություն"
 
-#~ msgid "Start Debugging"
-#~ msgstr "Մեկնարկել վրիպազերծման գործողությունը"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:54
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:64
+msgid "Start Debugging"
+msgstr "Մեկնարկել վրիպազերծման գործողությունը"
 
-#~ msgid "Copy"
-#~ msgstr "Պատճենել"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:62
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:140
+msgid "Copy"
+msgstr "Պատճենել"
 
-#~ msgid "Paste"
-#~ msgstr "Փակցնել"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:68
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:148
+msgid "Paste"
+msgstr "Փակցնել"
 
-#~ msgid "Open New Tab"
-#~ msgstr "Բացել նոր էջ"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:75
+msgid "Open New Tab"
+msgstr "Բացել նոր էջ"
 
-#~ msgid "Close Tab"
-#~ msgstr "Փակել էջը"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:82
+msgid "Close Tab"
+msgstr "Փակել էջը"
 
-#~ msgid "Fullscreen"
-#~ msgstr "Էկրանի չափով"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:89
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:132
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:97
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:132
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:132
+msgid "Fullscreen"
+msgstr "Էկրանի չափով"
 
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ " Use the HELP in the Ipython interpreter to learn to DEBUG your program.\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ " Օգտվեք ՕԳՆՈՒԹՅՈՒՆ կոճակից Պիթոն ինտերպրետատորի մեջ Ձեր ծրագրիրը "
-#~ "ՎՐԻՊԱԶԵՐԾԵԼՈՒ համար\n"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:128
+msgid ""
+"\n"
+"\n"
+" Use the HELP in the Ipython interpreter to learn to DEBUG your program.\n"
+msgstr ""
+"\n"
+"\n"
+" Օգտվեք ՕԳՆՈՒԹՅՈՒՆ կոճակից Պիթոն ինտերպրետատորի մեջ Ձեր ծրագրիրը "
+"ՎՐԻՊԱԶԵՐԾԵԼՈՒ համար\n"
 
-#~ msgid "go"
-#~ msgstr "գնալ"
+#: /home/olpc/Activities/PyDebug.activity/terminal_gui.py:138
+#: /home/olpc/Activities/PyDebug.activity/terminal.py:53
+#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:58
+msgid "go"
+msgstr "գնալ"
 
-#~ msgid "There is no Activity file"
-#~ msgstr "Գործունեության ֆայլ չկա"
+#: /home/olpc/Activities/PyDebug.activity/util.py:51
+msgid "There is no Activity file"
+msgstr "Գործունեության ֆայլ չկա"
 
+#: /home/olpc/Activities/PyDebug.activity/util.py:159
 #, python-format
-#~ msgid "%s Command returned non zero\n"
-#~ msgstr "%s Հրամանը վերադարձավ \"ոչ զրո\"-ի\n"
+msgid "%s Command returned non zero\n"
+msgstr "%s Հրամանը վերադարձավ \"ոչ զրո\"-ի\n"
 
-#~ msgid "Circle"
-#~ msgstr "Շրջանագիծ"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:130
+msgid "Circle"
+msgstr "Շրջանագիծ"
 
-#~ msgid "Square"
-#~ msgstr "Քառակուսի"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:131
+msgid "Square"
+msgstr "Քառակուսի"
 
-#~ msgid "Diamond"
-#~ msgstr "Ադամանդ"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:132
+msgid "Diamond"
+msgstr "Ադամանդ"
 
-#~ msgid "Star"
-#~ msgstr "Աստղ"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:133
+msgid "Star"
+msgstr "Աստղ"
 
-#~ msgid ""
-#~ "Switch views between the \"Installed\" Activities directory and your \"home"
-#~ "\" storage directory"
-#~ msgstr ""
-#~ "Փոխանակել տեսքերը «տեղադրված» Գործունեությունների ցանկի և ձեր «տուն» ցանկի "
-#~ "միջև"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:184
+msgid ""
+"Switch views between the \"Installed\" Activities directory and your \"home"
+"\" storage directory"
+msgstr ""
+"Փոխանակել տեսքերը «տեղադրված» Գործունեությունների ցանկի և ձեր «տուն» ցանկի "
+"միջև"
 
-#~ msgid ""
-#~ "Copy the files in the debug workplace to your \"home\" storage directory"
-#~ msgstr "Պատճենել ֆայլերը վրիպազերծման աշխատավայրից ձեր «Տուն» Ցանկի մեջ"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:189
+msgid ""
+"Copy the files in the debug workplace to your \"home\" storage directory"
+msgstr "Պատճենել ֆայլերը վրիպազերծման աշխատավայրից ձեր «Տուն» Ցանկի մեջ"
 
-#~ msgid "Load and modify these example programs. See the help Tutorials"
-#~ msgstr ""
-#~ "Ներբեռնել և ձևափոխել այս որպես օրինակ բերված ծրագրերը: Տեսնել Դասուսույցներ "
-#~ "օգնությունը"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:194
+msgid "Load and modify these example programs. See the help Tutorials"
+msgstr ""
+"Ներբեռնել և ձևափոխել այս որպես օրինակ բերված ծրագրերը: Տեսնել Դասուսույցներ "
+"օգնությունը"
 
-#~ msgid "Must select Journal item to Load"
-#~ msgstr "Պետք է ընտրել որևէ նյութ Մատյանից` այն ներբեռնելու համար"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:227
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:227
+msgid "Must select Journal item to Load"
+msgstr "Պետք է ընտրել որևէ նյութ Մատյանից` այն ներբեռնելու համար"
 
-#~ msgid "I/O error:"
-#~ msgstr "I/O սխալ"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:319
+msgid "I/O error:"
+msgstr "I/O սխալ"
 
-#~ msgid ""
-#~ "Copy the selected directory or file from your \"home\" storage to the debug "
-#~ "workplace"
-#~ msgstr ""
-#~ "Պատճենել ընտրված ցանկը կամ ֆայլը ձեր «Տուն» ցանկից` վրիպազերծման աշխատավայր"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:355
+msgid ""
+"Copy the selected directory or file from your \"home\" storage to the debug "
+"workplace"
+msgstr ""
+"Պատճենել ընտրված ցանկը կամ ֆայլը ձեր «Տուն» ցանկից` վրիպազերծման աշխատավայր"
 
-#~ msgid "Copy the selected Activity or file to the debug workplace"
-#~ msgstr "Պատճենել ընտրված Գործունեությունը կամ ֆայլը վրիպազերծման աշխատավայր"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:364
+msgid "Copy the selected Activity or file to the debug workplace"
+msgstr "Պատճենել ընտրված Գործունեությունը կամ ֆայլը վրիպազերծման աշխատավայր"
 
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:375
 #, python-format
-#~ msgid "OK to delete/overwrite %s?"
-#~ msgstr "Ընտրել OK` ջնջել/վերագրանցելու համար %s"
+msgid "OK to delete/overwrite %s?"
+msgstr "Ընտրել OK` ջնջել/վերագրանցելու համար %s"
 
-#~ msgid "This destination has been changed by another application"
-#~ msgstr "Այս նպատակակետը փոխվել է մեկ այլ ծրագրով"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:376
+msgid "This destination has been changed by another application"
+msgstr "Այս նպատակակետը փոխվել է մեկ այլ ծրագրով"
 
-#~ msgid "Must select File or Directory item to Load"
-#~ msgstr "Պետք է ընտրեք Ֆայլը կամ ցանկի միավորը` բեռնելու համար"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:417
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:446
+msgid "Must select File or Directory item to Load"
+msgstr "Պետք է ընտրեք Ֆայլը կամ ցանկի միավորը` բեռնելու համար"
 
-#~ msgid "Activities must be given a new and unique name"
-#~ msgstr "Գործունեություններին պետք է տալ նոր և միակ անուն"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:512
+msgid "Activities must be given a new and unique name"
+msgstr "Գործունեություններին պետք է տալ նոր և միակ անուն"
 
-#~ msgid "Must select a File or Folder to delete"
-#~ msgstr "Ջնջելու համար պետք է ընտրել Ֆայլը կամ Թղթապանակը"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:584
+msgid "Must select a File or Folder to delete"
+msgstr "Ջնջելու համար պետք է ընտրել Ֆայլը կամ Թղթապանակը"
 
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:590
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:593
 #, python-format
-#~ msgid "Would you like to continue deleting %s?"
-#~ msgstr "Ցանկանու՞մ եք շարունակել ջնջել %s"
+msgid "Would you like to continue deleting %s?"
+msgstr "Ցանկանու՞մ եք շարունակել ջնջել %s"
 
-#~ msgid "CAUTION: You are about to DELETE a FOLDER!!"
-#~ msgstr "Զգուշացում` Դուք պատրաստվում եք ջնջել ԹՂԹԱՊԱՆԱԿԸ"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:591
+msgid "CAUTION: You are about to DELETE a FOLDER!!"
+msgstr "Զգուշացում` Դուք պատրաստվում եք ջնջել ԹՂԹԱՊԱՆԱԿԸ"
 
-#~ msgid "ABOUT TO DELETE A FILE!!"
-#~ msgstr "ՈւՐ ՈՐ Է ՋՆՋՎԵԼՈՒ Է ԹՂԹԱՊԱՆԱԿԸ"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:594
+msgid "ABOUT TO DELETE A FILE!!"
+msgstr "ՈւՐ ՈՐ Է ՋՆՋՎԵԼՈՒ Է ԹՂԹԱՊԱՆԱԿԸ"
 
-#~ msgid "Select OK to abandon changes to "
-#~ msgstr "Ընտրել «OK» տարբերակը` փոփոխությունները կասեցնելու համար "
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:616
+#: /home/olpc/Activities/PyDebug.activity/project.py:335
+msgid "Select OK to abandon changes to "
+msgstr "Ընտրել «OK» տարբերակը` փոփոխությունները կասեցնելու համար "
 
-#~ msgid "Changes have been made to the PyDebug work area."
-#~ msgstr ""
-#~ "Պիթոն վրիպազերծման աշխատանքի համար նախատեսված տիրույթում կատարվել են "
-#~ "փոփոխություններ"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:619
+#: /home/olpc/Activities/PyDebug.activity/project.py:338
+msgid "Changes have been made to the PyDebug work area."
+msgstr ""
+"Պիթոն վրիպազերծման աշխատանքի համար նախատեսված տիրույթում կատարվել են "
+"փոփոխություններ"
 
-#~ msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
-#~ msgstr ""
-#~ "Մատյանից ներբեռնել մի XO արխիվ (or tar.gz) ֆայլ վրիպազերծման աշխատավայրում"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:792
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:57
+msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
+msgstr ""
+"Մատյանից ներբեռնել մի XO արխիվ (or tar.gz) ֆայլ վրիպազերծման աշխատավայրում"
 
-#~ msgid ""
-#~ "Zip up all the files in your debug workplace and store them in the Journal"
-#~ msgstr ""
-#~ "(Zip up)Փոքրացնել բոլոր ֆայլերը ձեր վրիպազերծման աշխատավայրում և պահպանեք "
-#~ "Մատյանում"
+#: /home/olpc/Activities/PyDebug.activity/project_gui.py:796
+#: /home/olpc/Activities/PyDebug.activity/datastoretree.py:61
+msgid ""
+"Zip up all the files in your debug workplace and store them in the Journal"
+msgstr ""
+"(Zip up)Փոքրացնել բոլոր ֆայլերը ձեր վրիպազերծման աշխատավայրում և պահպանեք "
+"Մատյանում"
 
-#~ msgid "New File"
-#~ msgstr "Նոր Ֆայլ"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:54
+msgid "New File"
+msgstr "Նոր Ֆայլ"
 
-#~ msgid "Open File"
-#~ msgstr "Բացել Ֆայլը"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:64
+msgid "Open File"
+msgstr "Բացել Ֆայլը"
 
-#~ msgid "Save File"
-#~ msgstr "Պահպանել Ֆայլը"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:74
+msgid "Save File"
+msgstr "Պահպանել Ֆայլը"
 
-#~ msgid "Save As"
-#~ msgstr "Պահպանել որպես"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:84
+msgid "Save As"
+msgstr "Պահպանել որպես"
 
-#~ msgid "Undo"
-#~ msgstr "Ետարկել"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:109
+msgid "Undo"
+msgstr "Ետարկել"
 
-#~ msgid "Redo"
-#~ msgstr "Կրկին կատարել"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:117
+msgid "Redo"
+msgstr "Կրկին կատարել"
 
-#~ msgid "Cut"
-#~ msgstr "Կտրել"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:132
+msgid "Cut"
+msgstr "Կտրել"
 
-#~ msgid "Find and Replace"
-#~ msgstr "Գտնել և Փոխարինել"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:161
+msgid "Find and Replace"
+msgstr "Գտնել և Փոխարինել"
 
-#~ msgid "Zoom out"
-#~ msgstr "Փոքրացնել"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:174
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:117
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:117
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:117
+msgid "Zoom out"
+msgstr "Փոքրացնել"
 
-#~ msgid "Zoom in"
-#~ msgstr "Խոշորացնել"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:180
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:122
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:122
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:122
+msgid "Zoom in"
+msgstr "Խոշորացնել"
 
-#~ msgid "FIND OR REPLACE"
-#~ msgstr "ԳՏՆԵԼ ԿԱՄ ՓՈԽԱՐԻՆԵԼ"
+#: /home/olpc/Activities/PyDebug.activity/editor_gui.py:359
+msgid "FIND OR REPLACE"
+msgstr "ԳՏՆԵԼ ԿԱՄ ՓՈԽԱՐԻՆԵԼ"
 
-#~ msgid "Edit"
-#~ msgstr "Խմբագրել"
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:279
+#: /home/olpc/Activities/PyDebug.activity/help.py:83
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:51
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:108
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:182
+msgid "Edit"
+msgstr "Խմբագրել"
 
-#~ msgid "Project"
-#~ msgstr "Նախագիծ"
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:280
+#: /home/olpc/Activities/PyDebug.activity/help.py:87
+msgid "Project"
+msgstr "Նախագիծ"
 
-#~ msgid "Help"
-#~ msgstr "Օգնություն"
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:281
+#: /home/olpc/Activities/PyDebug.activity/help.py:92
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/helptemplate.py:45
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:92
+msgid "Help"
+msgstr "Օգնություն"
 
-#~ msgid "Loading Help Page"
-#~ msgstr "Բեռնում է Օգնության Էջը"
+#: /home/olpc/Activities/PyDebug.activity/pydebug.py:458
+msgid "Loading Help Page"
+msgstr "Բեռնում է Օգնության Էջը"
 
+#: /home/olpc/Activities/PyDebug.activity/project.py:298
 #, python-format
-#~ msgid "This journal item does not appear to be a zipped activity. Package:%s."
-#~ msgstr "Մատյանի այս նյութը (Zip up) սեղմագրված գործունեություն չէ: Փաթեթ:%s."
+msgid "This journal item does not appear to be a zipped activity. Package:%s."
+msgstr "Մատյանի այս նյութը (Zip up) սեղմագրված գործունեություն չէ: Փաթեթ:%s."
 
-#~ msgid "Back"
-#~ msgstr "Հետ"
+#: /home/olpc/Activities/PyDebug.activity/help.py:196
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:191
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:36
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:240
+msgid "Back"
+msgstr "Հետ"
 
-#~ msgid "Forward"
-#~ msgstr "Առաջ"
+#: /home/olpc/Activities/PyDebug.activity/help.py:203
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:198
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/toolbar.py:42
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:247
+msgid "Forward"
+msgstr "Առաջ"
 
-#~ msgid "Home"
-#~ msgstr "Տուն"
+#: /home/olpc/Activities/PyDebug.activity/help.py:210
+#: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:205
+msgid "Home"
+msgstr "Տուն"
 
+#: /home/olpc/Activities/PyDebug.activity/page.py:416
 #, python-format
-#~ msgid "Would you like to include %s in your project?"
-#~ msgstr "Ցանկանու՞մ եք ընդգրկել %s ձեր նախագծում"
+msgid "Would you like to include %s in your project?"
+msgstr "Ցանկանու՞մ եք ընդգրկել %s ձեր նախագծում"
 
-#~ msgid "This MODIFIED File is not in your package"
-#~ msgstr "Այս ՓՈՓՈԽՎԱԾ Ֆայլը բացակայում է Ձեր փաթեթից"
+#: /home/olpc/Activities/PyDebug.activity/page.py:417
+msgid "This MODIFIED File is not in your package"
+msgstr "Այս ՓՈՓՈԽՎԱԾ Ֆայլը բացակայում է Ձեր փաթեթից"
 
-#~ msgid "Would you like to Save the file, or cancel and abandon the changes?"
-#~ msgstr ""
-#~ "Ցանկանու՞մ եք պահպանել այս ֆայլը, կամ չեղարկել և հեռանալ փոփոխություններից:"
+#: /home/olpc/Activities/PyDebug.activity/page.py:420
+msgid "Would you like to Save the file, or cancel and abandon the changes?"
+msgstr ""
+"Ցանկանու՞մ եք պահպանել այս ֆայլը, կամ չեղարկել և հեռանալ փոփոխություններից:"
 
-#~ msgid "This File Has Been Changed"
-#~ msgstr "Այս ֆայլը ենթարկվել է փոփոխության"
+#: /home/olpc/Activities/PyDebug.activity/page.py:421
+msgid "This File Has Been Changed"
+msgstr "Այս ֆայլը ենթարկվել է փոփոխության"
 
-#~ msgid "I/O error "
-#~ msgstr "I/O Սխալ "
+#: /home/olpc/Activities/PyDebug.activity/page.py:448
+msgid "I/O error "
+msgstr "I/O Սխալ "
 
-#~ msgid "<ctrl>space"
-#~ msgstr "<ctrl>տարածք"
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
+msgid "<ctrl>space"
+msgstr "<ctrl>տարածք"
 
-#~ msgid "Pygame"
-#~ msgstr "Պիթոն խաղեր"
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:46
+msgid "Pygame"
+msgstr "Պիթոն խաղեր"
 
-#~ msgid "Start"
-#~ msgstr "Սկսել"
+#: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:59
+msgid "Start"
+msgstr "Սկսել"
 
-#~ msgid "Title"
-#~ msgstr "Վերնագիր"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:67
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:123
+msgid "Title"
+msgstr "Վերնագիր"
 
 # Multipurpose Internet Mail Extensions
-#~ msgid "MIME"
-#~ msgstr "MIME"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:72
+msgid "MIME"
+msgstr "MIME"
 
-#~ msgid "Journal"
-#~ msgstr "Մատյան"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:87
+msgid "Journal"
+msgstr "Մատյան"
 
-#~ msgid "Save"
-#~ msgstr "Պահպանել"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:100
+msgid "Save"
+msgstr "Պահպանել"
 
-#~ msgid "Delete"
-#~ msgstr "Ջնջել"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:108
+msgid "Delete"
+msgstr "Ջնջել"
 
-#~ msgid "Description"
-#~ msgstr "Նկարագրություն"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:138
+msgid "Description"
+msgstr "Նկարագրություն"
 
-#~ msgid "Tags"
-#~ msgstr "Պիտակներ"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:156
+msgid "Tags"
+msgstr "Պիտակներ"
 
-#~ msgid "Copy File To The Journal"
-#~ msgstr "Պատճենել Ֆայլը Մատյանում"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:198
+msgid "Copy File To The Journal"
+msgstr "Պատճենել Ֆայլը Մատյանում"
 
-#~ msgid "Files"
-#~ msgstr "ֆայլեր"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:206
+msgid "Files"
+msgstr "ֆայլեր"
 
-#~ msgid "Success"
-#~ msgstr "Հաջողում"
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
+msgid "Success"
+msgstr "Հաջողում"
 
+#: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
 #, python-format
-#~ msgid "%s added to Journal."
-#~ msgstr "%s ավելացված է Մատյանում"
+msgid "%s added to Journal."
+msgstr "%s ավելացված է Մատյանում"
 
-#~ msgid "Read"
-#~ msgstr "Ընթերցել"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:55
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:112
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:186
+msgid "Read"
+msgstr "Ընթերցել"
 
-#~ msgid "View"
-#~ msgstr "Տեսք"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:63
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Using_PyGame/Demoiselle.activity/DemoiselleActivity.py:56
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:120
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:194
+msgid "View"
+msgstr "Տեսք"
 
-#~ msgid "Hello, World!"
-#~ msgstr "Ողջո'ւյն Աշխարհ"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Text_to_Speech/gst_choir_example.py:34
+msgid "Hello, World!"
+msgstr "Ողջո'ւյն Աշխարհ"
 
-#~ msgid "Off-line"
-#~ msgstr "Կապից դուրս"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
+msgid "Off-line"
+msgstr "Կապից դուրս"
 
-#~ msgid "Share, or invite someone."
-#~ msgstr "Համատեղ օգտագործել կամ հրավիրել որևէ մեկին"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
+msgid "Share, or invite someone."
+msgstr "Համատեղ օգտագործել կամ հրավիրել որևէ մեկին"
 
-#~ msgid "On-line"
-#~ msgstr "Կապի մեջ"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
+msgid "On-line"
+msgstr "Կապի մեջ"
 
-#~ msgid "Connected"
-#~ msgstr "Միացված"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
+msgid "Connected"
+msgstr "Միացված"
 
-#~ msgid "joined the chat"
-#~ msgstr "Միացել է զրույցին"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:125
+msgid "joined the chat"
+msgstr "Միացել է զրույցին"
 
-#~ msgid "left the chat"
-#~ msgstr "Հեռացավ զրույցից"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:136
+msgid "left the chat"
+msgstr "Հեռացավ զրույցից"
 
-#~ msgid "is here"
-#~ msgstr "այստեղ է"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:147
+msgid "is here"
+msgstr "այստեղ է"
 
-#~ msgid "Failure"
-#~ msgstr "Ձախողում"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
+msgid "Failure"
+msgstr "Ձախողում"
 
-#~ msgid "Error getting document from tube"
-#~ msgstr "Ձախողում` էլեկտրո-ճառագայթային սարքավորումից փաստաթուղթ ստանալիս"
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
+#: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
+msgid "Error getting document from tube"
+msgstr "Ձախողում` էլեկտրո-ճառագայթային սարքավորումից փաստաթուղթ ստանալիս"
 
-#~ msgid "trace"
-#~ msgstr "հետևել"
+#: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:54
+msgid "trace"
+msgstr "հետևել"
 
-#~ msgid ""
-#~ "\n"
-#~ "\n"
-#~ "There is no program loaded into the Work Area. \n"
-#~ "Please use the \"Project\" tab so set up the debug session\n"
-#~ "\n"
-#~ msgstr ""
-#~ "\n"
-#~ "\n"
-#~ "Աշխատատարածքում ներբեռնված ծրագիր չկա. \n"
-#~ "Օգտագործեք «Ծրագիր» էջանիշը` վրիպազերծման գործողությունը տեղադրելու համար\n"
-#~ "\n"
+#: /home/olpc/Activities/PyDebug.activity/bin/continue_debug.py:126
+msgid ""
+"\n"
+"\n"
+"There is no program loaded into the Work Area. \n"
+"Please use the \"Project\" tab so set up the debug session\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Աշխատատարածքում ներբեռնված ծրագիր չկա. \n"
+"Օգտագործեք «Ծրագիր» էջանիշը` վրիպազերծման գործողությունը տեղադրելու համար\n"
+"\n"
