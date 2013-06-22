@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-12-20 12:48+0000\n"
-"PO-Revision-Date: 2013-06-17 19:23+0200\n"
+"PO-Revision-Date: 2013-06-23 00:53+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: ayc\n"
@@ -242,39 +242,44 @@ msgstr "Jajllma OK jaqtañanaka sayt'ayañataki "
 #: /home/olpc/Activities/PyDebug.activity/project.py:338
 msgid "Changes have been made to the PyDebug work area."
 msgstr ""
+"Python wakichata taypita luräwinaka chhaqtayañana mayjt'äwinakawa apasi."
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:792
 #: /home/olpc/Activities/PyDebug.activity/datastoretree.py:57
 msgid "Load the selected Journal XO (or tar.gz) file to the debug workplace"
 msgstr ""
+"XO imata wakichata taypita sapüru luräwi qhantayma (o tar.gz) chhaqtayaña "
+"wakichataru wakisiri"
 
 #: /home/olpc/Activities/PyDebug.activity/project_gui.py:796
 #: /home/olpc/Activities/PyDebug.activity/datastoretree.py:61
 msgid ""
 "Zip up all the files in your debug workplace and store them in the Journal"
 msgstr ""
+"Zipea wakicha taypiru imthapisa chhaqtayaña luräwinaka taypita sapa uru "
+"luräwiru imma"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:54
 msgid "New File"
-msgstr ""
+msgstr "Machaqa imata wakichata"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:64
 msgid "Open File"
-msgstr ""
+msgstr "Imata wakichata uñantaña"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:74
 msgid "Save File"
-msgstr ""
+msgstr "Imata wakichata imaña"
 
 #  "Guardar como"
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:84
 msgid "Save As"
-msgstr "Sutini imaña"
+msgstr "Yaqha sutini imaña"
 
 #  "Deshacer"
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:109
 msgid "Undo"
-msgstr "Jani wali lurjaña"
+msgstr "Kutjaña"
 
 #  "Rehacer"
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:117
@@ -288,7 +293,7 @@ msgstr "Apaqaña"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:161
 msgid "Find and Replace"
-msgstr ""
+msgstr "Thaqaña ukata jaqtaña"
 
 #  "Reducir"
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:174
@@ -308,7 +313,7 @@ msgstr "Jach'aptayaña"
 
 #: /home/olpc/Activities/PyDebug.activity/editor_gui.py:359
 msgid "FIND OR REPLACE"
-msgstr ""
+msgstr "Thaqaña jani ukaxa jaqtaña"
 
 #  "Editar"
 #: /home/olpc/Activities/PyDebug.activity/pydebug.py:279
@@ -335,12 +340,14 @@ msgstr "Yanapt'awi"
 
 #: /home/olpc/Activities/PyDebug.activity/pydebug.py:458
 msgid "Loading Help Page"
-msgstr ""
+msgstr "Yanapañataki wakichata qhantayma"
 
 #: /home/olpc/Activities/PyDebug.activity/project.py:298
 #, python-format
 msgid "This journal item does not appear to be a zipped activity. Package:%s."
 msgstr ""
+"Akïri sapa uru luräwiru qillqantata najiwa zipeada wakichatjamäkiti. "
+"Wakichata:%s."
 
 #  "Volver"
 #: /home/olpc/Activities/PyDebug.activity/help.py:196
@@ -365,54 +372,55 @@ msgstr "Sartawi"
 #: /home/olpc/Activities/PyDebug.activity/help.py:210
 #: /home/olpc/Activities/PyDebug.activity/examples/HelpTemplate.activity/help/help.py:205
 msgid "Home"
-msgstr ""
+msgstr "Uta"
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:416
 #, python-format
 msgid "Would you like to include %s in your project?"
-msgstr ""
+msgstr "¿Wakichäwiparu yapxataña muntati %s?"
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:417
 msgid "This MODIFIED File is not in your package"
-msgstr ""
+msgstr "Akïri MAYJT'AYATA imaña wakichataxa janiwa wakichäwinakapana utjiti"
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:420
 msgid "Would you like to Save the file, or cancel and abandon the changes?"
 msgstr ""
+"Wakichata imaña muntati, jani ukaxa sayt'ayaña ukata mayjt'ayaña "
+"sayt'ayancha?"
 
 #: /home/olpc/Activities/PyDebug.activity/page.py:421
 msgid "This File Has Been Changed"
-msgstr ""
+msgstr "Akïri imaña wakichata mayjt'atawa"
 
 #  "E/S error "
 #: /home/olpc/Activities/PyDebug.activity/page.py:448
-#, fuzzy
 msgid "I/O error "
-msgstr "Pantjata I/O "
+msgstr "Pantjata E/S "
 
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:38
 msgid "<ctrl>space"
-msgstr ""
+msgstr "<ctrl>utjiri"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:46
 msgid "Pygame"
-msgstr ""
+msgstr "Pygame wakichata"
 
 #  "Comenzar"
 #: /home/olpc/Activities/PyDebug.activity/examples/sugargame/Template.activity/TestActivity.py:59
 msgid "Start"
-msgstr "Qalltawi"
+msgstr "Qalltaña"
 
 #  "Título"
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:67
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:123
 msgid "Title"
-msgstr "Suti"
+msgstr "P'iqinchiri Suti"
 
 #  "MIME"
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:72
 msgid "MIME"
-msgstr "MIME"
+msgstr "MIME wakichata"
 
 #  "Diario"
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:87
@@ -436,24 +444,24 @@ msgstr "Yatiyaña"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:156
 msgid "Tags"
-msgstr ""
+msgstr "Sutinchanaka"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:198
 msgid "Copy File To The Journal"
-msgstr ""
+msgstr "Sapa uru luräwiru imaña wakichata apaqma"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:206
 msgid "Files"
-msgstr ""
+msgstr "Imaña wakichatanaka"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
 msgid "Success"
-msgstr ""
+msgstr "Nayraru sartaña"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/SugarCommander.activity/sugarcommander.py:462
 #, python-format
 msgid "%s added to Journal."
-msgstr ""
+msgstr "%s Sapa uru luräwiru yapxatatawa."
 
 # "Leer"
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Add_Refinements/ReadEtexts II.activity/ReadEtextsActivity2.py:55
@@ -470,21 +478,22 @@ msgstr "Ullaña"
 msgid "View"
 msgstr "Unjaña"
 
+# Hola, Mundo!
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/Text_to_Speech/gst_choir_example.py:34
 msgid "Hello, World!"
-msgstr ""
+msgstr "Kamisaki, Pacha!"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
 msgid "Off-line"
-msgstr ""
+msgstr "Mayachatata mistuta"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:70
 msgid "Share, or invite someone."
-msgstr ""
+msgstr "Chikaña, jani ukaxa mayniri waxt'aña."
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
 msgid "On-line"
-msgstr ""
+msgstr "Mayachata"
 
 # "Conectado"
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:91
@@ -493,29 +502,29 @@ msgstr "Mayachata"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:125
 msgid "joined the chat"
-msgstr ""
+msgstr "Chat wakichataru mayachasi"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:136
 msgid "left the chat"
-msgstr ""
+msgstr "Chat wakichatata mistutawa"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/MiniChat/Mini Chat.activity/minichat.py:147
 msgid "is here"
-msgstr ""
+msgstr "akankiwa"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
 msgid "Failure"
-msgstr ""
+msgstr "Jani walt'ata"
 
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts III.activity/ReadEtextsActivity3.py:540
 #: /home/olpc/Activities/PyDebug.activity/examples/Making_Activities/New_Toolbars/ReadEtexts IV.activity/ReadEtextsActivity4.py:705
 msgid "Error getting document from tube"
-msgstr ""
+msgstr "Pantjatawa wakichata qhantaykipa"
 
 #: /home/olpc/Activities/PyDebug.activity/bin/start_debug.py:54
 msgid "trace"
-msgstr ""
+msgstr "saräwi"
 
 #: /home/olpc/Activities/PyDebug.activity/bin/continue_debug.py:126
 msgid ""
@@ -525,3 +534,8 @@ msgid ""
 "Please use the \"Project\" tab so set up the debug session\n"
 "\n"
 msgstr ""
+"\n"
+"\n"
+"Wakichäwi phuqañana janiwa maya wakichatasa utjiti. \n"
+"Mira suma \"Wakichäwi\" chimpu katma chhaqtayaña sayt'ayañataki\n"
+"\n"
