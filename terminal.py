@@ -16,7 +16,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import os
-import ConfigParser
 
 from gettext import gettext as _
 
@@ -241,62 +240,16 @@ class Terminal:
 
         return False
 
-    def _get_conf(self, conf, var, default):
-        if conf.has_option('terminal', var):
-            if isinstance(default, bool):
-                return conf.getboolean('terminal', var)
-
-            elif isinstance(default, int):
-                return conf.getint('terminal', var)
-
-            else:
-                return conf.get('terminal', var)
-
-        else:
-            conf.set('terminal', var, default)
-
-            return default
-
     def _configure_vt(self, vt):
-        conf = ConfigParser.ConfigParser()
-        conf_file = os.path.join(os.environ['HOME'], 'terminalrc')
+        vt.set_font(Pango.FontDescription("Monospace"))
 
-        if os.path.isfile(conf_file):
-            f = open(conf_file, 'r')
-            conf.readfp(f)
-            f.close()
-
-        else:
-            conf.add_section('terminal')
-
-        font = self._get_conf(conf, 'font', 'Monospace')
-        vt.set_font(Pango.FontDescription(font))
-
-        fg_color = self._get_conf(conf, 'fg_color', '#000000')
-        bg_color = self._get_conf(conf, 'bg_color', '#FFFFFF')
-        vt.set_colors(Gdk.RGBA.from_color(Gdk.Color.parse(fg_color)[1]),
-                      Gdk.RGBA.from_color(Gdk.Color.parse(bg_color)[1]),
+        vt.set_colors(Gdk.RGBA.from_color(Gdk.Color.parse("#000000")[1]),
+                      Gdk.RGBA.from_color(Gdk.Color.parse("#FFFFFF")[1]),
                       [])
 
-        bell = self._get_conf(conf, 'bell', False)
-        vt.set_audible_bell(bell)
-
-        scrollback_lines = self._get_conf(conf, 'scrollback_lines', 1000)
-        vt.set_scrollback_lines(scrollback_lines)
-
+        vt.set_audible_bell(False)
+        vt.set_scrollback_lines(1000)
         vt.set_allow_bold(True)
-
-        scroll_key = self._get_conf(conf, 'scroll_on_keystroke', True)
-        vt.set_scroll_on_keystroke(scroll_key)
-
-        scroll_output = self._get_conf(conf, 'scroll_on_output', False)
-        vt.set_scroll_on_output(scroll_output)
-
-        ##emulation = self._get_conf(conf, 'emulation', 'xterm')
-        ##vt.set_emulation(emulation)
-
-        ##visible_bell = self._get_conf(conf, 'visible_bell', False)
-        ##vt.set_visible_bell(visible_bell)
-
-        conf.write(open(conf_file, 'w'))
+        vt.set_scroll_on_keystroke(True)
+        vt.set_scroll_on_output(False)
 
