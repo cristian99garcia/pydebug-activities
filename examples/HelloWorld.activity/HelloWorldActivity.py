@@ -1,10 +1,13 @@
-from sugar.activity import activity
 import logging
+from gi.repository import Gtk
 
-import sys, os
-import gtk
+from sugar3.activity import activity
+from sugar3.activity.widgets import StopButton
+from sugar3.graphics.toolbarbox import ToolbarBox
+
 
 class HelloWorldActivity(activity.Activity):
+
     def hello(self, widget, data=None):
         logging.info('Hello World')
 
@@ -18,12 +21,21 @@ class HelloWorldActivity(activity.Activity):
         # Creates the Toolbox. It contains the Activity Toolbar, which is the
         # bar that appears on every Sugar window and contains essential
         # functionalities, such as the 'Collaborate' and 'Close' buttons.
-        toolbox = activity.ActivityToolbox(self)
-        self.set_toolbox(toolbox)
-        toolbox.show()
+        toolbarbox = ToolbarBox()
+        self.set_toolbar_box(toolbox)
+
+        separator = Gtk.SeparatorToolItem()
+        separator.props.draw = False
+        separator.set_expand(True)
+        toolbarbox.toolbar.insert(separator, -1)
+
+        button = StopButton(self)
+        toolbarbox.toolbar.insert(separator, -1)
+
+        toolbarbox.show_all()
 
         # Creates a new button with the label "Hello World".
-        self.button = gtk.Button("Hello World")
+        self.button = Gtk.Button("Hello World")
     
         # When the button receives the "clicked" signal, it will call the
         # function hello() passing it None as its argument.  The hello()
@@ -38,3 +50,4 @@ class HelloWorldActivity(activity.Activity):
         self.button.show()
     
         print "AT END OF THE CLASS"
+

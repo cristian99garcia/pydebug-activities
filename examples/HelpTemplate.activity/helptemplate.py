@@ -15,21 +15,28 @@
 import os
 from gettext import gettext as _
 
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
+
 import logging
 _logger = logging.getLogger('HelpTemplate')
 _logger.setLevel(logging.DEBUG)
 
-from sugar.activity import activity
-from sugar.graphics.toolbutton import ToolButton
+from sugar3.activity import activity
+from sugar3.activity.widgets import StopButton
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.graphics.toolbarbox import ToolbarButton
+
 from help.help import Help
 
 HOME = os.path.join(activity.get_bundle_path(), 'help/XO_Introduction.html')
 #HOME = "http://website.com/something.html"
 HELP_TAB = 1
 
+
 class HelpTemplate(activity.Activity):
+
     def __init__(self, handle):
         activity.Activity.__init__(self, handle, create_jobject = False)
 
@@ -38,22 +45,20 @@ class HelpTemplate(activity.Activity):
         self.handle = handle
         self.help = Help(self)
 
-        self.toolbox = activity.ActivityToolbox(self)
-        self.toolbox.connect_after('current_toolbar_changed',self._toolbar_changed_cb)
-        self.toolbox.show()
+        self.toolbarbox = ToolbarBox()
+        self.toolbarbox.show_all()
 
-        toolbar = gtk.Toolbar()
-        self.toolbox.add_toolbar(_('Help'), toolbar)
+        toolbar = Gtk.Toolbar()
+        toolbar.insert(ToolbarButton(page=toolbar, icon_name='help-about'), -1)
         toolbar.show()
 
-        label = gtk.Button('Help Template')
+        label = Gtk.Button('Help Template')
         label.show()
         self.set_canvas(label)
 
-        self.set_toolbox(self.toolbox)
-        self.toolbox.set_current_toolbar(0)
+        self.set_toolbar_box(self.toolbarbox)
 
-    def _toolbar_changed_cb(self,widget,tab_no):
+    def _toolbar_changed_cb(self,widget, tab_no):
         if tab_no == HELP_TAB:
             self.help_selected()
             
@@ -66,24 +71,12 @@ class HelpTemplate(activity.Activity):
     def __stop_clicked_cb(self,button):
         _logger.debug('caught stop clicked call back')
         self.close(skip_save = True)
-        
 
-            
     ################  Help routines
     def help_selected(self):
         """
         if help is not created in a gtk.mainwindow then create it
         else just switch to that viewport
         """
-        if not self.help_x11:
-            screen = gtk.gdk.screen_get_default()
-            self.pdb_window = screen.get_root_window()
-            _logger.debug('xid for pydebug:%s'%self.pdb_window.xid)
-            #self.window_instance = self.window.window
-            self.help_x11 = self.help.realize_help()
-            #self.x11_window = self.get_x11()os.geteuid()
-        else:
-            self.help.activate_help()
-            #self.help.reshow()
-            #self.help.toolbox.set_current_page(self.panes['HELP']
-    
+        self.help.activate_help()
+
