@@ -209,7 +209,7 @@ class FileTree:
             return self.get_icon_pixbuf('STOCK_FILE')
 
     def get_icon_pixbuf(self, stock):
-        return self.treeview.render_icon(stock_id=getattr(gtk, stock),
+        return self.treeview.render_icon(stock_id=getattr(Gtk, stock),
                                 size=Gtk.IconSize.MENU,
                                 detail=None)
 
