@@ -16,21 +16,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from gi.repository import Gtk
-from gi.repository import Gdk
-
-from sugar3.graphics.xocolor import XoColor
-from sugar3.graphics.icon import Icon
-from sugar3.graphics.toolcombobox import ToolComboBox
-from sugar3.graphics.toolbutton import ToolButton
-from sugar3.graphics.toolbarbox import ToolbarBox
-from sugar3.activity.widgets import ActivityToolbarButton
-
+import logging
 from gettext import gettext as _
 
-# Initialize logging.
-import logging
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GObject
+
 from sugar3 import logger
+from sugar3.graphics.icon import Icon
+from sugar3.graphics.xocolor import XoColor
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.graphics.toolbarbox import ToolbarBox
+from sugar3.graphics.toolcombobox import ToolComboBox
+from sugar3.activity.widgets import ActivityToolbarButton
 
 #Get the standard logging directory.
 std_log_dir = logger.get_logs_dir()

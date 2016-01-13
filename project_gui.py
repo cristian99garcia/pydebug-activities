@@ -47,18 +47,18 @@ PROJECT_BG = '#FFFFCC'
 
 class ProjectGui(ProjectFunctions):
 
-    def __init__(self,activity):
+    def __init__(self, activity):
         self._activity = activity
         self.file_pane_is_activities = False
         self.manifest_class = None
         self.journal_class = None
-        
+
         #establish the glade pydebug connection
         self.connect_journal()
-        
+
         #disable the change callbacks on the activity.info panel
         self.ignore_changes = True
-        
+
         #set up the toolbar
         project_run = ToolButton(stock_id=Gtk.STOCK_MEDIA_FORWARD)
         project_run.set_icon_widget(None)
@@ -121,7 +121,7 @@ class ProjectGui(ProjectFunctions):
         self.examples_treeview = self.project_win_toplevel.examples
         ##self.examples_window = FileTree(self._activity, self.examples_treeview,self.wTree)
         ##self.examples_window.set_file_sys_root(os.path.join (self._activity.sugar_bundle_path, 'examples'))
-        self.journal_treeview = self.self.project_win_toplevel.journal
+        self.journal_treeview = self.project_win_toplevel.journal
         ##self.journal_class = DataStoreTree(self._activity, self.journal_treeview, self.wTree)
 
         ##if self.journal_class:
@@ -139,9 +139,9 @@ class ProjectGui(ProjectFunctions):
 
         cell = Gtk.CellRendererText()
         self.icon_type.set_model(model)
-        self.icon_type.pack_start(cell)
-        self.icon_type.add_attribute(cell,'text',1)
-        self.icon_type.set_active(self._activity.debug_dict.get('icon_active',1))
+        self.icon_type.pack_start(cell, False)
+        self.icon_type.add_attribute(cell, 'text', 1)
+        self.icon_type.set_active(self._activity.debug_dict.get('icon_active', 1))
 
         if self._activity.child_path and self._activity.child_path.endswith('.activity') and os.path.isdir(self._activity.child_path):
             self.setup_new_activity()
@@ -334,16 +334,16 @@ class ProjectGui(ProjectFunctions):
             but.show()
             #display_label = self.storage[:18]+' . . . '+self.storage[-24:]
             display_label = 'PyDebug SHELF storage:'
-            self.activity_window.set_file_sys_root(self._activity.storage)
+            ##self.activity_window.set_file_sys_root(self._activity.storage)
             window_label.set_text(display_label)
 
         else:
             to_what.set_label('shelf')
             but.hide()
             activity_dir = os.path.dirname(self._activity.sugar_bundle_path)
-            self.activity_window.set_file_sys_root(activity_dir)
-            self.activity_window.set_file_sys_root('/usr/share/activities', append = True)        
-            self.activity_window.set_file_sys_root('/usr/share/sugar/activities', append = True)        
+            ##self.activity_window.set_file_sys_root(activity_dir)
+            ##self.activity_window.set_file_sys_root('/usr/share/activities', append = True)
+            ##self.activity_window.set_file_sys_root('/usr/share/sugar/activities', append = True)
             button = self.project_win_toplevel.from_activities
             button.set_tooltip_text(_('Copy the selected Activity or file to the debug workplace'))
             window_label.set_text('INSTALLED ACTIVITIES:')

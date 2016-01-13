@@ -26,14 +26,15 @@ from gi.repository import Gtk
 from gi.repository import GObject
 
 #sugar stuff
-from sugar3.graphics.toolbutton import ToolButton
-from sugar3.graphics.xocolor import XoColor
+from sugar3 import profile
+from sugar3.activity import activity
 from sugar3.graphics.icon import Icon
 from sugar3.datastore import datastore
-from sugar3.bundle.activitybundle import ActivityBundle
-from sugar3.activity import activity
+from sugar3.graphics.xocolor import XoColor
 from sugar3.activity.activity import Activity
-from sugar3 import profile
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.activity.widgets import ToolbarButton
+from sugar3.bundle.activitybundle import ActivityBundle
 
 #application stuff
 from terminal_gui import TerminalGui
@@ -168,7 +169,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         TerminalGui.__init__(self, self, self.toolbarbox)
         EditorGui.__init__(self, self)
         ProjectGui.__init__(self,self)
-        self.help = Help(self)
+        ##self.help = Help(self)
         self.util = Utilities(self)
         #########################################################################################
 
@@ -192,22 +193,13 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
 
         self.safe_to_replace = False
         
-        #get the sugar version
-        (major,minor,micro,release) = self._activity.util.sugar_version()
-        _logger.debug('sugar version major:%s minor:%s micro:%s release:%s'%(major,minor,micro,release))
-
-        if not minor:
-            minor = 70
-
-        self.sugar_minor = minor
-        
         #########################################################################################
-            
+
         _logger.debug('All app objects created. about to set up Display . Elapsed time: %f'%(time.clock()-start_clock))
         self.canvas_list = []
         self.canvas_list.append(self._get_terminal_canvas())
-        self.canvas_list.append(self._get_edit_canvas()) 
-        self.canvas_list.append(self._get_project_canvas()) 
+        self.canvas_list.append(self._get_edit_canvas())
+        self.canvas_list.append(self._get_project_canvas())
         self.canvas_list.append(self._get_help_canvas())
 
         nb = Gtk.Notebook()
@@ -222,18 +214,17 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         #the following call to the activity code puts our notebook under the stock toolbar
         self.set_canvas(nb)
                 
-        helpbar = self.help.get_help_toolbar()
+        ##helpbar = self.help.get_help_toolbar()
 
-        self.toolbarbox.toolbar.insert(ToolbarButton(page=self.get_editbar(), icon_name='toolbar-edit'))
-        self.toolbarbox.add_toolbar(ToolbarButton(page=self.get_projectbar(), icon_name='system-run'))
-        self.toolbarbox.add_toolbar(_('Help'), self.help.get_help_toolbar())
-        self.set_toolbarbox(self.toolbarbox)
-        self.toolbarbox.show()
-        
+        self.toolbarbox.toolbar.insert(ToolbarButton(page=self.get_editbar(), icon_name='toolbar-edit'), -1)
+        self.toolbarbox.toolbar.insert(ToolbarButton(page=self.get_projectbar(), icon_name='system-run'), -1)
+        ##self.toolbarbox.toolbar.insert(_('Help'), self.help.get_help_toolbar(), -1)
+        self.set_toolbar_box(self.toolbarbox)
+        self.toolbarbox.show_all()
+
         #set which PANE is visible initially
         self.set_visible_canvas(self.panes['PROJECT'])
-        self.set_toolbar(self.panes['PROJECT'])
-        
+
         _logger.debug('about to setup_project_page. Elapsed time: %f' % (time.clock() - start_clock))
         self.setup_project_page()
         _logger.debug('about Returned from setup_project_page. Elapsed time: %f' % (time.clock() - start_clock))
@@ -249,7 +240,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         _logger.debug('about to  call read  routine  Elapsed time: %f' % (time.clock() - start_clock))
         self.read_file(ds_file)
         _logger.debug('about  (end of init) Elapsed time: %f' % (time.clock() - start_clock))
-        
+
     #########################################################################################
 
     def get_activity_toolbarbox(self):
@@ -271,8 +262,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         
     def __stop_clicked_cb(self,button):
         _logger.debug('caught stop clicked call back')
-        #threaded_server_close()
-        self.help.close_pydoc()
+        ##self.help.close_pydoc()
         self.save_all_breakpoints()
         self.close(skip_save = False)
 
@@ -283,6 +273,7 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         self.panes[PANES[i]] = i
         self.canvas_list.append(funct())
         i += 1
+
         return i
     
     def make_paths(self):
@@ -480,9 +471,6 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         self.pydebug_notebook.grab_focus()
         return False
 
-    def set_toolbar(self,page_no):
-        self.toolbarbox.set_current_toolbar(page_no)
-
     def key_press_cb(self,widget,event):
         state = event.get_state()
         if state and Gdk.ModifierType.SHIFT_MASK and Gdk.ModifierType.CONTROL_MASK and Gdk.ModifierType.MOD1_MASK == 0:  ## It's ever is 8, no 0
@@ -611,7 +599,8 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
             #self.x11_window = self.get_x11()os.geteuid()
 
         else:
-            self.help.activate_help()
+            ##self.help.activate_help()
+            pass
 
     def save_editor_status(self):
         if self.edit_notebook.get_n_pages() == 0: return

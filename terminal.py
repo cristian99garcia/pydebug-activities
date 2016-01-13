@@ -63,7 +63,7 @@ class Terminal:
         #self.feed_virtual_terminal(0,cmd)
 
     def _get_terminal_canvas(self):
-        self.terminal_notebook.set_property("tab-pos", Gtk.PossitionType.BOTTOM)
+        self.terminal_notebook.set_property("tab-pos", Gtk.PositionType.BOTTOM)
         self.terminal_notebook.set_scrollable(True)
         self.terminal_notebook.show()
         return self.terminal_notebook
