@@ -16,34 +16,37 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-from __future__ import with_statement
-import os, shutil, sys, time
-
+import os
+import shutil
+import time
 from gettext import gettext as _
 
+import project_glade
+
 #major packages
-import gtk
-import gtk.glade
+from gi.repository import Gtk
+from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 
 #sugar stuff
-from sugar.graphics.toolbutton import ToolButton
-from sugar.graphics.icon import Icon
-import sugar.graphics.toolbutton
-from sugar.datastore import datastore
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.graphics.icon import Icon
+from sugar3.datastore import datastore
 
 #pydebug stuff
 from filetree import FileTree
 from project import ProjectFunctions
 
-from  pydebug_logging import _logger, log_environment
-
+from pydebug_logging import _logger
 
 #colors for the playpen side of the project page
 PROJECT_FG = '#990000'
 PROJECT_BASE = "#fdd99b"
 PROJECT_BG = '#FFFFCC'
 
+
 class ProjectGui(ProjectFunctions):
+
     def __init__(self,activity):
         self._activity = activity
         self.file_pane_is_activities = False
@@ -51,35 +54,32 @@ class ProjectGui(ProjectFunctions):
         self.journal_class = None
         
         #establish the glade pydebug connection
-        self.wTree=gtk.glade.XML(os.path.join(activity.sugar_bundle_path,"project.glade"))
         self.connect_journal()
         
         #disable the change callbacks on the activity.info panel
         self.ignore_changes = True
         
         #set up the toolbar
-        project_run = ToolButton()
-        project_run.set_stock_id('gtk-media-forward')
+        project_run = ToolButton(stock_id=Gtk.STOCK_MEDIA_FORWARD)
         project_run.set_icon_widget(None)
         project_run.set_tooltip(_('Start Debugging'))
         project_run.connect('clicked', self._activity.project_run_cb)
-        project_run.add_accelerator('clicked',self._activity.accelerator,ord('G'),\
-                                    gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        project_run.add_accelerator('clicked',self._activity.accelerator, ord('G'), Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.VISIBLE)
         #project_run.props.accelerator = '<Ctrl>C'
         project_run.show()
-        
-        separator = gtk.SeparatorToolItem()
+
+        separator = Gtk.SeparatorToolItem()
         separator.set_draw(False)
         separator.set_expand(True)
         separator.show()
 
         stop_button = ToolButton('activity-stop')
         stop_button.set_tooltip(_('Stop'))
-        #stop_button.props.accelerator = '<Ctrl>Q'
+        stop_button.props.accelerator = '<Ctrl>Q'
         stop_button.connect('clicked', self.__stop_clicked_cb)
         stop_button.show()
 
-        projectbar = gtk.Toolbar()
+        projectbar = Gtk.Toolbar()
         projectbar.show_all()
         projectbar.insert(project_run, -1)
         projectbar.insert(separator, -1)
@@ -89,8 +89,6 @@ class ProjectGui(ProjectFunctions):
         
     def __stop_clicked_cb(self, button):
         self._activity.py_stop()
-        
-        #########################################################################################
         
     def get_editor(self):
         raise NotImplimentedError
@@ -106,157 +104,139 @@ class ProjectGui(ProjectFunctions):
 
     def _get_project_canvas(self):
         #initialize the link between program and the glade XML file
-        self.contents = self.wTree.get_widget("contents")
+        self.project_win_toplevel = project_glade.toplevel()
+        self.contents = self.project_win_toplevel.contents
         self.contents.unparent()
         return self.contents
     
     def setup_project_page(self):
-        self.activity_treeview = self.wTree.get_widget('file_system')
-        self.activity_window = FileTree(self, self.activity_treeview,self.wTree)
+        ## FIXME
+
+        self.activity_treeview = self.project_win_toplevel.file_system
+        ##self.activity_window = FileTree(self, self.activity_treeview,self.wTree)
         #activity_dir = os.path.dirname(self._activity.sugar_bundle_path)
         #self.activity_window.set_file_sys_root(activity_dir)
         #self.activity_window.set_file_sys_root('/usr/share/activities', append = True)
-        
-        self.examples_treeview = self.wTree.get_widget('examples')
-        self.examples_window = FileTree(self._activity, self.examples_treeview,self.wTree)
-        self.examples_window.set_file_sys_root(os.path.join\
-                                (self._activity.sugar_bundle_path,'examples'))
-        self.journal_treeview = self.wTree.get_widget('journal')
-        self.journal_class = DataStoreTree(self._activity,self.journal_treeview,self.wTree)
-        if self.journal_class:
-            _logger.debug('journal class object created')
+
+        self.examples_treeview = self.project_win_toplevel.examples
+        ##self.examples_window = FileTree(self._activity, self.examples_treeview,self.wTree)
+        ##self.examples_window.set_file_sys_root(os.path.join (self._activity.sugar_bundle_path, 'examples'))
+        self.journal_treeview = self.self.project_win_toplevel.journal
+        ##self.journal_class = DataStoreTree(self._activity, self.journal_treeview, self.wTree)
+
+        ##if self.journal_class:
+        ##    _logger.debug('journal class object created')
+
         self.connect_project_info()  #make connections to signals from buttons
         self.activity_toggled_cb(None)
-        
-        self.icon_type = self.wTree.get_widget('icon_outline')
-        model = gtk.ListStore(str,str)
+
+        self.icon_type = self.project_win_toplevel.icon_outline
+        model = Gtk.ListStore(str, str)
         model.append(["icon_circle", _('Circle')])
         model.append(['icon_square', _('Square')])
         model.append(['icon_diamond', _('Diamond')])
         model.append(['icon_star', _('Star')])
-        cell = gtk.CellRendererText()
+
+        cell = Gtk.CellRendererText()
         self.icon_type.set_model(model)
         self.icon_type.pack_start(cell)
         self.icon_type.add_attribute(cell,'text',1)
         self.icon_type.set_active(self._activity.debug_dict.get('icon_active',1))
-        
-        if self._activity.child_path and self._activity.child_path.endswith('.activity') and \
-                                os.path.isdir(self._activity.child_path):
+
+        if self._activity.child_path and self._activity.child_path.endswith('.activity') and os.path.isdir(self._activity.child_path):
             self.setup_new_activity()
-        """
-        ds_mounts = datastore.mounts()
-        for x in ds_mounts:
-            _logger.debug('Title:%s Uri:%s'%(x.get('title'),x.get('uri')))
-        """
+
         self.activity_data_changed = False
-        
-        """
-        #get set to sense addition of a usb flash drive
-        self.volume_monitor = gio.volume_monitor_get()
-        self.volume_monitor.connect('mount-added',self.__mount_added_cb)
-        self.volume_monitor.connect('mount-removed',self.__mount_removed_cb)
-        mount_list = self.volume_monitor.get_mounts()
-        for m in mount_list:
-            s = m.get_root().get_path()
-            if s.startswith('/media'):_logger.debug('volume:%s',s)
-        """
-    
-        ############################################################################
+
     #first connect the glade xml file to the servicing call backs
     def connect_project_info(self,  wTree=None):
         mdict = {
-                 'name_leave_notify_event_cb':self.name_changed_cb,
-                 'bundle_id_leave_notify_event_cb':self.bundle_id_changed_cb,
-                 'module_leave_notify_event_cb':self.module_changed_cb,
-                 'class_leave_notify_event_cb':self.class_changed_cb,
-                 'icon_outline_changed_cb':self.icon_changed_cb,
-                 'version_leave_notify_event_cb':self.version_changed_cb,
-                 'file_toggle_clicked_cb':self.activity_toggled_cb,
-                 'to_activities_clicked_cb':self.to_home_clicked_cb,
-                 'from_activities_clicked_cb':self.from_home_clicked_cb,
-                 'from_examples_clicked_cb':self.from_examples_clicked_cb,
-                 'help_clicked_cb':self._keep_activity_info,
-                 'create_icon_clicked_cb':self.create_icon_cb,
-                 'delete_file_clicked_cb':self.delete_file_cb,
-                 'clear_clicked_cb':self.clear_clicked_cb,
-             }
-        self.wTree.signal_autoconnect(mdict)
-        
-        button = self.wTree.get_widget('file_toggle')
-        tt = gtk.Tooltips()
-        tt.set_tip(button,_('Switch views between the "Installed" Activities directory and your "home" storage directory'))
-        #button.set_tooltip_text(_('Switch views between the "Installed" Activities directory and your "home" storage directory'))
-        
-        button = self.wTree.get_widget('to_activities')
-        tt = gtk.Tooltips()
-        tt.set_tip(button,_('Copy the files in the debug workplace to your "home" storage directory'))
-        #button.set_tooltip_text(_('Copy the files in the debug workplace to your "home" storage directory')
-        
-        button = self.wTree.get_widget('from_examples')
-        tt = gtk.Tooltips()
-        tt.set_tip(button,_('Load and modify these example programs. See the help Tutorials'))
-        #button.set_tooltip_text(_('Load and modify these example programs. See the help Tutorials'))
+            'name_leave_notify_event_cb':self.name_changed_cb,
+            'bundle_id_leave_notify_event_cb':self.bundle_id_changed_cb,
+            'module_leave_notify_event_cb':self.module_changed_cb,
+            'class_leave_notify_event_cb':self.class_changed_cb,
+            'icon_outline_changed_cb':self.icon_changed_cb,
+            'version_leave_notify_event_cb':self.version_changed_cb,
+            'file_toggle_clicked_cb':self.activity_toggled_cb,
+            'to_activities_clicked_cb':self.to_home_clicked_cb,
+            'from_activities_clicked_cb':self.from_home_clicked_cb,
+            'from_examples_clicked_cb':self.from_examples_clicked_cb,
+            'help_clicked_cb':self._keep_activity_info,
+            'create_icon_clicked_cb':self.create_icon_cb,
+            'delete_file_clicked_cb':self.delete_file_cb,
+            'clear_clicked_cb':self.clear_clicked_cb,
+        }
 
-        button = self.wTree.get_widget('delete_file')
-        map = button.get_colormap()
-        color = map.alloc_color(PROJECT_FG)
-        style = button.get_style().copy()
-        style.bg[gtk.STATE_NORMAL] = color
-        button.set_style(style)
-         
-        button = self.wTree.get_widget('clear')
-        button.set_style(style)
-         
-        button = self.wTree.get_widget('help')
-        button.set_style(style)
+        ## Fixme
+        ##self.wTree.signal_autoconnect(mdict)
 
-        button = self.wTree.get_widget('create_icon')
-        button.set_style(style)
-         
-        button = self.wTree.get_widget('icon_outline')
-        button.set_style(style)
-         
-    def connect_journal(self,  wTree=None):
+        ## FIXME
+        ##button = self.wTree.get_object('delete_file')
+        ##map = button.get_colormap()
+        ##color = map.alloc_color(PROJECT_FG)
+        ##style = button.get_style().copy()
+        ##style.bg[Gtk.StateType.NORMAL] = color
+        ##button.set_style(style)
+
+        ##button = self.wTree.get_object('clear')
+        ##button.set_style(style)
+
+        ##button = self.wTree.get_object('help')
+        ##button.set_style(style)
+
+        ##button = self.wTree.get_object('create_icon')
+        ##button.set_style(style)
+
+        ##button = self.wTree.get_object('icon_outline')
+        ##button.set_style(style)
+
+    def connect_journal(self, wTree=None):
         mdict = {
-                'from_journal_clicked_cb':self.load_from_journal_cb,
-                'to_journal_clicked_cb':self.save_to_journal_cb ,
-             }
-        self.wTree.signal_autoconnect(mdict)
-         
+            'from_journal_clicked_cb': self.load_from_journal_cb,
+            'to_journal_clicked_cb': self.save_to_journal_cb,
+        }
+
+        ##self.wTree.signal_autoconnect(mdict)
+
     def load_from_journal_cb(self,button):
-        selection=self.journal_treeview.get_selection()
-        (model,iter)=selection.get_selected()
+        selection = self.journal_treeview.get_selection()
+        (model, iter) = selection.get_selected()
+
         if iter == None:
             self.parent.util.alert(_('Must select Journal item to Load'))
             return
-        object_id = model.get(iter,9)
-        _logger.debug('object id %s from journal'%object_id)
+
+        object_id = model.get(iter, 9)
+        _logger.debug('object id %s from journal' % object_id)
         self.try_to_load_from_journal(object_id)
-        
+
     def save_to_journal_cb(self,button):
         if self.activity_data_changed:
             self._keep_activity_info(None)
+
         self.write_binary_to_datastore()
-        
+
     def name_changed_cb(self, widget, event):
-        if self.ignore_changes: return
+        if self.ignore_changes:
+            return
+
         self.activity_data_changed = True
         name = widget.get_text()
-        
+
         #make a suggestion for module if it is blank
-        widget_field = self.wTree.get_widget('module')
+        widget_field = self.project_win_toplevel.module
         module = widget_field.get_text()
         if module == '' or module == 'untitled':
             widget_field.set_text(name.lower())
-            
+
         #make a suggestion for class if it is blank
-        widget_field = self.wTree.get_widget('class')
+        widget_field = self.project_win_toplevel._class
         myclass = widget_field.get_text()
         if myclass == '':
             widget_field.set_text('sugar_subclass')
-            
+
         #make a suggestion for bundle_id if it is blank
-        widget_field = self.wTree.get_widget('bundle_id')
+        widget_field = self.project_win_toplevel.bundle_id
         bundle_id = widget_field.get_text()
         if bundle_id == '':
             suggestion = 'org.laptop.' + name
@@ -266,16 +246,16 @@ class ProjectGui(ProjectFunctions):
             suggestion = prefix + '.' + name
         widget_field.set_text(suggestion)
         #self.display_current_project()
-            
+
     def bundle_id_changed_cb(self,widget, event):
         if self.ignore_changes: return
         self.activity_data_changed = True
-        
-    def module_changed_cb(self, widget, event): 
+
+    def module_changed_cb(self, widget, event):
         if self.ignore_changes: return
         self.activity_data_changed = True
-     
-    def class_changed_cb(self, widget, event): 
+
+    def class_changed_cb(self, widget, event):
         if self.ignore_changes: return
         self.activity_data_changed = True
      
@@ -296,7 +276,7 @@ class ProjectGui(ProjectFunctions):
     def create_icon_cb(self,widget):
         self.activity_data_changed = True
         #get the two characters and substitute them in the proper svg template
-        chrs_entry = self.wTree.get_widget('icon_chr')
+        chrs_entry = self.project_win_toplevel.icon_chr
         chars = chrs_entry.get_text()
         _logger.debug('CREATE A NEW ICON !!!!text characters: %s'%chars)
         if chars == '':chars = '??'
@@ -346,20 +326,17 @@ class ProjectGui(ProjectFunctions):
             
     def activity_toggled_cb(self, widget):
         _logger.debug('Entered activity_toggled_cb. Button: %r'%self.file_pane_is_activities)
-        but = self.wTree.get_widget('to_activities')
-        to_what = self.wTree.get_widget('file_toggle')
-        window_label = self.wTree.get_widget('file_system_label')
+        but = self.project_win_toplevel.to_activities
+        to_what = self.project_win_toplevel.file_toggle
+        window_label = self.project_win_toplevel.file_system_label
         if self.file_pane_is_activities == True:
             to_what.set_label('Installed_')
             but.show()
             #display_label = self.storage[:18]+' . . . '+self.storage[-24:]
             display_label = 'PyDebug SHELF storage:'
             self.activity_window.set_file_sys_root(self._activity.storage)
-            button = self.wTree.get_widget('from_activities')
-            tt = gtk.Tooltips()
-            tt.set_tip(button,_('Copy the selected directory or file from your "home" storage to the debug workplace'))
-            #button.set_tooltip_text(_('Copy the selected directory or file from your "home" storage to the debug workplace'))
             window_label.set_text(display_label)
+
         else:
             to_what.set_label('shelf')
             but.hide()
@@ -367,11 +344,10 @@ class ProjectGui(ProjectFunctions):
             self.activity_window.set_file_sys_root(activity_dir)
             self.activity_window.set_file_sys_root('/usr/share/activities', append = True)        
             self.activity_window.set_file_sys_root('/usr/share/sugar/activities', append = True)        
-            button = self.wTree.get_widget('from_activities')
-            tt = gtk.Tooltips()
-            tt.set_tip(button,_('Copy the selected Activity or file to the debug workplace'))
-            #button.set_tooltip_text(_('Copy the selected Activity or file to the debug workplace'))
+            button = self.project_win_toplevel.from_activities
+            button.set_tooltip_text(_('Copy the selected Activity or file to the debug workplace'))
             window_label.set_text('INSTALLED ACTIVITIES:')
+
         self.file_pane_is_activities =  not self.file_pane_is_activities
     
     def to_home_clicked_cb(self,widget):
@@ -386,29 +362,22 @@ class ProjectGui(ProjectFunctions):
                                         _('This destination has been changed by another application'),
                                         self._to_home_cb)
             return
-        self._to_home_cb( None, gtk.RESPONSE_OK)
+        self._to_home_cb(None, Gtk.ResponseType.OK)
             
     def _to_home_cb(self, alert, response_id):
         """write playpen tree to writeable storage, and USB/SD if pydebug folder exists
         in root directory"""
-        if alert != None: self.remove_alert(alert)
-        if response_id is gtk.RESPONSE_OK:
-            """
-            cmd = ['rsync','-av',self._activity.child_path + '/',self._to_home_dest]
-            _logger.debug('do to_home_cb with cmd:%s'%cmd)
-            p1 = Popen(cmd,stdout=PIPE)
-            output = p1.communicate()
-            if p1.returncode != 0:
-                self._activity.util.alert('rsync command returned non zero\n'+output[0]+ 'COPY FAILURE')
-                return
-            """
-            
+        if alert != None:
+            self.remove_alert(alert)
+
+        if response_id is Gtk.ResponseType.OK:
             #remove any embeded shell breakpoints
             self.get_editor().clear_embeds()
-
             _logger.debug('removing tree, and then copying to %s'%self._to_home_dest)
+
             if os.path.isdir(self._to_home_dest):
                 shutil.rmtree(self._to_home_dest, ignore_errors=True)
+
             shutil.copytree(self._activity.child_path,self._to_home_dest)
             self._activity.util.set_permissions(self._to_home_dest)
             #mark the md5 as saved
@@ -511,25 +480,25 @@ class ProjectGui(ProjectFunctions):
         So let's deal with writing the activity.info file first
         """
         _logger.debug('in keep_activity_activity.info')
-        name_widget = self.wTree.get_widget('name')
+        name_widget = self.project_win_toplevel.name
         name = name_widget.get_text()
         old_name =  self._activity.activity_dict['name']
         self.old_icon = self._activity.activity_dict.get('icon')
         self._activity.activity_dict['name'] = name
                 
-        name_widget = self.wTree.get_widget('version')
+        name_widget = self.project_win_toplevel.version
         self._activity.activity_dict['version'] = name_widget.get_text()
             
-        name_widget = self.wTree.get_widget('version')
+        name_widget = self.project_win_toplevel.version
         self._activity.activity_dict['version'] = name_widget.get_text()
             
-        name_widget = self.wTree.get_widget('bundle_id')
+        name_widget = self.project_win_toplevel.bundle_id
         self._activity.activity_dict['bundle_id'] = name_widget.get_text()
             
-        name_widget = self.wTree.get_widget('module')
+        name_widget = self.project_win_toplevel.module
         self._activity.activity_dict['module'] = name_widget.get_text()
             
-        name_widget = self.wTree.get_widget('class')
+        name_widget = self.project_win_toplevel._class
         self._activity.activity_dict['class'] = name_widget.get_text()
             
         self._activity.update_metadata()
@@ -740,85 +709,84 @@ class ProjectGui(ProjectFunctions):
     def display_current_project(self):
         global start_clock            
         #try to colorize the playpen
-        pp = self.wTree.get_widget('playpen_event_box')
-        map = pp.get_colormap()
-        color = map.alloc_color(PROJECT_BG)
-        style = pp.get_style().copy()
-        style.bg[gtk.STATE_NORMAL] = color
-        pp.set_style(style)
+
+        ## FIXME:
+        ##pp = self.wTree.get_object('playpen_event_box')
+        ##map = pp.get_colormap()
+        ##color = map.alloc_color(PROJECT_BG)
+        ##style = pp.get_style().copy()
+        ##style.bg[Gtk.StateType.NORMAL] = color
+        ##pp.set_style(style)
+
+        ##self.manifest_treeview = self.wTree.get_object('manifest')
+        ##map = self.manifest_treeview.get_colormap()
+        ##color = map.alloc_color(PROJECT_BASE)
+        ##style = self.manifest_treeview.get_style().copy()
+        ##style.bg[Gtk.StateType.NORMAL] = color
+        ##color = map.alloc_color(PROJECT_BASE)
+        ##style.base[Gtk.StateType.NORMAL] = color
+        ##self.manifest_treeview.set_style(style)
         
-        self.manifest_treeview = self.wTree.get_widget('manifest')
-        map =self.manifest_treeview.get_colormap()
-        color = map.alloc_color(PROJECT_BASE)
-        style = self.manifest_treeview.get_style().copy()
-        style.bg[gtk.STATE_NORMAL] = color
-        color = map.alloc_color(PROJECT_BASE)
-        style.base[gtk.STATE_NORMAL] = color
-        self.manifest_treeview.set_style(style)
         if self.manifest_class == None:
-            self.manifest_class = FileTree(self, self.manifest_treeview,self.wTree)
+            self.manifest_class = FileTree(self, self.manifest_treeview, self.project_win_toplevel)
+
         self.manifest_class.set_file_sys_root(self._activity.child_path)
-        
+
         #disable the on change callbacks
         self.ignore_changes = True
-        
-        name = self.wTree.get_widget('name')
+
+        ##name = self.wTree.get_object('name')
         #map = name.get_colormap()
-        color = map.alloc_color(PROJECT_BASE)
-        style = name.get_style().copy()
-        style.base[gtk.STATE_NORMAL] = color
-        name.set_style(style)        
-        name.set_text(self._activity.activity_dict.get('name',''))
-        
-        version = self.wTree.get_widget('version')
-        version.set_style(style)
-        version.set_text(self._activity.activity_dict.get('version',''))
-        
-        bundle = self.wTree.get_widget('bundle_id')
-        bundle.set_style(style)
-        bundle.set_text(self._activity.activity_dict.get('bundle_id',''))
-        
-        pyclass = self.wTree.get_widget('class')
-        pyclass.set_style(style)
-        pyclass.set_text(self._activity.activity_dict.get('class',''))
+        ##color = map.alloc_color(PROJECT_BASE)
+        ##style = name.get_style().copy()
+        ##style.base[Gtk.StateType.NORMAL] = color
+        ##name.set_style(style)
+        ##name.set_text(self._activity.activity_dict.get('name',''))
+
+        ##version = self.wTree.get_object('version')
+        ##version.set_style(style)
+        ##version.set_text(self._activity.activity_dict.get('version',''))
+
+        ##bundle = self.wTree.get_object('bundle_id')
+        ##bundle.set_style(style)
+        ##bundle.set_text(self._activity.activity_dict.get('bundle_id',''))
+
+        pyclass = self.project_win_toplevel._class
+        ##pyclass.set_style(style)
+        ##pyclass.set_text(self._activity.activity_dict.get('class',''))
         self.pdbclass = pyclass
-        
-        pymodule = self.wTree.get_widget('module')
-        pymodule.set_style(style)
-        pymodule.set_text(self._activity.activity_dict.get('module',''))
+
+        pymodule = self.project_win_toplevel.module
+        ##pymodule.set_style(style)
+        ##pymodule.set_text(self._activity.activity_dict.get('module',''))
         self.pdbmodule = pymodule.get_text()
 
-        pyicon = self.wTree.get_widget('icon_chr')
-        pyicon.set_style(style)
+        pyicon = self.project_win_toplevel.icon_chr
+        ##pyicon.set_style(style)
         pyicon.set_text(self._activity.activity_dict.get('icon_chr',''))
 
         #re-enable the on change callbacks
         self.ignore_changes = False
-        
-        """
-        self.wTree.get_widget('home_save').set_text(self._activity.activity_dict.get('home_save',''))
-        self.wTree.get_widget('host').set_text(self.debug_dict.get('host',''))
-        self.wTree.get_widget('port').set_text(str(self.debug_dict.get('port','')))
-        activity_size = os.system('du  --max-depth=0')
-        self.wTree.get_widget('activity_size').set_text(str(activity_size))
-        self.wTree.get_widget('icon').set_text(self._activity.activity_dict.get('icon','').split('/')[-1:][0])
-        """
-    
+
     def manifest_point_to(self,fullpath):
         if self.child_path:
             self.manifest_class.set_file_sys_root(self.child_path)
+
         else:
-            self.manifest_class.set_file_sys_root(self._activity.activity_playpen)        
+            self.manifest_class.set_file_sys_root(self._activity.activity_playpen)
+
         self.manifest_class.position_to(fullpath)
- 
+
+
 class DataStoreTree():
+
     column_names = [_('Name'), _('Size'), _('Last Changed')]
-    
-    def __init__(self, parent, widget=None,wTree=None):
+
+    def __init__(self, parent, widget=None, win=None):
         self.parent = parent
         self._activity = parent
         self.treeview = widget
-        self.wTree = wTree
+        self.project_win_toplevel = win
         self.init_model()
         self.init_columns()
         self.limit=10
@@ -826,69 +794,58 @@ class DataStoreTree():
         self.journal_page_num = 0
         self.journal_max = 0
         self.new_directory()
-        button = self.wTree.get_widget('from_journal')
-        tt = gtk.Tooltips()
-        tt.set_tip(button,_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
-        #button.set_tooltip_text(_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
-        button = self.wTree.get_widget('to_journal')
-        tt = gtk.Tooltips()
-        tt.set_tip(button,_('Zip up all the files in your debug workplace and store them in the Journal'))
-        #button.set_tooltip_text(_('Zip up all the files in your debug workplace and store them in the Journal'))
 
-        
-        
     def init_model(self):
         #plan for the store: pixbuf,title,size,last-updated,tooltip,jobject-id
-        self.journal_model = gtk.TreeStore(gtk.gdk.Pixbuf, str,str,str,str,str,str,str,str,str,str)
+        self.journal_model = Gtk.TreeStore(GdkPixbuf.Pixbuf, str, str, str, str, str, str, str, str, str, str)
         if not self.treeview:
-            self.treeview = gtk.TreeView()
+            self.treeview = Gtk.TreeView()
+
         self.treeview.set_model(self.journal_model)
         self.treeview.show()
         #the following 3 lines were probably disabled because earlier sugar complained
         #search for TOOLTIP to find problem areas
         #self.treeview.connect('query-tooltip',self.display_tooltip)
-        if self._activity.sugar_minor >= 82:
-            self.treeview.set_tooltip_column(10)
-            self.treeview.has_tooltip = True
-        else:
-            tips = gtk.Tooltips()
-            tips.set_tip(self.treeview, "")
-            self.treeview.connect("motion-notify-event",self.show_tooltip, tips, 10) # <---
-            self.treeview.set_events( gtk.gdk.POINTER_MOTION_MASK )
+        self.treeview.set_tooltip_column(10)
+        self.treeview.has_tooltip = True
         self.show_hidden = False
 
     def show_tooltip(self, widget, event, tooltips, cell, emptytext='no information'):
-        """ 
+        """
         If emptyText is None, the cursor has to enter widget from a side
         that contains an item, otherwise no tooltip will be displayed. """
-    
+
         try:
-            (path,col,x,y) = widget.get_path_at_pos( int(event.x), int(event.y) ) 
+            (path, col, x, y) = widget.get_path_at_pos(int(event.x), int(event.y))
             it = widget.get_model().get_iter(path)
-            value = widget.get_model().get_value(it,cell)
-            tooltips.set_tip(widget, value)
+            value = widget.get_model().get_value(it, cell)
+            widget.set_tooltip_text(str(value))
             tooltips.enable()
+
         except:
-            #_logger.exception('show_tooltip exception')
-            tooltips.set_tip(widget, emptytext)
+            widget.set_tooltip_text(emptytext)
 
     def init_columns(self):
-        col = gtk.TreeViewColumn()
+        col = Gtk.TreeViewColumn()
         col.set_title(self.column_names[0])
-        render_pixbuf = gtk.CellRendererPixbuf()
+
+        render_pixbuf = Gtk.CellRendererPixbuf()
         col.pack_start(render_pixbuf, expand=False)
         col.add_attribute(render_pixbuf, 'pixbuf', 0)
-        render_text = gtk.CellRendererText()
+
+        render_text = Gtk.CellRendererText()
         col.pack_start(render_text, expand=True)
         col.add_attribute(render_text, 'text', 1)
         col.set_fixed_width(20)
         self.treeview.append_column(col)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(self.column_names[1], cell)
+
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(self.column_names[1], cell)
         col.add_attribute(cell, 'text', 2)
         self.treeview.append_column(col)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(self.column_names[2], cell)
+
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(self.column_names[2], cell)
         col.add_attribute(cell, 'text', 3)
         self.treeview.append_column(col)
            
@@ -897,19 +854,22 @@ class DataStoreTree():
         self.journal_model.clear()
         ds_list = []
         num_found = 0
-        mime_list = [self._activity.MIME_TYPE,self._activity.MIME_ZIP]
-        
+        mime_list = [self._activity.MIME_TYPE, self._activity.MIME_ZIP]
+
         #build 650 doesn't seem to understand correctly the dictionary with a list right hand side
         info = self._activity.util.sugar_version()
-        if len(info)>0:
+        if len(info) > 0:
             (major,minor,micro,release) = info
-            _logger.debug('sugar version major:%s minor:%s micro:%s release:%s'%info)
+            _logger.debug('sugar version major:%s minor:%s micro:%s release:%s' % info)
+
         else:
             _logger.debug('sugar version failure')
             minor = 70
+
         try:
             if minor > 80:
                 (ds_list,num_found) = datastore.find({'mime_type': mime_list})
+
             else:
                 (results,count) = datastore.find({'mime_type': self._activity.MIME_TYPE})
                 ds_list.extend(results)
@@ -917,6 +877,7 @@ class DataStoreTree():
                 (results,count) = datastore.find({'mime_type': self._activity.MIME_ZIP})
                 ds_list.extend(results)
                 num_found += count            
+
         except Exception,e:
             _logger.exception('datastore error %s'%e)
             return dslist
@@ -925,11 +886,12 @@ class DataStoreTree():
         ds_list = sorted(ds_list, key=lambda entry: entry.get_metadata().get('mtime'), reverse=True)
         if num_found < self.limit:
             self.journal_max = self.journal_page_num * self.journal_page_size + num_found
-        _logger.debug( 'datastoretree-get_datastore_list: count= %s'%num_found)
-        
-        keys = ('title','size','timestamp','activity','package','mime_type','file_path')
+
+        _logger.debug( 'datastoretree-get_datastore_list: count= %s' % num_found)
+
+        keys = ('title', 'size', 'timestamp', 'activity', 'package', 'mime_type', 'file_path')
         for jobject in ds_list:
-            itemlist = [None,]
+            itemlist = [None]
             datastoredict=jobject.get_metadata().get_dictionary() #get the property dictionary
             src = jobject.get_file_path() #returns the full path of the file
             datastoredict['object_id'] = jobject.object_id
@@ -937,33 +899,42 @@ class DataStoreTree():
             if False: #if  src null, there is no file related to this meta data
                 jobject.destroy()
                 continue	#go get the next iterations
+
             #add in the info that we intend to use
             if src:
                 info = os.stat(src) #get the directory information about this file
                 datastoredict['size'] = info.st_size
+
             else:
                  datastoredict['size'] = 0               
+
             datastoredict['file_path'] = src
             for key in keys:
                 if datastoredict.has_key(key):
                     if key == 'timestamp':
                         pkg = time.strftime('%Y-%m-%d %H:%M:%S',time.gmtime(float(datastoredict[key])))
+
                     elif key == 'title':
                         pkg = datastoredict[key][:18]
+
                     else:
                         pkg = '%s'%(datastoredict[key])
+
                 else:
                     pkg = ''
+
                 itemlist.append(pkg)
+
             itemlist.append(datastoredict['title'])
             itemlist.append(jobject.object_id)
-            text = 'Mime_type: %s, Journal ID: %s, Bundle: %s'%(datastoredict.get('mime_type',''),
+            text = 'Mime_type: %s, Journal ID: %s, Bundle: %s' % (datastoredict.get('mime_type',''),
                                                                   datastoredict.get('object_id',''),
                                                                   datastoredict.get('package',''))
             itemlist.append(text)
             #_logger.debug('journal tooltip:%s'%text)
             dslist.append(itemlist)
             jobject.destroy()
+
         return dslist
 
     def new_directory(self,piter = None, next=True):
@@ -976,16 +947,17 @@ class DataStoreTree():
     def file_pixbuf(self, filename):
         folderpb = self.get_icon_pixbuf('STOCK_DIRECTORY')
         filepb = self.get_icon_pixbuf('STOCK_FILE')
+
         if os.path.isdir(filename):
             pb = folderpb
+
         else:
             pb = filepb
+
         return pb
 
     def get_icon_pixbuf(self, stock):
-        return self.treeview.render_icon(stock_id=getattr(gtk, stock),
-                                size=gtk.ICON_SIZE_MENU,
-                                detail=None)
+        return self.treeview.render_icon(stock_id=getattr(Gtk, stock), size=Gtk.ICON_SIZE_MENU, detail=None)
 
     def get_treeview(self):
         return self.treeview
@@ -1006,21 +978,22 @@ class DataStoreTree():
         tooltip.show()
         return True
 
-class Icon_Panel(gtk.Window):
+
+class Icon_Panel(Gtk.Window):
 
     def __init__(self, icon):
-        gtk.Window.__init__(self)
+        Gtk.Window.__init__(self)
 
         self.set_decorated(False)
         self.set_resizable(False)
-        self.set_type_hint(gtk.gdk.WINDOW_TYPE_HINT_DIALOG)
+        self.set_type_hint(Gdk.WindowTypeHint.DIALOG)
 
         self.set_border_width(0)
 
         self.props.accept_focus = False
 
         #Setup estimate of width, height
-        w, h = gtk.icon_size_lookup(gtk.ICON_SIZE_LARGE_TOOLBAR)
+        b, w, h = Gtk.icon_size_lookup(Gtk.IconSize.LARGE_TOOLBAR)
         self._width = w
         self._height = h
 
@@ -1029,21 +1002,22 @@ class Icon_Panel(gtk.Window):
         screen = self.get_screen()
         screen.connect('size-changed', self._screen_size_changed_cb)
 
-        self._button = gtk.Button()
-        self._button.set_relief(gtk.RELIEF_NONE)
+        self._button = Gtk.Button()
+        self._button.set_relief(Gtk.ReliefStyle.NONE)
 
-        self._icon = Icon( icon_size=gtk.ICON_SIZE_LARGE_TOOLBAR)
+        self._icon = Icon(icon_size=Gtk.IconSize.LARGE_TOOLBAR)
         self._button.add(self._icon)
 
         self._button.show()
         self.add(self._button)
+
         _logger.debug('completed init of icon_panel')
 
     def connect_button_press(self, cb):
         self._button.connect('button-press-event', cb)
 
     def _reposition(self):
-        x = gtk.gdk.screen_width() - self._width
+        x = Gdk.Screen.width() - self._width
         self.move(x, 347)
 
     def _size_request_cb(self, widget, req):
@@ -1053,4 +1027,4 @@ class Icon_Panel(gtk.Window):
 
     def _screen_size_changed_cb(self, screen):
         self._reposition()
-        
+

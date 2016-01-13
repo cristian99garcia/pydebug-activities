@@ -17,48 +17,51 @@ import time
 import logging
 from gettext import gettext as _
 
-import gobject
-import gtk
-import hulahop
-import xpcom
-from xpcom.nsError import *
-from xpcom import components
-from xpcom.components import interfaces
-from hulahop.webview import WebView
+from gi.repository import Gtk
+from gi.repository import GObject
+from gi.repository import WebKit
 
-from sugar.datastore import datastore
-from sugar import profile
-from sugar import env
-from sugar.activity import activity
-from sugar.graphics import style
-
-from progresslistener import ProgressListener
+from sugar3.datastore import datastore
+from sugar3 import profile
+from sugar3 import env
+from sugar3.activity import activity
+from sugar3.graphics import style
 
 _ZOOM_AMOUNT = 0.1
 
-class Browser(WebView):
-    def __init__(self):
-        WebView.__init__(self)
 
-        self.progress = ProgressListener()
+class Browser(Gtk.ScrolledWindow):
+
+    def __init__(self):
+
+        Gtk.ScrolledWindow.__init__(self)
+
+        self.browser = WebKit.WebView()
+        self.add(self.browser)
 
     def do_setup(self):
-        WebView.do_setup(self)
-        self.progress.setup(self)
+        pass
 
     def zoom_in(self):
-        contentViewer = self.doc_shell.queryInterface( \
-                interfaces.nsIDocShell).contentViewer
-        if contentViewer is not None:
-            markupDocumentViewer = contentViewer.queryInterface( \
-                    interfaces.nsIMarkupDocumentViewer)
-            markupDocumentViewer.fullZoom += _ZOOM_AMOUNT
+        self.browser.set_zoom_level(self.browser.get_zoom_level() + _ZOOM_AMOUNT)
 
     def zoom_out(self):
-        contentViewer = self.doc_shell.queryInterface( \
-                interfaces.nsIDocShell).contentViewer
-        if contentViewer is not None:
-            markupDocumentViewer = contentViewer.queryInterface( \
-                    interfaces.nsIMarkupDocumentViewer)
-            markupDocumentViewer.fullZoom -= _ZOOM_AMOUNT
+        self.browser.set_zoom_level(self.browser.get_zoom_level() - _ZOOM_AMOUNT)
+
+    def load_uri(self, uri):
+        self.browser.load_uri(uri)
+
+    def can_go_back(self):
+        return self.browser.can_go_back()
+
+    def can_go_forward(self):
+        return self.browser.can_go_forward()
+
+    def go_back(self):
+        if self.can_go_back():
+            self.go_back()
+
+    def go_forward(self):
+        if self.can_go_forward():
+            self.go_forward()
 

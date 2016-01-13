@@ -14,40 +14,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import gtk, gobject
-#import pango
-import notebook
-import gtksourceview2
-import os.path
-import sys
-import re
-import mimetypes
-from exceptions import *
-#import hashlib
-from gettext import gettext as _
-import shutil
+from gi.repository import GObject
 
-from page import GtkSourceview2Page, BREAKPOINT_CAT, SearchOptions, S_WHERE
+import notebook
+import os
+import re
+from exceptions import *
+from gettext import gettext as _
+
+from page import GtkSourceviewPage
+from page import BREAKPOINT_CAT
+from page import S_WHERE
 
 # Initialize logging.
-from  pydebug_logging import _logger, log_environment, log_dict
-"""
-#constants for text_buffer marks
-SHELL_CAT = 'SHELL'
-TRACE_CAT = 'TRACE'
-BREAKPOINT_COLOR = '#FFDDDD'
-EMBEDED_SHELL_COLOR = '#DDFFDD'
-EMBEDED_BREAKPOINT_COLOR = '#DDDDFF'
-TRACE_INSERT = 'from ipy_sh import Tracer; debug = Tracer(); debug() #PyDebugTemp\n'
-SHELL_INSERT = 'from IPython.Shell import IPShellEmbed; pdbshell = IPShellEmbed(banner="Nested shell"); pdbshell() #PyDebugTemp\n'
-#following is for 0.11 ipython
-#insertion = 'from IPython.frontend.terminal.embed import embed; embed() #PyDebugTemp\n'
-#insertion = 'from IPython.Debugger import Tracer; debug = Tracer(); debug() #PyDebugTemp\n'
-"""
+from  pydebug_logging import _logger
 
-class GtkSourceview2Editor:
+class GtkSourceviewEditor:
+
     __gsignals__ = {
-        'changed': (gobject.SIGNAL_RUN_FIRST, None, [])
+        'changed': (GObject.SIGNAL_RUN_FIRST, None, [])
     }
 
     def __init__(self, activity):
@@ -57,7 +42,7 @@ class GtkSourceview2Editor:
         self._activity = activity
         self.breakpoints_changed = False
         self.trace_outside_child_path = False
-        self.embeds_exist = False        
+        self.embeds_exist = False
         self.set_size_request(900, 350)
         self.edit_notebook.connect('page-removed', self._page_removed_cb)
         self.edit_notebook.connect('switch-page', self._switch_page_cb)
@@ -99,15 +84,13 @@ class GtkSourceview2Editor:
     def load_object(self, fullPath, filename):
         if self.set_to_page_like(fullPath):
             return
-        page = GtkSourceview2Page(fullPath, self._activity)
+        page = GtkSourceviewPage(fullPath, self._activity)
         label = filename
         page.text_buffer.connect('changed', self._changed_cb)
         self.edit_notebook.add_page(label, page)
         #label object is passed back in Notebook object -- remember it
         page.label = self.edit_notebook.tab_label
-        page.tooltip = gtk.Tooltips()
-        page.tooltip.set_tip(page.label,fullPath)
-        #page.label.set_tooltip_text(fullPath)
+        page.label.set_tooltip_text(fullPath)
         self.edit_notebook.set_current_page(-1)
         self._changed_cb(page.text_buffer)
         """
@@ -255,14 +238,14 @@ class GtkSourceview2Editor:
     def get_all_filenames(self):
         for i in range(self.edit_notebook.get_n_pages()):
             page = self.edit_notebook.get_nth_page(i)
-            if isinstance(page,GtkSourceview2Page):
+            if isinstance(page,GtkSourceviewPage):
                 yield page.fullPath
 
     def get_all_breakpoints(self):
         break_list = []
         for i in range(self.edit_notebook.get_n_pages()):
             page = self.edit_notebook.get_nth_page(i)
-            if isinstance(page,GtkSourceview2Page):
+            if isinstance(page,GtkSourceviewPage):
                 start, end = page.text_buffer.get_bounds()
                 mark_list = page.get_marks_in_region_in_category(start, end, BREAKPOINT_CAT)
                 for m in mark_list:
@@ -280,31 +263,19 @@ class GtkSourceview2Editor:
     def save_all_breakpoints(self):
         for i in range(self.edit_notebook.get_n_pages()):
             page = self.edit_notebook.get_nth_page(i)
-            if isinstance(page,GtkSourceview2Page):
+            if isinstance(page,GtkSourceviewPage):
                 page.save_breakpoints()
-    """
-    def remove_all_embeds(self):
-        for i in range(self.edit_notebook.get_n_pages()):
-            page = self.edit_notebook.get_nth_page(i)
-            if isinstance(page,GtkSourceview2Page):
-                iter = page.text_buffer.get_iter_at_line_offset(0,0)
-                while page.text_buffer.forward_iter_to_source_mark(iter,page.embed_cat):
-                    embed_line = iter.copy()
-                    embed_line.backward_line()
-                    delete_candidate = self.text_buffer.get_text(embed_line,iter)
-                    _logger.debug('delete candidate line:%s'%(delete_candidate,))
-                    if delete_candidate.find('PyDebugTemp') > -1:
-                        self.text_buffer.delete(embed_line,iter)
-    """                   
+
     def get_list_of_embeded_files(self):
         file_list = []
         for i in range(self.edit_notebook.get_n_pages()):
             page = self.edit_notebook.get_nth_page(i)
-            if isinstance(page,GtkSourceview2Page):
+            if isinstance(page,GtkSourceviewPage):
                 if len(page.embeds) > 0:
                     file_list.append(page.fullPath)
+
         return file_list
-                   
+
     def remove_embeds_from_file(self,fullPath):
         text = ''
         try:
@@ -312,9 +283,11 @@ class GtkSourceview2Editor:
             for line in f:
                 if line.find('PyDebugTemp') == -1:
                     text += line
+
             _file = file(fullPath, 'w')
             _file.write(text)
             _file.close()
+
         except IOException,e:
             _logger.error('unable to rewrite%s Exception:%s'%(fullPath,e))
                          
@@ -330,7 +303,7 @@ class GtkSourceview2Editor:
             #return
         for i in range(self.edit_notebook.get_n_pages()):
             page = self.edit_notebook.get_nth_page(i)
-            if isinstance(page,GtkSourceview2Page):
+            if isinstance(page,GtkSourceviewPage):
                 _logger.debug('%s' % page.fullPath)
                 page.save()
                 page.save_breakpoints()
@@ -345,41 +318,40 @@ class GtkSourceview2Editor:
         fn = os.path.join(os.environ['HOME'],'.pdbrc')
         break_list = self.get_all_breakpoints()
         _logger.debug("writing %s breakpoints"%(len(break_list),))
+
         try:
             fd = file(fn,'w')
             fd.write('#Print instance variables (usage "pi classInstance")\n')
             fd.write('alias pi for k in %1.__dict__.keys(): print "%1",k,"=",%1.__dict__[k]\n')
             fd.write('#Print insance variables in self\n')
             fd.write('alias ps pi self\n')
+
             for break_line in break_list:
-                fd.write('break %s\n'%(break_line,))
+                fd.write('break %s\n' % break_line)
+
             fd.close()
+
         except Exception,e:
             _logger.error('unable to write to %s exception:%s'%(fn,e,))
-            
+
     def remove_all(self):
-        for i in range(self.edit_notebook.get_n_pages(),0,-1):
-            self.edit_notebook.remove_page(i-1)
-        """
-            page = self.edit_notebook.get_nth_page(i)
-            if isinstance(page,GtkSourceview2Page):
-                self._close_page(None,page
-        """
+        for i in range(self.edit_notebook.get_n_pages(), 0, -1):
+            self.edit_notebook.remove_page(i -1)
+
     def reroot(self,olddir, newdir):
         _logger.info('reroot from %s to %s' % (olddir,newdir))
         for i in range(self.edit_notebook.get_n_pages()):
             page = self.edit_notebook.get_nth_page(i)
-            if isinstance(page,GtkSourceview2Page):
-                if page.reroot(olddir, newdir): 
-                    _logger.info('rerooting page %s failed' % 
-                            page.fullPath)
+            if isinstance(page,GtkSourceviewPage):
+                if page.reroot(olddir, newdir):
+                    _logger.info('rerooting page %s failed' % page.fullPath)
+
                 else:
-                    _logger.info('rerooting page %s succeeded' % 
-                            page.fullPath)
-        
+                    _logger.info('rerooting page %s succeeded' % page.fullPath)
+
     def get_selected(self):
         return self._get_page().get_selected()
-    
+
     def change_font_size(self,size):
         page = self._get_page()
         page.set_font_size(size)

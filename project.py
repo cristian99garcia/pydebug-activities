@@ -15,45 +15,35 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
-from __future__ import with_statement
-import os, os.path, ConfigParser, shutil, sys
-from subprocess import Popen, PIPE
 
-from gettext import gettext as _
+import os
+import shutil
 
-#major packages
-import gtk
 import time
 import datetime
-import gobject
+from gettext import gettext as _
+
 from fnmatch import fnmatch
 
 #sugar stuff
-import sugar.env
-from sugar.datastore import datastore
-from sugar.graphics.alert import *
-import sugar.activity.bundlebuilder as bundlebuilder
-#build 650 doesn't include fix_manifest
-#import bundlebuilder
-from sugar.bundle.activitybundle import ActivityBundle
-
-#following only works in sugar 0.82
-#from sugar.activity.registry import get_registry
-from sugar.activity.activity import Activity
-from sugar import profile
+from sugar3.datastore import datastore
+from sugar3.graphics.alert import *
+from sugar3.bundle.activitybundle import ActivityBundle
 
 #import logging
-from  pydebug_logging import _logger, log_environment, log_dict
+from pydebug_logging import _logger
+from pydebug_logging import log_dict
+
 
 class ProjectFunctions:
-    
-    def __init__(self,activity):
+
+    def __init__(self, activity):
         self._activity = activity
         self._load_to_playpen_source = None
 
     def get_editor(self):
         raise NotImplimentedError
-        
+
     def write_binary_to_datastore(self):
         """
         Check to see if there is a child loaded.
@@ -66,6 +56,7 @@ class ProjectFunctions:
             os.rmtree(dist_dir)
         except:
             _logger.debug('failed to rmtree %s'%dist_dir)
+
         try:
             os.mkdir(dist_dir)
         except:
@@ -98,6 +89,7 @@ class ProjectFunctions:
                     packager.package()
                     xo_name = config.xo_name
                     source = os.path.join('dist', xo_name)
+
                 else:
                     #how to create the zipped xo file on build 650
                     name = self._activity.activity_dict.get('name','')
@@ -111,6 +103,7 @@ class ProjectFunctions:
                 _logger.debug('writing to the journal from %s to %s.'%(source,dest))
                 if os.path.isfile(dest):
                     os.unlink(dest)
+
                 try:
                     package = xo_name
                     shutil.copy(source,dest)
@@ -121,15 +114,18 @@ class ProjectFunctions:
                     _logger.debug('shutil.copy error %d: %s. ',IOError[0],IOError[1])
                     do_tgz = True
                     mime = self._activity.MIME_ZIP
+
             except Exception, e:
                 _logger.exception('outer exception %r'%e)
                 do_tgz = True
         else:
             _logger.debug('unable to parse bundle with ActivityBundle object')
+
         if do_tgz:
             dest = self.just_do_tar_gz()
             if dest:
                 package = os.path.basename(dest)                
+
         dsobject = datastore.create()
         dsobject.metadata['package'] = package
         dsobject.metadata['title'] = package  
@@ -150,6 +146,7 @@ class ProjectFunctions:
         except Exception, e:
             _logger.error('datastore.write exception %r'%e)
             return
+
         #update the project display
         if self.journal_class: 
             self.journal_class.new_directory()
@@ -172,10 +169,12 @@ class ProjectFunctions:
                 today = datetime.date.today()               
                 name = self._activity.child_path.split('/')[-1].split(".")[0] + '-' + str(today)
                 #change name if necessary to prevent collision 
-                basename = self._activity.util.non_conflicting(root,name)
+                basename = self._activity.util.non_conflicting(root, name)
+
                 try:
                     shutil.copytree(self._activity.child_path, os.path.join(root,basename))
                     self._activity.util.set_permissions(os.path.join(root,basename))
+
                 except Exception, e:
                     _logger.error('copytree exception %r'%e)
     
@@ -185,13 +184,16 @@ class ProjectFunctions:
             if not os.path.isdir(root):  #there is no bin directory in the root of this device
                 try:
                     os.mkdir(root)
+
                 except Exception, e:
                     _logger.debug('mkdir exception %r'%e)
+
             if os.path.isdir(root):
                 basename = os.path.basename(source)
                 target = os.path.join(root,basename)
                 if os.path.isfile(target):
                     os.unlink(target)
+
                 _logger.debug('copying %s to %s'%(source,target))
                 shutil.copyfile(source,target)
     
@@ -210,7 +212,9 @@ class ProjectFunctions:
                         if chunks[2] == '/media/Boot': continue
                         _logger.debug('mount point: %s'%chunks[2])
                         ret.append(chunks[2])
+
             return ret
+
         return None
     
     def write_manifest(self):
@@ -219,11 +223,14 @@ class ProjectFunctions:
         IGNORE_FILES = ['.gitignore', 'MANIFEST', '*.pyc', '*~', '*.bak', 'pseudo.po']
         try:
             os.remove(os.path.join(self._activity.child_path,'MANIFEST'))
+
         except:
             pass
+
         dest = self._activity.child_path
         manifest = self.list_files(dest, IGNORE_DIRS, IGNORE_FILES)
         _logger.debug('Writing manifest to %s.'%(dest))
+
         try:
             """
             config = bundlebuilder.Config(dest)
@@ -234,9 +241,11 @@ class ProjectFunctions:
             for line in manifest:
                 f.write(line + "\n")
             f.close()
+
         except Exception, e:
             _logger.debug('fix manifest error: %s'%(e,))
             return False
+
         return True
 
     #following two functions lifted (slight mods) from bundlebuilder build 852
@@ -278,8 +287,10 @@ class ProjectFunctions:
         cmd = 'tar czf %s %s'%(dest,'./'+os.path.basename(self._activity.child_path))
         ans = self._activity.util.command_line(cmd)
         _logger.debug('cmd:%s'%cmd)
+
         if ans[1]!=0:
             return None
+
         return dest
         
     def load_activity_to_playpen(self,file_path):
@@ -296,6 +307,7 @@ class ProjectFunctions:
         if not self.ds:
             _logger.debug('failed to get datastore object with id:%s'%object_id[0])
             return
+
         dsdict=self.ds.get_metadata()
         file_name_from_ds = self.ds.get_file_path()
         project = dsdict.get('package','')
@@ -306,7 +318,8 @@ class ProjectFunctions:
             self.ds.destroy()
             self.ds = None
             return
-        filestat = os.stat(file_name_from_ds)         
+
+        filestat = os.stat(file_name_from_ds)
         size = filestat.st_size
         _logger.debug('In try_to_load_from_journal. Object_id %s. File_path %s. Size:%s'%(object_id[0], file_name_from_ds, size))
         if mime_type == self._activity.MIME_TYPE:
@@ -314,9 +327,13 @@ class ProjectFunctions:
                 self._bundler = ActivityBundle(file_name_from_ds)
                 name_with_blanks = self._bundler.get_name()
                 name = ''
+
                 for i in range(len(name_with_blanks)):
-                    if name_with_blanks[i] == ' ': continue
+                    if name_with_blanks[i] == ' ':
+                        continue
+
                     name += name_with_blanks[i]
+
                 self._activity.activity_dict['name'] = name
                 iszip=True
                 istar = False
@@ -325,11 +342,13 @@ class ProjectFunctions:
                 self.ds.destroy()
                 self.ds = None
                 return
+
         else:
             name = project.split('.')[0]
             #self.delete_after_load = os.path.abspath(file_name_from_ds,name)
             iszip = False
             istar = True
+
         self._new_child_path = os.path.join(self._activity.activity_playpen,name+'.activity')
         self._load_playpen(file_name_from_ds, iszip, istar)
         
@@ -344,21 +363,20 @@ class ProjectFunctions:
         if not self._activity.debug_dict.get('tree_md5','') == '':            
             tree_md5 = self._activity.util.md5sum_tree(self._activity.child_path)
             if tree_md5 and tree_md5 != self._activity.debug_dict['tree_md5']:
-                action_prompt = _('Select OK to abandon changes to ') + \
-                            os.path.basename(self._activity.child_path)
-                self._activity.util.confirmation_alert(action_prompt, \
-                        _('Changes have been made to the PyDebug work area.'), \
-                        self.continue_loading_playpen_cb)
-                return        
+                action_prompt = _('Select OK to abandon changes to ') + os.path.basename(self._activity.child_path)
+                self._activity.util.confirmation_alert(action_prompt, _('Changes have been made to the PyDebug work area.'), self.continue_loading_playpen_cb)
+                return
+
         self.continue_loading_playpen_cb(None, None)
-            
-    def continue_loading_playpen_cb(self, alert, confirmation):           
+
+    def continue_loading_playpen_cb(self, alert, confirmation):
         self._unload_playpen()
         iszip = self.lp_iszip
         istar = self.lp_istar
         if self._load_to_playpen_source == None:
             #having done the clearing, just stop
             return
+
         if iszip:
             if self._activity.sugar_minor >= 84:
                 self._bundler.install(self._activity.activity_playpen)
@@ -371,12 +389,16 @@ class ProjectFunctions:
                 cmd = 'unzip -q %s'%dest
                 _logger.debug('loading XO file with cmd %s'%cmd)
                 rtn = self._activity.util.command_line(cmd)
-                if rtn[1] != 0: return
+                if rtn[1] != 0:
+                    return
+
                 os.unlink(dest)
 
             if self.ds:
                 self.ds.destroy()
+
             self.ds = None
+
         elif istar:
             dsdict = self.ds.get_metadata()
             project = dsdict.get('package','dummy.tar.gz')
@@ -387,10 +409,14 @@ class ProjectFunctions:
             cmd = 'tar zxf %s'%dest
             _logger.debug('loading tar.gz with cmd %s'%cmd)
             rtn = self._activity.util.command_line(cmd)
-            if rtn[1] != 0: return
+
+            if rtn[1] != 0:
+                return
+
             os.unlink(dest)
             if self.ds: self.ds.destroy()
             self.ds = None
+
         elif os.path.isdir(self._load_to_playpen_source):
             #shutil.copy dies if the target exists, so rmtree if target exists
             basename = self._load_to_playpen_source.split('/')[-1]
@@ -398,36 +424,28 @@ class ProjectFunctions:
                 dest = self._new_child_path
             else:
                 dest = os.path.join(self._activity.child_path,basename)
-            if  os.path.isdir(dest):
+
+            if os.path.isdir(dest):
                 shutil.rmtree(dest,ignore_errors=True)
+
             #os.mkdir(dest)
             _logger.debug('dest:%s'%dest)
             _logger.debug('copying tree from %s to %s'%(self._load_to_playpen_source,dest))
             shutil.copytree(self._load_to_playpen_source,dest)
             _logger.debug('returned from copytree')
+
         elif os.path.isfile(self._load_to_playpen_source):
             source_basename = os.path.basename(self._load_to_playpen_source)
             #dest = os.path.join(self._activity.child_path,source_basename)
             dest = self._activity.child_path
             _logger.debug('file copy from %s to %s'%(self._load_to_playpen_source, dest,))
             shutil.copy(self._load_to_playpen_source,dest)
+
         self._activity.debug_dict['source_tree'] = self._load_to_playpen_source
         self._activity.child_path = self._new_child_path
         self.setup_new_activity()
-        
-   
-        """The following code needs to be copied inline to any routine which overwrites playpen
-        #has the tree md5 changed?
-        tree_md5 = self._activity.util.md5sum_tree(self._activity.child_path)
-        if tree_md5 != self._activity.debug_dict['tree_md5']:
-            action_prompt = _('Select OK to abandon changes to ') + \
-                            os.path.basename(self._activity.child_path)
-            self._activity.util.confirmation_alert(action_prompt,
-                                                   _('Changes have been made to the PyDebug work area.'),
-                                                   self.continue_inline_cb)
-        """
-        
-    def _unload_playpen(self, rmtree = True):                                           
+
+    def _unload_playpen(self, rmtree = True):
         #IPython gets confused if path it knows about suddenly disappears
         #cmd = "cd '%s'\n"%self._activity.pydebug_path
         os.environ['HOME'] = self._activity.debugger_home
@@ -439,48 +457,51 @@ class ProjectFunctions:
             self._activity.debug_dict['tree_md5'] = ''
             self._activity.debug_dict['child_path'] = ''
             self.get_editor().remove_all()
+
             if rmtree:
                 shutil.rmtree(self._activity.child_path)
+
             self.abandon_changes = False
-            
+
             #check to see if the Activity directory has a link to playpen
-            link_dir = os.path.join('/home/olpc/Activities',
-                            os.path.basename(self._activity.child_path))
+            link_dir = os.path.join('/home/olpc/Activities', os.path.basename(self._activity.child_path))  ## FIXME: if /home/olpc/Activities doesn't exists?
             if os.path.islink(link_dir):
                 os.unlink(link_dir)
-                
-            
-    def copy_tree(self,source,dest):
-            if os.path.isdir(dest):
-                try:
-                    shutil.rmtree(dest)
-                except Exception, error:
-                    _logger.debug('rmtree exception %r'%error)
-            try:
-                shutil.copytree(source,dest)
-                self._activity.util.set_permissions(dest)
-            except Exception, error:
-                _logger.debug('copytree exception %r'%error)
 
-    
+    def copy_tree(self, source, dest):
+        if os.path.isdir(dest):
+            try:
+                shutil.rmtree(dest)
+
+            except Exception, error:
+                _logger.debug('rmtree exception %r' % error)
+
+        try:
+            shutil.copytree(source,dest)
+            self._activity.util.set_permissions(dest)
+
+        except Exception, error:
+            _logger.debug('copytree exception %r' % error)
+
     def read_activity_info(self, path):
         """
         Fetch the activity info from Datastore object and Sugar system calls 
         """
         try:
-            _logger.debug ('passed in file path: %s'%path)       
+            _logger.debug('passed in file path: %s' % path)
             bundle = ActivityBundle(path)
+
         except Exception,e:
             _logger.debug('exception %r'%e)
             #msg = _('%s not recognized by ActivityBundle parser. Does activity/activity.info exist?'%os.path.basename(path))
             #self._activity.util.alert(msg)
             self._activity.init_activity_dict()
-            if self._activity.child_path and os.path.isdir(self._activity.child_path) and \
-                                self._activity.child_path.endswith('.activity'):
+            if self._activity.child_path and os.path.isdir(self._activity.child_path) and  self._activity.child_path.endswith('.activity'):
                 name = os.path.basename(path).split('.')[0]
                 self._activity.activity_dict['name'] = name
-                self._activity.activity_dict['bundle_id'] = 'org.laptop.'  + name               
+                self._activity.activity_dict['bundle_id'] = 'org.laptop.'  + name
                 return  #maybe should issue an alert here
+
         self._activity.activity_dict['version'] = str(bundle.get_activity_version())
         
         ############################
@@ -493,22 +514,26 @@ class ProjectFunctions:
         for i in range(len(name_with_blanks)):
             if name_with_blanks[i] == ' ': continue
             name += name_with_blanks[i]
+
         self._activity.activity_dict['name'] = name
 
         self._activity.activity_dict['bundle_id'] = bundle.get_bundle_id()
         self._activity.activity_dict['command'] = bundle.get_command()
         cmd_args = bundle.get_command()
         self._activity.activity_dict['command'] = cmd_args
+
         if cmd_args.startswith('sugar-activity'):
             mod_class = cmd_args.split()[1]
             if '.' in mod_class:
                 self._activity.activity_dict['class'] = mod_class.split('.')[1]  
                 self._activity.activity_dict['module'] = mod_class.split('.')[0]
+
         else:
             self._activity.activity_dict['module'] = cmd_args
             self._activity.activity_dict['class'] = ''
+
         self._activity.activity_dict['icon'] = bundle.get_icon()
         self._activity.activity_dict['title'] = 'PyDebug_' + self._activity.activity_dict['name']
         log_dict(self._activity.activity_dict,'Contents of activity_dict')
         self._activity.update_metadata()
-        
+

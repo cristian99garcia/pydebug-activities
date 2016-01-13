@@ -24,30 +24,32 @@ is enabled (True)
 STABLE.
 """
 
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import GObject
 
 # Initialize logging.
 import logging
-from sugar import logger
+from sugar3 import logger
 #Get the standard logging directory. 
 std_log_dir = logger.get_logs_dir()
 _logger = logging.getLogger('PyDebug')
 
 _logger.setLevel(logging.DEBUG)
 
-class Notebook(gtk.Notebook):
+
+class Notebook(Gtk.Notebook):
+
     __gtype_name__ = 'SugarNotebook'
 
     __gproperties__ = {
         'can-close-tabs': (bool, None, None, False,
-                           gobject.PARAM_READWRITE |
-                           gobject.PARAM_CONSTRUCT_ONLY)
+                           GObject.PARAM_READWRITE |
+                           GObject.PARAM_CONSTRUCT_ONLY)
     }
     __gsignals__ = {
-        'do-close-page': (gobject.SIGNAL_RUN_FIRST,
-                              gobject.TYPE_NONE,
-                              ([]))
+        'do-close-page': (GObject.SIGNAL_RUN_FIRST,
+                          GObject.TYPE_NONE,
+                          ([]))
     }
     
     def __init__(self, **kwargs):
@@ -57,7 +59,7 @@ class Notebook(gtk.Notebook):
         #        Set the 'can-close-tabs' property using **kwargs
         #        Set True the scrollable notebook property
         
-        gobject.GObject.__init__(self, **kwargs)
+        GObject.GObject.__init__(self, **kwargs)
 
         self._can_close_tabs = None
         self.interactive_close = False
@@ -88,26 +90,28 @@ class Notebook(gtk.Notebook):
             raise AssertionError
 
     def _add_icon_to_button(self, button):
-        icon_box = gtk.HBox()
-        image = gtk.Image()
-        image.set_from_stock(gtk.STOCK_CLOSE, gtk.ICON_SIZE_MENU)
-        gtk.Button.set_relief(button, gtk.RELIEF_NONE)
+        icon_box = Gtk.HBox()
+        image = Gtk.Image()
+        image.set_from_stock(Gtk.STOCK_CLOSE, Gtk.IconSize.MENU)
+        button.set_relief(Gtk.RelifStyle.NONE)
 
-        settings = gtk.Widget.get_settings(button)
-        w, h = gtk.icon_size_lookup_for_settings(settings, gtk.ICON_SIZE_MENU)
-        gtk.Widget.set_size_request(button, w + 4, h + 4)
+        ##settings = Gtk.Widget.get_settings(button)
+        ##w, h = gtk.icon_size_lookup_for_settings(settings, gtk.ICON_SIZE_MENU)
+
+        ##button.set_size_request(w + 4, w + 4)
         image.show()
+
         icon_box.pack_start(image, True, False, 0)
         button.add(icon_box)
         icon_box.show()
 
     def _create_custom_tab(self, text, child):
-        event_box = gtk.EventBox()
+        event_box = Gtk.EventBox()
 
-        tab_box = gtk.HBox(False, 2)
-        self.tab_label = gtk.Label(text)
+        tab_box = Gtk.HBox(False, 2)
+        self.tab_label = Gtk.Label(text)
 
-        tab_button = gtk.Button()
+        tab_button = Gtk.Button()
         tab_button.connect('clicked', self._close_page, child)
 
         # Add a picture on a button
@@ -117,8 +121,8 @@ class Notebook(gtk.Notebook):
         tab_button.show()
         self.tab_label.show()
 
-        tab_box.pack_start(self.tab_label, True)
-        tab_box.pack_start(tab_button, True)
+        tab_box.pack_start(self.tab_label, True, True, 0)
+        tab_box.pack_start(tab_button, True, True, 0)
 
         tab_box.show_all()
         event_box.add(tab_box)
@@ -144,7 +148,8 @@ class Notebook(gtk.Notebook):
         # Add a new page to the notebook
         if self._can_close_tabs:
             eventbox = self._create_custom_tab(text_label, widget)
-            self.append_page(widget, eventbox)		
+            self.append_page(widget, eventbox)
+
         else:
             self.append_page(widget, gtk.Label(text_label))
             
@@ -160,3 +165,4 @@ class Notebook(gtk.Notebook):
         # Remove a page from the notebook
         page = self.page_num(child)
         self.emit('do-close-page')
+

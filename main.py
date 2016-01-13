@@ -20,31 +20,37 @@ import sys
 import gettext
 from optparse import OptionParser
 
-import gtk
+from gi.repository import Gtk
+
 import dbus
 import dbus.service
 import dbus.glib
 
-import sugar
-from sugar.activity import activityhandle
-from sugar.bundle.activitybundle import ActivityBundle
-from sugar.graphics import style
-from sugar import logger
+import sugar3
+from sugar3.activity import activityhandle
+from sugar3.bundle.activitybundle import ActivityBundle
+from sugar3.graphics import style
+from sugar3 import logger
+
 
 def create_activity_instance(constructor, handle):
     activity = constructor(handle)
     activity.show()
 
+
 def get_single_process_name(bundle_id):
     return bundle_id
+
 
 def get_single_process_path(bundle_id):
     return '/' + bundle_id.replace('.', '/')
 
+
 class SingleProcess(dbus.service.Object):
+
     def __init__(self, name_service, constructor):
         self.constructor = constructor
-    
+
         bus = dbus.SessionBus()
         bus_name = dbus.service.BusName(name_service, bus=bus)
         object_path = get_single_process_path(name_service)
@@ -54,6 +60,7 @@ class SingleProcess(dbus.service.Object):
     def create(self, handle_dict):
         handle = activityhandle.create_from_dict(handle_dict)
         create_activity_instance(self.constructor, handle)
+
 
 def main():
     parser = OptionParser()
@@ -68,8 +75,8 @@ def main():
     parser.add_option('-s', '--single-process', dest='single_process',
                       action='store_true',
                       help='start all the instances in the same process')
-    (options, args) = parser.parse_args()
 
+    (options, args) = parser.parse_args()
     logger.start()
 
     if 'SUGAR_BUNDLE_PATH' not in os.environ:
@@ -89,20 +96,19 @@ def main():
     os.environ['SUGAR_BUNDLE_NAME'] = bundle.get_name()
     os.environ['SUGAR_BUNDLE_VERSION'] = str(bundle.get_activity_version())
 
-    gtk.icon_theme_get_default().append_search_path(bundle.get_icons_path())
+    Gtk.IconTheme.get_default().append_search_path(bundle.get_icons_path())
 
     # This code can be removed when we grow an xsettings daemon (the GTK+
     # init routines will then automatically figure out the font settings)
-    settings = gtk.settings_get_default()
-    settings.set_property('gtk-font-name',
-                          '%s %f' % (style.FONT_FACE, style.FONT_SIZE))
+    settings = Gtk.Settings.get_default()
+    settings.set_property('gtk-font-name', '%s %f' % (style.FONT_FACE, style.FONT_SIZE))
 
     locale_path = None
     if 'SUGAR_LOCALEDIR' in os.environ:
         locale_path = os.environ['SUGAR_LOCALEDIR']
 
     gettext.bindtextdomain(bundle.get_bundle_id(), locale_path)
-    gettext.bindtextdomain('sugar-toolkit', sugar.locale_path)
+    gettext.bindtextdomain('sugar-toolkit', sugar3.locale_path)
     gettext.textdomain(bundle.get_bundle_id())
 
     splitted_module = args[0].rsplit('.', 1)
@@ -146,9 +152,6 @@ def main():
 
     create_activity_instance(activity_constructor, activity_handle)
 
-    #let the IPython PyInputhook call gtk
-    #gtk.main()
-    
     from IPython.lib.inputhook import InputHookManager
     ihm = InputHookManager()
     ihm.enable_gtk()

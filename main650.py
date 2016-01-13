@@ -21,24 +21,25 @@ import sys
 import gettext
 from optparse import OptionParser
 
-import pygtk
-pygtk.require('2.0')
-import gtk
+from gi.repository import Gtk
+
 import dbus
 import dbus.service
 import dbus.glib
 
-from sugar.activity import activityhandle
-from sugar.bundle.activitybundle import ActivityBundle
-from sugar import _sugarbaseext
-from sugar import logger
+from sugar3.activity import activityhandle
+from sugar3.bundle.activitybundle import ActivityBundle
+from sugar3 import _sugarbaseext
+from sugar3 import logger
 
 activity_instances = []
+
 
 def activity_destroy_cb(window):
     activity_instances.remove(window)
     if len(activity_instances) == 0:
-        gtk.main_quit()
+        Gtk.main_quit()
+
 
 def create_activity_instance(constructor, handle):
     activity = constructor(handle)
@@ -47,13 +48,17 @@ def create_activity_instance(constructor, handle):
 
     activity_instances.append(activity)
 
+
 def get_single_process_name(bundle_id):
     return bundle_id
+
 
 def get_single_process_path(bundle_id):
     return '/' + bundle_id.replace('.', '/')
 
+
 class SingleProcess(dbus.service.Object):
+
     def __init__(self, service_name, constructor):
         self.constructor = constructor
     
@@ -67,6 +72,7 @@ class SingleProcess(dbus.service.Object):
         handle = activityhandle.create_from_dict(handle_dict)
         create_activity_instance(self.constructor, handle)
 
+
 parser = OptionParser()
 parser.add_option("-b", "--bundle-id", dest="bundle_id",
                   help="identifier of the activity bundle")
@@ -79,8 +85,8 @@ parser.add_option("-u", "--uri", dest="uri",
 parser.add_option('-s', '--single-process', dest='single_process',
                   action='store_true',
                   help='start all the instances in the same process')
-(options, args) = parser.parse_args()
 
+(options, args) = parser.parse_args()
 logger.start()
 
 if 'SUGAR_BUNDLE_PATH' not in os.environ:
@@ -130,6 +136,7 @@ if options.single_process is True:
         print 'Created %s in a single process.' % service_name
         sys.exit(0)
 
+
 if hasattr(module, 'start'):
     module.start()
 
@@ -138,12 +145,10 @@ bundle = ActivityBundle(bundle_path)
 os.environ['SUGAR_BUNDLE_ID'] = bundle.get_bundle_id()
 os.environ['SUGAR_BUNDLE_NAME'] = bundle.get_name()
 
-gettext.bindtextdomain(bundle.get_bundle_id(),
-                       bundle.get_locale_path())
+gettext.bindtextdomain(bundle.get_bundle_id(), bundle.get_locale_path())
 gettext.textdomain(bundle.get_bundle_id())
 
-gtk.icon_theme_get_default().append_search_path(bundle.get_icons_path())
-
+Gtk.IconTheme.get_default().append_search_path(bundle.get_icons_path())
 create_activity_instance(constructor, handle)
 
-gtk.main()
+Gtk.main()

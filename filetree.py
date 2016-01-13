@@ -15,23 +15,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, time
-
+import os
 from gettext import gettext as _
 
 #major packages
-import gtk
-import gtk.glade
-#import pydebug
-#from pydebug import pydebug_instance
+from gi.repository import Gtk
+from gi.repository import GdkPixbuf
 
 # Initialize logging.
-from  pydebug_logging import _logger, log_environment, log_dict
-        
+from pydebug_logging import _logger
+
+
 class FileTree:
+
     column_names = [_('Name'), _('Size'), _('Last Changed')]
     
-    def __init__(self,parent,widget=None,wTree=None):
+    def __init__(self,parent, widget=None, wTree=None):
         self.parent = parent
         self.treeview = widget
         self.wTree = wTree
@@ -45,74 +44,59 @@ class FileTree:
             self.wTree=wTree
         if self.wTree:"""
         mdict = {
-                'file_system_row_selected_cb':self.file_system_row_selected_cb,
-                'file_system_row_activated_cb':self.file_system_row_activated_cb,
-                 'file_system_toggle_cursor_row_cb':self.file_system_toggle_cursor_row_cb,
-             }
+            'file_system_row_selected_cb': self.file_system_row_selected_cb,
+            'file_system_row_activated_cb': self.file_system_row_activated_cb,
+            'file_system_toggle_cursor_row_cb': self.file_system_toggle_cursor_row_cb,
+        }
+
         self.wTree.signal_autoconnect(mdict)
-        
-        
+
     def init_model(self):
-        self.ft_model = gtk.TreeStore(gtk.gdk.Pixbuf, str,str,str,str)
+        self.ft_model = Gtk.TreeStore(GdkPixbuf.Pixbuf, str, str, str, str)
         if not self.treeview:
-            self.treeview = gtk.TreeView()
+            self.treeview = Gtk.TreeView()
+
         self.treeview.set_model(self.ft_model)
         self.treeview.show()
+
         #the following line was probably disabled for compatibility with earlier sugar
         #search for TOOLTIP to find problem areas
-        if self.parent.sugar_minor >= 82:
-            self.treeview.set_tooltip_column(4)
-        else:
-            # assign the tooltip
-            tips = gtk.Tooltips()
-            tips.set_tip(self.treeview, "")
-            self.treeview.connect("motion-notify-event",self.show_tooltip, tips, 4) # <---
-            self.treeview.set_events( gtk.gdk.POINTER_MOTION_MASK )
+        self.treeview.set_tooltip_column(4)
+
         self.show_hidden = False
-    
-    def show_tooltip(self, widget, event, tooltips, cell, emptytext='no information'):
-        """ 
-        If emptyText is None, the cursor has to enter widget from a side
-        that contains an item, otherwise no tooltip will be displayed. """
-    
-        try:
-            (path,col,x,y) = widget.get_path_at_pos( int(event.x), int(event.y) ) 
-            it = widget.get_model().get_iter(path)
-            value = widget.get_model().get_value(it,cell)
-            tooltips.set_tip(widget, value)
-            tooltips.enable()
-        except:
-            #_logger.exception('show_tooltip exception')
-            tooltips.set_tip(widget, emptytext)
 
     def init_columns(self):
-        col = gtk.TreeViewColumn()
+        col = Gtk.TreeViewColumn()
         col.set_title(self.column_names[0])
-        render_pixbuf = gtk.CellRendererPixbuf()
+
+        render_pixbuf = Gtk.CellRendererPixbuf()
         col.pack_start(render_pixbuf, expand=False)
         col.add_attribute(render_pixbuf, 'pixbuf', 0)
-        render_text = gtk.CellRendererText()
+
+        render_text = Gtk.CellRendererText()
         col.pack_start(render_text, expand=True)
         col.add_attribute(render_text, 'text', 1)
         self.treeview.append_column(col)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(self.column_names[1], cell)
+
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(self.column_names[1], cell)
         col.add_attribute(cell, 'text', 2)
         self.treeview.append_column(col)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(self.column_names[2], cell)
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(self.column_names[2], cell)
         col.add_attribute(cell, 'text', 3)
         self.treeview.append_column(col)
         self.treeview.show()
-    
-        
+
     def get_filenames_list(self, dname=None, show_hidden=False):
         if not dname:
             self.dirname = os.path.expanduser('~')
         else:
             self.dirname = os.path.abspath(dname)
+
         if not os.path.isdir(self.dirname):
             return None
+
         files = [f for f in os.listdir(self.dirname) if f[0] <> '.' or  show_hidden]
         files.sort()
         #if not show_hidden: files = ['..'] + files
@@ -130,20 +114,24 @@ class FileTree:
             if not os.path.isdir(fullname) and not os.path.isfile(fullname): continue
             if len(file)>16:
                 short_file = file[:10] + '...' + file[-5:]
-            else: short_file = file
-            self.ft_model.append(piter,[self.file_pixbuf(fullname),short_file,
-                                              self.file_size(fullname),self.file_last_changed(fullname),
-                                              fullname,] )
+            else:
+                short_file = file
+
+            self.ft_model.append(piter, [self.file_pixbuf(fullname), short_file,
+                                         self.file_size(fullname), self.file_last_changed(fullname),
+                                         fullname,])
+
         if piter:
             tvpath = self.ft_model.get_path(piter)
             if tvpath:
                 self.treeview.expand_row(tvpath,False)
-        
+
     def set_file_sys_root(self, root, append = False):
         #self.file_sys_root = root
         self.dirname = root
         if not append:
             self.ft_model.clear()
+
         if not root: return
         self.new_directory(root)
         #self.current_citer = self.ft_model.append(None,[None,os.path.basename(self.file_sys_root),
@@ -157,31 +145,35 @@ class FileTree:
             childpath = model.get_path(childiter)
             if self.treeview.row_expanded(childpath):
                 self.treeview.collapse_row(model.get_path(iter))
+
             else:
                 self.treeview.expand_row(model.get_path(iter),False)
             return
-        fullpath = model.get(iter,4)
-        self.new_directory(fullpath[0],iter)
-        
+
+        fullpath = model.get(iter, 4)
+        self.new_directory(fullpath[0], iter)
+
     def file_system_toggle_cursor_row_cb(self,widget,iter=None,path=None):
-        selection=widget.get_selection()
-        (model,iter)=selection.get_selected()
+        selection = widget.get_selection()
+        (model, iter) = selection.get_selected()
         childiter = model.iter_children(iter)
+
         if childiter != None: #there are children
             childpath = model.get_path(childiter)
             if self.treeview.row_expanded(childpath):
                 self.treeview.collapse_row(model.get_path(iter))
             else:
-                self.treeview.expand_row(model.get_path(iter),False)
+                self.treeview.expand_row(model.get_path(iter), False)
+
             return
-               
-    def file_system_row_selected_cb(self,widget):
-        selection=widget.get_selection()
-        (model,iter)=selection.get_selected()
-        fullpath = model.get(iter,4)
+
+    def file_system_row_selected_cb(self, widget):
+        selection = widget.get_selection()
+        (model,iter) = selection.get_selected()
+        fullpath = model.get(iter, 4)
         if fullpath[0].endswith('.activity'):
             #change 12/26/10 -- do nothing
-            return
+            return  # Why it have code next to a 'return'?
             self.parent.child_path = fullpath[0]
             self.parent.read_activity_info()
         
@@ -190,66 +182,50 @@ class FileTree:
         self.ft_model.foreach(self.fn_compare,fullpath)
         if self.iter != None:
             self.path = self.ft_model.get_path(self.iter)
-            self.treeview.scroll_to_cell(self.path,use_align=True,row_align=0.2)
+            self.treeview.scroll_to_cell(self.path, use_align=True, row_align=0.2)
+
         else:
-            _logger.debug('position to not found:%s'%fullpath)
+            _logger.debug('position to not found:%s' % fullpath)
             
     def position_recent(self,path = None):
-        if not path: self.path = path 
+        if not path:
+            self.path = path
+
         if self.path:
-            self.treeview.scroll_to_cell(self.path,use_align=True,row_align=0.2)
-        
-        
-    def fn_compare(self,model,path,iter,fullpath):
-        if model.get(iter,4)[0] == fullpath:
+            self.treeview.scroll_to_cell(self.path, use_align=True, row_align=0.2)
+
+    def fn_compare(self, model, path, iter, fullpath):
+        if model.get(iter, 4)[0] == fullpath:
             self.iter = iter
             return True
+
         return False
-        
+
     def file_pixbuf(self, filename):
         if os.path.isdir(filename):
-            return  self.get_icon_pixbuf('STOCK_DIRECTORY')
+            return self.get_icon_pixbuf('STOCK_DIRECTORY')
+
         else:
             return self.get_icon_pixbuf('STOCK_FILE')
 
     def get_icon_pixbuf(self, stock):
         return self.treeview.render_icon(stock_id=getattr(gtk, stock),
-                                size=gtk.ICON_SIZE_MENU,
+                                size=Gtk.IconSize.MENU,
                                 detail=None)
 
     def file_size(self, filename):
-        filestat = os.stat(filename)         
+        filestat = os.stat(filename)
         return filestat.st_size
-
 
     def file_last_changed(self, filename):
         filestat = os.stat(filename)
-        rtn = time.strftime('%Y-%m-%d %H:%M:%S',time.gmtime(filestat.st_mtime))
+        rtn = time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime(filestat.st_mtime))
         return rtn
-    
+
     def get_treeview(self):
         return self.treeview
 
 
 def main():
-    gtk.main()
-
-if __name__ == "__main__":
-        # Create a new window
-    """window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window.set_size_request(400, 300)
-    window.show()
-    """
-    wTree=gtk.glade.XML('/home/ghunt/PyDebugger/project.glade')
-    top = wTree.get_widget('toplevel')
-    top.show()
-    file_system = wTree.get_widget('file_system')
-
-    #pydebug.Activity.set_canvas(pydebug_instance,self.contents)
-    flcdexample = FileTree(file_system,wTree)
-             
-    #flcdexample.connect_object(mdict)
-    flcdexample.set_file_sys_root('/home/ghunt')
-    main()
-
+    Gtk.main()
 

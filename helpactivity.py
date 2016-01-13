@@ -15,26 +15,22 @@
 import os
 from gettext import gettext as _
 
-import gtk
-import gobject
+from gi.repository import Gtk
+from gi.repository import WebKit
+from gi.repository import GObject
 
-from sugar.activity import activity
-from sugar.graphics.toolbutton import ToolButton
+from sugar3.activity import activity
+from sugar3.graphics.toolbutton import ToolButton
 
-import hulahop
-hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
-
-#from hulahop.webview import WebView
 from browser import Browser
-import xpcom
-from xpcom.components import interfaces
 
-gobject.threads_init()
+GObject.threads_init()
 
 HOME = os.path.join(activity.get_bundle_path(), 'help/XO_Introduction.html')
-#HOME = "http://website.com/something.html"
+
 
 class HelpActivity(activity.Activity):
+
     def __init__(self, handle):
         activity.Activity.__init__(self, handle)
 
@@ -42,24 +38,26 @@ class HelpActivity(activity.Activity):
 
         self._web_view = Browser()
 
-        toolbox = activity.ActivityToolbox(self)
-        self.set_toolbox(toolbox)
-        toolbox.show()
+        ##toolbox = activity.ActivityToolbox(self)
+        ##self.set_toolbox(toolbox)
+        ##toolbox.show()
 
-        toolbar = Toolbar(self._web_view)
-        toolbox.add_toolbar(_('Navigation'), toolbar)
-        toolbar.show()
+        ##toolbar = Toolbar(self._web_view)
+        ##toolbox.add_toolbar(_('Navigation'), toolbar)
+        ##toolbar.show()
 
         self.set_canvas(self._web_view)
         self._web_view.show()
 
-        toolbox.set_current_toolbar(1)
+        ##toolbox.set_current_toolbar(1)
 
         self._web_view.load_uri(HOME)
 
-class Toolbar(gtk.Toolbar):
+
+class Toolbar(Gtk.Toolbar):
+
     def __init__(self, web_view):
-        gobject.GObject.__init__(self)
+        Gtk.Toolbar.__init__(self)
 
         self._web_view = web_view
 
@@ -83,10 +81,10 @@ class Toolbar(gtk.Toolbar):
         self.insert(home, -1)
         home.show()
 
-        progress_listener = self._web_view.progress
-        progress_listener.connect('location-changed',
-                                  self._location_changed_cb)
-        progress_listener.connect('loading-stop', self._loading_stop_cb)
+        #progress_listener = self._web_view.progress
+        #progress_listener.connect('location-changed',
+        #                          self._location_changed_cb)
+        #progress_listener.connect('loading-stop', self._loading_stop_cb)
 
     def _location_changed_cb(self, progress_listener, uri):
         self.update_navigation_buttons()
@@ -95,17 +93,14 @@ class Toolbar(gtk.Toolbar):
         self.update_navigation_buttons()
 
     def update_navigation_buttons(self):
-        can_go_back = self._web_view.web_navigation.canGoBack
-        self._back.props.sensitive = can_go_back
-
-        can_go_forward = self._web_view.web_navigation.canGoForward
-        self._forward.props.sensitive = can_go_forward
+        self._back.set_sensitive(self._web_view.can_go_back())
+        self._forward.set_sensitive(self._web_view.can_go_forward())
 
     def _go_back_cb(self, button):
-        self._web_view.web_navigation.goBack()
+        self._web_view.go_back()
     
     def _go_forward_cb(self, button):
-        self._web_view.web_navigation.goForward()
+        self._web_view.go_forward()()
 
     def _go_home_cb(self, button):
         self._web_view.load_uri(HOME)

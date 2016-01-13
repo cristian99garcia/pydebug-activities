@@ -15,28 +15,29 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import os, sys, time
-
-from sugar.datastore import datastore
-from sugar import profile                                 
-from sugar import util
-
+import os
+import time
 from gettext import gettext as _
+from project_glade import toplevel
 
 #major packages
-import gtk
-import gtk.glade
-#import pydebug
-#from pydebug import pydebug_instance
+from gi.repository import Gtk
+from gi.repository import GdkPixbuf
 
 # Initialize logging.
 import logging
-from sugar import logger
-#Get the standard logging directory. 
+from sugar3 import profile
+from sugar3 import util
+from sugar3 import logger
+from sugar3.datastore import datastore
+
+#Get the standard logging directory.
 std_log_dir = logger.get_logs_dir()
 _logger = logging.getLogger('PyDebug')
 
+
 class DataStoreTree():
+
     column_names = [_('Name'), _('Size'), _('Last Changed')]
     
     def __init__(self, parent, widget=None,wTree=None):
@@ -44,6 +45,7 @@ class DataStoreTree():
         self._activity = parent
         self.treeview = widget
         self.wTree = wTree
+
         self.init_model()
         self.init_columns()
         self.connect_object()
@@ -52,30 +54,30 @@ class DataStoreTree():
         self.journal_page_num = 0
         self.journal_max = 0
         self.new_directory()
-        button = self.wTree.get_widget('from_journal')
-        tt = gtk.Tooltips()
-        tt.set_tip(button,_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
-        #button.set_tooltip_text(_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
-        button = self.wTree.get_widget('to_journal')
-        tt = gtk.Tooltips()
-        tt.set_tip(button,_('Zip up all the files in your debug workplace and store them in the Journal'))
-        #button.set_tooltip_text(_('Zip up all the files in your debug workplace and store them in the Journal'))
 
-        
+        button = self.wTree.get_widget('from_journal')
+        button.set_tooltip_text(_('Load the selected Journal XO (or tar.gz) file to the debug workplace'))
+
+        button = self.wTree.get_widget('to_journal')
+        button.set_tooltip_text(_('Zip up all the files in your debug workplace and store them in the Journal'))
+
     def connect_object(self,  wTree=None):
         mdict = {
-                'younger_clicked_cb':self.newer_in_journal_cb,
-                'older_clicked_cb':self.older_in_journal_cb,
-                'from_journal_clicked_cb':self.load_from_journal_cb,
-                'to_journal_clicked_cb':self.save_to_journal_cb ,
-             }
+            'younger_clicked_cb': self.newer_in_journal_cb,
+            'older_clicked_cb': self.older_in_journal_cb,
+            'from_journal_clicked_cb': self.load_from_journal_cb,
+            'to_journal_clicked_cb': self.save_to_journal_cb,
+        }
+
         self.wTree.signal_autoconnect(mdict)
-        
+
     def init_model(self):
-        #plan for the store: pixbuf,title,size,last-updated,tooltip,jobject-id
-        self.journal_model = gtk.TreeStore(gtk.gdk.Pixbuf, str,str,str,str,str,str,str,str,str,str)
+        #plan for the store: pixbuf, title, size, last-updated, tooltip, jobject-id
+        self.journal_model = Gtk.TreeStore(GdkPixbuf.Pixbuf, str, str, str, str, str, str, str, str, str, str)
+
         if not self.treeview:
-            self.treeview = gtk.TreeView()
+            self.treeview = Gtk.TreeView()
+
         self.treeview.set_model(self.journal_model)
         self.treeview.show()
         #self.treeview.has_tooltip = True
@@ -84,26 +86,29 @@ class DataStoreTree():
         self.show_hidden = False
 
     def init_columns(self):
-        col = gtk.TreeViewColumn()
+        col = Gtk.TreeViewColumn()
         col.set_title(self.column_names[0])
-        render_pixbuf = gtk.CellRendererPixbuf()
+
+        render_pixbuf = Gtk.CellRendererPixbuf()
         col.pack_start(render_pixbuf, expand=False)
         col.add_attribute(render_pixbuf, 'pixbuf', 0)
-        render_text = gtk.CellRendererText()
+
+        render_text = Gtk.CellRendererText()
         col.pack_start(render_text, expand=True)
         col.add_attribute(render_text, 'text', 1)
         col.set_fixed_width(20)
         self.treeview.append_column(col)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(self.column_names[1], cell)
+
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(self.column_names[1], cell)
         col.add_attribute(cell, 'text', 2)
         self.treeview.append_column(col)
-        cell = gtk.CellRendererText()
-        col = gtk.TreeViewColumn(self.column_names[2], cell)
+
+        cell = Gtk.CellRendererText()
+        col = Gtk.TreeViewColumn(self.column_names[2], cell)
         col.add_attribute(cell, 'text', 3)
         self.treeview.append_column(col)
-    
-        
+
     def get_datastore_list(self, next=False):
         dslist = []
         """
@@ -131,6 +136,7 @@ class DataStoreTree():
         else:
             _logger.debug('sugar version failure')
             minor = 70
+
         try:
             if minor > 80:
                 (ds_list,num_found) = datastore.find({'mime_type': mime_list})
@@ -143,10 +149,13 @@ class DataStoreTree():
         except Exception,e:
             _logger.error('datastore error %s'%e)
             return []
+
         if num_found < self.limit:
             self.journal_max = self.journal_page_num * self.journal_page_size + num_found
+
         _logger.debug( 'datastoretree-get_datastore_list: count= %s'%num_found)
         keys = ('title','size','timestamp','activity','package','mime_type','file_path')
+
         for jobject in ds_list:
             itemlist = [None,]
             datastoredict=jobject.get_metadata().get_dictionary() #get the property dictionary
@@ -162,7 +171,9 @@ class DataStoreTree():
                 datastoredict['size'] = info.st_size
             else:
                  datastoredict['size'] = 0               
+
             datastoredict['file_path'] = src
+
             for key in keys:
                 if datastoredict.has_key(key):
                     if key == 'timestamp':
@@ -173,7 +184,9 @@ class DataStoreTree():
                         pkg = '%s'%(datastoredict[key])
                 else:
                     pkg = ''
+
                 itemlist.append(pkg)
+
             itemlist.append(datastoredict['title'])
             itemlist.append(jobject.object_id)
             text = 'Mime_type: %s, Journal ID: %s, Bundle: %s'%(datastoredict.get('mime_type',''),
@@ -183,6 +196,7 @@ class DataStoreTree():
             #_logger.debug('journal tooltip:%s'%text)
             dslist.append(itemlist)
             jobject.destroy()
+
         return dslist
 
     def new_directory(self,piter = None, next=True):
@@ -199,11 +213,12 @@ class DataStoreTree():
             pb = folderpb
         else:
             pb = filepb
+
         return pb
 
     def get_icon_pixbuf(self, stock):
-        return self.treeview.render_icon(stock_id=getattr(gtk, stock),
-                                size=gtk.ICON_SIZE_MENU,
+        return self.treeview.render_icon(stock_id=getattr(Gtk, stock),
+                                size=Gtk.ICON_SIZE_MENU,
                                 detail=None)
 
     def get_treeview(self):
@@ -226,6 +241,7 @@ class DataStoreTree():
         if iter == None:
             self.parent.alert(_('Must select Journal item to Load'))
             return
+
         object_id = model.get(iter,9)
         _logger.debug('object id %s from journal'%object_id)
         self.parent.proj_funct.try_to_load_from_journal(object_id)
@@ -237,25 +253,15 @@ class DataStoreTree():
         _logger.debug('in display_tooltip')
         tooltip.show()
         return True
-        
+
+
 def main():
-    gtk.main()
+    Gtk.main()
+
 
 if __name__ == "__main__":
-        # Create a new window
-    """window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window.set_size_request(400, 300)
-    window.show()
-    """
-    wTree=gtk.glade.XML('/home/olpc/Activities/PyDebug.activity/project.glade')
-    top = wTree.get_widget('toplevel')
+    top = toplevel()
     top.show()
-    file_system = wTree.get_widget('journal')
 
-    #pydebug.Activity.set_canvas(pydebug_instance,self.contents)
-    flcdexample = DataStoreTree(None, file_system,wTree)
-             
-    #flcdexample.connect_object(mdict)
     main()
-
 

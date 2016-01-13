@@ -17,46 +17,41 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #major packages
+from terminal import Terminal
 from gettext import gettext as _
-import gtk
-from exceptions import NotImplementedError
 
-#sugar stuff
-from sugar.graphics.toolbutton import ToolButton
-import sugar.graphics.toolbutton
+from gi.repository import Gtk
+from gi.repository import Gdk
+from sugar3.graphics.toolbutton import ToolButton
 
 #application stuff
-from terminal import Terminal
-import editor
-from help import Help
-import pytoolbar
 
-from  pydebug_logging import _logger, log_environment
+from pydebug_logging import _logger
+
 
 class TerminalGui(Terminal):
+
     def __init__(self,activity, top_level_toolbox):
         self._activity = activity
         self.toolbox = top_level_toolbox
-        
-        Terminal.__init__(self,self)
+
+        Terminal.__init__(self, self)
 
         #set up tool box/menu buttons
-        activity_toolbar = self.toolbox.get_activity_toolbar()
+        activity_toolbar = self.toolbox.toolbar
 
-        separator = gtk.SeparatorToolItem()
+        separator = Gtk.SeparatorToolItem()
         separator.set_draw(True)
         separator.show()
         activity_toolbar.insert(separator, 0)
-        
-        activity_go = ToolButton()
-        activity_go.set_stock_id('gtk-media-forward')
+
+        activity_go = ToolButton(stock_id=Gtk.STOCK_MEDIA_FORWARD)
         activity_go.set_icon_widget(None)
         activity_go.set_tooltip(_('Start Debugging'))
         activity_go.connect('clicked', self.project_run_cb)
-        activity_go.add_accelerator('clicked',self.get_accelerator(),ord('O'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        activity_go.add_accelerator('clicked', self.get_accelerator(), ord('O'), Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.VISIBLE)
         activity_go.show()
         activity_toolbar.insert(activity_go, 0)
-        
 
         activity_copy_tb = ToolButton('edit-copy')
         activity_copy_tb.set_tooltip(_('Copy'))
@@ -67,25 +62,24 @@ class TerminalGui(Terminal):
         activity_paste_tb = ToolButton('edit-paste')
         activity_paste_tb.set_tooltip(_('Paste'))
         activity_paste_tb.connect('clicked', self._paste_cb)
-        activity_paste_tb.add_accelerator('clicked',self.get_accelerator(),ord('V'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        activity_paste_tb.add_accelerator('clicked', self.get_accelerator(), ord('V'), Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.VISIBLE)
         activity_toolbar.insert(activity_paste_tb, 4)
         activity_paste_tb.show()
 
-        activity_tab_tb = sugar.graphics.toolbutton.ToolButton('list-add')
+        activity_tab_tb = ToolButton('list-add')
         activity_tab_tb.set_tooltip(_("Open New Tab"))
-        activity_tab_tb.add_accelerator('clicked',self.get_accelerator(),ord('T'),gtk.gdk.CONTROL_MASK,gtk.ACCEL_VISIBLE)
+        activity_tab_tb.add_accelerator('clicked', self.get_accelerator(), ord('T'), Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.VISIBLE)
         activity_tab_tb.show()
         activity_tab_tb.connect('clicked', self._open_tab_cb)
         activity_toolbar.insert(activity_tab_tb, 5)
 
-        activity_tab_delete_tv = sugar.graphics.toolbutton.ToolButton('list-remove')
+        activity_tab_delete_tv = ToolButton('list-remove')
         activity_tab_delete_tv.set_tooltip(_("Close Tab"))
         activity_tab_delete_tv.show()
         activity_tab_delete_tv.connect('clicked', self._close_tab_cb)
         activity_toolbar.insert(activity_tab_delete_tv, 6)
 
-
-        activity_fullscreen_tb = sugar.graphics.toolbutton.ToolButton('view-fullscreen')
+        activity_fullscreen_tb = ToolButton('view-fullscreen')
         activity_fullscreen_tb.set_tooltip(_("Fullscreen"))
         activity_fullscreen_tb.connect('clicked', self._activity._fullscreen_cb)
         activity_toolbar.insert(activity_fullscreen_tb, 7)
@@ -117,6 +111,7 @@ class TerminalGui(Terminal):
         if command == '':
             self._activity.util.alert('No Activity Loaded')
             return
+
         _logger.debug("Command to execute:%s."%command)
         self.save_all()
         
@@ -138,4 +133,4 @@ class TerminalGui(Terminal):
         go_cmd = _('go')
         self.feed_virtual_terminal(0,'%s\n'%(go_cmd,))
         pass
-    
+

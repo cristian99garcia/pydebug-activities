@@ -19,79 +19,75 @@ from gettext import gettext as _
 from subprocess import Popen, PIPE
 import shutil
 
-import gtk
-import gobject
-import wnck
-#from time import time
-from sugar import util
+from gi.repository import Gtk
+from gi.repository import WebKit
+from gi.repository import GObject
 
-from sugar.activity import activity
-from sugar.graphics.window import Window
-from sugar.graphics.toolbox import Toolbox
-from sugar.activity.activityhandle import ActivityHandle
-from sugar import wm, env
+#from time import time
+from sugar3 import util
+
+from jarabe.model import shell
+
+from sugar3.activity import activity
+from sugar3.graphics.window import Window
+from sugar3.graphics.toolbox import Toolbox
+from sugar3.activity.activityhandle import ActivityHandle
+from sugar3 import wm, env
 #from IPython.Debugger import Tracer
 from pdb import *
-from sugar.graphics.toolbutton import ToolButton
+from sugar3.graphics.toolbutton import ToolButton
 
-import hulahop
-#hulahop.startup(os.path.join(activity.get_activity_root(), 'data/gecko'))
-
-"""#from hulahop.webview import WebView
-from browser import Browser
-import xpcom
-from xpcom.components import interfaces
-"""
-gobject.threads_init()
+GObject.threads_init()
 
 HOME = os.path.join(activity.get_bundle_path(), _('help/PyDebug.htm'))
-#HOME = "http://website.com/something.html"
 HELP_PANE = 3
 
 # Initialize logging.
 import logging
 _logger = logging.getLogger('PyDebug')
 
+
 class Help(Window):
+
     def __init__(self, parent):
+
         self.pydebug = parent
-        hulahop.startup(os.path.join(parent.debugger_home, 'gecko'))
         #from hulahop.webview import WebView
         from browser import Browser
-        import xpcom
-        from xpcom.components import interfaces
+
         self.help_id = None
         self.handle = ActivityHandle()
         self.handle.activity_id = util.unique_id()
         Window.__init__(self)
         self.connect('realize',self.realize_cb)
 
-        #self.props.max_participants = 1
+        self.props.max_participants = 1
 
         self._web_view = Browser()
 
-        self.toolbox = Toolbox()
-        self.toolbox.connect('current_toolbar_changed',self.goto_cb)
-        self.set_toolbox(self.toolbox)
-        self.toolbox.show()
-        activitybar = gtk.Toolbar()
-        self.toolbox.add_toolbar(_('Activity'), activitybar)
+        ##self.toolbox = Toolbox()
+        ##self.toolbox.connect('current_toolbar_changed',self.goto_cb)
+        ##self.set_toolbox(self.toolbox)
+        ##self.toolbox.show()
+
+        activitybar = Gtk.Toolbar()
+        ##self.toolbox.add_toolbar(_('Activity'), activitybar)
         activitybar.show_all()
-        
-        editbar = gtk.Toolbar()
-        self.toolbox.add_toolbar(_('Edit'), editbar)
+
+        editbar = Gtk.Toolbar()
+        ##self.toolbox.add_toolbar(_('Edit'), editbar)
         #editbar.connect('current_toolbar_changed', self.goto_cb,1)
         editbar.show_all()
-        
-        projectbar = gtk.Toolbar()
-        self.toolbox.add_toolbar(_('Project'), projectbar)
+
+        projectbar = Gtk.Toolbar()
+        ##self.toolbox.add_toolbar(_('Project'), projectbar)
         #projectbar.connect('current_toolbar_changed', self.goto_cb,2)
         projectbar.show_all()
-        
+
         self.help_toolbar = Toolbar(self._web_view)
         self.help_toolbar.show()
-        self.toolbox.add_toolbar(_('Help'), self.help_toolbar)
-        self.toolbox._notebook.set_current_page(HELP_PANE)
+        ##self.toolbox.add_toolbar(_('Help'), self.help_toolbar)
+        ##self.toolbox._notebook.set_current_page(HELP_PANE)
 
         self.set_canvas(self._web_view)
         self._web_view.show()
@@ -99,19 +95,18 @@ class Help(Window):
         self.toolbox.set_current_toolbar(HELP_PANE)
 
         self._web_view.load_uri(HOME)
-        self.pid = Popen(['/usr/bin/pydoc','-p','23432'])
+        self.pid = Popen(['/usr/bin/pydoc', '-p', '23432'])
 
     def get_help_toolbar(self):
         return self.help_toolbar
 
     def realize_help(self):
-        _logger.debug('realize help called Version: %s pydebug activity id:%s'%(version, self.pydebug.handle.activity_id))
-        #trial and error suggest the following pydebug activation is necesssary to return reliably to pydebug window
-        if version > 0.839:
-            self.pywin = self.get_wnck_window_from_activity_id(str(self.pydebug.handle.activity_id))
-            if self.pywin:
-                self.pywin.activate(gtk.get_current_event_time())
-                _logger.debug('pywin.activate called')
+        _logger.debug('realize help called Version: %s pydebug activity id:%s' % (version, self.pydebug.handle.activity_id))
+        self.pywin = self.get_wnck_window_from_activity_id(str(self.pydebug.handle.activity_id))
+        if self.pywin:
+            self.pywin.activate(gtk.get_current_event_time())
+            _logger.debug('pywin.activate called')
+
         self.show_all()
         self.toolbox._notebook.set_current_page(HELP_PANE)
         return self
@@ -124,9 +119,9 @@ class Help(Window):
     def activate_help(self):
         _logger.debug('activate_help called')
         self.help_window.show()
-        if version < 0.838: return
         window = self.get_wnck_window_from_activity_id(self.help_id)
         self.toolbox._notebook.set_current_page(HELP_PANE)
+
         if window:
             window.activate(gtk.get_current_event_time())
         else:
@@ -134,11 +129,14 @@ class Help(Window):
             
     def goto_cb(self, page, tab):
         _logger.debug('current_toolbar_changed event called goto_cb. tab: %s'%tab)
-        if tab == HELP_PANE: return
-        if not self.help_id: return
+        if tab == HELP_PANE:
+            return
+
+        if not self.help_id:
+            return
+
         self.pydebug.set_toolbar(tab)
         self.help_window.hide()
-        if version < 0.838: return
         self.pywin = self.get_wnck_window_from_activity_id(str(self.pydebug.handle.activity_id))
         if self.pywin:
             self.pywin.activate(gtk.get_current_event_time())
@@ -148,24 +146,22 @@ class Help(Window):
            --the home_model code changed between .82 and .84 sugar
            --so do the lookup differently depending on sugar version
         """
-        _logger.debug('get_wnck_window_from_activity_id. id:%s'%activity_id)
-        _logger.debug('sugar version %s'%version)
-        if version and version >= 0.839:
-            home_model = shell.get_model()
-            activity = home_model.get_activity_by_id(activity_id)
-        else:
-            instance = view.Shell.get_instance()
-            home_model = instance.get_model().get_home()
-            activity = home_model._get_activity_by_id(activity_id)
+        _logger.debug('get_wnck_window_from_activity_id. id:%s' % activity_id)
+        _logger.debug('sugar version %s' % version)
+        home_model = shell.get_model()
+        activity = home_model.get_activity_by_id(activity_id)
         if activity:
             return activity.get_window()
+
         else:
             _logger.debug('wnck_window was none')
             return None
-                
-class Toolbar(gtk.Toolbar):
+
+
+class Toolbar(Gtk.Toolbar):
+
     def __init__(self, web_view):
-        gobject.GObject.__init__(self)
+        GObject.GObject.__init__(self)
 
         self._web_view = web_view
 
@@ -189,10 +185,10 @@ class Toolbar(gtk.Toolbar):
         self.insert(home, -1)
         home.show()
 
-        progress_listener = self._web_view.progress
-        progress_listener.connect('location-changed',
-                                  self._location_changed_cb)
-        progress_listener.connect('loading-stop', self._loading_stop_cb)
+        ##progress_listener = self._web_view.progress
+        ##progress_listener.connect('location-changed',
+        ##                          self._location_changed_cb)
+        ##progress_listener.connect('loading-stop', self._loading_stop_cb)
 
     def _location_changed_cb(self, progress_listener, uri):
         self.update_navigation_buttons()
@@ -201,45 +197,15 @@ class Toolbar(gtk.Toolbar):
         self.update_navigation_buttons()
         
     def update_navigation_buttons(self):
-        can_go_back = self._web_view.web_navigation.canGoBack
-        self._back.props.sensitive = can_go_back
-
-        can_go_forward = self._web_view.web_navigation.canGoForward
-        self._forward.props.sensitive = can_go_forward
+        self._back.set_sensitive(self._web_view.can_go_back())
+        self._forward.set_sensitive(self._web_view.can_go_forward())
 
     def _go_back_cb(self, button):
-        self._web_view.web_navigation.goBack()
+        self._web_view.go_back()
     
     def _go_forward_cb(self, button):
-        self._web_view.web_navigation.goForward()
+        self._web_view.go_forward()
 
     def _go_home_cb(self, button):
         self._web_view.load_uri(HOME)
-
-def command_line(cmd):
-    _logger.debug('command_line cmd:%s'%cmd)
-    p1 = Popen(cmd,stdout=PIPE, shell=True)
-    output = p1.communicate()
-    if p1.returncode != 0:
-        return None
-    return output[0]
-    
-def sugar_version():
-    cmd = '/bin/rpm -q sugar'
-    reply = command_line(cmd)
-    if reply and reply.find('sugar') > -1:
-        version = reply.split('-')[1]
-        version_chunks = version.split('.')
-        major_minor = version_chunks[0] + '.' + version_chunks[1]
-        return float(major_minor) 
-    return None
-
-version = 0.0
-version = sugar_version() 
-if version and version >= 0.839:
-    from jarabe.model import shell
-else:
-    if not '/usr/share/sugar/shell/' in sys.path:
-        sys.path.append('/usr/share/sugar/shell/')
-    import view.Shell
 

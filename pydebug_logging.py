@@ -20,7 +20,7 @@ import os
 
 # Initialize logging.
 import logging
-from sugar import logger
+from sugar3 import logger
 #Get the standard logging directory. 
 std_log_dir = logger.get_logs_dir()
 _logger = logging.getLogger('PyDebug')
@@ -39,21 +39,26 @@ console_formatter = logging.Formatter('%(name)s %(levelname)s %(funcName)s: %(li
 console_handler.setFormatter(console_formatter)
 _logger.addHandler(console_handler)
 
+
 def log_environment():
     keys = []
     for k in os.environ:
         if k.find('SUGAR') > -1 or k.find('PATH')>-1:
             print('%s => %s'%(k,os.environ[k]))
 
-def log_dict( d, label = ''):
+
+def log_dict(d, label = ''):
     debugstr = ''
     for a_key in d.keys():
-        if a_key == 'preview': continue
+        if a_key == 'preview':
+            continue
+
         try:
-            dict_value = '%s:%s, '%(a_key, d[a_key], )
+            dict_value = '%s:%s, ' % (a_key, d[a_key])
             debugstr += dict_value
+
         except:
             pass
+
     _logger.debug('%s Dictionary ==>:%s'%(label,debugstr))
 
-            

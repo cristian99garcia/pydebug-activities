@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from __future__ import with_statement
 #
 # Copyright (C) 2007, Red Hat, Inc.
 #
@@ -17,7 +16,6 @@ from __future__ import with_statement
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-
 import os
 import sys
 from subprocess import PIPE, Popen
@@ -29,32 +27,23 @@ import logging
 from  pydebug_logging import _logger, log_environment
 _logger.setLevel(logging.DEBUG)
 
-from sugar.activity import activityfactory
-from sugar.bundle.activitybundle import ActivityBundle
-from sugar import profile
-from sugar.graphics.xocolor import XoColor
+from sugar3.activity import activityfactory
+from sugar3.bundle.activitybundle import ActivityBundle
+from sugar3 import profile
+from sugar3.graphics.xocolor import XoColor
+from sugar3.activity import main
+
 
 #figure out which version of sugar we are dealing with
 def command_line(cmd):
-    _logger.debug('command_line cmd:%s'%cmd)
-    p1 = Popen(cmd,stdout=PIPE, shell=True)
+    _logger.debug('command_line cmd:%s' % cmd)
+    p1 = Popen(cmd, stdout=PIPE, shell=True)
     output = p1.communicate()
     if p1.returncode != 0:
         return None
-    return output[0]
-    
-def sugar_version():
-    cmd = '/bin/rpm -q sugar'
-    reply = command_line(cmd)
-    if reply and reply.find('sugar') > -1:
-        version = reply.split('-')[1]
-        version_chunks = version.split('.')
-        major_minor = version_chunks[0] + '.' + version_chunks[1]
-        return float(major_minor) 
-    return None
 
-version = 0.0
-version = sugar_version() 
+    return output[0]
+
 
 #define the interface with the GUI
 from Rpyc import *
@@ -160,23 +149,8 @@ bundle_name = bundle_info.get_name()
 os.environ['SUGAR_BUNDLE_NAME'] = bundle_name
 os.environ['SUGAR_BUNDLE_ID'] = bundle_id
 
-if version and version >= 0.839:
-    #do 0.84 stuff
-    cmd_args = activityfactory.get_command(bundle_info)
-else:
-    from sugar.activity.registry import get_registry
-    registry = get_registry()
-    registry.add_bundle(child_path)
-    activity_list = registry.find_activity(bundle_id)
-    if len(activity_list) == 0:
-        _logger.error('Activity %s not found'%bundle_id)
-        print 'Activity %s not found'%bundle_id
-        exit(1)
-    cmd_args = activityfactory.get_command(activity_list[0])
-    myprofile = profile.get_profile()
-    myprofile.color = XoColor()
+cmd_args = activityfactory.get_command(bundle_info)
 _logger.debug('command args:%r'%cmd_args)
-    
 
 #need to get activity root, but activity bases off of HOME which some applications need to change
 #following will not work if storage system changes with new OS
@@ -229,6 +203,7 @@ if not cmd_args[0].startswith('sugar-activity'):
             start_scan = 0
             if not line.startswith('export'):
                 continue
+
             #we will only deal with attempts to set the environment
             payload = line.split()[1]
             pair = payload.split('=')
@@ -239,10 +214,13 @@ if not cmd_args[0].startswith('sugar-activity'):
                 _logger.debug('key:%s.value:%s'%(key,value,))
                 if key == 'PYTHONPATH':
                     os.environ['PYTHONPATH']= value + ':' +os.environ['PYTHONPATH']
+
                 elif key == 'LD_LIBRARY_PATH':
                     os.environ['LD_LIBRARY_PATH']= value + ':' +os.environ.get('LD_LIBRARY_PATH','')
+
                 elif key == 'HOME':
                     continue
+
                 else:
                     index = value.find(pydebug_home[:-6], start_scan)
                     while index > -1:
@@ -255,11 +233,16 @@ if not cmd_args[0].startswith('sugar-activity'):
                             value = value[:index] + path + testval
                             #permit repeated debug runs without creating monster environment strings
                             if os.environ.has_key(key):
-                                if os.environ[key] == value: skip_line = True
-                        if not skip_line: env_dict[key] = value
+                                if os.environ[key] == value:
+                                    skip_line = True
+
+                        if not skip_line:
+                            env_dict[key] = value
+
                         start_scan = index + len(path)
                         index = value.find(pydebug_home[:-6], start_scan)
-    #os.environ = env_dict        
+
+    #os.environ = env_dict
 #bundle_id = cmd_args[5]
 #sys.argv = [None, cmd_args[1],'-s'] + cmd_args[1:]
 #sys.argv = [None, cmd_args[1],] + cmd_args[1:]
@@ -267,19 +250,7 @@ if not cmd_args[0].startswith('sugar-activity'):
 sys.argv = cmd_args
 
 log_environment()
-_logger.debug('about to call main.main() with args %r'%sys.argv)
+_logger.debug('about to call main.main() with args %r' % sys.argv)
 
-if version and version >= 0.839:
-    #for IPython 0.10 we use the stock version of main
-    from sugar.activity import main
-    
-    #for 0.11 we we disable gtk.main call
-    #import main
-    main.main()
-else:
-    #main650 is the build 650 sugar-activity file, renamed, placed in  pythonpath
-    import main650
-
-            
-
+main.main()
 

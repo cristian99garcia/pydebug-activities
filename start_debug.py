@@ -27,18 +27,23 @@ from Rpyc import *
 try:
     c = SocketConnection('localhost')
     db = c.modules.pydebug.pydebug_instance
+
 except AttributeError:
     _logger.error('cannot connect to localhost')
+
 except e:
     print(e[1])
     assert False
+
 pydebug_path = db.pydebug_path
 print('pydebug path: %s'%pydebug_path)
 #define interface with the command line ipython instance
+
 from IPython.core import ipapi
 from IPython.core.macro import Macro
+
 ip = ipapi.get()
-cmd = 'run -pdb -d %s\n'% os.path.join(pydebug_path,'bin','continue_debug.py')
+cmd = 'run -pdb -d %s\n' %  os.path.join(pydebug_path,'bin', 'continue_debug.py')
 ip.user_ns['go'] = Macro(cmd)
-alias_cmd = '!alias go=%s'%os.path.join(pydebug_path,'bin','continue_debug.py')
+alias_cmd = '!alias go=%s'%os.path.join(pydebug_path,'bin', 'continue_debug.py')
 os.system(alias_cmd)

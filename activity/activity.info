@@ -4,4 +4,4 @@ bundle_id = org.laptop.PyDebug
 activity_version = 7
 show_launcher = yes
 icon = PyDebug
-exec = PyDebug.sh
+exec = sugar-activity pydebug.PyDebugActivity
