@@ -54,4 +54,3 @@ class Channel(object):
         finally:
             self.recv_lock.release()
 
-

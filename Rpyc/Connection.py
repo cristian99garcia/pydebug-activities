@@ -208,5 +208,3 @@ class Connection(object):
         codeobj = compile(expr, "<from %s>" % (self,), mode)
         return eval(codeobj, self._local_namespace)
 
-
-

@@ -17,3 +17,4 @@ def printer(text):
 
 def caller(func, *args):
     func(*args)
+

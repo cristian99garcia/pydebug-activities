@@ -140,17 +140,3 @@ else:
 
 print "goodbye"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-

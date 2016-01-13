@@ -51,5 +51,3 @@ class RootImporter(object):
     def __setattr__(self, name, value):
         raise TypeError("read only type")
 
-
-

@@ -110,4 +110,3 @@ class PipeStream(Stream):
         def is_available(self):
             return True
 
-

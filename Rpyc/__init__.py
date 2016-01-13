@@ -31,3 +31,4 @@ __version__ = (2, 60)
 # install custom exception hook
 #
 sys.excepthook = rpyc_excepthook
+

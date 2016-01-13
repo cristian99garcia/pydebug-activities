@@ -62,5 +62,3 @@ while not r1.is_ready or not r2.is_ready:
     print "!"
     time.sleep(1)
 
-
-

@@ -77,5 +77,3 @@ remote_interpreter(c)
 
 print "goodbye"
 
-
-

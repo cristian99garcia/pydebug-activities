@@ -120,4 +120,3 @@ class Box(object):
         """unpacks a package (returns an object)"""
         return self._unbox(pickle.loads(package))
 
-

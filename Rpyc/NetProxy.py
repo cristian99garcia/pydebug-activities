@@ -112,6 +112,3 @@ class SyncNetProxy(NetProxy):
     def __request__(self, handler, *args):
         return _get_conn(self).sync_request(handler, _get_oid(self), *args)
 
-
-
-

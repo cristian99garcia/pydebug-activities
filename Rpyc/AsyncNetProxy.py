@@ -72,14 +72,3 @@ class AsyncResult(object):
     on_ready = property(_get_on_ready, _set_on_ready, 
         doc = "if not None, specifies a callback which is called when the result is ready")
 
-
-
-
-
-
-
-
-
-
-
-
