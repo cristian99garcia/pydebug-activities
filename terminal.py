@@ -27,6 +27,7 @@ _logger = logging.getLogger('PyDebug')
 from gi.repository import Gtk
 from gi.repository import Gdk
 from gi.repository import Vte
+from gi.repository import GLib
 from gi.repository import Pango
 
 from sugar3.graphics.toolbutton import ToolButton
@@ -48,28 +49,20 @@ class Terminal:
         self._create_tab({'cwd' :self.sugar_bundle_path})
         self._create_tab({'cwd' :self.activity_playpen})
 
-        #start the debugger user interface
-        #12/2010 note: tried threads again, very confusing results, disable for !st release
-        #alias_cmd = 'alias go="%s/bin/ipython.py -gthread"\n'%(self.sugar_bundle_path,)
         go_cmd = _('go')
         alias_cmd = 'alias %s="%s/bin/ipython.py "\n' % (go_cmd, self.sugar_bundle_path)
-        self.feed_virtual_terminal(0,alias_cmd)
-
-        #self.feed_virtual_terminal(0,'%s/bin/ipython.py  -gthread\n'%self.sugar_bundle_path)
-        self.feed_virtual_terminal(0,'clear\n%s/bin/ipython.py  \n' % self.sugar_bundle_path)
-
-        #the following become obsolete when start_debug starts automatically via ipython_config.py
-        #cmd = 'run ' + os.path.join(self.sugar_bundle_path,'bin','start_debug.py') + '\n'
-        #self.feed_virtual_terminal(0,cmd)
+        self.feed_virtual_terminal(0, alias_cmd)
+        self.feed_virtual_terminal(0, 'clear\n%s/bin/ipython.py  \n' % self.sugar_bundle_path)
 
     def _get_terminal_canvas(self):
         self.terminal_notebook.set_property("tab-pos", Gtk.PositionType.BOTTOM)
         self.terminal_notebook.set_scrollable(True)
         self.terminal_notebook.show()
+
         return self.terminal_notebook
 
     def _open_tab_cb(self, btn):
-        index = self._create_tab(None) 
+        index = self._create_tab(None)
         self.terminal_notebook.page = index
 
     def _close_tab_cb(self, btn):
@@ -112,6 +105,7 @@ class Terminal:
                 label = self.terminal_notebook.get_nth_page(i).label
                 title = vt.get_window_title()
                 label.set_text(title[title.rfind('/') + 1:])
+
                 return
 
     def _drag_data_received_cb(self, widget, context, x, y, selection, target, time):
@@ -152,26 +146,19 @@ class Terminal:
 
         self.terminal_notebook.show_all()
 
-        # Uncomment this to only show the tab bar when there is at least one tab.
-        # I think it's useful to always see it, since it displays the 'window title'.
-        #self.terminal_notebook.props.show_tabs = self.terminal_notebook.get_n_pages() > 1
-
         # Launch the default shell in the HOME directory.
         os.chdir(os.environ["HOME"])
 
         if tab_state:
             # Restore the environment.
             # This is currently not enabled.
-            env = tab_state.get('env',[])
+            env = tab_state.get('env', [])
 
             filtered_env = []
             for e in env:
                 var, sep, value = e.partition('=')
                 if var not in MASKED_ENVIRONMENT:
                     filtered_env.append(var + sep + value)
-
-            # TODO: Make the shell restore these environment variables, then clear out TERMINAL_ENV.
-            #os.environ['TERMINAL_ENV'] = '\n'.join(filtered_env)
 
             # Restore the working directory.
             if tab_state.has_key('cwd'):
@@ -182,10 +169,21 @@ class Terminal:
                 for l in tab_state['scrollback']:
                     vt.feed(l + '\r\n')
 
-        ##box.pid = vt.fork_command()
+        args = (Vte.PtyFlags.DEFAULT,
+                os.environ["HOME"],
+                ["/bin/bash"],
+                [],
+                GLib.SpawnFlags.DO_NOT_REAP_CHILD,
+                None, None)
+
+        if hasattr(vt, 'fork_command_full'):
+            vt.fork_command_full(*args)
+        else:
+            vt.spawn_sync(*args)
 
         self.terminal_notebook.props.page = index
-        vt.grab_focus()
+
+        vt.connect("realize", lambda vt: vt.grab_focus())
 
         return index
 

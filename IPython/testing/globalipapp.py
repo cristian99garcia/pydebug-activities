@@ -132,6 +132,7 @@ def start_ipython():
     # This function should only ever run once!
     if hasattr(start_ipython, 'already_called'):
         return
+
     start_ipython.already_called = True
     
     # Store certain global objects that IPython modifies
@@ -145,11 +146,10 @@ def start_ipython():
     # Create and initialize our test-friendly IPython instance.
     shell = TerminalInteractiveShell.instance(config=config, 
                                               user_ns=ipnsdict(),
-                                              user_global_ns={}
-                                              )
+                                              user_global_ns={})
 
     # A few more tweaks needed for playing nicely with doctests...
-    
+
     # These traps are normally only active for interactive use, set them
     # permanently since we'll be mocking interactive sessions.
     shell.builtin_trap.activate()
@@ -180,3 +180,4 @@ def start_ipython():
     __builtin__.get_ipython = get_ipython
 
     return _ip
+
