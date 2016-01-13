@@ -110,6 +110,7 @@ class ProjectFunctions:
                     mime = self._activity.MIME_TYPE
                     activity = self._activity.activity_dict.get('activity','')
                     self.to_removable_bin(source)
+
                 except IOError:
                     _logger.debug('shutil.copy error %d: %s. ',IOError[0],IOError[1])
                     do_tgz = True
@@ -138,11 +139,12 @@ class ProjectFunctions:
         dsobject.metadata['tree_md5'] = self.save_tree_md5(self._activity.child_path)
         self._activity.debug_dict['tree_md5'] = dsobject.metadata['tree_md5']
         if dest: dsobject.set_file_path(dest)
-        
+
         #actually make the call which writes to the journal
         try:
             datastore.write(dsobject,transfer_ownership=True)
-            _logger.debug('succesfully wrote to the journal from %s.'%(dest))
+            _logger.debug('succesfully wrote to the journal from %s.' % (dest))
+
         except Exception, e:
             _logger.error('datastore.write exception %r'%e)
             return
@@ -150,10 +152,11 @@ class ProjectFunctions:
         #update the project display
         if self.journal_class: 
             self.journal_class.new_directory()
-        
+
     def save_tree_md5(self, path):
         #calculate and store the new md5sum
         self._activity.debug_dict['tree_md5'] = self._activity.util.md5sum_tree(self._activity.child_path)
+
         return self._activity.debug_dict['tree_md5']
 
     def removable_backup(self):
@@ -196,7 +199,7 @@ class ProjectFunctions:
 
                 _logger.debug('copying %s to %s'%(source,target))
                 shutil.copyfile(source,target)
-    
+
     def removable_storage(self):
         """uses shell 'mount' cmd dto get mounted volumes
         needs to be tested on various builds
@@ -216,7 +219,7 @@ class ProjectFunctions:
             return ret
 
         return None
-    
+
     def write_manifest(self):
         """ use sugar routines to build a new MANIFEST file """
         IGNORE_DIRS = ['dist', '.git']

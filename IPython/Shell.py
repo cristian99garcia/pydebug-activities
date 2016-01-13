@@ -77,6 +77,7 @@ class IPShell:
         if sys_exit:
             sys.exit()
 
+
 #-----------------------------------------------------------------------------
 def kill_embedded(self,parameter_s=''):
     """%kill_embedded : deactivate for good the current embedded IPython.
@@ -93,7 +94,8 @@ def kill_embedded(self,parameter_s=''):
     if kill:
         self.shell.embedded_active = False
         print "This embedded IPython will not reactivate anymore once you exit."
-    
+
+
 class IPShellEmbed:
     """Allow embedding an IPython shell into a running program.
 
@@ -161,12 +163,11 @@ class IPShellEmbed:
         try:
             #print 'Save completer',sys.ipcompleter  # dbg
             self.sys_ipcompleter_ori = sys.ipcompleter
+
         except:
             pass # not nested with IPython
-        
-        self.IP = make_IPython(argv,rc_override=rc_override,
-                               embedded=True,
-                               user_ns=user_ns)
+
+        self.IP = make_IPython(argv,rc_override=rc_override, embedded=True, user_ns=user_ns)
 
         ip = ipapi.IPApi(self.IP)
         ip.expose_magic("kill_embedded",kill_embedded)
@@ -177,9 +178,7 @@ class IPShellEmbed:
         sys.displayhook = self.sys_displayhook_ori
         # don't use the ipython crash handler so that user exceptions aren't
         # trapped
-        sys.excepthook = ultraTB.FormattedTB(color_scheme = self.IP.rc.colors,
-                                             mode = self.IP.rc.xmode,
-                                             call_pdb = self.IP.rc.pdb)
+        sys.excepthook = ultraTB.FormattedTB(color_scheme = self.IP.rc.colors, mode = self.IP.rc.xmode, call_pdb = self.IP.rc.pdb)
         self.restore_system_completer()
 
     def restore_system_completer(self):
@@ -233,8 +232,10 @@ class IPShellEmbed:
 
         if self.banner and header:
             format = '%s\n%s\n'
+
         else:
             format = '%s%s\n'
+
         banner =  format % (self.banner,header)
 
         # Call the embedding code with a stack depth of 1 so it can skip over
@@ -261,6 +262,7 @@ class IPShellEmbed:
 
         if dummy not in [0,1,False,True]:
             raise ValueError,'dummy parameter must be boolean'
+
         self.__dummy_mode = dummy
 
     def get_dummy_mode(self):
@@ -294,10 +296,10 @@ if HAS_CTYPES:
             raise TypeError("Only types can be raised (not instances)")
         # Explicit cast to c_long is necessary for 64-bit support:
         # See https://bugs.launchpad.net/ipython/+bug/237073
-        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(tid),
-                                                         ctypes.py_object(exctype))
+        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(ctypes.c_long(tid), ctypes.py_object(exctype))
         if res == 0:
             raise ValueError("invalid thread id")
+
         elif res != 1:
             # If it returns a number greater than one, you're in trouble, 
             # and you should call it again with exc=NULL to revert the effect
@@ -316,11 +318,13 @@ if HAS_CTYPES:
         global KBINT
 
         if CODE_RUN:
-            _async_raise(MAIN_THREAD_ID,KeyboardInterrupt)
+            _async_raise(MAIN_THREAD_ID, KeyboardInterrupt)
+
         else:
             KBINT = True
             print '\nKeyboardInterrupt - Press <Enter> to continue.',
             Term.cout.flush()
+
 
 else:
     def sigint_handler(signum,stack_frame):
@@ -370,9 +374,11 @@ class MTInteractiveShell(InteractiveShell):
         self._kill = None
         on_kill = kw.get('on_kill', [])
         # Check that all things to kill are callable:
+
         for t in on_kill:
             if not callable(t):
                 raise TypeError,'on_kill must be a list of callables'
+
         self.on_kill = on_kill
         # thread identity of the "worker thread" (that may execute code directly)
         self.worker_ident = None
@@ -396,6 +402,7 @@ class MTInteractiveShell(InteractiveShell):
         
         try:
             code = self.compile(source, filename, symbol)
+
         except (OverflowError, SyntaxError, ValueError):
             # Case 1
             self.showsyntaxerror(filename)
@@ -427,8 +434,10 @@ class MTInteractiveShell(InteractiveShell):
             print "Warning: Timeout for mainloop thread exceeded"
             print "switching to nonthreaded mode (until mainloop wakes up again)"
             self.worker_ident = None
+
         else:
             completed_ev.wait()
+
         return False
 
     def runcode(self):
@@ -442,10 +451,12 @@ class MTInteractiveShell(InteractiveShell):
         self.worker_ident = thread.get_ident()
 
         if self._kill:
-            print >>Term.cout, 'Closing threads...',
+            print >> Term.cout, 'Closing threads...',
             Term.cout.flush()
+
             for tokill in self.on_kill:
                 tokill()
+
             print >>Term.cout, 'Done.'
             # allow kill() to return
             self._kill.set()
@@ -455,6 +466,7 @@ class MTInteractiveShell(InteractiveShell):
         # code modifies it, we restore our own handling.
         try:
             signal(SIGINT,sigint_handler)
+
         except SystemError:
             # This happens under Windows, which seems to have all sorts
             # of problems with signal handling.  Oh well...
@@ -466,8 +478,10 @@ class MTInteractiveShell(InteractiveShell):
         while 1:
             try:
                 code_to_run, completed_ev, received_ev = self.code_queue.get_nowait()                
+
             except Queue.Empty:
                 break
+
             received_ev.set()
             
             # Exceptions need to be raised differently depending on which
@@ -479,14 +493,17 @@ class MTInteractiveShell(InteractiveShell):
             try:
                 try:
                    CODE_RUN = True
-                   InteractiveShell.runcode(self,code_to_run)
+                   InteractiveShell.runcode(self, code_to_run)
+
                 except KeyboardInterrupt:
                    print "Keyboard interrupted in mainloop"
                    while not self.code_queue.empty():
                       code, ev1,ev2 = self.code_queue.get_nowait()
                       ev1.set()
                       ev2.set()                      
+
                    break
+
             finally:
                 CODE_RUN = False
                 # allow runsource() return from wait
@@ -500,6 +517,7 @@ class MTInteractiveShell(InteractiveShell):
         """Kill the thread, returning when it has been shut down."""
         self._kill = threading.Event()
         self._kill.wait()
+
 
 class MatplotlibShellBase:
     """Mixin class to provide the necessary modifications to regular IPython
@@ -538,6 +556,7 @@ class MatplotlibShellBase:
                    'standalone file from the command line, not using IPython.\n' %
                    (arg,self.mpl_backend) )
                 raise RuntimeError, m
+
             else:
                 self.mpl_use(arg)
                 self.mpl_use._called = True
@@ -619,14 +638,16 @@ class MatplotlibShellBase:
 # and multithreaded.  Note that these are meant for internal use, the IPShell*
 # classes below are the ones meant for public consumption.
 
+
 class MatplotlibShell(MatplotlibShellBase,InteractiveShell):
     """Single-threaded shell with matplotlib support."""
 
     def __init__(self,name,usage=None,rc=Struct(opts=None,args=None),
                  user_ns=None,user_global_ns=None,**kw):
-        user_ns,user_global_ns,b2 = self._matplotlib_config(name,user_ns,user_global_ns)
-        InteractiveShell.__init__(self,name,usage,rc,user_ns,user_global_ns,
-                                  banner2=b2,**kw)
+
+        user_ns,user_global_ns,b2 = self._matplotlib_config(name, user_ns, user_global_ns)
+        InteractiveShell.__init__(self, name, usage, rc,user_ns, user_global_ns, banner2=b2,**kw)
+
 
 class MatplotlibMTShell(MatplotlibShellBase,MTInteractiveShell):
     """Multi-threaded shell with matplotlib support."""
@@ -634,11 +655,11 @@ class MatplotlibMTShell(MatplotlibShellBase,MTInteractiveShell):
     def __init__(self,name,usage=None,rc=Struct(opts=None,args=None),
                  user_ns=None,user_global_ns=None, **kw):
         user_ns,user_global_ns,b2 = self._matplotlib_config(name,user_ns,user_global_ns)
-        MTInteractiveShell.__init__(self,name,usage,rc,user_ns,user_global_ns,
-                                    banner2=b2,**kw)
+        MTInteractiveShell.__init__(self, name, usage, rc, user_ns, user_global_ns, banner2=b2, **kw)
 
 #-----------------------------------------------------------------------------
 # Utility functions for the different GUI enabled IPShell* classes.
+
 
 def get_tk():
     """Tries to import Tkinter and returns a withdrawn Tkinter root
@@ -647,16 +668,21 @@ def get_tk():
     """
     if not USE_TK or sys.modules.has_key('Tkinter'):
         return None
+
     else:
         try:
             import Tkinter
+
         except ImportError:
             return None
+
         else:
             hijack_tk()
             r = Tkinter.Tk()
             r.withdraw()
+
             return r
+
 
 def hijack_tk():
     """Modifies Tkinter's mainloop with a dummy so when a module calls
@@ -672,12 +698,14 @@ def hijack_tk():
     Tkinter.Misc.mainloop = misc_mainloop
     Tkinter.mainloop = tkinter_mainloop
 
+
 def update_tk(tk):
     """Updates the Tkinter event loop.  This is typically called from
     the respective WX or GTK mainloops.
     """    
     if tk:
         tk.update()
+
 
 def hijack_wx():
     """Modifies wxPython's MainLoop with a dummy so user code does not
@@ -708,6 +736,7 @@ def hijack_wx():
         warn("Unable to find either wxPython version 2.4 or >= 2.5.")
     return orig_mainloop
 
+
 def hijack_gtk():
     """Modifies pyGTK's mainloop with a dummy so user code does not
     block IPython.  This function returns the original `gtk.mainloop`
@@ -715,11 +744,12 @@ def hijack_gtk():
     """    
     def dummy_mainloop(*args, **kw):
         pass
-    import gtk
-    if gtk.pygtk_version >= (2,4,0): orig_mainloop = gtk.main
-    else:                            orig_mainloop = gtk.mainloop
-    gtk.mainloop = dummy_mainloop
-    gtk.main = dummy_mainloop
+
+    from gi.repository import Gtk
+
+    orig_mainloop = Gtk.main
+    Gtk.mainloop = dummy_mainloop
+    Gtk.main = dummy_mainloop
     return orig_mainloop
 
 def hijack_qt():
@@ -769,30 +799,19 @@ class IPShellGTK(IPThread):
     
     TIMEOUT = 100 # Millisecond interval between timeouts.
 
-    def __init__(self,argv=None,user_ns=None,user_global_ns=None,
-                 debug=1,shell_class=MTInteractiveShell):
+    def __init__(self, argv=None, user_ns=None, user_global_ns=None, debug=1, shell_class=MTInteractiveShell):
 
-        import gtk
-        # Check for set_interactive, coming up in new pygtk.
-        # Disable it so that this code works, but notify 
-        # the user that he has a better option as well.
-        # XXX TODO better support when set_interactive is released
-        try:
-            gtk.set_interactive(False)
-            print "Your PyGtk has set_interactive(), so you can use the"
-            print "more stable single-threaded Gtk mode."
-            print "See https://bugs.launchpad.net/ipython/+bug/270856"
-        except AttributeError:
-            pass
-        
-        self.gtk = gtk
+        from gi.repository import Gtk
+        from gi.repository import Gdk
+
+        self.gtk = Gtk
+        self.gdk = Gdk
         self.gtk_mainloop = hijack_gtk()
 
         # Allows us to use both Tk and GTK.
         self.tk = get_tk()
-        
-        if gtk.pygtk_version >= (2,4,0): mainquit = self.gtk.main_quit
-        else:                            mainquit = self.gtk.mainquit
+
+        mainquit = self.gtk.main_quit
 
         self.IP = make_IPython(argv,user_ns=user_ns,
                                user_global_ns=user_global_ns,
@@ -803,61 +822,40 @@ class IPShellGTK(IPThread):
         # HACK: slot for banner in self; it will be passed to the mainloop
         # method only and .run() needs it.  The actual value will be set by
         # .mainloop().
-        self._banner = None 
+        self._banner = None
 
         threading.Thread.__init__(self)
 
-    def mainloop(self,sys_exit=0,banner=None):
-
+    def mainloop(self, sys_exit=0, banner=None):
         self._banner = banner
-        
-        if self.gtk.pygtk_version >= (2,4,0):
-            import gobject
-            gobject.idle_add(self.on_timer)
-        else:
-            self.gtk.idle_add(self.on_timer)
-
-        if sys.platform != 'win32':
-            try:
-                if self.gtk.gtk_version[0] >= 2:
-                    self.gtk.gdk.threads_init()
-            except AttributeError:
-                pass
-            except RuntimeError:
-                error('Your pyGTK likely has not been compiled with '
-                      'threading support.\n'
-                      'The exception printout is below.\n'
-                      'You can either rebuild pyGTK with threads, or '
-                      'try using \n'
-                      'matplotlib with a different backend (like Tk or WX).\n'
-                      'Note that matplotlib will most likely not work in its '
-                      'current state!')
-                self.IP.InteractiveTB()
+        GObject.idle_add(self.on_timer)
+        GObject.threads_init()
 
         self.start()
-        self.gtk.gdk.threads_enter()
+        self.gdk.threads_enter()
         self.gtk_mainloop()
-        self.gtk.gdk.threads_leave()
+        self.gdk.threads_leave()
         self.join()
 
     def on_timer(self):
         """Called when GTK is idle.
 
         Must return True always, otherwise GTK stops calling it"""
-        
+
         update_tk(self.tk)
         self.IP.runcode()
         time.sleep(0.01)
+
         return True
 
 
 class IPShellWX(IPThread):
     """Run a wx mainloop() in a separate thread.
-    
+
     Python commands can be passed to the thread where they will be executed.
     This is implemented by periodically checking for passed code using a
     GTK timeout callback."""
-    
+
     TIMEOUT = 100 # Millisecond interval between timeouts.
 
     def __init__(self,argv=None,user_ns=None,user_global_ns=None,
@@ -880,8 +878,7 @@ class IPShellWX(IPThread):
                     wxversion.select(wantedwxversion)
                 except:
                     self.IP.InteractiveTB()
-                    error('Requested wxPython version %s could not be loaded' %
-                                                               wantedwxversion)
+                    error('Requested wxPython version %s could not be loaded' % wantedwxversion)
 
         import wx
 
@@ -904,8 +901,7 @@ class IPShellWX(IPThread):
             self.app.agent.timer.Stop()
             self.app.ExitMainLoop()
 
-    def mainloop(self,sys_exit=0,banner=None):
-
+    def mainloop(self, sys_exit=0, banner=None):
         self._banner = banner
         
         self.start()
@@ -916,8 +912,8 @@ class IPShellWX(IPThread):
             tk = self.tk
             def __init__(self, parent, interval):
                 style = self.wx.DEFAULT_FRAME_STYLE | self.wx.TINY_CAPTION_HORIZ
-                self.wx.MiniFrame.__init__(self, parent, -1, ' ', pos=(200, 200),
-                                             size=(100, 100),style=style)
+                self.wx.MiniFrame.__init__(self, parent, -1, ' ', pos=(200, 200), size=(100, 100),style=style)
+
                 self.Show(False)
                 self.interval = interval
                 self.timerId = self.wx.NewId()                                

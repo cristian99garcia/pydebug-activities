@@ -14,8 +14,8 @@
 import sys
 
 # Third-party
-import gobject
-import gtk
+from gi.repository import Gtk
+from gi.repository import GObject
 
 #-----------------------------------------------------------------------------
 # Classes and functions
@@ -34,8 +34,8 @@ class GTKEmbed(object):
         """Starts the GTK main event loop and sets our kernel startup routine.
         """
         # Register our function to initiate the kernel and start gtk
-        gobject.idle_add(self._wire_kernel)
-        gtk.main()
+        GObject.idle_add(self._wire_kernel)
+        Gtk.main()
 
     def _wire_kernel(self):
         """Initializes the kernel inside GTK.
@@ -44,8 +44,7 @@ class GTKEmbed(object):
         returns False to ensure it doesn't get run again by GTK.
         """
         self.gtk_main, self.gtk_main_quit = self._hijack_gtk()
-        gobject.timeout_add(int(1000*self.kernel._poll_interval),
-                            self.iterate_kernel)
+        GObject.timeout_add(int(1000 * self.kernel._poll_interval), self.iterate_kernel)
         return False
         
     def iterate_kernel(self):
@@ -80,7 +79,9 @@ class GTKEmbed(object):
         """
         def dummy(*args, **kw):
             pass
+
         # save and trap main and main_quit from gtk
-        orig_main, gtk.main = gtk.main, dummy
-        orig_main_quit, gtk.main_quit = gtk.main_quit, dummy
+        orig_main, Gtk.main = Gtk.main, dummy
+        orig_main_quit, Gtk.main_quit = Gtk.main_quit, dummy
         return orig_main, orig_main_quit
+
