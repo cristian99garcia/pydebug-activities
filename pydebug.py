@@ -217,7 +217,9 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         self.set_canvas(nb)
                 
         ##helpbar = self.help.get_help_toolbar()
-
+        activity_button = ActivityToolbarButton(self)
+        self.toolbarbox.toolbar.insert(activity_button, 0)
+        # activity_button.show()
         self.toolbarbox.toolbar.insert(ToolbarButton(page=self.get_editbar(), icon_name='toolbar-edit'), -1)
         self.toolbarbox.toolbar.insert(ToolbarButton(page=self.get_projectbar(), icon_name='system-run'), -1)
         stop_button = StopButton(self)
