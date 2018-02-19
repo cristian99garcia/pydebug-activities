@@ -73,18 +73,11 @@ class ProjectGui(ProjectFunctions):
         separator.set_expand(True)
         separator.show()
 
-        stop_button = ToolButton('activity-stop')
-        stop_button.set_tooltip(_('Stop'))
-        stop_button.props.accelerator = '<Ctrl>Q'
-        stop_button.connect('clicked', self.__stop_clicked_cb)
-        stop_button.show()
-
         projectbar = Gtk.Toolbar()
         projectbar.show_all()
         projectbar.insert(project_run, -1)
         projectbar.insert(separator, -1)
-        projectbar.insert(stop_button, -1)
-        
+
         self.projectbar = projectbar
         
     def __stop_clicked_cb(self, button):

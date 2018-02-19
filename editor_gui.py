@@ -149,13 +149,6 @@ class EditorGui(GtkSourceviewEditor):
         self.editbar.insert(self.zoomin, -1)
         self.zoomin.show()
 
-        stop_button = ToolButton('activity-stop')
-        stop_button.set_tooltip(_('Stop'))
-        stop_button.props.accelerator = '<Ctrl>Q'
-        stop_button.connect('clicked', self.__stop_clicked_cb)
-        self.editbar.insert(stop_button, -1)
-        stop_button.show()
-
         self.editbar.show_all()
         
     def __stop_clicked_cb(self, button):

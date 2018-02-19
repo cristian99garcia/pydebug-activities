@@ -34,6 +34,8 @@ from sugar3.graphics.xocolor import XoColor
 from sugar3.activity.activity import Activity
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.activity.widgets import ToolbarButton
+from sugar3.activity.widgets import StopButton
+from sugar3.activity.widgets import ActivityToolbarButton
 from sugar3.bundle.activitybundle import ActivityBundle
 
 #application stuff
@@ -218,6 +220,8 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
 
         self.toolbarbox.toolbar.insert(ToolbarButton(page=self.get_editbar(), icon_name='toolbar-edit'), -1)
         self.toolbarbox.toolbar.insert(ToolbarButton(page=self.get_projectbar(), icon_name='system-run'), -1)
+        stop_button = StopButton(self)
+        self.toolbarbox.toolbar.insert(stop_button, -1)
         ##self.toolbarbox.toolbar.insert(_('Help'), self.help.get_help_toolbar(), -1)
         self.set_toolbar_box(self.toolbarbox)
         self.toolbarbox.show_all()

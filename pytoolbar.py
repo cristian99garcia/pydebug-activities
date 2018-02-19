@@ -70,12 +70,6 @@ class ActivityToolbarBox(ToolbarBox):
         separator.set_expand(True)
         self.toolbar.insert(separator, -1)
 
-        stop_button = ToolButton('activity-stop')
-        stop_button.set_tooltip(_('Stop'))
-        stop_button.props.accelerator = '<Ctrl>Q'
-        stop_button.connect('clicked', self.__stop_clicked_cb)
-        self.toolbar.insert(stop_button, -1)
-
         self._update_title_sid = None
 
         self.show_all()
