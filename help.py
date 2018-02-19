@@ -220,13 +220,6 @@ class Toolbar(Gtk.Toolbar):
         self.insert(separator, -1)
         separator.show()
 
-        stop_button = ToolButton('activity-stop')
-        stop_button.set_tooltip(_('Stop'))
-        #stop_button.props.accelerator = '<Ctrl>Q'
-        stop_button.connect('clicked', self.__stop_clicked_cb)
-        self.insert(stop_button, -1)
-        stop_button.show()
-
         ## FIXME
         ##progress_listener = self._web_view.progress
         ##progress_listener.connect('location-changed',
