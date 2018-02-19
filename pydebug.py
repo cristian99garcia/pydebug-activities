@@ -253,6 +253,14 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         """pass toolbarbox to subclassed objects"""
         return self.toolbarbox
     
+    def fullscreen(self):
+        self.terminal_notebook.set_show_tabs(False)
+        activity.Activity.fullscreen(self)
+
+    def unfullscreen(self):
+        self.terminal_notebook.set_show_tabs(True)
+        activity.Activity.unfullscreen(self)
+
     def get_editor(self):
         return self
         
