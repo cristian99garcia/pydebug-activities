@@ -45,15 +45,6 @@ class ActivityToolbarBox(ToolbarBox):
         self._activity = activity
         self._updating_share = False
 
-        self.title = Gtk.Entry()
-        self.title.set_size_request(int(Gdk.Screen.width() / 6), -1)
-        if activity.metadata:
-            self.title.set_text(activity.metadata['title'])
-            activity.metadata.connect('updated', self.__jobject_updated_cb)
-
-        self.title.connect('changed', self.__title_changed_cb)
-        self._add_widget(self.title)
-
         lookup = {'plain': 0, 'context': 1, 'verbose': 2}
         traceback = ToolComboBox(label_text=_('Traceback:'))
         traceback.combo.append_item("plain", _('Plain'))
@@ -114,23 +105,6 @@ class ActivityToolbarBox(ToolbarBox):
 
     def __stop_clicked_cb(self, button):
         self._activity.py_stop()
-
-    def __jobject_updated_cb(self, jobject):
-        self.title.set_text(jobject['title'])
-
-    def __title_changed_cb(self, entry):
-        if not self._update_title_sid:
-            self._update_title_sid = GObject.timeout_add(1000, self.__update_title_cb)
-
-    def __update_title_cb(self):
-        title = self.title.get_text()
-
-        self._activity.metadata['title'] = title
-        self._activity.metadata['title_set_by_user'] = '1'
-        self._activity.save()
-
-        self._update_title_sid = None
-        return False
 
     def _add_widget(self, widget, expand=False):
         tool_item = Gtk.ToolItem()
