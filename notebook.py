@@ -151,7 +151,7 @@ class Notebook(Gtk.Notebook):
             self.append_page(widget, eventbox)
 
         else:
-            self.append_page(widget, gtk.Label(text_label))
+            self.append_page(widget, Gtk.Label(text_label))
             
         pages = self.get_n_pages()
 
