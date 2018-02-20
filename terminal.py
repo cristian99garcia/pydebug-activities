@@ -54,7 +54,7 @@ class Terminal:
         self.feed_virtual_terminal(0, 'clear\n%s/bin/ipython.py  \n' % self.sugar_bundle_path)
 
     def _get_terminal_canvas(self):
-        self.terminal_notebook.set_property("tab-pos", Gtk.PositionType.BOTTOM)
+        self.terminal_notebook.set_property("tab-pos", Gtk.PositionType.TOP)
         self.terminal_notebook.set_scrollable(True)
         self.terminal_notebook.show()
 
