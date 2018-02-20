@@ -58,27 +58,6 @@ class ProjectGui(ProjectFunctions):
 
         #disable the change callbacks on the activity.info panel
         self.ignore_changes = True
-
-        #set up the toolbar
-        project_run = ToolButton(stock_id=Gtk.STOCK_MEDIA_FORWARD)
-        project_run.set_icon_widget(None)
-        project_run.set_tooltip(_('Start Debugging'))
-        project_run.connect('clicked', self._activity.project_run_cb)
-        project_run.add_accelerator('clicked',self._activity.accelerator, ord('G'), Gdk.ModifierType.CONTROL_MASK, Gtk.AccelFlags.VISIBLE)
-        #project_run.props.accelerator = '<Ctrl>C'
-        project_run.show()
-
-        separator = Gtk.SeparatorToolItem()
-        separator.set_draw(False)
-        separator.set_expand(True)
-        separator.show()
-
-        projectbar = Gtk.Toolbar()
-        projectbar.show_all()
-        projectbar.insert(project_run, -1)
-        projectbar.insert(separator, -1)
-
-        self.projectbar = projectbar
         
     def __stop_clicked_cb(self, button):
         self._activity.py_stop()
@@ -91,9 +70,6 @@ class ProjectGui(ProjectFunctions):
         
     def get_activity_toolbar(self):
         raise NotImplimentedError
-
-    def get_projectbar(self):
-        return self.projectbar
 
     def _get_project_canvas(self):
         #initialize the link between program and the glade XML file
