@@ -88,9 +88,13 @@ class Terminal:
         vt.grab_focus()
 
     def _close_tab(self, index):
-        self.terminal_notebook.remove_page(index)
-        if self.terminal_notebook.get_n_pages() == 0:
-            self.close()
+        num_pages = self.terminal_notebook.get_n_pages()
+        if num_pages > 1:
+            self.terminal_notebook.remove_page(index)
+            for i in range(num_pages):
+                self.terminal_notebook.set_tab_label(
+                    self.terminal_notebook.get_nth_page(i),
+                    Gtk.Label('Tab ' + str(i+1)))
 
     def _tab_child_exited_cb(self, vt):
         for i in range(self.terminal_notebook.get_n_pages()):
@@ -125,7 +129,7 @@ class Terminal:
         self._configure_vt(vt)
         vt.show()
 
-        label = Gtk.Label()
+        label = Gtk.Label('Tab ' + str(self.terminal_notebook.get_n_pages() + 1))
 
         scrollbar = Gtk.VScrollbar.new(vt.get_vadjustment())
         scrollbar.show()
