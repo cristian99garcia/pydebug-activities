@@ -530,7 +530,6 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
         """
          
         try:
-            self.update_metadata()    
             self.save_editor_status()
             self.put_config()
 
@@ -550,38 +549,6 @@ class PyDebugActivity(Activity, TerminalGui, EditorGui, ProjectGui):
             _logger.exception('Write file exception %s'%e)
 
         return
-        
-    def update_metadata(self):
-        obj = self._jobject
-        #ipshell()
-        if obj:
-            md = obj.get_metadata()
-            obj._file_path = None
-            if md:
-                log_dict(md,'journal metadata')                
-                _logger.debug('write file  Jobject passed to write:%s'%(obj.object_id,))
-                chunk = self.activity_dict.get('name','')            
-
-                for key in self.activity_dict.keys():
-                    if key == 'title' or key == 'activity': continue
-                    md[key] = self.activity_dict[key]
-
-                md['title'] = 'PyDebug_' + chunk
-                md['title_set_by_user'] = '1'
-                md['bundle_id'] = 'org.laptop.PyDebug'
-
-                try:
-                    pass
-                    #datastore.write(obj)
-
-                except Exception, e:
-                    _logger.debug('datastore write exception %s'%e)
-
-            else:
-                _logger.error('no metadata in write_file')
-
-        else:
-            _logger.error('no jobject in write_file')
             
     def init_activity_dict(self):
         self.activity_dict['version'] = '1'

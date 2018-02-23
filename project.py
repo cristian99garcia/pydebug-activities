@@ -536,7 +536,7 @@ class ProjectFunctions:
             self._activity.activity_dict['class'] = ''
 
         self._activity.activity_dict['icon'] = bundle.get_icon()
-        self._activity.activity_dict['title'] = 'PyDebug_' + self._activity.activity_dict['name']
+        self._activity.activity_dict['title'] = bundle.get_title()
         log_dict(self._activity.activity_dict,'Contents of activity_dict')
         self._activity.update_metadata()
 
