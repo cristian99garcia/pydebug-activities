@@ -1151,7 +1151,9 @@ class PyDebugActivity(Activity,Terminal):
 
     def save_cb(self,button,new_fn=None):
         if new_fn and not new_fn.startswith(self.child_root):
-            self.alert(_('You can only write %s to subdirectories of %s' % (os.path.basename(new_fn), self.child_root,)))
+            msg = _('You can only write %{new_fn}s to subdirectories of %{child_root}s')
+            args = {"new_fn":os.path.basename(new_fn) ,"child_root":self.child_root}
+            self.alert(msg % args)
             return
 
         page = self.editor._get_page()

@@ -1,3 +1,4 @@
+# encoding: utf-8
 """Module to analyze Python source code; for syntax coloring tools.
 
 Interface:
