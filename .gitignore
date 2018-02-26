@@ -1,2 +1,5 @@
 #don't include python compilations
 *.pyc
+*.pyo
+*.save
+

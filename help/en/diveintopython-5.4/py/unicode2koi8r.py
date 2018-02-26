@@ -1,3 +1,4 @@
+# encoding: utf-8
 """Convert Cyrillic from iso-8859-1 Unicode-encoded to KOI8-R-encoded
 
 This script is used during the build process of the Russian translation

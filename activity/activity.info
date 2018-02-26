@@ -1,7 +1,9 @@
 [Activity]
 name = PyDebug
 bundle_id = org.laptop.PyDebug
-activity_version = 7
+activity_version = 8
 show_launcher = yes
 icon = PyDebug
+license = GPLv2+
 exec = sugar-activity pydebug.PyDebugActivity
+repository = https://github.com/sugarlabs/pydebug-activity

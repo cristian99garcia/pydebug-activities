@@ -1043,9 +1043,9 @@ class _SubParsersAction(Action):
         try:
             parser = self._name_parser_map[parser_name]
         except KeyError:
-            tup = parser_name, ', '.join(self._name_parser_map)
-            msg = _('unknown parser %r (choices: %s)' % tup)
-            raise ArgumentError(self, msg)
+            msg = _('unknown parser %{name}r (choices: %{map}s)')
+            args = {"name":parser_name, "map":', '.join(self._name_parser_map)}
+            raise ArgumentError(self, msg % args))
 
         # parse all the remaining options into the namespace
         parser.parse_args(arg_strings, namespace)
@@ -1314,17 +1314,17 @@ class _ActionsContainer(object):
 
             # error on strings that don't start with an appropriate prefix
             if not option_string[0] in self.prefix_chars:
-                msg = _('invalid option string %r: '
-                        'must start with a character %r')
-                tup = option_string, self.prefix_chars
-                raise ValueError(msg % tup)
+                msg = _('invalid option string %{option}r: '
+                        'must start with a character %{prefix}r')
+                args = {"option":option_string, "prefix":self.prefix_chars}
+                raise ValueError(msg % args)
 
             # error on strings that are all prefix characters
             if not (_set(option_string) - _set(self.prefix_chars)):
-                msg = _('invalid option string %r: '
-                        'must contain characters other than %r')
-                tup = option_string, self.prefix_chars
-                raise ValueError(msg % tup)
+                msg = _('invalid option string %{option}r: '
+                        'must contain characters other than %{prefix}r')
+                args = {"option":option_string, "prefix":self.prefix_chars}
+                raise ValueError(msg % args)
 
             # strings starting with two prefix characters are long options
             option_strings.append(option_string)
@@ -1958,8 +1958,9 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
         if len(option_tuples) > 1:
             options = ', '.join([option_string
                 for action, option_string, explicit_arg in option_tuples])
-            tup = arg_string, options
-            self.error(_('ambiguous option: %s could match %s') % tup)
+            msg = _('ambiguous option: %{arg_string}s could match %{options}s')
+            args = {"arg_string": arg_string, "options": options}
+            self.error(msg % args)
 
         # if exactly one action matched, this segmentation is good,
         # so return the parsed action
@@ -2124,8 +2125,9 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
         # TypeErrors or ValueErrors indicate errors
         except (TypeError, ValueError):
             name = getattr(action.type, '__name__', repr(action.type))
-            msg = _('invalid %s value: %r')
-            raise ArgumentError(action, msg % (name, arg_string))
+            msg = _('invalid %{name}s value: %{arg_string}r')
+            args = {"name": name, "arg_string": arg_string}
+            raise ArgumentError(action, msg % args)
 
         # return the converted value
         return result
@@ -2133,9 +2135,9 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
     def _check_value(self, action, value):
         # converted value must be one of the choices (if specified)
         if action.choices is not None and value not in action.choices:
-            tup = value, ', '.join(map(repr, action.choices))
-            msg = _('invalid choice: %r (choose from %s)') % tup
-            raise ArgumentError(action, msg)
+            args = {"value": value, "choice": ', '.join(map(repr, action.choices)}
+            msg = _('invalid choice: %{value}r (choose from %{choice}s)')
+            raise ArgumentError(action, msg % args)
 
     # =======================
     # Help-formatting methods
@@ -2213,4 +2215,5 @@ class ArgumentParser(_AttributeHolder, _ActionsContainer):
         should either exit or raise an exception.
         """
         self.print_usage(_sys.stderr)
-        self.exit(2, _('%s: error: %s\n') % (self.prog, message))
+        args = {"prog" : self.prog, "msg":message}
+        self.exit(2, _('%{prog}s: error: %{msg}s\n') % args)
