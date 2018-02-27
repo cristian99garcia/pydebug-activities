@@ -21,14 +21,6 @@ msgstr ""
 msgid "PyDebug"
 msgstr "PyDebug"
 
-#. TRANS: "summary" option from activity.info file
-msgid "PyDebug"
-msgstr "PyDebug"
-
-#. TRANS: "description" option from activity.info file
-msgid "PyDebug"
-msgstr "PyDebug"
-
 #~ msgid "Name"
 #~ msgstr "名称"
 
